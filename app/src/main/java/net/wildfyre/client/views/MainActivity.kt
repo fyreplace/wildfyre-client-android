@@ -124,7 +124,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val isLoginStep = supportFragmentManager.fragments.first() is LoginFragment
+        val isLoginStep = supportFragmentManager.fragments.count { it is LoginFragment } > 0
         drawer_layout.setDrawerLockMode(if (isLoginStep) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
         actionBarDrawerToggle.isDrawerIndicatorEnabled = !isLoginStep
         return super.onCreateOptionsMenu(menu)
