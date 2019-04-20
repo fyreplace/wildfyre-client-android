@@ -16,7 +16,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     val userAvatar: LiveData<String> = Transformations.map(AuthorRepository.self) { it.avatar }
     val themes = arrayOf(
         Pair(R.string.theme_system, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM),
-        Pair(R.string.theme_auto, AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY),
+        Pair(R.string.theme_battery, AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY),
         Pair(R.string.theme_light, AppCompatDelegate.MODE_NIGHT_NO),
         Pair(R.string.theme_dark, AppCompatDelegate.MODE_NIGHT_YES)
     )

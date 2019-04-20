@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">WildFyre</string>
-    <string name="theme_system">System</string>
-    <string name="theme_auto">Auto</string>
+    <string name="theme_system">Automatic</string>
+    <string name="theme_battery">Battery</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
     <string name="login_username">Username</string>
@@ -32,4 +32,5 @@
     <string name="image_desc_user_picture">Profile picture</string>
     <string name="failure_generic">Error during request</string>
     <string name="failure_login">Logging in failed</string>
+    <string name="failure_profile_edit">Could not update profile</string>
 </resources>
