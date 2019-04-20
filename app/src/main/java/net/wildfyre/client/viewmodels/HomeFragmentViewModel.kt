@@ -11,8 +11,6 @@ class HomeFragmentViewModel(application: Application) : FailureHandlingViewModel
     private val _preferredArea = MediatorLiveData<Area?>()
 
     val areas = AreaRepository.areas
-    val areaDisplayNames: LiveData<List<String>>
-        get() = Transformations.map(areas) { it.map { area -> area.displayname!! } }
     val preferredAreaName = AreaRepository.preferredAreaName
     val preferredArea: LiveData<Area?>
         get() = _preferredArea

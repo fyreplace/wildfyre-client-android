@@ -111,12 +111,6 @@ object AreaRepository {
         getPrefs().edit { putString(Constants.Preferences.PREFERRED_AREA, name) }
         mutablePreferredAreaName.value = name
     }
-
-    private fun fetchAreaReputation(fh: FailureHandler, areaName: String) {
-        Services.webService.getAreaRep(AuthRepository.authToken.value!!, areaName).then(fh, R.string.failure_generic) {
-            mutableAreas.value
-        }
-    }
 }
 
 private fun getPrefs(): SharedPreferences {
