@@ -39,12 +39,6 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val startingNightMode = getPreferences(Context.MODE_PRIVATE).getInt(
-            Constants.Preferences.UI_THEME,
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        )
-
-        AppCompatDelegate.setDefaultNightMode(startingNightMode)
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -75,6 +69,8 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             R.string.main_drawer_close
         )
 
+        val startingNightMode = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
+            .getInt(Constants.Preferences.UI_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         val themeSelector = navigation_drawer.menu.findItem(R.id.theme_selector).actionView as Spinner?
         themeSelector?.run {
             adapter = ArrayAdapter<String>(
@@ -88,7 +84,8 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     val theme = viewModel.themes[position].second
-                    getPreferences(Context.MODE_PRIVATE).edit { putInt(Constants.Preferences.UI_THEME, theme) }
+                    getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
+                        .edit { putInt(Constants.Preferences.UI_THEME, theme) }
                     AppCompatDelegate.setDefaultNightMode(theme)
                     delegate.applyDayNight()
                 }
