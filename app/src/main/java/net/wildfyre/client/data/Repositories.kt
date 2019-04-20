@@ -1,7 +1,5 @@
 package net.wildfyre.client.data
 
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,7 +14,7 @@ object AuthRepository {
         get() = mutableAuthToken
 
     init {
-        mutableAuthToken.value = getPrefs().getString(Constants.Preferences.AUTH_TOKEN, "") ?: ""
+        mutableAuthToken.value = Application.preferences.getString(Constants.Preferences.AUTH_TOKEN, "") ?: ""
     }
 
     fun clearAuthToken() {
@@ -35,7 +33,7 @@ object AuthRepository {
 
     private fun setAuthToken(token: String) {
         mutableAuthToken.value = token
-        getPrefs().edit { putString(Constants.Preferences.AUTH_TOKEN, token) }
+        Application.preferences.edit { putString(Constants.Preferences.AUTH_TOKEN, token) }
     }
 }
 
@@ -86,7 +84,7 @@ object AreaRepository {
         get() = mutablePreferredAreaName
 
     init {
-        getPrefs().getString(Constants.Preferences.PREFERRED_AREA, null)?.let {
+        Application.preferences.getString(Constants.Preferences.PREFERRED_AREA, null)?.let {
             mutablePreferredAreaName.value = it
         }
     }
@@ -115,14 +113,7 @@ object AreaRepository {
     }
 
     fun setPreferredAreaName(name: String) {
-        getPrefs().edit { putString(Constants.Preferences.PREFERRED_AREA, name) }
+        Application.preferences.edit { putString(Constants.Preferences.PREFERRED_AREA, name) }
         mutablePreferredAreaName.value = name
     }
-}
-
-private fun getPrefs(): SharedPreferences {
-    return Application.context.getSharedPreferences(
-        Application.context.getString(R.string.app_name),
-        Context.MODE_PRIVATE
-    )
 }

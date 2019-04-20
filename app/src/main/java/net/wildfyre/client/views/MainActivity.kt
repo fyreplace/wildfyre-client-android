@@ -1,6 +1,5 @@
 package net.wildfyre.client.views
 
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
@@ -29,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
 import kotlinx.android.synthetic.main.main_nav_header.*
 import net.wildfyre.client.AppGlide
+import net.wildfyre.client.Application
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.MainNavHeaderBinding
@@ -69,7 +69,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             R.string.main_drawer_close
         )
 
-        val startingNightMode = getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
+        val startingNightMode = Application.preferences
             .getInt(Constants.Preferences.UI_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         val themeSelector = navigation_drawer.menu.findItem(R.id.theme_selector).actionView as Spinner?
         themeSelector?.run {
@@ -84,7 +84,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     val theme = viewModel.themes[position].second
-                    getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
+                    Application.preferences
                         .edit { putInt(Constants.Preferences.UI_THEME, theme) }
                     AppCompatDelegate.setDefaultNightMode(theme)
                     delegate.applyDayNight()
