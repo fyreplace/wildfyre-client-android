@@ -39,4 +39,12 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     fun updateProfile() {
         AuthorRepository.fetchSelf(this)
     }
+
+    fun updateProfile(bio: String, avatarPath: String) {
+        if (bio != userBio.value) {
+            AuthorRepository.updateSelfBio(this, bio)
+        }
+
+        // TODO: update avatar
+    }
 }

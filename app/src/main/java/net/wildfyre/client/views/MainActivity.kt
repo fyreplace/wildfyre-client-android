@@ -1,6 +1,7 @@
 package net.wildfyre.client.views
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
@@ -9,11 +10,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.*
 import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
@@ -222,5 +222,27 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     }
 
     private fun editProfile() {
+        lateinit var dialog: AlertDialog
+        dialog = AlertDialog.Builder(this)
+            .setView(R.layout.main_profile_editor)
+            .setNegativeButton(android.R.string.cancel) { _: DialogInterface, _: Int -> }
+            .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
+                viewModel.updateProfile(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString(), "")
+            }
+            .create()
+            .apply { show() }
+
+        AppGlide.with(this)
+            .load(viewModel.userAvatar.value)
+            .into(dialog.findViewById(R.id.user_picture)!!)
+
+        viewModel.userBio.value?.let {
+            val bioEdit = dialog.findViewById<EditText>(R.id.user_bio)!!
+            bioEdit.setText(it)
+
+            if (it.isNotEmpty()) {
+                bioEdit.minLines = 0
+            }
+        }
     }
 }

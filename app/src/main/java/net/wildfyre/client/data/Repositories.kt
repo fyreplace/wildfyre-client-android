@@ -67,6 +67,13 @@ object AuthorRepository {
             mutableSelf.value = it
         }
     }
+
+    fun updateSelfBio(fh: FailureHandler, bio: String) {
+        Services.webService.patchBio(AuthRepository.authToken.value!!, Author().apply { this.bio = bio })
+            .then(fh, R.string.failure_generic) {
+                mutableSelf.value = mutableSelf.value.apply { this?.bio = bio }
+            }
+    }
 }
 
 object AreaRepository {
