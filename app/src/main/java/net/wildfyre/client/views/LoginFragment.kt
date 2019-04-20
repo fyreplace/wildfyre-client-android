@@ -12,7 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_login.*
 import net.wildfyre.client.R
-import net.wildfyre.client.data.AuthorRepository
 import net.wildfyre.client.data.Failure
 import net.wildfyre.client.databinding.FragmentLoginBinding
 import net.wildfyre.client.viewmodels.LoginFragmentViewModel
@@ -29,12 +28,6 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         activity?.title = getString(R.string.app_name)
-        viewModel.authToken.observe(this, Observer {
-            if (it.isNotEmpty()) {
-                showProgress(false)
-                AuthorRepository.fetchSelf(activity as MainActivity)
-            }
-        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

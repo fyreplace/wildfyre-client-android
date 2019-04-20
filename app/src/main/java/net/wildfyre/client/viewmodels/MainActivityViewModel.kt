@@ -33,9 +33,13 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     init {
         if (AuthRepository.authToken.value!!.isNotEmpty()) {
-            AuthorRepository.fetchSelf(this)
+            updateProfile()
         }
     }
 
     val clearAuthToken = AuthRepository::clearAuthToken
+
+    fun updateProfile() {
+        AuthorRepository.fetchSelf(this)
+    }
 }

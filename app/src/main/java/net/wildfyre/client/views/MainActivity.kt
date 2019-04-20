@@ -130,6 +130,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         if (fragment is LoginFragment) {
             viewModel.authToken.observe(fragment, Observer {
                 if (it.isNotEmpty()) {
+                    viewModel.updateProfile()
                     navigateTo(R.id.fragment_home)
                 }
             })
