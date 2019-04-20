@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.MainActivity">
+    <item
+        android:id="@+id/action_area_selector"
+        android:title=""
+        app:actionViewClass="androidx.appcompat.widget.AppCompatSpinner"
+        app:showAsAction="always|collapseActionView" />
+    <item
+        android:id="@+id/action_area_spread"
+        android:title="@string/main_actions_area_spread"
+        android:visible="false"
+        app:actionLayout="@layout/home_actions_area_spread"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_area_reputation"
+        android:title="@string/main_actions_area_spread"
+        android:visible="false"
+        app:actionLayout="@layout/home_actions_area_reputation"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_comments"
+        android:icon="@drawable/ic_comment_white_24dp"
+        android:title="@string/main_actions_comments"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_subscribe"
+        android:icon="@drawable/ic_notifications_none_white_24dp"
+        android:title="@string/main_actions_subscribe"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+</menu>

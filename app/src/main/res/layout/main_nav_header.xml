@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="net.wildfyre.client.viewmodels.MainActivityViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_header_height"
+        android:background="@drawable/nav_header_main_background"
+        android:orientation="vertical"
+        tools:context=".views.MainActivity">
+
+        <ImageView
+            android:id="@+id/user_picture"
+            android:layout_width="@dimen/nav_header_user_picture_size"
+            android:layout_height="@dimen/nav_header_user_picture_size"
+            android:layout_marginStart="@dimen/margin_horizontal_medium"
+            android:layout_marginLeft="@dimen/margin_horizontal_medium"
+            android:layout_marginTop="@dimen/margin_nav_header_top"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_account_box_white_24dp" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_horizontal_small"
+            android:layout_marginLeft="@dimen/margin_horizontal_small"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{model.userName}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/user_picture"
+            app:layout_constraintTop_toTopOf="@id/user_picture" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_horizontal_small"
+            android:layout_marginLeft="@dimen/margin_horizontal_small"
+            android:layout_marginTop="@dimen/margin_vertical_small"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:text="@{model.userBio}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toStartOf="@android:id/edit"
+            app:layout_constraintStart_toEndOf="@id/user_picture"
+            app:layout_constraintTop_toBottomOf="@id/user_name" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@android:id/edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:backgroundTint="@color/background"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_edit_daynight_24dp"
+            app:useCompatPadding="true" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

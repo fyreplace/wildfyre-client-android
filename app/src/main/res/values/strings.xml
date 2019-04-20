@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">WildFyre</string>
+    <string name="theme_system">System</string>
+    <string name="theme_auto">Auto</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_action_login">Login</string>
+    <string name="login_error_invalid_email">This email address is invalid</string>
+    <string name="login_error_incorrect_password">This password is incorrect</string>
+    <string name="login_error_field_required">This field is required</string>
+    <string name="main_nav_login">Login</string>
+    <string name="main_nav_home">Home</string>
+    <string name="main_nav_notifications">Notifications</string>
+    <string name="main_nav_posts">Posts</string>
+    <string name="main_nav_theme">Theme</string>
+    <string name="main_nav_about">About us</string>
+    <string name="main_nav_open_source">Open source</string>
+    <string name="main_nav_faq">FAQ</string>
+    <string name="main_nav_terms">Terms and conditions</string>
+    <string name="main_nav_privacy">Privacy policy</string>
+    <string name="main_nav_logout">Logout</string>
+    <string name="main_drawer_open">Open navigation drawer</string>
+    <string name="main_drawer_close">Close navigation drawer</string>
+    <string name="main_actions_area_selector">Area: %1$s</string>
+    <string name="main_actions_area_spread">Spread</string>
+    <string name="main_actions_comments">Comments</string>
+    <string name="main_actions_subscribe">Subscribe</string>
+    <string name="main_actions_posts_new">New post</string>
+    <string name="failure_generic">Error during request</string>
+    <string name="failure_login">Logging in failed</string>
+</resources>

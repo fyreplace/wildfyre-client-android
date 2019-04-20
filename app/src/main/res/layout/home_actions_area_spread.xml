@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="net.wildfyre.client.viewmodels.HomeFragmentViewModel" />
+    </data>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawablePadding="@dimen/margin_horizontal_small"
+        android:gravity="center"
+        android:paddingEnd="@dimen/margin_horizontal_small"
+        android:paddingRight="@dimen/margin_horizontal_small"
+        android:text="@{Long.toString(model.currentAreaSpread)}"
+        android:textAppearance="@style/TextAppearance.AppCompat.Menu"
+        app:drawableLeftCompat="@drawable/ic_settings_input_antenna_white_24dp"
+        app:drawableStartCompat="@drawable/ic_settings_input_antenna_white_24dp"
+        tools:ignore="RtlSymmetry" />
+</layout>

@@ -1,0 +1,30 @@
+package net.wildfyre.client
+
+object Constants {
+    object Api {
+        const val BASE_URL = "https://api.wildfyre.net"
+        val IMAGE_REGEX = Regex("(\\[img:\\s*(\\d+)\\])")
+    }
+
+    object Save {
+        const val ACTIVITY_NAVIGATION = "activity.navigation"
+    }
+
+    object Preferences {
+        const val AUTH_TOKEN = "auth.token"
+        const val UI_THEME = "ui.theme"
+        const val PREFERRED_AREA = "preferredArea"
+    }
+
+    object Links {
+        private const val MAIN_ADDRESS = "https://wildfyre.net/"
+        const val ABOUT_US = MAIN_ADDRESS + "about-us"
+        const val OPEN_SOURCE = MAIN_ADDRESS + "open-source"
+        const val FAQ = MAIN_ADDRESS + "frequently-asked-questions"
+        const val TERMS_AND_CONDITIONS = MAIN_ADDRESS + "terms-and-conditions"
+        const val PRIVACY_POLICY = MAIN_ADDRESS + "privacy-policy"
+        const val FACEBOOK = "https://www.facebook.com/wildfyreapp/"
+        const val TWITTER = "https://twitter.com/wildfyreapp"
+        const val TELEGRAM = "https://t.me/WildFyreApp"
+    }
+}

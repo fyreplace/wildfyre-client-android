@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group
+        android:id="@+id/navigation"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/fragment_login"
+            android:title="@string/main_nav_login"
+            android:visible="false" />
+        <item
+            android:id="@+id/fragment_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/main_nav_home" />
+        <item
+            android:id="@+id/fragment_notifications"
+            android:icon="@drawable/ic_notifications_black_24dp"
+            android:title="@string/main_nav_notifications" />
+        <item
+            android:id="@+id/fragment_posts"
+            android:icon="@drawable/ic_content_copy_black_24dp"
+            android:title="@string/main_nav_posts"
+            app:actionLayout="@layout/main_actions_posts" />
+    </group>
+    <item
+        android:id="@+id/theme_selector"
+        android:icon="@drawable/ic_brightness_medium_black_24dp"
+        android:title="@string/main_nav_theme"
+        app:actionViewClass="androidx.appcompat.widget.AppCompatSpinner"
+        app:showAsAction="always" />
+    <item android:title="@string/app_name">
+        <menu>
+            <item
+                android:id="@+id/about_us"
+                android:title="@string/main_nav_about" />
+            <item
+                android:id="@+id/open_source"
+                android:title="@string/main_nav_open_source" />
+            <item
+                android:id="@+id/faq"
+                android:title="@string/main_nav_faq" />
+            <item
+                android:id="@+id/terms_and_conditions"
+                android:title="@string/main_nav_terms" />
+            <item
+                android:id="@+id/privacy_policy"
+                android:title="@string/main_nav_privacy" />
+            <item
+                android:id="@+id/logout"
+                android:title="@string/main_nav_logout" />
+        </menu>
+    </item>
+</menu>
