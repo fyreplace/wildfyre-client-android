@@ -20,6 +20,7 @@ import androidx.core.content.edit
 import androidx.core.view.GravityCompat
 import androidx.core.view.doOnLayout
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.transaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -123,6 +124,18 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         actionBarDrawerToggle.onConfigurationChanged(newConfig)
     }
 
+    override fun onAttachFragment(fragment: Fragment) {
+        super.onAttachFragment(fragment)
+
+        if (fragment is LoginFragment) {
+            viewModel.authToken.observe(fragment, Observer {
+                if (it.isNotEmpty()) {
+                    navigateTo(R.id.fragment_home)
+                }
+            })
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val isLoginStep = supportFragmentManager.fragments.count { it is LoginFragment } > 0
         drawer_layout.setDrawerLockMode(if (isLoginStep) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -149,8 +162,6 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         val newFragment = when (item.itemId) {
             R.id.fragment_login,
             R.id.logout -> LoginFragment().also {
-                it.setOnReceivedTokenListener { navigateTo(R.id.fragment_home) }
-
                 if (item.itemId == R.id.logout) {
                     viewModel.clearAuthToken()
                     navigation_drawer.setCheckedItem(R.id.fragment_login)
@@ -199,7 +210,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     }
 
     private fun tryNavigateTo(@IdRes id: Int) {
-        if (supportFragmentManager.fragments.count() > 0) {
+        if (supportFragmentManager.fragments.size > 0) {
             return
         }
 

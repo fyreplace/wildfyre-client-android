@@ -19,11 +19,6 @@ import net.wildfyre.client.viewmodels.LoginFragmentViewModel
 
 class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override lateinit var viewModel: LoginFragmentViewModel
-    private lateinit var onReceivedTokenListener: () -> Unit
-
-    fun setOnReceivedTokenListener(action: () -> Unit) {
-        onReceivedTokenListener = action
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -38,14 +33,8 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
             if (it.isNotEmpty()) {
                 showProgress(false)
                 AuthorRepository.fetchSelf(activity as MainActivity)
-                onReceivedTokenListener()
             }
         })
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        onReceivedTokenListener = {}
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
