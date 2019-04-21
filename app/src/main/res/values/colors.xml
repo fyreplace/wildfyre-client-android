@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF6E40</color>
     <color name="background">@android:color/background_light</color>
     <color name="navigation">@android:color/background_dark</color>
+    <color name="loginLogo">@color/colorAccent</color>
 </resources>

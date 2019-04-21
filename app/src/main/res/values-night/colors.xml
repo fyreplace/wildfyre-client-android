@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="background">@android:color/background_dark</color>
     <color name="navigation">@android:color/background_dark</color>
+    <color name="loginLogo">@android:color/white</color>
 </resources>

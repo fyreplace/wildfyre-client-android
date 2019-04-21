@@ -30,7 +30,7 @@
                 android:layout_marginBottom="@dimen/margin_vertical_medium"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/ic_splash_screen_foreground"
-                android:tint="@color/colorAccent" />
+                android:tint="@color/loginLogo" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
