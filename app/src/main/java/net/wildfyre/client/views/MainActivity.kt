@@ -176,19 +176,11 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
 
         newFragment?.let {
             supportFragmentManager.transaction(true, true) {
-                replace(
-                    R.id.fragment_container,
-                    it,
-                    getString(
-                        when (item.itemId) {
-                            R.id.fragment_login -> R.string.main_nav_login
-                            R.id.fragment_home -> R.string.main_nav_home
-                            R.id.fragment_notifications -> R.string.main_nav_notifications
-                            R.id.fragment_posts -> R.string.main_nav_posts
-                            else -> R.string.app_name
-                        }
-                    )
-                )
+                if (supportFragmentManager.fragments.size > 0) {
+                    setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
+
+                replace(R.id.fragment_container, it)
             }
         }
 
