@@ -14,9 +14,9 @@ class HomeFragmentViewModel(application: Application) : FailureHandlingViewModel
     val preferredAreaName = AreaRepository.preferredAreaName
     val preferredArea: LiveData<Area?> = _preferredArea
     val currentAreaSpread: LiveData<Long> =
-        Transformations.map(AreaRepository.preferredAreaReputation) { it.spread }
+        Transformations.map(AreaRepository.preferredAreaReputation) { it.spread ?: 0 }
     val currentAreaReputation: LiveData<Long> =
-        Transformations.map(AreaRepository.preferredAreaReputation) { it.reputation }
+        Transformations.map(AreaRepository.preferredAreaReputation) { it.reputation ?: 0 }
 
     init {
         _preferredArea.addSource(areas) {
