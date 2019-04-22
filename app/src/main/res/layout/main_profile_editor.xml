@@ -14,8 +14,16 @@
         android:id="@+id/user_picture"
         android:layout_width="@dimen/dialog_user_picture_size"
         android:layout_height="@dimen/dialog_user_picture_size"
+        android:contentDescription="@string/image_desc_user_picture"
+        android:scaleType="fitCenter" />
+
+    <Button
+        android:id="@+id/user_picture_change"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_vertical_medium"
-        android:contentDescription="@string/image_desc_user_picture" />
+        android:text="@string/main_profile_editor_avatar_change" />
 
     <EditText
         android:id="@+id/user_bio"

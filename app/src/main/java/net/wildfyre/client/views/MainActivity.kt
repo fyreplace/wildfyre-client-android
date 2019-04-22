@@ -303,7 +303,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
 
         viewModel.userAvatarNewData.observe(this, avatarDataObserver)
 
-        avatar.setOnClickListener {
+        dialog.findViewById<View>(R.id.user_picture_change)!!.setOnClickListener {
             startActivityForResult(
                 Intent.createChooser(
                     Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" },

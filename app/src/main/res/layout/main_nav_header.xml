@@ -25,6 +25,7 @@
             android:layout_marginLeft="@dimen/margin_horizontal_medium"
             android:layout_marginTop="@dimen/margin_nav_header_top"
             android:contentDescription="@string/image_desc_user_picture"
+            android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
