@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.security.ProviderInstaller
 import java.lang.ref.WeakReference
 
@@ -24,7 +26,10 @@ class Application : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = WeakReference(this)
-        ProviderInstaller.installIfNeeded(this)
+
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS) {
+            ProviderInstaller.installIfNeeded(this)
+        }
 
         AppCompatDelegate.setDefaultNightMode(
             getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE).getInt(
