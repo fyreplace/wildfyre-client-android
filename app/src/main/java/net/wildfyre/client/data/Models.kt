@@ -148,14 +148,6 @@ class Post : ApiItem() {
     }
 }
 
-class Profile : ApiItem() {
-    var user: Long? = null
-    var name: String? = null
-    var avatar: String? = null
-    var bio: String? = null
-    var banned: Boolean? = null
-}
-
 class RecoverTransaction : ApiItem() {
     var transaction: String? = null
 }

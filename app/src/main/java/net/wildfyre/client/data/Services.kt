@@ -2,6 +2,7 @@ package net.wildfyre.client.data
 
 import androidx.annotation.StringRes
 import net.wildfyre.client.Constants
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -72,11 +73,11 @@ interface WebService {
     ): Call<Author>
 
     @PUT("/users/")
-    @FormUrlEncoded
-    fun putProfilePicture(
+    @Multipart
+    fun putAvatar(
         @Header("Authorization") authorization: String,
-        @Field("avatar") avatar: Any
-    ): Call<Profile>
+        @Part avatar: MultipartBody.Part // name = "avatar"
+    ): Call<Author>
 
     @PATCH("/users/")
     @Headers("Content-Type: application/json")
@@ -217,13 +218,13 @@ interface WebService {
 
     @POST("/areas/{areaName}/{postId}/")
     @Headers("Content-Type: application/json")
-    @FormUrlEncoded
+    @Multipart
     fun postPicture(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Field("image") image: Any,
-        @Field("text") commentText: String
+        @Part image: MultipartBody.Part, // name = "image"
+        @Part commentText: MultipartBody.Part // name = "text"
     ): Call<Comment>
 
     @POST("/areas/{areaName}/{postId}/spread/")
@@ -287,13 +288,13 @@ interface WebService {
 
     @PUT("/areas/{areaName}/drafts/{postId}/")
     @Headers("Content-Type: application/json")
-    @FormUrlEncoded
+    @Multipart
     fun putPicture(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Field("image") image: Any,
-        @Field("text") postText: String
+        @Part image: MultipartBody.Part, // name = "image"
+        @Part postText: MultipartBody.Part // name = "text"
     ): Call<Post>
 
     @PUT("/areas/{areaName}/drafts/{postId}/")
@@ -305,14 +306,14 @@ interface WebService {
     ): Call<Unit>
 
     @PUT("/areas/{areaName}/drafts/{postId}/img/{slot}/")
-    @FormUrlEncoded
+    @Multipart
     fun putImage(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Path("postId") slot: Long,
-        @Field("image") image: Any,
-        @Field("comment") comment: String
+        @Part image: MultipartBody.Part, // name = "image"
+        @Part comment: MultipartBody.Part // name = "comment"
     ): Call<Image>
 
     @PATCH("/areas/{areaName}/drafts/{postId}/")
