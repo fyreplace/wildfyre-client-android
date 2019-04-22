@@ -11,6 +11,7 @@ import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.webkit.MimeTypeMap
 import android.widget.*
 import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -225,18 +226,16 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         }
 
         if (requestCode == REQUEST_AVATAR) {
-            lateinit var fileName: String
             lateinit var mimeType: String
 
             contentResolver.query(
                 data.data!!,
-                arrayOf(MediaStore.MediaColumns.DISPLAY_NAME, MediaStore.MediaColumns.MIME_TYPE),
+                arrayOf(MediaStore.MediaColumns.MIME_TYPE),
                 null,
                 null,
                 null
             ).use {
                 if (it!!.moveToFirst()) {
-                    fileName = it.getString(it.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME))
                     mimeType = it.getString(it.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE))
                 }
             }
@@ -245,7 +244,8 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
                 val bytes = it!!.readBytes()
 
                 if (bytes.size < MAX_AVATAR_IMAGE_SIZE) {
-                    viewModel.setPendingProfileAvatar(fileName, mimeType, bytes)
+                    val extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
+                    viewModel.setPendingProfileAvatar("avatar.$extension", mimeType, bytes)
                 } else {
                     Toast.makeText(this, R.string.failure_avatar_size, Toast.LENGTH_SHORT).show()
                 }
