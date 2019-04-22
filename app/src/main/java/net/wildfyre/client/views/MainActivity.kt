@@ -25,6 +25,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.transaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.navigation.NavigationView
@@ -100,7 +102,10 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         viewModel.userAvatar.observe(this, Observer {
             AppGlide.with(this)
                 .load(it)
-                .transform(RoundedCorners(resources.getDimension(R.dimen.nav_header_user_picture_rounding).toInt()))
+                .transform(
+                    CenterCrop(),
+                    RoundedCorners(resources.getDimension(R.dimen.nav_header_user_picture_rounding).toInt())
+                )
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(binding.userPicture)
         })
@@ -281,12 +286,15 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             .apply { show() }
 
         val avatar = dialog.findViewById<ImageView>(R.id.user_picture)!!
-        val rounding = RoundedCorners(resources.getDimension(R.dimen.dialog_user_picture_rounding).toInt())
+        val transformations = MultiTransformation(
+            CenterCrop(),
+            RoundedCorners(resources.getDimension(R.dimen.dialog_user_picture_rounding).toInt())
+        )
         val transition = DrawableTransitionOptions.withCrossFade()
 
         AppGlide.with(this)
             .load(viewModel.userAvatar.value)
-            .transform(rounding)
+            .transform(transformations)
             .transition(transition)
             .into(avatar)
 
@@ -295,7 +303,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
                 val input = ByteArrayInputStream(this)
                 AppGlide.with(this@MainActivity)
                     .load(Drawable.createFromStream(input, "avatar"))
-                    .transform(rounding)
+                    .transform(transformations)
                     .transition(transition)
                     .into(avatar)
             }
