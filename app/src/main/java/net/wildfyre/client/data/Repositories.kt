@@ -85,11 +85,14 @@ object AuthorRepository {
 object AreaRepository {
     private val mutableAreas = MutableLiveData<List<Area>>()
     private val mutablePreferredAreaName = MutableLiveData<String>()
+    private val mutablePreferredAreaReputation = MutableLiveData<Reputation>()
 
     val areas: LiveData<List<Area>>
         get() = mutableAreas
     val preferredAreaName: LiveData<String>
         get() = mutablePreferredAreaName
+    val preferredAreaReputation: LiveData<Reputation>
+        get() = mutablePreferredAreaReputation
 
     init {
         Application.preferences.getString(Constants.Preferences.PREFERRED_AREA, null)?.let {
@@ -98,25 +101,14 @@ object AreaRepository {
     }
 
     fun fetchAreas(fh: FailureHandler) {
-        Services.webService.getAreas(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) { areas ->
-            var total = areas.size
+        Services.webService.getAreas(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) {
+            mutableAreas.value = it
+        }
+    }
 
-            fun tryUpdateAreas() {
-                total--
-
-                if (total == 0) {
-                    mutableAreas.value = areas
-                }
-            }
-
-            for (area in areas) {
-                Services.webService.getAreaRep(AuthRepository.authToken.value!!, area.name!!)
-                    .then(fh, R.string.failure_request) {
-                        area.spread = it.spread
-                        area.rep = it.reputation
-                        tryUpdateAreas()
-                    }
-            }
+    fun fetchAreaReputation(fh: FailureHandler, areaName: String) {
+        Services.webService.getAreaRep(AuthRepository.authToken.value!!, areaName).then(fh, R.string.failure_request) {
+            mutablePreferredAreaReputation.value = it
         }
     }
 

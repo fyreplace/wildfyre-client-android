@@ -104,6 +104,7 @@ class HomeFragment : FailureHandlingFragment(R.layout.fragment_home) {
                 val title = areaSpinner.selectedItem.toString()
                 areaSelectorMenuItem.title = getString(R.string.main_actions_area_selector, title)
                 viewModel.setPreferredAreaDisplayName(title)
+                viewModel.updatePreferredArea()
             }
         }
 
@@ -113,6 +114,8 @@ class HomeFragment : FailureHandlingFragment(R.layout.fragment_home) {
             if (viewModel.preferredAreaName.value == null) {
                 viewModel.setPreferredAreaName(areas.first().name!!)
             }
+
+            viewModel.updatePreferredArea()
         })
 
         viewModel.updateAreas()
