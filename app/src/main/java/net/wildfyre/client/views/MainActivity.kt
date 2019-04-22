@@ -3,9 +3,11 @@ package net.wildfyre.client.views
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -23,6 +25,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.transaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
@@ -33,6 +37,7 @@ import net.wildfyre.client.Constants
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.MainNavHeaderBinding
 import net.wildfyre.client.viewmodels.MainActivityViewModel
+import java.io.ByteArrayInputStream
 
 class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemSelectedListener {
     override lateinit var viewModel: MainActivityViewModel
@@ -93,7 +98,11 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         }
 
         viewModel.userAvatar.observe(this, Observer {
-            AppGlide.with(this).load(it).into(binding.userPicture)
+            AppGlide.with(this)
+                .load(it)
+                .transform(RoundedCorners(resources.getDimension(R.dimen.nav_header_user_picture_rounding).toInt()))
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(binding.userPicture)
         })
     }
 
@@ -203,6 +212,42 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != RESULT_OK || data == null) {
+            return
+        }
+
+        if (requestCode == REQUEST_AVATAR) {
+            lateinit var fileName: String
+            lateinit var mimeType: String
+
+            contentResolver.query(
+                data.data!!,
+                arrayOf(MediaStore.MediaColumns.DISPLAY_NAME, MediaStore.MediaColumns.MIME_TYPE),
+                null,
+                null,
+                null
+            ).use {
+                if (it!!.moveToFirst()) {
+                    fileName = it.getString(it.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME))
+                    mimeType = it.getString(it.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE))
+                }
+            }
+
+            contentResolver.openInputStream(data.data!!).use {
+                val bytes = it!!.readBytes()
+
+                if (bytes.size < MAX_AVATAR_IMAGE_SIZE) {
+                    viewModel.setPendingProfileAvatar(fileName, mimeType, bytes)
+                } else {
+                    Toast.makeText(this, R.string.failure_avatar_size, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
     private fun tryNavigateTo(@IdRes id: Int) {
         if (supportFragmentManager.fragments.size > 0) {
             return
@@ -219,18 +264,54 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
 
     private fun editProfile() {
         lateinit var dialog: AlertDialog
+        lateinit var avatarDataObserver: Observer<ByteArray>
+
         dialog = AlertDialog.Builder(this)
             .setView(R.layout.main_profile_editor)
-            .setNegativeButton(android.R.string.cancel) { _: DialogInterface, _: Int -> }
+            .setNegativeButton(android.R.string.cancel) { _: DialogInterface, _: Int ->
+                viewModel.userAvatarNewData.removeObserver(avatarDataObserver)
+                viewModel.resetPendingProfileAvatar()
+            }
             .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
-                viewModel.updateProfile(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString(), "")
+                viewModel.userAvatarNewData.removeObserver(avatarDataObserver)
+                viewModel.setProfile(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString())
+                viewModel.resetPendingProfileAvatar()
             }
             .create()
             .apply { show() }
 
+        val avatar = dialog.findViewById<ImageView>(R.id.user_picture)!!
+        val rounding = RoundedCorners(resources.getDimension(R.dimen.dialog_user_picture_rounding).toInt())
+        val transition = DrawableTransitionOptions.withCrossFade()
+
         AppGlide.with(this)
             .load(viewModel.userAvatar.value)
-            .into(dialog.findViewById(R.id.user_picture)!!)
+            .transform(rounding)
+            .transition(transition)
+            .into(avatar)
+
+        avatarDataObserver = Observer {
+            it?.run {
+                val input = ByteArrayInputStream(this)
+                AppGlide.with(this@MainActivity)
+                    .load(Drawable.createFromStream(input, "avatar"))
+                    .transform(rounding)
+                    .transition(transition)
+                    .into(avatar)
+            }
+        }
+
+        viewModel.userAvatarNewData.observe(this, avatarDataObserver)
+
+        avatar.setOnClickListener {
+            startActivityForResult(
+                Intent.createChooser(
+                    Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" },
+                    getString(R.string.main_profile_editor_avatar_chooser)
+                ),
+                REQUEST_AVATAR
+            )
+        }
 
         viewModel.userBio.value?.let {
             val bioEdit = dialog.findViewById<EditText>(R.id.user_bio)!!
@@ -243,4 +324,9 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     }
 
     private fun isAtLogin() = supportFragmentManager.fragments.count { it is LoginFragment } > 0
+
+    companion object {
+        private const val REQUEST_AVATAR = 0
+        private const val MAX_AVATAR_IMAGE_SIZE = 512 * 1024
+    }
 }

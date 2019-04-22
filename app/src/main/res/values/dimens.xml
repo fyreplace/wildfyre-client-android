@@ -6,5 +6,7 @@
     <dimen name="margin_nav_header_top">0dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="nav_header_user_picture_size">80dp</dimen>
+    <dimen name="nav_header_user_picture_rounding">8dp</dimen>
     <dimen name="dialog_user_picture_size">144dp</dimen>
+    <dimen name="dialog_user_picture_rounding">14dp</dimen>
 </resources>

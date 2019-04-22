@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import net.wildfyre.client.Application
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 object AuthRepository {
     private val mutableAuthToken = MutableLiveData<String>()
@@ -48,7 +51,7 @@ object AccountRepository {
     }
 
     fun fetchAccount(fh: FailureHandler) {
-        Services.webService.getAccount(AuthRepository.authToken.value!!).then(fh, R.string.failure_generic) {
+        Services.webService.getAccount(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) {
             mutableAccount.value = it
         }
     }
@@ -61,16 +64,21 @@ object AuthorRepository {
         get() = mutableSelf
 
     fun fetchSelf(fh: FailureHandler) {
-        Services.webService.getSelf(AuthRepository.authToken.value!!).then(fh, R.string.failure_generic) {
+        Services.webService.getSelf(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) {
             mutableSelf.value = it
         }
     }
 
     fun updateSelfBio(fh: FailureHandler, bio: String) {
         Services.webService.patchBio(AuthRepository.authToken.value!!, Author().apply { this.bio = bio })
-            .then(fh, R.string.failure_profile_edit) {
-                mutableSelf.value = mutableSelf.value.apply { this?.bio = bio }
-            }
+            .then(fh, R.string.failure_profile_edit) { mutableSelf.value = it }
+    }
+
+    fun updateSelfAvatar(fh: FailureHandler, fileName: String, mimeType: String, avatar: ByteArray) {
+        val avatarBody = RequestBody.create(MediaType.parse(mimeType), avatar)
+        val avatarPart = MultipartBody.Part.createFormData("avatar", fileName, avatarBody)
+        Services.webService.putAvatar(AuthRepository.authToken.value!!, avatarPart)
+            .then(fh, R.string.failure_profile_edit) { mutableSelf.value = it }
     }
 }
 
@@ -90,7 +98,7 @@ object AreaRepository {
     }
 
     fun fetchAreas(fh: FailureHandler) {
-        Services.webService.getAreas(AuthRepository.authToken.value!!).then(fh, R.string.failure_generic) { areas ->
+        Services.webService.getAreas(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) { areas ->
             var total = areas.size
 
             fun tryUpdateAreas() {
@@ -103,7 +111,7 @@ object AreaRepository {
 
             for (area in areas) {
                 Services.webService.getAreaRep(AuthRepository.authToken.value!!, area.name!!)
-                    .then(fh, R.string.failure_generic) {
+                    .then(fh, R.string.failure_request) {
                         area.spread = it.spread
                         area.rep = it.reputation
                         tryUpdateAreas()

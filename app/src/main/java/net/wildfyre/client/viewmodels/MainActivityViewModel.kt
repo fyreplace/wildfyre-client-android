@@ -3,6 +3,7 @@ package net.wildfyre.client.viewmodels
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
@@ -10,10 +11,16 @@ import net.wildfyre.client.data.AuthRepository
 import net.wildfyre.client.data.AuthorRepository
 
 class MainActivityViewModel(application: Application) : FailureHandlingViewModel(application) {
+    private var _userAvatarFileName: String? = null
+    private var _userAvatarMimeType: String? = null
+    private val _userAvatarNewData = MutableLiveData<ByteArray>()
+
     val authToken: LiveData<String> = AuthRepository.authToken
     val userName: LiveData<String> = Transformations.map(AuthorRepository.self) { it.name }
     val userBio: LiveData<String> = Transformations.map(AuthorRepository.self) { it.bio }
     val userAvatar: LiveData<String> = Transformations.map(AuthorRepository.self) { it.avatar }
+    val userAvatarNewData: LiveData<ByteArray>
+        get() = _userAvatarNewData
     val themes = arrayOf(
         Pair(R.string.theme_system, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM),
         Pair(R.string.theme_battery, AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY),
@@ -40,11 +47,30 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         AuthorRepository.fetchSelf(this)
     }
 
-    fun updateProfile(bio: String, avatarPath: String) {
+    fun setProfile(bio: String) {
         if (bio != userBio.value) {
             AuthorRepository.updateSelfBio(this, bio)
         }
 
-        // TODO: update avatar
+        userAvatarNewData.value?.let {
+            AuthorRepository.updateSelfAvatar(
+                this,
+                _userAvatarFileName!!,
+                _userAvatarMimeType!!,
+                it
+            )
+        }
+    }
+
+    fun setPendingProfileAvatar(fileName: String, mimeType: String, avatar: ByteArray) {
+        _userAvatarFileName = fileName
+        _userAvatarMimeType = mimeType
+        _userAvatarNewData.value = avatar
+    }
+
+    fun resetPendingProfileAvatar() {
+        _userAvatarFileName = null
+        _userAvatarMimeType = null
+        _userAvatarNewData.value = null
     }
 }

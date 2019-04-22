@@ -28,9 +28,11 @@
     <string name="main_actions_comments">Comments</string>
     <string name="main_actions_subscribe">Subscribe</string>
     <string name="main_actions_posts_new">New post</string>
-    <string name="main_profile_editor_bio">Tell a bit about yourself…</string>
+    <string name="main_profile_editor_avatar_chooser">Select an avatar</string>
+    <string name="main_profile_editor_bio">You can tell a bit about yourself here</string>
     <string name="image_desc_user_picture">Profile picture</string>
-    <string name="failure_generic">Error during request</string>
+    <string name="failure_request">Error during request</string>
     <string name="failure_login">Logging in failed</string>
     <string name="failure_profile_edit">Could not update profile</string>
+    <string name="failure_avatar_size">Avatar size must be below 512k</string>
 </resources>
