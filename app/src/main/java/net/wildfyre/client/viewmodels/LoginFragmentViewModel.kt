@@ -12,8 +12,7 @@ class LoginFragmentViewModel(application: Application) : FailureHandlingViewMode
 
     val username = MutableLiveData<String>()
     val password = MutableLiveData<String>()
-    val canLogin: LiveData<Boolean>
-        get() = _canLogin
+    val canLogin: LiveData<Boolean> = _canLogin
 
     init {
         val canLoginUpdater = Observer<String> {
@@ -27,7 +26,5 @@ class LoginFragmentViewModel(application: Application) : FailureHandlingViewMode
         _canLogin.addSource(password, canLoginUpdater)
     }
 
-    fun attemptLogin(username: String, password: String) {
-        AuthRepository.fetchAuthToken(this, username, password)
-    }
+    fun attemptLogin(username: String, password: String) = AuthRepository.fetchAuthToken(this, username, password)
 }

@@ -19,8 +19,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     val userName: LiveData<String> = Transformations.map(AuthorRepository.self) { it.name }
     val userBio: LiveData<String> = Transformations.map(AuthorRepository.self) { it.bio }
     val userAvatar: LiveData<String> = Transformations.map(AuthorRepository.self) { it.avatar }
-    val userAvatarNewData: LiveData<ByteArray>
-        get() = _userAvatarNewData
+    val userAvatarNewData: LiveData<ByteArray> = _userAvatarNewData
     val themes = arrayOf(
         Pair(R.string.theme_system, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM),
         Pair(R.string.theme_battery, AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY),
@@ -43,9 +42,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     val clearAuthToken = AuthRepository::clearAuthToken
 
-    fun updateProfile() {
-        AuthorRepository.fetchSelf(this)
-    }
+    fun updateProfile() = AuthorRepository.fetchSelf(this)
 
     fun setProfile(bio: String) {
         if (bio != userBio.value) {

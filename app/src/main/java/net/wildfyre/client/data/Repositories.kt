@@ -13,16 +13,13 @@ import okhttp3.RequestBody
 object AuthRepository {
     private val mutableAuthToken = MutableLiveData<String>()
 
-    val authToken: LiveData<String>
-        get() = mutableAuthToken
+    val authToken: LiveData<String> = mutableAuthToken
 
     init {
         mutableAuthToken.value = Application.preferences.getString(Constants.Preferences.AUTH_TOKEN, "") ?: ""
     }
 
-    fun clearAuthToken() {
-        setAuthToken("")
-    }
+    fun clearAuthToken() = setAuthToken("")
 
     fun fetchAuthToken(fh: FailureHandler, username: String, password: String) {
         val auth = Account.Auth().also { it.username = username; it.password = password }
@@ -40,39 +37,19 @@ object AuthRepository {
     }
 }
 
-object AccountRepository {
-    private val mutableAccount = MutableLiveData<Account>()
-
-    val account: LiveData<Account>
-        get() = mutableAccount
-
-    init {
-        mutableAccount.value = Account().apply { username = Application.context.getString(android.R.string.untitled) }
-    }
-
-    fun fetchAccount(fh: FailureHandler) {
-        Services.webService.getAccount(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) {
-            mutableAccount.value = it
-        }
-    }
-}
-
 object AuthorRepository {
     private val mutableSelf = MutableLiveData<Author>()
 
-    val self: LiveData<Author>
-        get() = mutableSelf
+    val self: LiveData<Author> = mutableSelf
 
-    fun fetchSelf(fh: FailureHandler) {
+    fun fetchSelf(fh: FailureHandler) =
         Services.webService.getSelf(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) {
             mutableSelf.value = it
         }
-    }
 
-    fun updateSelfBio(fh: FailureHandler, bio: String) {
+    fun updateSelfBio(fh: FailureHandler, bio: String) =
         Services.webService.patchBio(AuthRepository.authToken.value!!, Author().apply { this.bio = bio })
             .then(fh, R.string.failure_profile_edit) { mutableSelf.value = it }
-    }
 
     fun updateSelfAvatar(fh: FailureHandler, fileName: String, mimeType: String, avatar: ByteArray) {
         val avatarBody = RequestBody.create(MediaType.parse(mimeType), avatar)
@@ -87,12 +64,9 @@ object AreaRepository {
     private val mutablePreferredAreaName = MutableLiveData<String>()
     private val mutablePreferredAreaReputation = MutableLiveData<Reputation>()
 
-    val areas: LiveData<List<Area>>
-        get() = mutableAreas
-    val preferredAreaName: LiveData<String>
-        get() = mutablePreferredAreaName
-    val preferredAreaReputation: LiveData<Reputation>
-        get() = mutablePreferredAreaReputation
+    val areas: LiveData<List<Area>> = mutableAreas
+    val preferredAreaName: LiveData<String> = mutablePreferredAreaName
+    val preferredAreaReputation: LiveData<Reputation> = mutablePreferredAreaReputation
 
     init {
         Application.preferences.getString(Constants.Preferences.PREFERRED_AREA, null)?.let {
@@ -100,17 +74,15 @@ object AreaRepository {
         }
     }
 
-    fun fetchAreas(fh: FailureHandler) {
+    fun fetchAreas(fh: FailureHandler) =
         Services.webService.getAreas(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) {
             mutableAreas.value = it
         }
-    }
 
-    fun fetchAreaReputation(fh: FailureHandler, areaName: String) {
+    fun fetchAreaReputation(fh: FailureHandler, areaName: String) =
         Services.webService.getAreaRep(AuthRepository.authToken.value!!, areaName).then(fh, R.string.failure_request) {
             mutablePreferredAreaReputation.value = it
         }
-    }
 
     fun setPreferredAreaName(name: String) {
         Application.preferences.edit { putString(Constants.Preferences.PREFERRED_AREA, name) }
