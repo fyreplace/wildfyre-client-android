@@ -135,7 +135,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val isLoginStep = supportFragmentManager.fragments.count { it is LoginFragment } > 0
+        val isLoginStep = isAtLogin()
         drawer_layout.setDrawerLockMode(if (isLoginStep) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
         actionBarDrawerToggle.isDrawerIndicatorEnabled = !isLoginStep
         return super.onCreateOptionsMenu(menu)
@@ -177,7 +177,11 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         newFragment?.let {
             supportFragmentManager.transaction(true, true) {
                 if (supportFragmentManager.fragments.size > 0) {
-                    setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                    val isLoginStep = isAtLogin()
+                    setCustomAnimations(
+                        if (isLoginStep) R.anim.slide_in_right else R.anim.fade_in,
+                        if (isLoginStep) R.anim.slide_out_left else R.anim.fade_out
+                    )
                 }
 
                 replace(R.id.fragment_container, it)
@@ -237,4 +241,6 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             }
         }
     }
+
+    private fun isAtLogin() = supportFragmentManager.fragments.count { it is LoginFragment } > 0
 }
