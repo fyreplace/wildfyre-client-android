@@ -190,8 +190,8 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         }
 
         newFragment?.let {
-            supportFragmentManager.transaction(true, true) {
-                if (supportFragmentManager.fragments.size > 0) {
+            supportFragmentManager.transaction {
+                if (supportFragmentManager.backStackEntryCount > 0) {
                     val isLoginStep = isAtLogin()
                     setCustomAnimations(
                         if (isLoginStep) R.anim.slide_in_right else R.anim.fade_in,
@@ -254,7 +254,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     }
 
     private fun tryNavigateTo(@IdRes id: Int) {
-        if (supportFragmentManager.fragments.size > 0) {
+        if (supportFragmentManager.backStackEntryCount > 0) {
             return
         }
 
