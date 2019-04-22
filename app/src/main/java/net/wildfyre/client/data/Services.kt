@@ -23,7 +23,8 @@ fun <T> Call<T>.then(failureHandler: FailureHandler, @StringRes errorMessage: In
             if (response.isSuccessful) {
                 callback(response.body()!!)
             } else {
-                onFailure(call, ApiCallException(response.code(), response.message()))
+                val body = response.errorBody()?.use { it.charStream().readText() } ?: "<no body>"
+                onFailure(call, ApiCallException(response.code(), response.message(), body))
             }
         }
 
@@ -33,7 +34,7 @@ fun <T> Call<T>.then(failureHandler: FailureHandler, @StringRes errorMessage: In
     })
 }
 
-class ApiCallException(code: Int, message: String) : Exception("$code: $message")
+class ApiCallException(code: Int, message: String, body: String) : Exception("$code: $message\n\t$body")
 
 interface WebService {
     // Authentication
