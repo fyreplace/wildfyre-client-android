@@ -159,8 +159,8 @@ interface WebService {
         @Query("offset") offset: Long
     ): Call<SuperPost>
 
-    @GET("/areas/notifications/")
-    fun getSuperNotification(
+    @GET("/areas/notification/")
+    fun getNotifications(
         @Header("Authorization") authorization: String,
         @Query("limit") limit: Long,
         @Query("offset") offset: Long
