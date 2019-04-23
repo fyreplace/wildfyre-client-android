@@ -6,5 +6,5 @@
     <color name="navigation">@android:color/background_dark</color>
     <color name="loginLogo">@android:color/white</color>
     <color name="badgeForeground">@android:color/white</color>
-    <color name="badgeBackground">@android:color/holo_red_dark</color>
+    <color name="badgeBackground">#BF0000</color>
 </resources>
