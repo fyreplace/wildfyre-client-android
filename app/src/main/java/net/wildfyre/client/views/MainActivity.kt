@@ -39,11 +39,13 @@ import net.wildfyre.client.Application
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.MainAppBarBinding
+import net.wildfyre.client.databinding.MainNavActionsNotificationsBinding
 import net.wildfyre.client.databinding.MainNavHeaderBinding
 import net.wildfyre.client.viewmodels.MainActivityViewModel
 import java.io.ByteArrayInputStream
 
-class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemSelectedListener,
+    DrawerLayout.DrawerListener {
     override lateinit var viewModel: MainActivityViewModel
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
 
@@ -121,6 +123,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         drawer_layout.addDrawerListener(actionBarDrawerToggle)
+        drawer_layout.addDrawerListener(this)
         actionBarDrawerToggle.syncState()
         navigation_drawer.setNavigationItemSelectedListener(this)
         navigation_drawer.doOnLayout { edit.setOnClickListener { editProfile() } }
@@ -261,6 +264,19 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
                 }
             }
         }
+    }
+
+    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+    }
+
+    override fun onDrawerOpened(drawerView: View) {
+        viewModel.updateNotifications()
+    }
+
+    override fun onDrawerClosed(drawerView: View) {
+    }
+
+    override fun onDrawerStateChanged(newState: Int) {
     }
 
     private fun tryNavigateTo(@IdRes id: Int) {

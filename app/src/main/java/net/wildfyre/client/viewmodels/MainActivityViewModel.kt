@@ -51,6 +51,10 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     val clearAuthToken = AuthRepository::clearAuthToken
 
+    fun updateProfile() = AuthorRepository.fetchSelf(this)
+
+    fun updateNotifications() = NotificationRepository.fetchSuperNotification(this, 0, 0)
+
     fun updateInterfaceInformation() {
         updateProfile()
         updateNotifications()
@@ -86,8 +90,4 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     fun setNotificationBadgeVisible(visible: Boolean) {
         _notificationBadgeVisible.value = visible
     }
-
-    private fun updateProfile() = AuthorRepository.fetchSelf(this)
-
-    private fun updateNotifications() = NotificationRepository.fetchSuperNotification(this, 0, 0)
 }
