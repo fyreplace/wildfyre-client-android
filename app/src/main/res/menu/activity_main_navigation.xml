@@ -20,7 +20,7 @@
             android:id="@+id/fragment_posts"
             android:icon="@drawable/ic_content_copy_black_24dp"
             android:title="@string/main_nav_posts"
-            app:actionLayout="@layout/main_actions_posts" />
+            app:actionLayout="@layout/main_navigation_actions_posts" />
     </group>
     <item
         android:id="@+id/theme_selector"
