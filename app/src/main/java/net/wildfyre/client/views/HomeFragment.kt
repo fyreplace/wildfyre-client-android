@@ -114,8 +114,6 @@ class HomeFragment : FailureHandlingFragment(R.layout.fragment_home) {
             if (viewModel.preferredAreaName.value == null) {
                 viewModel.setPreferredAreaName(areas.first().name!!)
             }
-
-            viewModel.updatePreferredArea()
         })
 
         viewModel.updateAreas()

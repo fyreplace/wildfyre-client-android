@@ -15,7 +15,8 @@ object Services {
     val webService: WebService = Retrofit.Builder()
         .baseUrl(Constants.Api.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
-        .build().run { create(WebService::class.java) }
+        .build()
+        .create(WebService::class.java)
 }
 
 fun <T> Call<T>.then(failureHandler: FailureHandler, @StringRes errorMessage: Int, callback: (result: T) -> Unit) {
@@ -150,11 +151,6 @@ interface WebService {
 
     // Notifications
 
-    @DELETE("/areas/notification/")
-    fun deleteNotifications(
-        @Header("Authorization") authorization: String
-    ): Call<Unit>
-
     @GET("/areas/{areaName}/subscribed/")
     fun getArchive(
         @Header("Authorization") authorization: String,
@@ -169,6 +165,12 @@ interface WebService {
         @Query("limit") limit: Long,
         @Query("offset") offset: Long
     ): Call<SuperNotification>
+
+    @DELETE("/areas/notification/")
+    fun deleteNotifications(
+        @Header("Authorization") authorization: String
+    ): Call<Unit>
+
 
     // Areas
 
