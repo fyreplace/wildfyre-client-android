@@ -38,6 +38,7 @@ import net.wildfyre.client.AppGlide
 import net.wildfyre.client.Application
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
+import net.wildfyre.client.databinding.MainAppBarBinding
 import net.wildfyre.client.databinding.MainNavHeaderBinding
 import net.wildfyre.client.viewmodels.MainActivityViewModel
 import java.io.ByteArrayInputStream
@@ -64,9 +65,14 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             }
         }
 
-        val binding = MainNavHeaderBinding.bind(navigation_drawer.getHeaderView(0))
-        binding.lifecycleOwner = this
-        binding.model = viewModel
+        val navHeaderBinding = MainNavHeaderBinding.bind(navigation_drawer.getHeaderView(0))
+        navHeaderBinding.lifecycleOwner = this
+        navHeaderBinding.model = viewModel
+
+        MainAppBarBinding.bind(findViewById(R.id.content)).run {
+            lifecycleOwner = this@MainActivity
+            model = viewModel
+        }
 
         setSupportActionBar(toolbar)
         actionBarDrawerToggle = ActionBarDrawerToggle(
@@ -108,7 +114,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
                     RoundedCorners(resources.getDimension(R.dimen.nav_header_user_picture_rounding).toInt())
                 )
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .into(binding.userPicture)
+                .into(navHeaderBinding.userPicture)
         })
     }
 
@@ -139,10 +145,14 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     override fun onAttachFragment(fragment: Fragment) {
         super.onAttachFragment(fragment)
 
+        if (fragment is FailureHandlingFragment) {
+            viewModel.setNotificationBadgeVisible(fragment is HomeFragment || fragment is PostsFragment)
+        }
+
         if (fragment is LoginFragment) {
             viewModel.authToken.observe(fragment, Observer {
                 if (it.isNotEmpty()) {
-                    viewModel.updateProfile()
+                    viewModel.updateInterfaceInformation()
                     navigateTo(R.id.fragment_home)
                 }
             })

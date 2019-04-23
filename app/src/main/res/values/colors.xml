@@ -6,4 +6,6 @@
     <color name="background">@android:color/background_light</color>
     <color name="navigation">@android:color/background_dark</color>
     <color name="loginLogo">@color/colorAccent</color>
+    <color name="badgeForeground">@android:color/black</color>
+    <color name="badgeBackground">@android:color/holo_blue_bright</color>
 </resources>

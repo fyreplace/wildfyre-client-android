@@ -15,6 +15,7 @@ import net.wildfyre.client.R
 import net.wildfyre.client.databinding.HomeActionsAreaReputationBinding
 import net.wildfyre.client.databinding.HomeActionsAreaSpreadBinding
 import net.wildfyre.client.viewmodels.HomeFragmentViewModel
+import net.wildfyre.client.viewmodels.MainActivityViewModel
 
 class HomeFragment : FailureHandlingFragment(R.layout.fragment_home) {
     override lateinit var viewModel: HomeFragmentViewModel
@@ -52,11 +53,13 @@ class HomeFragment : FailureHandlingFragment(R.layout.fragment_home) {
 
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 expandAndHide(areaStuff, nonAreaStuff)
+                ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java).setNotificationBadgeVisible(false)
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
                 expandAndHide(nonAreaStuff, areaStuff)
+                ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java).setNotificationBadgeVisible(true)
                 return true
             }
 

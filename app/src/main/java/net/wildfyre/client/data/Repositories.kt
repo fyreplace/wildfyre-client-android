@@ -89,3 +89,16 @@ object AreaRepository {
         mutablePreferredAreaName.value = name
     }
 }
+
+object NotificationRepository {
+    private val mutableSuperNotification = MutableLiveData<SuperNotification>()
+
+    val superNotification: LiveData<SuperNotification> = mutableSuperNotification
+
+    fun fetchSuperNotification(fh: FailureHandler, limit: Long, offset: Long) {
+        Services.webService.getNotifications(AuthRepository.authToken.value!!, limit, offset)
+            .then(fh, R.string.failure_request) {
+                mutableSuperNotification.value = it
+            }
+    }
+}
