@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="model"
+            type="net.wildfyre.client.viewmodels.MainActivityViewModel" />
+    </data>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/margin_horizontal_small"
+        android:layout_marginRight="@dimen/margin_horizontal_small"
+        android:gravity="center"
+        android:text="@{Long.toString(safeUnbox(model.notificationCount))}"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/colorAccent"
+        android:visibility="@{safeUnbox(model.notificationCount) &gt; 0 ? View.VISIBLE : View.GONE}" />
+</layout>

@@ -71,10 +71,19 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         navHeaderBinding.lifecycleOwner = this
         navHeaderBinding.model = viewModel
 
-        MainAppBarBinding.bind(findViewById(R.id.content)).run {
-            lifecycleOwner = this@MainActivity
-            model = viewModel
-        }
+        MainNavActionsNotificationsBinding
+            .bind(navigation_drawer.menu.findItem(R.id.fragment_notifications).actionView)
+            .run {
+                lifecycleOwner = this@MainActivity
+                model = viewModel
+            }
+
+        MainAppBarBinding
+            .bind(findViewById(R.id.content))
+            .run {
+                lifecycleOwner = this@MainActivity
+                model = viewModel
+            }
 
         setSupportActionBar(toolbar)
         actionBarDrawerToggle = ActionBarDrawerToggle(
