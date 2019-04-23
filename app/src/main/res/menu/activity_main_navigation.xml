@@ -36,21 +36,27 @@
         <menu>
             <item
                 android:id="@+id/about_us"
+                android:icon="@drawable/ic_group_black_24dp"
                 android:title="@string/main_nav_about" />
             <item
                 android:id="@+id/open_source"
+                android:icon="@drawable/ic_code_black_24dp"
                 android:title="@string/main_nav_open_source" />
             <item
                 android:id="@+id/faq"
+                android:icon="@drawable/ic_help_black_24dp"
                 android:title="@string/main_nav_faq" />
             <item
                 android:id="@+id/terms_and_conditions"
+                android:icon="@drawable/ic_assignment_black_24dp"
                 android:title="@string/main_nav_terms" />
             <item
                 android:id="@+id/privacy_policy"
+                android:icon="@drawable/ic_security_black_24dp"
                 android:title="@string/main_nav_privacy" />
             <item
                 android:id="@+id/logout"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
                 android:title="@string/main_nav_logout" />
         </menu>
     </item>
