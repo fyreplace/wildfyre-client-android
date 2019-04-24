@@ -1,6 +1,7 @@
 package net.wildfyre.client.viewmodels
 
 import android.app.Application
+import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,20 +29,6 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     val notificationCountText: LiveData<String> =
         Transformations.map(_notificationCount) { if (it < 1000) it.toString() else "999" }
     val notificationBadgeVisible: LiveData<Boolean> = _notificationBadgeVisible
-
-    val themes = arrayOf(
-        Pair(R.string.theme_system, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM),
-        Pair(R.string.theme_battery, AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY),
-        Pair(R.string.theme_light, AppCompatDelegate.MODE_NIGHT_NO),
-        Pair(R.string.theme_dark, AppCompatDelegate.MODE_NIGHT_YES)
-    )
-    val navigationLinks = mapOf(
-        Pair(R.id.about_us, Constants.Links.ABOUT_US),
-        Pair(R.id.open_source, Constants.Links.OPEN_SOURCE),
-        Pair(R.id.faq, Constants.Links.FAQ),
-        Pair(R.id.terms_and_conditions, Constants.Links.TERMS_AND_CONDITIONS),
-        Pair(R.id.privacy_policy, Constants.Links.PRIVACY_POLICY)
-    )
 
     init {
         if (AuthRepository.authToken.value!!.isNotEmpty()) {
@@ -89,5 +76,27 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     fun setNotificationBadgeVisible(visible: Boolean) {
         _notificationBadgeVisible.value = visible
+    }
+
+    companion object {
+        val THEME_AUTOMATIC = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM else
+            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+        const val THEME_LIGHT = AppCompatDelegate.MODE_NIGHT_NO
+        const val THEME_DARK = AppCompatDelegate.MODE_NIGHT_YES
+
+        val themes = arrayOf(
+            Pair(R.string.theme_automatic, THEME_AUTOMATIC),
+            Pair(R.string.theme_light, THEME_LIGHT),
+            Pair(R.string.theme_dark, THEME_DARK)
+        )
+
+        val navigationLinks = mapOf(
+            Pair(R.id.about_us, Constants.Links.ABOUT_US),
+            Pair(R.id.open_source, Constants.Links.OPEN_SOURCE),
+            Pair(R.id.faq, Constants.Links.FAQ),
+            Pair(R.id.terms_and_conditions, Constants.Links.TERMS_AND_CONDITIONS),
+            Pair(R.id.privacy_policy, Constants.Links.PRIVACY_POLICY)
+        )
     }
 }

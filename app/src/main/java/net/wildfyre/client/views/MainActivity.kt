@@ -95,20 +95,20 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         )
 
         val startingNightMode = Application.preferences
-            .getInt(Constants.Preferences.UI_THEME, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            .getInt(Constants.Preferences.UI_THEME, MainActivityViewModel.THEME_AUTOMATIC)
         val themeSelector = navigation_drawer.menu.findItem(R.id.theme_selector).actionView as Spinner?
         themeSelector?.run {
             adapter = ArrayAdapter<String>(
                 this@MainActivity,
                 android.R.layout.simple_spinner_dropdown_item,
-                viewModel.themes.map { pair -> getString(pair.first) })
-            setSelection(viewModel.themes.indexOf(viewModel.themes.find { pair -> pair.second == startingNightMode }))
+                MainActivityViewModel.themes.map { pair -> getString(pair.first) })
+            setSelection(MainActivityViewModel.themes.indexOf(MainActivityViewModel.themes.find { pair -> pair.second == startingNightMode }))
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
 
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val theme = viewModel.themes[position].second
+                    val theme = MainActivityViewModel.themes[position].second
                     Application.preferences
                         .edit { putInt(Constants.Preferences.UI_THEME, theme) }
                     AppCompatDelegate.setDefaultNightMode(theme)
@@ -184,10 +184,10 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when {
-            viewModel.navigationLinks.containsKey(item.itemId) -> startActivity(
+            MainActivityViewModel.navigationLinks.containsKey(item.itemId) -> startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(viewModel.navigationLinks[item.itemId])
+                    Uri.parse(MainActivityViewModel.navigationLinks[item.itemId])
                 )
             )
             item.isChecked -> return false
