@@ -213,13 +213,12 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
 
         newFragment?.let {
             supportFragmentManager.transaction {
-                if (supportFragmentManager.backStackEntryCount > 0) {
-                    val isLoginStep = isAtLogin()
-                    setCustomAnimations(
-                        if (isLoginStep) R.anim.slide_in_right else R.anim.fade_in,
-                        if (isLoginStep) R.anim.slide_out_left else R.anim.fade_out
-                    )
-                }
+                val isLoginStep = isAtLogin()
+
+                setCustomAnimations(
+                    if (isLoginStep) R.anim.slide_in_right else R.anim.fade_in,
+                    if (isLoginStep) R.anim.slide_out_left else R.anim.fade_out
+                )
 
                 replace(R.id.fragment_container, it)
             }
@@ -289,7 +288,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     }
 
     private fun tryNavigateTo(@IdRes id: Int) {
-        if (supportFragmentManager.backStackEntryCount > 0) {
+        if (supportFragmentManager.fragments.isNotEmpty()) {
             return
         }
 
