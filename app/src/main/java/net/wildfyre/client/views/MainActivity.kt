@@ -12,13 +12,15 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.webkit.MimeTypeMap
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
-import androidx.core.content.edit
 import androidx.core.view.GravityCompat
 import androidx.core.view.doOnLayout
 import androidx.drawerlayout.widget.DrawerLayout
@@ -35,11 +37,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
 import kotlinx.android.synthetic.main.main_nav_header.*
 import net.wildfyre.client.AppGlide
-import net.wildfyre.client.Application
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.MainAppBarBinding
 import net.wildfyre.client.databinding.MainNavActionsNotificationsBinding
+import net.wildfyre.client.databinding.MainNavActionsThemeBinding
 import net.wildfyre.client.databinding.MainNavHeaderBinding
 import net.wildfyre.client.viewmodels.MainActivityViewModel
 import java.io.ByteArrayInputStream
@@ -78,6 +80,13 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
                 model = viewModel
             }
 
+        MainNavActionsThemeBinding
+            .bind(navigation_drawer.menu.findItem(R.id.theme_selector).actionView)
+            .run {
+                lifecycleOwner = this@MainActivity
+                model = viewModel
+            }
+
         MainAppBarBinding
             .bind(findViewById(R.id.content))
             .run {
@@ -85,37 +94,12 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
                 model = viewModel
             }
 
-        setSupportActionBar(toolbar)
-        actionBarDrawerToggle = ActionBarDrawerToggle(
-            this,
-            drawer_layout,
-            toolbar,
-            R.string.main_drawer_open,
-            R.string.main_drawer_close
-        )
-
-        val startingNightMode = Application.preferences
-            .getInt(Constants.Preferences.UI_THEME, Constants.Themes.AUTOMATIC)
-        val themeSelector = navigation_drawer.menu.findItem(R.id.theme_selector).actionView as Spinner?
-        themeSelector?.run {
-            adapter = ArrayAdapter<String>(
-                this@MainActivity,
-                android.R.layout.simple_spinner_dropdown_item,
-                MainActivityViewModel.themes.map { pair -> getString(pair.first) })
-            setSelection(MainActivityViewModel.themes.indexOf(MainActivityViewModel.themes.find { pair -> pair.second == startingNightMode }))
-            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                }
-
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val theme = MainActivityViewModel.themes[position].second
-                    Application.preferences
-                        .edit { putInt(Constants.Preferences.UI_THEME, theme) }
-                    AppCompatDelegate.setDefaultNightMode(theme)
-                    delegate.applyDayNight()
-                }
-            }
-        }
+        viewModel.selectedThemeIndex.observe(this, Observer {
+            val theme = MainActivityViewModel.THEMES[it]
+            viewModel.setTheme(theme)
+            AppCompatDelegate.setDefaultNightMode(theme)
+            delegate.applyDayNight()
+        })
 
         viewModel.userAvatar.observe(this, Observer {
             AppGlide.with(this)
@@ -127,6 +111,15 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(navHeaderBinding.userPicture)
         })
+
+        setSupportActionBar(toolbar)
+        actionBarDrawerToggle = ActionBarDrawerToggle(
+            this,
+            drawer_layout,
+            toolbar,
+            R.string.main_drawer_open,
+            R.string.main_drawer_close
+        )
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -184,10 +177,10 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when {
-            MainActivityViewModel.navigationLinks.containsKey(item.itemId) -> startActivity(
+            MainActivityViewModel.NAVIGATION_LINKS.containsKey(item.itemId) -> startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(MainActivityViewModel.navigationLinks[item.itemId])
+                    Uri.parse(MainActivityViewModel.NAVIGATION_LINKS[item.itemId])
                 )
             )
             item.isChecked -> return false

@@ -10,13 +10,28 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
+object SettingsRepository {
+    private val mutableTheme = MutableLiveData<Int>()
+
+    val theme: LiveData<Int> = mutableTheme
+
+    init {
+        mutableTheme.value = Application.preferences.getInt(Constants.Preferences.UI_THEME, Constants.Themes.AUTOMATIC)
+    }
+
+    fun setTheme(theme: Int) {
+        Application.preferences.edit { putInt(Constants.Preferences.UI_THEME, theme) }
+        mutableTheme.value = theme
+    }
+}
+
 object AuthRepository {
     private val mutableAuthToken = MutableLiveData<String>()
 
     val authToken: LiveData<String> = mutableAuthToken
 
     init {
-        mutableAuthToken.value = Application.preferences.getString(Constants.Preferences.AUTH_TOKEN, "") ?: ""
+        mutableAuthToken.value = Application.preferences.getString(Constants.Preferences.AUTH_TOKEN, "")
     }
 
     fun clearAuthToken() = setAuthToken("")

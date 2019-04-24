@@ -9,6 +9,7 @@ import net.wildfyre.client.R
 import net.wildfyre.client.data.AuthRepository
 import net.wildfyre.client.data.AuthorRepository
 import net.wildfyre.client.data.NotificationRepository
+import net.wildfyre.client.data.SettingsRepository
 
 class MainActivityViewModel(application: Application) : FailureHandlingViewModel(application) {
     private var _userAvatarFileName: String? = null
@@ -27,11 +28,14 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     val notificationCountText: LiveData<String> =
         Transformations.map(_notificationCount) { if (it < 1000) it.toString() else "999" }
     val notificationBadgeVisible: LiveData<Boolean> = _notificationBadgeVisible
+    val selectedThemeIndex = MutableLiveData<Int>()
 
     init {
         if (AuthRepository.authToken.value!!.isNotEmpty()) {
             updateInterfaceInformation()
         }
+
+        selectedThemeIndex.value = THEMES.indexOfFirst { it == SettingsRepository.theme.value }
     }
 
     val clearAuthToken = AuthRepository::clearAuthToken
@@ -76,14 +80,16 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         _notificationBadgeVisible.value = visible
     }
 
+    val setTheme = SettingsRepository::setTheme
+
     companion object {
-        val themes = arrayOf(
-            Pair(R.string.theme_automatic, Constants.Themes.AUTOMATIC),
-            Pair(R.string.theme_light, Constants.Themes.LIGHT),
-            Pair(R.string.theme_dark, Constants.Themes.DARK)
+        val THEMES = arrayOf(
+            Constants.Themes.AUTOMATIC,
+            Constants.Themes.LIGHT,
+            Constants.Themes.DARK
         )
 
-        val navigationLinks = mapOf(
+        val NAVIGATION_LINKS = mapOf(
             Pair(R.id.about_us, Constants.Links.ABOUT_US),
             Pair(R.id.open_source, Constants.Links.OPEN_SOURCE),
             Pair(R.id.faq, Constants.Links.FAQ),
