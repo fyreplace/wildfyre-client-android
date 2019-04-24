@@ -24,7 +24,7 @@ object Constants {
     object Preferences {
         const val AUTH_TOKEN = "auth.token"
         const val UI_THEME = "ui.theme"
-        const val PREFERRED_AREA = "preferredArea"
+        const val AREA_PREFERRED = "area.preferred"
     }
 
     object Links {

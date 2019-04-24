@@ -69,7 +69,7 @@ object AreaRepository {
     val preferredAreaReputation: LiveData<Reputation> = mutablePreferredAreaReputation
 
     init {
-        Application.preferences.getString(Constants.Preferences.PREFERRED_AREA, null)?.let {
+        Application.preferences.getString(Constants.Preferences.AREA_PREFERRED, null)?.let {
             mutablePreferredAreaName.value = it
         }
     }
@@ -85,7 +85,7 @@ object AreaRepository {
         }
 
     fun setPreferredAreaName(name: String) {
-        Application.preferences.edit { putString(Constants.Preferences.PREFERRED_AREA, name) }
+        Application.preferences.edit { putString(Constants.Preferences.AREA_PREFERRED, name) }
         mutablePreferredAreaName.value = name
     }
 }
