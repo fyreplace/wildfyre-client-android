@@ -20,7 +20,7 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        activity?.setTitle(R.string.main_nav_notifications)
+        activity?.setTitle(R.string.main_nav_fragment_notifications)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

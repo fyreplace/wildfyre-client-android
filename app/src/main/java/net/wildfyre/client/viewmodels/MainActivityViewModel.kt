@@ -1,8 +1,6 @@
 package net.wildfyre.client.viewmodels
 
 import android.app.Application
-import android.os.Build
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -79,16 +77,10 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     }
 
     companion object {
-        val THEME_AUTOMATIC = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM else
-            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-        const val THEME_LIGHT = AppCompatDelegate.MODE_NIGHT_NO
-        const val THEME_DARK = AppCompatDelegate.MODE_NIGHT_YES
-
         val themes = arrayOf(
-            Pair(R.string.theme_automatic, THEME_AUTOMATIC),
-            Pair(R.string.theme_light, THEME_LIGHT),
-            Pair(R.string.theme_dark, THEME_DARK)
+            Pair(R.string.theme_automatic, Constants.Themes.AUTOMATIC),
+            Pair(R.string.theme_light, Constants.Themes.LIGHT),
+            Pair(R.string.theme_dark, Constants.Themes.DARK)
         )
 
         val navigationLinks = mapOf(

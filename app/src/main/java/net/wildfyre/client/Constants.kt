@@ -1,5 +1,8 @@
 package net.wildfyre.client
 
+import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
+
 object Constants {
     object Api {
         const val BASE_URL = "https://api.wildfyre.net"
@@ -8,6 +11,14 @@ object Constants {
 
     object Save {
         const val ACTIVITY_NAVIGATION = "activity.navigation"
+    }
+
+    object Themes {
+        val AUTOMATIC = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM else
+            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+        const val LIGHT = AppCompatDelegate.MODE_NIGHT_NO
+        const val DARK = AppCompatDelegate.MODE_NIGHT_YES
     }
 
     object Preferences {

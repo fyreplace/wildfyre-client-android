@@ -17,6 +17,6 @@ class PostsFragment : FailureHandlingFragment(R.layout.fragment_posts) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        activity?.setTitle(R.string.main_nav_posts)
+        activity?.setTitle(R.string.main_nav_fragment_posts)
     }
 }

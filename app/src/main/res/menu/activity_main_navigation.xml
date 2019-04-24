@@ -7,28 +7,28 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/fragment_login"
-            android:title="@string/main_nav_login"
+            android:title="@string/main_nav_fragment_login"
             android:visible="false" />
         <item
             android:id="@+id/fragment_home"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="@string/main_nav_home" />
+            android:title="@string/main_nav_fragment_home" />
         <item
             android:id="@+id/fragment_notifications"
             android:icon="@drawable/ic_notifications_black_24dp"
-            android:title="@string/main_nav_notifications"
+            android:title="@string/main_nav_fragment_notifications"
             app:actionLayout="@layout/main_nav_actions_notifications"
             app:showAsAction="always" />
         <item
             android:id="@+id/fragment_posts"
             android:icon="@drawable/ic_content_copy_black_24dp"
-            android:title="@string/main_nav_posts"
+            android:title="@string/main_nav_fragment_posts"
             app:actionLayout="@layout/main_navigation_actions_posts" />
     </group>
     <item
         android:id="@+id/theme_selector"
         android:icon="@drawable/ic_brightness_medium_black_24dp"
-        android:title="@string/main_nav_theme"
+        android:title="@string/main_nav_settings_theme"
         app:actionViewClass="androidx.appcompat.widget.AppCompatSpinner"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />

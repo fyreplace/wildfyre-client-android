@@ -95,7 +95,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         )
 
         val startingNightMode = Application.preferences
-            .getInt(Constants.Preferences.UI_THEME, MainActivityViewModel.THEME_AUTOMATIC)
+            .getInt(Constants.Preferences.UI_THEME, Constants.Themes.AUTOMATIC)
         val themeSelector = navigation_drawer.menu.findItem(R.id.theme_selector).actionView as Spinner?
         themeSelector?.run {
             adapter = ArrayAdapter<String>(
