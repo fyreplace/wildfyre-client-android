@@ -53,13 +53,15 @@ class HomeFragment : FailureHandlingFragment(R.layout.fragment_home) {
 
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 expandAndHide(areaStuff, nonAreaStuff)
-                ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java).setNotificationBadgeVisible(false)
+                ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java)
+                    .setNotificationBadgeVisible(false)
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
                 expandAndHide(nonAreaStuff, areaStuff)
-                ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java).setNotificationBadgeVisible(true)
+                ViewModelProviders.of(activity!!).get(MainActivityViewModel::class.java)
+                    .setNotificationBadgeVisible(true)
                 return true
             }
 
