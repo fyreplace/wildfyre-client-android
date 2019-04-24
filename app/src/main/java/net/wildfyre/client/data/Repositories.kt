@@ -12,16 +12,24 @@ import okhttp3.RequestBody
 
 object SettingsRepository {
     private val mutableTheme = MutableLiveData<Int>()
+    private val mutableBadgeToggle = MutableLiveData<Boolean>()
 
     val theme: LiveData<Int> = mutableTheme
+    val badgeToggle: LiveData<Boolean> = mutableBadgeToggle
 
     init {
         mutableTheme.value = Application.preferences.getInt(Constants.Preferences.UI_THEME, Constants.Themes.AUTOMATIC)
+        mutableBadgeToggle.value = Application.preferences.getBoolean(Constants.Preferences.UI_BADGE, true)
     }
 
     fun setTheme(theme: Int) {
         Application.preferences.edit { putInt(Constants.Preferences.UI_THEME, theme) }
         mutableTheme.value = theme
+    }
+
+    fun toggleBadge(show: Boolean) {
+        Application.preferences.edit { putBoolean(Constants.Preferences.UI_BADGE, show) }
+        mutableBadgeToggle.value = show
     }
 }
 

@@ -28,7 +28,9 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     val notificationCountText: LiveData<String> =
         Transformations.map(_notificationCount) { if (it < 1000) it.toString() else "999" }
     val notificationBadgeVisible: LiveData<Boolean> = _notificationBadgeVisible
+
     val selectedThemeIndex = MutableLiveData<Int>()
+    val shouldShowNotificationBadge = MutableLiveData<Boolean>()
 
     init {
         if (AuthRepository.authToken.value!!.isNotEmpty()) {
@@ -36,6 +38,9 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         }
 
         selectedThemeIndex.value = THEMES.indexOfFirst { it == SettingsRepository.theme.value }
+        selectedThemeIndex.observeForever(SettingsRepository::setTheme)
+        shouldShowNotificationBadge.value = SettingsRepository.badgeToggle.value
+        shouldShowNotificationBadge.observeForever(SettingsRepository::toggleBadge)
     }
 
     val clearAuthToken = AuthRepository::clearAuthToken
@@ -79,8 +84,6 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     fun setNotificationBadgeVisible(visible: Boolean) {
         _notificationBadgeVisible.value = visible
     }
-
-    val setTheme = SettingsRepository::setTheme
 
     companion object {
         val THEMES = arrayOf(

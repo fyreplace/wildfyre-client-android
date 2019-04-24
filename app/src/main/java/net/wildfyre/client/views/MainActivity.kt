@@ -39,10 +39,7 @@ import kotlinx.android.synthetic.main.main_nav_header.*
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
-import net.wildfyre.client.databinding.MainAppBarBinding
-import net.wildfyre.client.databinding.MainNavActionsNotificationsBinding
-import net.wildfyre.client.databinding.MainNavActionsThemeBinding
-import net.wildfyre.client.databinding.MainNavHeaderBinding
+import net.wildfyre.client.databinding.*
 import net.wildfyre.client.viewmodels.MainActivityViewModel
 import java.io.ByteArrayInputStream
 
@@ -87,6 +84,13 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
                 model = viewModel
             }
 
+        MainNavActionsBadgeBinding
+            .bind(navigation_drawer.menu.findItem(R.id.badge_toggle).actionView)
+            .run {
+                lifecycleOwner = this@MainActivity
+                model = viewModel
+            }
+
         MainAppBarBinding
             .bind(findViewById(R.id.content))
             .run {
@@ -95,9 +99,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             }
 
         viewModel.selectedThemeIndex.observe(this, Observer {
-            val theme = MainActivityViewModel.THEMES[it]
-            viewModel.setTheme(theme)
-            AppCompatDelegate.setDefaultNightMode(theme)
+            AppCompatDelegate.setDefaultNightMode(MainActivityViewModel.THEMES[it])
             delegate.applyDayNight()
         })
 

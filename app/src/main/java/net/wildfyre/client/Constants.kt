@@ -22,8 +22,9 @@ object Constants {
     }
 
     object Preferences {
-        const val AUTH_TOKEN = "auth.token"
         const val UI_THEME = "ui.theme"
+        const val UI_BADGE = "ui.badge"
+        const val AUTH_TOKEN = "auth.token"
         const val AREA_PREFERRED = "area.preferred"
     }
 

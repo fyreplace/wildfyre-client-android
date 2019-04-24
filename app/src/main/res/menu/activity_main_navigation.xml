@@ -34,6 +34,12 @@
                 android:title="@string/main_nav_settings_theme"
                 app:actionLayout="@layout/main_nav_actions_theme"
                 app:showAsAction="always" />
+            <item
+                android:id="@+id/badge_toggle"
+                android:icon="@drawable/ic_menu_badge_black_24dp"
+                android:title="@string/main_nav_settings_badge_toggle"
+                app:actionLayout="@layout/main_nav_actions_badge"
+                app:showAsAction="always" />
         </menu>
     </item>
     <item android:title="@string/app_name">

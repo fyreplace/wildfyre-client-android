@@ -10,9 +10,10 @@ import net.wildfyre.client.data.AuthRepository
 class LoginFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
     private val _canLogin = MediatorLiveData<Boolean>()
 
+    val canLogin: LiveData<Boolean> = _canLogin
+
     val username = MutableLiveData<String>()
     val password = MutableLiveData<String>()
-    val canLogin: LiveData<Boolean> = _canLogin
 
     init {
         val canLoginUpdater = Observer<String> {
