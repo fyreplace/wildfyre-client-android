@@ -2,30 +2,15 @@ package net.wildfyre.client.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import net.wildfyre.client.data.AuthRepository
 
 class LoginFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
-    private val _canLogin = MediatorLiveData<Boolean>()
-
-    val canLogin: LiveData<Boolean> = _canLogin
-
     val username = MutableLiveData<String>()
     val password = MutableLiveData<String>()
-
-    init {
-        val canLoginUpdater = Observer<String> {
-            val usernameStr = username.value
-            val passwordStr = password.value
-            _canLogin.value = usernameStr != null && usernameStr.isNotEmpty()
-                    && passwordStr != null && passwordStr.isNotEmpty()
-        }
-
-        _canLogin.addSource(username, canLoginUpdater)
-        _canLogin.addSource(password, canLoginUpdater)
-    }
+    val usernameValid: LiveData<Boolean> = Transformations.map(username) { it.isNotEmpty() }
+    val passwordValid: LiveData<Boolean> = Transformations.map(password) { it.isNotEmpty() }
 
     fun attemptLogin(username: String, password: String) = AuthRepository.fetchAuthToken(this, username, password)
 }

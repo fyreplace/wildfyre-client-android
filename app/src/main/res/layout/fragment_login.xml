@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="@dimen/margin_vertical_medium"
-                android:enabled="@{safeUnbox(model.canLogin)}"
+                android:enabled="@{safeUnbox(model.usernameValid) &amp;&amp; safeUnbox(model.passwordValid)}"
                 android:text="@string/login_action_login"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
