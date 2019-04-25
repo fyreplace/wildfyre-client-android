@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/main_nav_fragment_notifications"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-</LinearLayout>
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="model"
+            type="net.wildfyre.client.viewmodels.NotificationsFragmentViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notification_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingLeft="@dimen/margin_horizontal_small"
+            android:paddingTop="@dimen/margin_vertical_small"
+            android:paddingRight="@dimen/margin_horizontal_small"
+            android:paddingBottom="@dimen/margin_vertical_small"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:spanCount="2" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/notifications_empty"
+            android:visibility="@{safeUnbox(model.notificationCount) == 0 ? View.VISIBLE : View.GONE}" />
+    </FrameLayout>
+</layout>

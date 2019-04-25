@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="foreground">@android:color/white</color>
     <color name="background">@android:color/background_dark</color>
+    <color name="backgroundHighlight">#7F000000</color>
     <color name="navigation">@android:color/background_dark</color>
     <color name="loginLogo">@android:color/white</color>
     <color name="badgeBackground">#BF0000</color>

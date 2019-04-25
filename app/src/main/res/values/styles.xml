@@ -26,4 +26,6 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="AppTheme.ActionBar.Button" parent="AppTheme.Button.Colored" />
+
 </resources>

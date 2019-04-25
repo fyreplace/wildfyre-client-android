@@ -124,4 +124,13 @@ object NotificationRepository {
                 mutableSuperNotification.value = it
             }
     }
+
+    fun clearNotifications(fh: FailureHandler) {
+        Services.webService.deleteNotifications(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) {
+            mutableSuperNotification.value = SuperNotification().apply {
+                count = 0
+                results = listOf()
+            }
+        }
+    }
 }

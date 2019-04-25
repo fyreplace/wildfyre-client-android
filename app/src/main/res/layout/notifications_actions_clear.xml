@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/AppTheme.ActionBar.Button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:drawablePadding="@dimen/margin_horizontal_small"
+    android:text="@string/notifications_actions_clear" />

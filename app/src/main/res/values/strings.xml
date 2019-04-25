@@ -32,7 +32,16 @@
     <string name="main_profile_editor_avatar_chooser">Select an avatar</string>
     <string name="main_profile_editor_avatar_change">Change avatar</string>
     <string name="main_profile_editor_bio">Your bio</string>
+    <string name="notifications_actions_clear">Mark all as read</string>
+    <string name="notifications_dialog_clear">Are you sure you want to clear all notifications ?</string>
+    <string name="notifications_empty">No notifications</string>
+    <plurals name="notifications_item_comment_count">
+        <item quantity="one">%1$s comment</item>
+        <item quantity="other">%1$s comments</item>
+    </plurals>
     <string name="image_desc_user_picture">Profile picture</string>
+    <string name="image_desc_author_picture">Author picture</string>
+    <string name="image_desc_notifications">Notifications</string>
     <string name="failure_request">Error during request</string>
     <string name="failure_login">Logging in failed</string>
     <string name="failure_profile_edit">Could not update profile</string>
