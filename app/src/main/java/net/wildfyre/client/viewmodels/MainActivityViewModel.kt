@@ -38,7 +38,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         }
 
         selectedThemeIndex.value = THEMES.indexOfFirst { it == SettingsRepository.theme.value }
-        selectedThemeIndex.observeForever(SettingsRepository::setTheme)
+        selectedThemeIndex.observeForever { SettingsRepository.setTheme(THEMES[it]) }
         shouldShowNotificationBadge.value = SettingsRepository.badgeToggle.value
         shouldShowNotificationBadge.observeForever(SettingsRepository::toggleBadge)
     }
