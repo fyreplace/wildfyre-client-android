@@ -26,7 +26,7 @@
             android:layout_marginTop="@dimen/margin_nav_header_top"
             android:contentDescription="@string/image_desc_user_picture"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_account_box_white_24dp" />
 
@@ -62,7 +62,7 @@
             app:layout_constraintTop_toBottomOf="@id/user_name" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@android:id/edit"
+            android:id="@+id/edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:backgroundTint="@color/background"

@@ -35,7 +35,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
-import kotlinx.android.synthetic.main.main_nav_header.*
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
@@ -130,7 +129,10 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         drawer_layout.addDrawerListener(this)
         actionBarDrawerToggle.syncState()
         navigation_drawer.setNavigationItemSelectedListener(this)
-        navigation_drawer.doOnLayout { edit.setOnClickListener { editProfile() } }
+        navigation_drawer.doOnLayout {
+            navigation_drawer.findViewById<View>(R.id.edit)?.setOnClickListener { editProfile() }
+        }
+
         tryNavigateTo(
             savedInstanceState?.getInt(
                 Constants.Save.ACTIVITY_NAVIGATION,
