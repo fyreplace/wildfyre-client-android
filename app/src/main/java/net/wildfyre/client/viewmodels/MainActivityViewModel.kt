@@ -26,7 +26,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     val userAvatarNewData: LiveData<ByteArray> = _userAvatarNewData
     val notificationCount: LiveData<Long> = _notificationCount
     val notificationCountText: LiveData<String> =
-        Transformations.map(_notificationCount) { if (it < 1000) it.toString() else "999" }
+        Transformations.map(_notificationCount) { if (it < 100) it.toString() else "99" }
     val notificationBadgeVisible: LiveData<Boolean> = _notificationBadgeVisible
 
     val selectedThemeIndex = MutableLiveData<Int>()

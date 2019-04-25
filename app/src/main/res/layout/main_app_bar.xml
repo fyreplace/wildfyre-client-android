@@ -35,17 +35,18 @@
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_horizontal_large"
-                    android:layout_marginLeft="@dimen/margin_horizontal_large"
-                    android:layout_marginTop="@dimen/margin_vertical_small"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginLeft="26dp"
+                    android:layout_marginTop="12dp"
                     android:background="@drawable/ic_badge_background_daynight_24dp"
                     android:clickable="false"
                     android:focusable="false"
                     android:gravity="center"
                     android:text="@{model.notificationCountText}"
                     android:textAlignment="center"
+                    android:textSize="12sp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/badgeForeground"
                     android:visibility="@{(safeUnbox(model.shouldShowNotificationBadge) &amp;&amp; safeUnbox(model.notificationBadgeVisible) &amp;&amp; safeUnbox(model.notificationCount) &gt; 0) ? View.VISIBLE : View.GONE}" />
