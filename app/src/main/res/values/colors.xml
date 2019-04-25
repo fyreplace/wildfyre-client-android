@@ -3,9 +3,9 @@
     <color name="colorPrimary">#E64A19</color>
     <color name="colorPrimaryDark">#BF360C</color>
     <color name="colorAccent">#FF6E40</color>
+    <color name="foreground">@android:color/black</color>
     <color name="background">@android:color/background_light</color>
     <color name="navigation">@android:color/background_dark</color>
     <color name="loginLogo">@color/colorAccent</color>
-    <color name="badgeForeground">@android:color/black</color>
     <color name="badgeBackground">#FFFF00</color>
 </resources>

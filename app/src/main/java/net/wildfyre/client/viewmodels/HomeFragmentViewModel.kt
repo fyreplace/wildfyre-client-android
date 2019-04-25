@@ -10,8 +10,8 @@ import net.wildfyre.client.data.AreaRepository
 class HomeFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
     private val _preferredArea = MediatorLiveData<Area?>()
 
-    val areas = AreaRepository.areas
-    val preferredAreaName = AreaRepository.preferredAreaName
+    val areas: LiveData<List<Area>> = AreaRepository.areas
+    val preferredAreaName: LiveData<String> = AreaRepository.preferredAreaName
     val preferredArea: LiveData<Area?> = _preferredArea
     val currentAreaSpread: LiveData<Long> =
         Transformations.map(AreaRepository.preferredAreaReputation) { it.spread ?: 0 }

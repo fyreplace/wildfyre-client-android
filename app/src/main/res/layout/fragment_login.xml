@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="password"
                     android:hint="@string/login_password"
-                    android:imeActionLabel="@string/login_action_login"
+                    android:imeActionLabel="@string/login_login"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLines="1"
@@ -71,14 +71,13 @@
 
             <Button
                 android:id="@+id/login"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/AppTheme.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="@dimen/margin_vertical_medium"
                 android:enabled="@{safeUnbox(model.usernameValid) &amp;&amp; safeUnbox(model.passwordValid)}"
-                android:text="@string/login_action_login"
-                android:textColor="@android:color/white"
+                android:text="@string/login_login"
                 android:textStyle="bold" />
 
             <androidx.core.widget.ContentLoadingProgressBar

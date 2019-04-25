@@ -45,10 +45,9 @@
                     android:focusable="false"
                     android:gravity="center"
                     android:text="@{model.notificationCountText}"
-                    android:textAlignment="center"
                     android:textSize="12sp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textColor="@color/badgeForeground"
+                    android:textColor="@color/foreground"
                     android:visibility="@{(safeUnbox(model.shouldShowNotificationBadge) &amp;&amp; safeUnbox(model.notificationBadgeVisible) &amp;&amp; safeUnbox(model.notificationCount) &gt; 0) ? View.VISIBLE : View.GONE}" />
             </FrameLayout>
         </com.google.android.material.appbar.AppBarLayout>

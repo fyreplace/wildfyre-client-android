@@ -17,7 +17,6 @@
         android:layout_marginRight="@dimen/margin_horizontal_small"
         android:gravity="center"
         android:text="@{Long.toString(safeUnbox(model.notificationCount))}"
-        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/colorAccent"
         android:visibility="@{safeUnbox(model.notificationCount) &gt; 0 ? View.VISIBLE : View.GONE}" />

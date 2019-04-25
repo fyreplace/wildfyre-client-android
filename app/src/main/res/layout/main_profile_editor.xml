@@ -33,6 +33,5 @@
         android:importantForAutofill="no"
         android:inputType="textMultiLine"
         android:minLines="3"
-        android:textAlignment="textStart"
         tools:ignore="UnusedAttribute" />
 </LinearLayout>
