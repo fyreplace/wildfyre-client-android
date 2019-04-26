@@ -29,6 +29,7 @@
             android:textColor="@color/foreground" />
 
         <LinearLayout
+            android:id="@+id/author_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -36,22 +37,21 @@
             android:paddingLeft="@dimen/margin_horizontal_small"
             android:paddingTop="@dimen/margin_vertical_small"
             android:paddingRight="@dimen/margin_horizontal_small"
-            android:paddingBottom="@dimen/margin_vertical_small"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:id="@+id/author_picture"
                 android:layout_width="@dimen/post_author_picture_size"
                 android:layout_height="@dimen/post_author_picture_size"
+                android:layout_marginEnd="@dimen/margin_horizontal_small"
+                android:layout_marginRight="@dimen/margin_horizontal_small"
                 android:contentDescription="@string/image_desc_author_picture" />
 
             <TextView
                 android:id="@+id/author_name"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_horizontal_small"
-                android:layout_marginLeft="@dimen/margin_horizontal_small" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <TextView

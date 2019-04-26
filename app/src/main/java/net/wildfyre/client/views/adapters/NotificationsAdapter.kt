@@ -31,22 +31,23 @@ class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.ViewHolde
         val notification = data[position]
 
         notification.post?.let {
-            val notAnonymous = it.author != null
             holder.text.text = it.text
+            holder.authorContainer.isVisible = it.author != null
 
-            if (notAnonymous) {
-                holder.authorName.text = it.author?.name
-                AppGlide.with(context)
-                    .load(it.author?.avatar)
-                    .transform(
-                        CenterCrop(),
-                        RoundedCorners(context.resources.getDimension(R.dimen.post_author_picture_rounding).toInt())
-                    )
-                    .into(holder.authorPicture)
+            if (holder.authorContainer.isVisible) {
+                holder.authorName.text = it.author!!.name
+                holder.authorPicture.isVisible = it.author!!.avatar != null
+
+                if (holder.authorPicture.isVisible) {
+                    AppGlide.with(context)
+                        .load(it.author!!.avatar)
+                        .transform(
+                            CenterCrop(),
+                            RoundedCorners(context.resources.getDimension(R.dimen.post_author_picture_rounding).toInt())
+                        )
+                        .into(holder.authorPicture)
+                }
             }
-
-            holder.authorName.isVisible = notAnonymous
-            holder.authorPicture.isVisible = notAnonymous
 
             val commentCount = notification.comments?.size ?: 0
             holder.commentCount.text = context.resources.getQuantityString(
@@ -77,6 +78,7 @@ class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.ViewHolde
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val container: ViewGroup = itemView.findViewById(R.id.container)
         val text: TextView = itemView.findViewById(R.id.text)
+        val authorContainer: ViewGroup = itemView.findViewById(R.id.author_container)
         val authorName: TextView = itemView.findViewById(R.id.author_name)
         val authorPicture: ImageView = itemView.findViewById(R.id.author_picture)
         val commentCount: TextView = itemView.findViewById(R.id.comment_count)
