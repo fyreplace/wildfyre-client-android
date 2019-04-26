@@ -11,29 +11,35 @@
             type="net.wildfyre.client.viewmodels.NotificationsFragmentViewModel" />
     </data>
 
-    <FrameLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresher"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/notification_list"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:paddingLeft="@dimen/margin_horizontal_small"
-            android:paddingTop="@dimen/margin_vertical_small"
-            android:paddingRight="@dimen/margin_horizontal_small"
-            android:paddingBottom="@dimen/margin_vertical_small"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-            app:spanCount="2" />
+            android:layout_height="match_parent">
 
-        <TextView
-            style="@style/TextAppearance.AppCompat.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/notifications_empty"
-            android:visibility="@{safeUnbox(model.notificationCount) == 0 ? View.VISIBLE : View.GONE}" />
-    </FrameLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notification_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:paddingLeft="@dimen/margin_horizontal_small"
+                android:paddingTop="@dimen/margin_vertical_small"
+                android:paddingRight="@dimen/margin_horizontal_small"
+                android:paddingBottom="@dimen/margin_vertical_small"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:spanCount="2" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/notifications_empty"
+                android:visibility="@{safeUnbox(model.notificationCount) == 0 ? View.VISIBLE : View.GONE}" />
+        </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

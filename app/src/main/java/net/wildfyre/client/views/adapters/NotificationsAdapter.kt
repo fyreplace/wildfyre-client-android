@@ -63,16 +63,9 @@ class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.ViewHolde
         }
     }
 
-    fun mergeData(notifications: List<Notification>, offset: Int) {
-        val begin = data.subList(0, offset)
-        val newList = begin + notifications
-        val endIndex = offset + notifications.size
-
-        data = if (endIndex < data.size)
-            newList + data.subList(endIndex, data.size) else
-            newList
-
-        notifyItemRangeChanged(offset, endIndex)
+    fun setData(notifications: List<Notification>) {
+        data = notifications
+        notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

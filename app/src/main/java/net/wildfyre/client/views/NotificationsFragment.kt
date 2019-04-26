@@ -8,12 +8,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import kotlinx.android.synthetic.main.fragment_notifications.*
 import net.wildfyre.client.R
+import net.wildfyre.client.data.Failure
 import net.wildfyre.client.databinding.FragmentNotificationsBinding
 import net.wildfyre.client.viewmodels.NotificationsFragmentViewModel
 import net.wildfyre.client.views.adapters.NotificationsAdapter
 
-class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifications) {
+class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifications),
+    SwipeRefreshLayout.OnRefreshListener {
     override lateinit var viewModel: NotificationsFragmentViewModel
 
     override fun onAttach(context: Context) {
@@ -36,13 +40,24 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
         }
 
         val notificationList = root.findViewById<RecyclerView>(R.id.notification_list)
+        val swipeRefresh = root.findViewById<SwipeRefreshLayout>(R.id.refresher)
+
         notificationList.adapter = NotificationsAdapter().apply {
             viewModel.superNotification.observe(this@NotificationsFragment, Observer {
-                mergeData(it.results!!, viewModel.currentOffset.toInt())
+                val notifications = it.results!!
+
+                if (it.count!!.toInt() == notifications.size) {
+                    setData(notifications)
+                    swipeRefresh.isRefreshing = false
+                }
             })
         }
 
-        viewModel.updateNotifications()
+        swipeRefresh.setColorSchemeResources(R.color.colorAccent)
+        swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.background)
+        swipeRefresh.setOnRefreshListener(this)
+        swipeRefresh.isRefreshing = true
+        onRefresh()
         return root
     }
 
@@ -55,5 +70,14 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> viewModel.clearNotifications() }
                 .show()
         }
+    }
+
+    override fun onFailure(failure: Failure) {
+        super.onFailure(failure)
+        refresher.isRefreshing = false
+    }
+
+    override fun onRefresh() {
+        viewModel.fetchNotifications()
     }
 }
