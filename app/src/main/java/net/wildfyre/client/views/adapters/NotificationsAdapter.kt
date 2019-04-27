@@ -36,17 +36,13 @@ class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.ViewHolde
 
             if (holder.authorContainer.isVisible) {
                 holder.authorName.text = it.author!!.name
-                holder.authorPicture.isVisible = it.author!!.avatar != null
-
-                if (holder.authorPicture.isVisible) {
-                    AppGlide.with(context)
-                        .load(it.author!!.avatar)
-                        .transform(
-                            CenterCrop(),
-                            RoundedCorners(context.resources.getDimension(R.dimen.post_author_picture_rounding).toInt())
-                        )
-                        .into(holder.authorPicture)
-                }
+                AppGlide.with(context)
+                    .load(it.author!!.avatar ?: R.drawable.ic_launcher)
+                    .transform(
+                        CenterCrop(),
+                        RoundedCorners(context.resources.getDimension(R.dimen.post_author_picture_rounding).toInt())
+                    )
+                    .into(holder.authorPicture)
             }
 
             val commentCount = notification.comments?.size ?: 0
