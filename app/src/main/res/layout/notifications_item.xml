@@ -4,10 +4,10 @@
     android:id="@+id/materialCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/margin_horizontal_small"
-    android:layout_marginTop="@dimen/margin_vertical_small"
-    android:layout_marginRight="@dimen/margin_horizontal_small"
-    android:layout_marginBottom="@dimen/margin_vertical_small">
+    android:layout_marginLeft="@dimen/margin_horizontal_tiny"
+    android:layout_marginTop="@dimen/margin_vertical_tiny"
+    android:layout_marginRight="@dimen/margin_horizontal_tiny"
+    android:layout_marginBottom="@dimen/margin_vertical_tiny">
 
     <LinearLayout
         android:id="@+id/container"

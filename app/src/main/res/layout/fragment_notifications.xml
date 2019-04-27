@@ -26,10 +26,10 @@
                 android:layout_height="match_parent"
                 android:clipChildren="false"
                 android:clipToPadding="false"
-                android:paddingLeft="@dimen/margin_horizontal_small"
-                android:paddingTop="@dimen/margin_vertical_small"
-                android:paddingRight="@dimen/margin_horizontal_small"
-                android:paddingBottom="@dimen/margin_vertical_small"
+                android:paddingLeft="@dimen/margin_horizontal_tiny"
+                android:paddingTop="@dimen/margin_vertical_tiny"
+                android:paddingRight="@dimen/margin_horizontal_tiny"
+                android:paddingBottom="@dimen/margin_vertical_tiny"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                 app:spanCount="2" />
 
