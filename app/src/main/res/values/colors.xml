@@ -3,6 +3,8 @@
     <color name="colorPrimary">#E64A19</color>
     <color name="colorPrimaryDark">#BF360C</color>
     <color name="colorAccent">#FF6E40</color>
+    <color name="colorControlNormalNeutral">#7F7F7F</color>
+    <color name="colorSwitchThumbNormalNeutral">#DFDFDF</color>
     <color name="foreground">@android:color/black</color>
     <color name="background">@android:color/background_light</color>
     <color name="backgroundHighlight">#1F000000</color>

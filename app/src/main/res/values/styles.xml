@@ -8,6 +8,11 @@
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.Neutral" parent="AppTheme">
+        <item name="colorControlActivated">@color/colorControlNormalNeutral</item>
+        <item name="colorSwitchThumbNormal">@color/colorSwitchThumbNormalNeutral</item>
+    </style>
+
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

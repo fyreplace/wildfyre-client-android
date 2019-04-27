@@ -8,8 +8,9 @@
             type="net.wildfyre.client.viewmodels.MainActivityViewModel" />
     </data>
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:checked="@={model.shouldShowNotificationBadge}" />
+        android:checked="@={model.shouldShowNotificationBadge}"
+        android:theme="@style/AppTheme.Neutral" />
 </layout>

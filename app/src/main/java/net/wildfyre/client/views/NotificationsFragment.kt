@@ -65,7 +65,7 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
         inflater.inflate(R.menu.fragment_notifications_actions, menu)
         menu.findItem(R.id.action_clear).actionView?.setOnClickListener {
             AlertDialog.Builder(context!!)
-                .setTitle(getString(R.string.notifications_dialog_clear))
+                .setTitle(getString(R.string.notifications_dialog_title))
                 .setNegativeButton(android.R.string.cancel, null)
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> viewModel.clearNotifications() }
                 .show()

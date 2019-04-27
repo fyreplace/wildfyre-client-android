@@ -22,7 +22,7 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/AppTheme.AppBarOverlay">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -45,9 +45,9 @@
                     android:focusable="false"
                     android:gravity="center"
                     android:text="@{model.notificationCountText}"
-                    android:textSize="12sp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/foreground"
+                    android:textSize="12sp"
                     android:visibility="@{(safeUnbox(model.shouldShowNotificationBadge) &amp;&amp; safeUnbox(model.notificationBadgeVisible) &amp;&amp; safeUnbox(model.notificationCount) &gt; 0) ? View.VISIBLE : View.GONE}" />
             </FrameLayout>
         </com.google.android.material.appbar.AppBarLayout>
