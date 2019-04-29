@@ -23,7 +23,7 @@ class NotificationsFragmentViewModel(application: Application) : FailureHandling
         }
     }
 
-    fun fetchNextNotifications() = NotificationRepository.fetchNextNotifications(this)
+    fun fetchNextNotifications() = NotificationRepository.fetchNextNotifications(this, true)
 
     fun resetNotifications() = NotificationRepository.resetNotifications()
 
