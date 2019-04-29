@@ -118,10 +118,16 @@ object NotificationRepository {
 
     private val mutableSuperNotification = MutableLiveData<SuperNotification>()
     private var notificationOffset = 0L
+    private var fetchingNotifications = false
 
     val superNotification: LiveData<SuperNotification> = mutableSuperNotification
 
     fun fetchNextNotifications(fh: FailureHandler) {
+        if (fetchingNotifications) {
+            return
+        }
+
+        fetchingNotifications = true
         Services.webService.getNotifications(
             AuthRepository.authToken.value!!,
             BUCKET_SIZE,
@@ -130,6 +136,7 @@ object NotificationRepository {
             .then(fh, R.string.failure_request) {
                 it.results?.run { notificationOffset += size }
                 mutableSuperNotification.value = it
+                fetchingNotifications = false
             }
     }
 
