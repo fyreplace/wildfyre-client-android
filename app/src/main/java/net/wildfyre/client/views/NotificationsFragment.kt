@@ -19,6 +19,7 @@ import net.wildfyre.client.views.adapters.NotificationsAdapter
 
 class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifications),
     RecyclerView.OnChildAttachStateChangeListener, SwipeRefreshLayout.OnRefreshListener {
+    private var isReset = false
     override lateinit var viewModel: NotificationsFragmentViewModel
 
     override fun onAttach(context: Context) {
@@ -46,7 +47,12 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
             viewModel.notifications.observe(this@NotificationsFragment, Observer {
                 val previousCount = data.size
                 data = it
-                swipeRefresh.isRefreshing = false
+
+                if (isReset) {
+                    isReset = false
+                } else {
+                    swipeRefresh.isRefreshing = false
+                }
 
                 if (it.isNotEmpty()) {
                     notifyItemRangeInserted(previousCount, it.size - previousCount)
@@ -67,8 +73,8 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
                 val lastPosition = layoutManager.findLastVisibleItemPositions(IntArray(layoutManager.spanCount)).max()!!
 
                 if (lastPosition + 1 >= layoutManager.itemCount - layoutManager.childCount && !swipeRefresh.isRefreshing) {
-                    viewModel.fetchNextNotifications()
                     swipeRefresh.isRefreshing = true
+                    viewModel.fetchNextNotifications()
                 }
             }
         })
@@ -108,8 +114,8 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
         val layoutManager = notification_list.layoutManager!! as StaggeredGridLayoutManager
 
         if (layoutManager.childCount == layoutManager.itemCount && viewModel.superNotification.value!!.count!! > layoutManager.itemCount) {
-            viewModel.fetchNextNotifications()
             refresher.isRefreshing = true
+            viewModel.fetchNextNotifications()
         }
     }
 
@@ -117,6 +123,7 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
     }
 
     override fun onRefresh() {
+        isReset = true
         viewModel.resetNotifications()
         viewModel.fetchNextNotifications()
     }
