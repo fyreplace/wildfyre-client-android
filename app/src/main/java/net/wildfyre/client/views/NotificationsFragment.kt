@@ -66,7 +66,7 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
 
                 val lastPosition = layoutManager.findLastVisibleItemPositions(IntArray(layoutManager.spanCount)).max()!!
 
-                if (lastPosition + 1 >= layoutManager.itemCount && !swipeRefresh.isRefreshing) {
+                if (lastPosition + 1 >= layoutManager.itemCount - layoutManager.childCount && !swipeRefresh.isRefreshing) {
                     viewModel.fetchNextNotifications()
                     swipeRefresh.isRefreshing = true
                 }
