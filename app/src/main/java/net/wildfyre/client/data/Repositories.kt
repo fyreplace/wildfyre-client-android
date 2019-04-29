@@ -118,7 +118,7 @@ object NotificationRepository {
 
     val superNotification: LiveData<SuperNotification> = mutableSuperNotification
 
-    fun fetchSuperNotification(fh: FailureHandler, limit: Long, offset: Long) {
+    fun fetchNotifications(fh: FailureHandler, limit: Long, offset: Long) {
         Services.webService.getNotifications(AuthRepository.authToken.value!!, limit, offset)
             .then(fh, R.string.failure_request) {
                 mutableSuperNotification.value = it

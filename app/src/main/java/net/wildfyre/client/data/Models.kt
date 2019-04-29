@@ -119,7 +119,7 @@ class Notification : ApiItem() {
     var comments: List<Long>? = null
 }
 
-class NotificationPost : ApiItem() {
+open class NotificationPost : ApiItem() {
     var id: Long? = null
     var author: Author? = null
     var text: String? = null
@@ -127,14 +127,11 @@ class NotificationPost : ApiItem() {
 
 class Password : ApiItem()
 
-class Post : ApiItem() {
-    var id: Long? = null
-    var author: Author? = null
+class Post : NotificationPost() {
     var anonym: Boolean? = null
     var subscribed: Boolean? = null
     var created: Date? = null
     var active: Boolean? = null
-    var text: String? = null
     var image: String? = null
     var additional_images: List<Image>? = null
     var comments: List<Comment>? = null
@@ -161,23 +158,13 @@ class Reputation : ApiItem() {
 
 class Reset : ApiItem()
 
-class SuperBan : ApiItem() {
+class SuperItem<T> : ApiItem() {
     var count: Long? = null
     var next: String? = null
     var previous: String? = null
-    var results: List<Ban>? = null
+    var results: List<T>? = null
 }
 
-class SuperNotification : ApiItem() {
-    var count: Long? = null
-    var next: String? = null
-    var previous: String? = null
-    var results: List<Notification>? = null
-}
-
-class SuperPost : ApiItem() {
-    var count: Long? = null
-    var next: String? = null
-    var previous: String? = null
-    var results: List<Post>? = null
-}
+typealias SuperBan = SuperItem<Ban>
+typealias SuperNotification = SuperItem<Notification>
+typealias SuperPost = SuperItem<Post>

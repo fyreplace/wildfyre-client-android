@@ -11,11 +11,7 @@ class NotificationsFragmentViewModel(application: Application) : FailureHandling
     val notificationCount: LiveData<Long> =
         Transformations.map(superNotification) { it.count ?: 0 }
 
-    fun fetchNotifications() {
-        NotificationRepository.fetchSuperNotification(this, 0, 0)
-    }
+    fun fetchNotifications() = NotificationRepository.fetchNotifications(this, 0, 0)
 
-    fun clearNotifications() {
-        NotificationRepository.clearNotifications(this)
-    }
+    fun clearNotifications() = NotificationRepository.clearNotifications(this)
 }
