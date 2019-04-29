@@ -114,23 +114,35 @@ object AreaRepository {
 }
 
 object NotificationRepository {
+    private const val BUCKET_SIZE = 12L
+
     private val mutableSuperNotification = MutableLiveData<SuperNotification>()
+    private var notificationOffset = 0L
 
     val superNotification: LiveData<SuperNotification> = mutableSuperNotification
 
-    fun fetchNotifications(fh: FailureHandler, limit: Long, offset: Long) {
-        Services.webService.getNotifications(AuthRepository.authToken.value!!, limit, offset)
+    fun fetchNextNotifications(fh: FailureHandler) {
+        Services.webService.getNotifications(
+            AuthRepository.authToken.value!!,
+            BUCKET_SIZE,
+            notificationOffset
+        )
             .then(fh, R.string.failure_request) {
+                it.results?.run { notificationOffset += size }
                 mutableSuperNotification.value = it
             }
     }
 
-    fun clearNotifications(fh: FailureHandler) {
-        Services.webService.deleteNotifications(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) {
-            mutableSuperNotification.value = SuperNotification().apply {
-                count = 0
-                results = listOf()
-            }
+    fun resetNotifications() {
+        notificationOffset = 0
+        mutableSuperNotification.value = mutableSuperNotification.value?.apply {
+            count = 0
+            results = listOf()
         }
+    }
+
+    fun clearNotifications(fh: FailureHandler) {
+        Services.webService.deleteNotifications(AuthRepository.authToken.value!!)
+            .then(fh, R.string.failure_request) { resetNotifications() }
     }
 }

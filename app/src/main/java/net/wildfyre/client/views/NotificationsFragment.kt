@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_notifications.*
 import net.wildfyre.client.R
@@ -17,12 +18,11 @@ import net.wildfyre.client.viewmodels.NotificationsFragmentViewModel
 import net.wildfyre.client.views.adapters.NotificationsAdapter
 
 class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifications),
-    SwipeRefreshLayout.OnRefreshListener {
+    RecyclerView.OnChildAttachStateChangeListener, SwipeRefreshLayout.OnRefreshListener {
     override lateinit var viewModel: NotificationsFragmentViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        setHasOptionsMenu(true)
         viewModel = ViewModelProviders.of(this).get(NotificationsFragmentViewModel::class.java)
     }
 
@@ -43,22 +43,49 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
         val swipeRefresh = root.findViewById<SwipeRefreshLayout>(R.id.refresher)
 
         notificationList.adapter = NotificationsAdapter().apply {
-            viewModel.superNotification.observe(this@NotificationsFragment, Observer {
-                val notifications = it.results!!
+            viewModel.notifications.observe(this@NotificationsFragment, Observer {
+                val previousCount = data.size
+                data = it
+                swipeRefresh.isRefreshing = false
 
-                if (it.count!!.toInt() == notifications.size) {
-                    setData(notifications)
-                    swipeRefresh.isRefreshing = false
+                if (it.isNotEmpty()) {
+                    notifyItemRangeInserted(previousCount, it.size - previousCount)
+                } else {
+                    notifyItemRangeRemoved(0, previousCount)
                 }
             })
         }
 
+        notificationList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = notificationList.layoutManager!! as StaggeredGridLayoutManager
+
+                if (dy <= 0 || viewModel.superNotification.value!!.count!!.toInt() == layoutManager.itemCount) {
+                    return
+                }
+
+                val lastPosition = layoutManager.findLastVisibleItemPositions(IntArray(layoutManager.spanCount)).max()!!
+
+                if (lastPosition + 1 >= layoutManager.itemCount && !swipeRefresh.isRefreshing) {
+                    viewModel.fetchNextNotifications()
+                    swipeRefresh.isRefreshing = true
+                }
+            }
+        })
+
+        notificationList.addOnChildAttachStateChangeListener(this)
         swipeRefresh.setColorSchemeResources(R.color.colorAccent)
         swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.background)
         swipeRefresh.setOnRefreshListener(this)
         swipeRefresh.isRefreshing = true
         onRefresh()
         return root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        notification_list.removeOnChildAttachStateChangeListener(this)
+        notification_list.clearOnScrollListeners()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -77,7 +104,20 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
         refresher.isRefreshing = false
     }
 
+    override fun onChildViewAttachedToWindow(view: View) {
+        val layoutManager = notification_list.layoutManager!! as StaggeredGridLayoutManager
+
+        if (layoutManager.childCount == layoutManager.itemCount && viewModel.superNotification.value!!.count!! > layoutManager.itemCount) {
+            viewModel.fetchNextNotifications()
+            refresher.isRefreshing = true
+        }
+    }
+
+    override fun onChildViewDetachedFromWindow(view: View) {
+    }
+
     override fun onRefresh() {
-        viewModel.fetchNotifications()
+        viewModel.resetNotifications()
+        viewModel.fetchNextNotifications()
     }
 }

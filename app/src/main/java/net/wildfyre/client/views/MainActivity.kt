@@ -275,7 +275,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onDrawerOpened(drawerView: View) {
-        viewModel.updateNotifications()
+        viewModel.updateNotificationCount()
     }
 
     override fun onDrawerClosed(drawerView: View) {

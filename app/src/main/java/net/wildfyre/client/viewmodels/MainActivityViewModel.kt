@@ -47,11 +47,11 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     fun updateProfile() = AuthorRepository.fetchSelf(this)
 
-    fun updateNotifications() = NotificationRepository.fetchNotifications(this, 1, 0)
+    fun updateNotificationCount() = NotificationRepository.fetchNextNotifications(this)
 
     fun updateInterfaceInformation() {
         updateProfile()
-        updateNotifications()
+        updateNotificationCount()
     }
 
     fun setProfile(bio: String) {
