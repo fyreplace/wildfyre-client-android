@@ -117,27 +117,41 @@ object NotificationRepository {
     private const val BUCKET_SIZE = 12L
 
     private val mutableSuperNotification = MutableLiveData<SuperNotification>()
+    private val mutableNotifications = MutableLiveData<List<Notification>>()
     private var notificationOffset = 0L
-    private var fetchingNotifications = false
+    private var fetchingContent = false
 
     val superNotification: LiveData<SuperNotification> = mutableSuperNotification
+    val notifications: LiveData<List<Notification>> = mutableNotifications
 
-    fun fetchNextNotifications(fh: FailureHandler, significantAmount: Boolean) {
-        if (fetchingNotifications) {
+    init {
+        resetNotifications()
+    }
+
+    fun fetchNextNotifications(fh: FailureHandler, forContent: Boolean) {
+        if (fetchingContent) {
             return
         }
 
-        fetchingNotifications = true
+        if (forContent) {
+            fetchingContent = true
+        }
+
         Services.webService.getNotifications(
             AuthRepository.authToken.value!!,
-            if (significantAmount) BUCKET_SIZE else 1,
+            if (forContent) BUCKET_SIZE else 1,
             notificationOffset
-        )
-            .then(fh, R.string.failure_request) {
-                it.results?.run { notificationOffset += size }
-                mutableSuperNotification.value = it
-                fetchingNotifications = false
+        ).then(fh, R.string.failure_request) {
+            fetchingContent = false
+            mutableSuperNotification.value = it
+
+            if (forContent) {
+                it.results?.run {
+                    notificationOffset += size
+                    mutableNotifications.value = mutableNotifications.value!! + this
+                }
             }
+        }
     }
 
     fun resetNotifications() {
@@ -145,7 +159,8 @@ object NotificationRepository {
         mutableSuperNotification.value = mutableSuperNotification.value?.apply {
             count = 0
             results = listOf()
-        }
+        } ?: SuperNotification()
+        mutableNotifications.value = listOf()
     }
 
     fun clearNotifications(fh: FailureHandler) {
