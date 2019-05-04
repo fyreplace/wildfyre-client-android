@@ -32,7 +32,7 @@ class HomeFragmentViewModel(application: Application) : FailureHandlingViewModel
 
     fun updatePreferredArea() = AreaRepository.fetchAreaReputation(this, preferredAreaName.value!!)
 
-    val setPreferredAreaName = AreaRepository::setPreferredAreaName
+    fun setPreferredAreaName(areaName: String) = AreaRepository.setPreferredAreaName(areaName)
 
     fun setPreferredAreaDisplayName(displayName: String) {
         areas.value?.firstOrNull { it.displayname == displayName }?.name?.let {

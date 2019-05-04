@@ -32,7 +32,7 @@ class Application : Application() {
         }
 
         AppCompatDelegate.setDefaultNightMode(
-            getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE).getInt(
+            preferences.getInt(
                 Constants.Preferences.UI_THEME,
                 Constants.Themes.AUTOMATIC
             )

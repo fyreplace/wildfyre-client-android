@@ -27,35 +27,41 @@ class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.ViewHolde
         )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val context = holder.itemView.context
         val notification = data[position]
 
-        notification.post?.let {
-            holder.text.text = it.text
-            holder.authorContainer.isVisible = it.author != null
+        if (notification.post == null) {
+            return
+        }
 
-            if (holder.authorContainer.isVisible) {
-                holder.authorName.text = it.author!!.name
-                AppGlide.with(context)
-                    .load(it.author!!.avatar ?: R.drawable.ic_launcher)
-                    .transform(
-                        CenterCrop(),
-                        RoundedCorners(context.resources.getDimension(R.dimen.post_author_picture_rounding).toInt())
+        holder.text.text = notification.post!!.text
+        holder.authorContainer.isVisible = notification.post!!.author != null
+
+        if (holder.authorContainer.isVisible) {
+            holder.authorName.text = notification.post!!.author!!.name
+            AppGlide.with(holder.itemView.context)
+                .load(notification.post!!.author!!.avatar ?: R.drawable.ic_launcher)
+                .transform(
+                    CenterCrop(),
+                    RoundedCorners(
+                        holder.itemView.resources
+                            .getDimension(R.dimen.post_author_picture_rounding)
+                            .toInt()
                     )
-                    .into(holder.authorPicture)
-            }
+                )
+                .into(holder.authorPicture)
+        }
 
-            val commentCount = notification.comments?.size ?: 0
-            holder.commentCount.text = context.resources.getQuantityString(
-                R.plurals.notifications_item_comment_count,
-                commentCount,
-                commentCount
-            )
+        val commentCount = notification.comments?.size ?: 0
+        holder.commentCount.text = holder.itemView.resources.getQuantityString(
+            R.plurals.notifications_item_comment_count,
+            commentCount,
+            commentCount
+        )
 
-            holder.container.setOnClickListener {
-                Toast.makeText(holder.itemView.context, R.string.main_nav_fragment_notifications, Toast.LENGTH_SHORT)
-                    .show()
-            }
+        // TODO: replace this with switching to the post
+        holder.container.setOnClickListener {
+            Toast.makeText(holder.itemView.context, R.string.main_nav_fragment_notifications, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 

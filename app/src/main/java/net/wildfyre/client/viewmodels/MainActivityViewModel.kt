@@ -93,11 +93,11 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         )
 
         val NAVIGATION_LINKS = mapOf(
-            Pair(R.id.about_us, Constants.Links.ABOUT_US),
-            Pair(R.id.open_source, Constants.Links.OPEN_SOURCE),
-            Pair(R.id.faq, Constants.Links.FAQ),
-            Pair(R.id.terms_and_conditions, Constants.Links.TERMS_AND_CONDITIONS),
-            Pair(R.id.privacy_policy, Constants.Links.PRIVACY_POLICY)
+            R.id.about_us to Constants.Links.ABOUT_US,
+            R.id.open_source to Constants.Links.OPEN_SOURCE,
+            R.id.faq to Constants.Links.FAQ,
+            R.id.terms_and_conditions to Constants.Links.TERMS_AND_CONDITIONS,
+            R.id.privacy_policy to Constants.Links.PRIVACY_POLICY
         )
     }
 }

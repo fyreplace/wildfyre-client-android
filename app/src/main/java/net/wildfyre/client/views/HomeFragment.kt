@@ -66,25 +66,8 @@ class HomeFragment : FailureHandlingFragment(R.layout.fragment_home) {
             }
 
             private fun expandAndHide(expand: List<Int>, hide: List<Int>) {
-                expand.forEach {
-                    menu.findItem(it).run {
-                        if (actionView != null) {
-                            expandActionView()
-                        }
-
-                        isVisible = true
-                    }
-                }
-
-                hide.forEach {
-                    menu.findItem(it).run {
-                        if (actionView != null) {
-                            collapseActionView()
-                        }
-
-                        isVisible = false
-                    }
-                }
+                expand.forEach { menu.findItem(it).isVisible = true }
+                hide.forEach { menu.findItem(it).isVisible = false }
             }
         })
 
@@ -106,9 +89,7 @@ class HomeFragment : FailureHandlingFragment(R.layout.fragment_home) {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val title = areaSpinner.selectedItem.toString()
-                areaSelectorMenuItem.title = getString(R.string.main_actions_area_selector, title)
-                viewModel.setPreferredAreaDisplayName(title)
+                viewModel.setPreferredAreaDisplayName(areaSpinner.selectedItem.toString())
                 viewModel.updatePreferredArea()
             }
         }

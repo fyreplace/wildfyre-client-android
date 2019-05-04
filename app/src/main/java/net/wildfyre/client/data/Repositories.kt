@@ -92,9 +92,8 @@ object AreaRepository {
     val preferredAreaReputation: LiveData<Reputation> = mutablePreferredAreaReputation
 
     init {
-        Application.preferences.getString(Constants.Preferences.AREA_PREFERRED, null)?.let {
-            mutablePreferredAreaName.value = it
-        }
+        Application.preferences.getString(Constants.Preferences.AREA_PREFERRED, null)
+            ?.let { mutablePreferredAreaName.value = it }
     }
 
     fun fetchAreas(fh: FailureHandler) =
@@ -129,12 +128,9 @@ object NotificationRepository {
     }
 
     fun fetchNextNotifications(fh: FailureHandler, forContent: Boolean) {
-        if (fetchingContent) {
-            return
-        }
-
-        if (forContent) {
-            fetchingContent = true
+        when {
+            fetchingContent -> return
+            forContent -> fetchingContent = true
         }
 
         Services.webService.getNotifications(

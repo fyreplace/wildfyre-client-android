@@ -66,36 +66,15 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         }
 
         val navHeaderBinding = MainNavHeaderBinding.bind(navigation_drawer.getHeaderView(0))
-        navHeaderBinding.lifecycleOwner = this
-        navHeaderBinding.model = viewModel
-
-        MainNavActionsNotificationsBinding
-            .bind(navigation_drawer.menu.findItem(R.id.fragment_notifications).actionView)
-            .run {
-                lifecycleOwner = this@MainActivity
-                model = viewModel
-            }
-
-        MainNavActionsThemeBinding
-            .bind(navigation_drawer.menu.findItem(R.id.theme_selector).actionView)
-            .run {
-                lifecycleOwner = this@MainActivity
-                model = viewModel
-            }
-
-        MainNavActionsBadgeBinding
-            .bind(navigation_drawer.menu.findItem(R.id.badge_toggle).actionView)
-            .run {
-                lifecycleOwner = this@MainActivity
-                model = viewModel
-            }
-
-        MainAppBarBinding
-            .bind(findViewById(R.id.content))
-            .run {
-                lifecycleOwner = this@MainActivity
-                model = viewModel
-            }
+            .apply { lifecycleOwner = this@MainActivity; model = viewModel }
+        MainNavActionsNotificationsBinding.bind(navigation_drawer.menu.findItem(R.id.fragment_notifications).actionView)
+            .run { lifecycleOwner = this@MainActivity; model = viewModel }
+        MainNavActionsThemeBinding.bind(navigation_drawer.menu.findItem(R.id.theme_selector).actionView)
+            .run { lifecycleOwner = this@MainActivity; model = viewModel }
+        MainNavActionsBadgeBinding.bind(navigation_drawer.menu.findItem(R.id.badge_toggle).actionView)
+            .run { lifecycleOwner = this@MainActivity; model = viewModel }
+        MainAppBarBinding.bind(findViewById(R.id.content))
+            .run { lifecycleOwner = this@MainActivity; model = viewModel }
 
         viewModel.selectedThemeIndex.observe(this, Observer {
             AppCompatDelegate.setDefaultNightMode(MainActivityViewModel.THEMES[it])
@@ -190,7 +169,6 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             item.isChecked -> return false
         }
 
-        var closeDrawer = true
         val newFragment = when (item.itemId) {
             R.id.fragment_login,
             R.id.logout -> LoginFragment().also {
@@ -202,13 +180,11 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             R.id.fragment_home -> HomeFragment()
             R.id.fragment_notifications -> NotificationsFragment()
             R.id.fragment_posts -> PostsFragment()
-            else -> {
-                closeDrawer = false
-                null
-            }
+            else -> null
         }
 
         newFragment?.let {
+            drawer_layout.closeDrawer(GravityCompat.START)
             supportFragmentManager.transaction {
                 val isLoginStep = isAtLogin()
 
@@ -219,13 +195,11 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
 
                 replace(R.id.fragment_container, it)
             }
+
+            return true
         }
 
-        if (closeDrawer) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        }
-
-        return closeDrawer
+        return false
     }
 
     override fun onBackPressed() {
@@ -255,6 +229,8 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             ).use {
                 if (it!!.moveToFirst()) {
                     mimeType = it.getString(it.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE))
+                } else {
+                    return
                 }
             }
 
