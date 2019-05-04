@@ -16,6 +16,9 @@ import net.wildfyre.client.data.Failure
 import net.wildfyre.client.databinding.FragmentLoginBinding
 import net.wildfyre.client.viewmodels.LoginFragmentViewModel
 
+/**
+ * [androidx.fragment.app.Fragment] showing a login screen to the user.
+ */
 class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override lateinit var viewModel: LoginFragmentViewModel
 
@@ -32,6 +35,7 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return FragmentLoginBinding.inflate(inflater, container, false).run {
+            // For both the username and the password fields, require the input to not be empty
             mapOf(
                 viewModel.username to username,
                 viewModel.password to password
@@ -44,6 +48,7 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
             model = viewModel
             lifecycleOwner = this@LoginFragment
             password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
+                // Allow the user to use the keyboard "done" button to trigger a login attempt
                 if (id == EditorInfo.IME_ACTION_DONE) {
                     login.callOnClick()
                     return@OnEditorActionListener true
@@ -83,6 +88,7 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         if (cancel) {
             focusView?.requestFocus()
         } else {
+            // Automatically hide the keyboard since otherwise it won't hide itself
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(login.windowToken, 0)
             showProgress(true)

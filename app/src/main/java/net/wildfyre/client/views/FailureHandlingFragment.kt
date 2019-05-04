@@ -9,7 +9,14 @@ import net.wildfyre.client.data.Failure
 import net.wildfyre.client.data.FailureHandler
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 
+/**
+ * Base [Fragment] class that handles errors from a [FailureHandlingViewModel].
+ */
 abstract class FailureHandlingFragment(contentLayoutId: Int) : Fragment(contentLayoutId), FailureHandler {
+    /**
+     * Subclasses must have a viewModel inheriting from [FailureHandlingViewModel]. It has to be initialized in
+     * [onAttach] to it can then be used in [onCreate].
+     */
     protected abstract val viewModel: FailureHandlingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -9,6 +9,9 @@ import net.wildfyre.client.data.Failure
 import net.wildfyre.client.data.FailureHandler
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 
+/**
+ * Base [android.app.Activity] class that handles errors from a [FailureHandlingViewModel].
+ */
 abstract class FailureHandlingActivity : AppCompatActivity(), FailureHandler {
     protected abstract val viewModel: FailureHandlingViewModel
 

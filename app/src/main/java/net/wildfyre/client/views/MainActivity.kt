@@ -42,6 +42,9 @@ import net.wildfyre.client.databinding.*
 import net.wildfyre.client.viewmodels.MainActivityViewModel
 import java.io.ByteArrayInputStream
 
+/**
+ * The central activity that hosts the different fragments.
+ */
 class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemSelectedListener,
     DrawerLayout.DrawerListener {
     override lateinit var viewModel: MainActivityViewModel
@@ -260,6 +263,12 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     override fun onDrawerStateChanged(newState: Int) {
     }
 
+    /**
+     * Attempts to switch to the selected fragment if the user is logged in, and switch to [LoginFragment] if not. Only
+     * takes effect if no framgent is being used yet.
+     *
+     * @param id The resource identifier for the drawer menu item that should be checked
+     */
     private fun tryNavigateTo(@IdRes id: Int) {
         if (supportFragmentManager.fragments.isNotEmpty()) {
             return
@@ -269,11 +278,19 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         navigateTo(if (token.isEmpty()) R.id.fragment_login else id)
     }
 
+    /**
+     * Switches to the fragment corresponding to the provided resource id.
+     *
+     * @param id The resource identifier for the drawer menu item that should be checked
+     */
     private fun navigateTo(@IdRes id: Int) {
         onNavigationItemSelected(navigation_drawer.menu.findItem(id))
         navigation_drawer.setCheckedItem(id)
     }
 
+    /**
+     * Shows a dialog to let the user edit their profile bio and their avatar.
+     */
     private fun editProfile() {
         lateinit var dialog: AlertDialog
         lateinit var avatarDataObserver: Observer<ByteArray>
@@ -338,6 +355,11 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         }
     }
 
+    /**
+     * Indicates whether the application is currently at the login step.
+     *
+     * @return `true` if the user has to login, `false` otherwise
+     */
     private fun isAtLogin() = supportFragmentManager.fragments.count { it is LoginFragment } > 0
 
     companion object {

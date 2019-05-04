@@ -14,6 +14,9 @@ import net.wildfyre.client.AppGlide
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Notification
 
+/**
+ * Adapter for displaying notifications in [net.wildfyre.client.views.NotificationsFragment].
+ */
 class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.ViewHolder>() {
     var data: List<Notification> = listOf()
 

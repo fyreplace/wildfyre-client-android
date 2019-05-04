@@ -11,7 +11,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 
+/**
+ * Object containing services used by the different repositories.
+ */
 object Services {
+    /**
+     * Service connecting to the WildFyre API.
+     */
     val webService: WebService = Retrofit.Builder()
         .baseUrl(Constants.Api.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -19,6 +25,14 @@ object Services {
         .create(WebService::class.java)
 }
 
+/**
+ * Helper function lifting some boilerplate code out of the repositories and hooking errors to a [FailureHandler].
+ *
+ * @param T The type of the object that is going to be received by the callback if the operation succeeds
+ * @param failureHandler An object capable of propagating any error
+ * @param errorMessage The error message string resource that should be displayed to the user upon error
+ * @param callback The callback to run when the operation succeeds
+ */
 fun <T> Call<T>.then(failureHandler: FailureHandler, @StringRes errorMessage: Int, callback: (result: T) -> Unit) {
     enqueue(object : Callback<T> {
         override fun onResponse(call: Call<T>, response: Response<T>) {
@@ -38,6 +52,9 @@ fun <T> Call<T>.then(failureHandler: FailureHandler, @StringRes errorMessage: In
 
 class ApiCallException(code: Int, message: String, body: String) : Exception("$code: $message\n\t$body")
 
+/**
+ * Retrofit implementation of the WildFyre API.
+ */
 interface WebService {
     // Authentication
 

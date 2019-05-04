@@ -17,6 +17,9 @@ import net.wildfyre.client.databinding.HomeActionsAreaSpreadBinding
 import net.wildfyre.client.viewmodels.HomeFragmentViewModel
 import net.wildfyre.client.viewmodels.MainActivityViewModel
 
+/**
+ * [androidx.fragment.app.Fragment] for showing new posts to the user.
+ */
 class HomeFragment : FailureHandlingFragment(R.layout.fragment_home) {
     override lateinit var viewModel: HomeFragmentViewModel
 
@@ -47,6 +50,11 @@ class HomeFragment : FailureHandlingFragment(R.layout.fragment_home) {
         val areaSelectorMenuItem = menu.findItem(R.id.action_area_selector)
         val areaSpinner = areaSelectorMenuItem?.actionView as Spinner
 
+        /*
+         Every time the area selector is expanded ot collapsed, different menu items should be shown.
+         When the selector is collapsed, regular actions such as the subscribe button are available; when it is expanded
+         however, the user's spread and reputation for the selected area should be shown instead.
+         */
         areaSelectorMenuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             private val areaStuff = listOf(R.id.action_area_spread, R.id.action_area_reputation)
             private val nonAreaStuff = listOf(R.id.action_comments, R.id.action_subscribe)
@@ -97,6 +105,7 @@ class HomeFragment : FailureHandlingFragment(R.layout.fragment_home) {
         viewModel.areas.observe(viewLifecycleOwner, Observer { areas ->
             adapter.run { clear(); addAll(areas.map { it.displayname }) }
 
+            // If there is no preferred area yet, then this is the first run; set it to the first area that comes
             if (viewModel.preferredAreaName.value == null) {
                 viewModel.setPreferredAreaName(areas.first().name!!)
             }

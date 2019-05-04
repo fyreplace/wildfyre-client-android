@@ -4,15 +4,25 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 
 object Constants {
+    /**
+     * Constants related to using the WildFyre API.
+     */
     object Api {
         const val BASE_URL = "https://api.wildfyre.net"
         val IMAGE_REGEX = Regex("(\\[img:\\s*(\\d+)\\])")
     }
 
+    /**
+     * Identifiers used for saving an activity's state.
+     */
     object Save {
         const val ACTIVITY_NAVIGATION = "activity.navigation"
     }
 
+    /**
+     * Simplified constants for day/night mode, merging [AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM] and
+     * [AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY].
+     */
     object Themes {
         val AUTOMATIC = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM else
@@ -21,6 +31,9 @@ object Constants {
         const val DARK = AppCompatDelegate.MODE_NIGHT_YES
     }
 
+    /**
+     * Keys used for storing user preferences.
+     */
     object Preferences {
         const val UI_THEME = "ui.theme"
         const val UI_BADGE = "ui.badge"
@@ -28,6 +41,9 @@ object Constants {
         const val AREA_PREFERRED = "area.preferred"
     }
 
+    /**
+     * Links used in the navigation panel.
+     */
     object Links {
         private const val MAIN_ADDRESS = "https://wildfyre.net/"
         const val ABOUT_US = MAIN_ADDRESS + "about-us"

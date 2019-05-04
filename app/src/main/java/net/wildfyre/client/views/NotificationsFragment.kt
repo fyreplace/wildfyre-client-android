@@ -17,10 +17,16 @@ import net.wildfyre.client.databinding.FragmentNotificationsBinding
 import net.wildfyre.client.viewmodels.NotificationsFragmentViewModel
 import net.wildfyre.client.views.adapters.NotificationsAdapter
 
+/**
+ * [androidx.fragment.app.Fragment] listing the user's notifications.
+ */
 class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifications),
     RecyclerView.OnChildAttachStateChangeListener, SwipeRefreshLayout.OnRefreshListener {
-    private var isReset = false
     override lateinit var viewModel: NotificationsFragmentViewModel
+    /**
+     * Indicates whether the next notification change is a manual reset.
+     */
+    private var resetting = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -48,8 +54,8 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
                 val previousCount = data.size
                 data = it
 
-                if (isReset) {
-                    isReset = false
+                if (resetting) {
+                    resetting = false
                 } else {
                     swipeRefresh.isRefreshing = false
                 }
@@ -62,16 +68,22 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
             })
         }
 
+        // When the user scrolls, new notifications should be fetched dynamically
         notificationList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val layoutManager = notificationList.layoutManager!! as StaggeredGridLayoutManager
 
+                // No need to do anything if the user is scrolling up or if we have fetched all notifications already
                 if (dy <= 0 || viewModel.superNotification.value!!.count!!.toInt() == layoutManager.itemCount) {
                     return
                 }
 
                 val lastPosition = layoutManager.findLastVisibleItemPositions(IntArray(layoutManager.spanCount)).max()!!
 
+                /*
+                If there are less notifications left to show, than the number currently displayed on screen, then fetch
+                more notifications to show the user.
+                 */
                 if (lastPosition + 1 >= layoutManager.itemCount - layoutManager.childCount && !swipeRefresh.isRefreshing) {
                     swipeRefresh.isRefreshing = true
                     viewModel.fetchNextNotifications()
@@ -113,6 +125,10 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
     override fun onChildViewAttachedToWindow(view: View) {
         val layoutManager = notification_list.layoutManager!! as StaggeredGridLayoutManager
 
+        /*
+        If all currently fetched notifications are being displayed, and there are more to fetch, then fetch more
+        notifications to make sure that the view is completely filled with notifications.
+         */
         if (layoutManager.childCount == layoutManager.itemCount && viewModel.superNotification.value!!.count!! > layoutManager.itemCount) {
             refresher.isRefreshing = true
             viewModel.fetchNextNotifications()
@@ -123,7 +139,7 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
     }
 
     override fun onRefresh() {
-        isReset = true
+        resetting = true
         viewModel.resetNotifications()
         viewModel.fetchNextNotifications()
     }
