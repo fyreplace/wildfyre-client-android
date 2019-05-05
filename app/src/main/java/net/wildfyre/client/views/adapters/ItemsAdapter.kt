@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Space
 import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.core.view.isVisible
@@ -61,6 +62,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
                 .into(holder.authorPicture)
         }
 
+        holder.space.isVisible = holder.text.isVisible && !holder.authorContainer.isVisible
         holder.subtitle.text = getSubtitle(position)
     }
 
@@ -79,6 +81,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
         val authorContainer: ViewGroup = itemView.findViewById(R.id.author_container)
         val authorName: TextView = itemView.findViewById(R.id.author_name)
         val authorPicture: ImageView = itemView.findViewById(R.id.author_picture)
+        val space: Space = itemView.findViewById(R.id.space)
         val subtitle: TextView = itemView.findViewById(R.id.subtitle)
     }
 }

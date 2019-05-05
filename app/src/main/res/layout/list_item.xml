@@ -42,6 +42,7 @@
             android:paddingLeft="@dimen/margin_horizontal_small"
             android:paddingTop="@dimen/margin_vertical_small"
             android:paddingRight="@dimen/margin_horizontal_small"
+            android:paddingBottom="@dimen/margin_vertical_small"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
@@ -59,11 +60,15 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <Space
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_vertical_small" />
+
         <TextView
             android:id="@+id/subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical_small"
             android:background="@color/backgroundHighlight"
             android:gravity="center"
             android:paddingLeft="@dimen/margin_horizontal_small"
