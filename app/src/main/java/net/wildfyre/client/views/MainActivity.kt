@@ -137,7 +137,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         super.onAttachFragment(fragment)
 
         if (fragment is FailureHandlingFragment) {
-            viewModel.setNotificationBadgeVisible(fragment is HomeFragment || fragment is ArchiveFragment || fragment is PostsFragment)
+            viewModel.setNotificationBadgeVisible(fragment is HomeFragment || fragment is ArchiveFragment || fragment is OwnPostsFragment)
         }
 
         if (fragment is LoginFragment) {
@@ -183,7 +183,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             R.id.fragment_home -> HomeFragment()
             R.id.fragment_notifications -> NotificationsFragment()
             R.id.fragment_archive -> ArchiveFragment()
-            R.id.fragment_posts -> PostsFragment()
+            R.id.fragment_own_posts -> OwnPostsFragment()
             else -> null
         }
 

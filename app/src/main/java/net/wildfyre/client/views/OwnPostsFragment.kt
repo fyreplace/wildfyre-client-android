@@ -8,22 +8,22 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import net.wildfyre.client.R
-import net.wildfyre.client.viewmodels.ArchiveFragmentViewModel
+import net.wildfyre.client.viewmodels.OwnPostsFragmentViewModel
 import net.wildfyre.client.views.adapters.PostsAdapter
 
 /**
- * [androidx.fragment.app.Fragment] listing the user's subscribed posts.
+ * [androidx.fragment.app.Fragment] listing the user's own posts.
  */
-class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>() {
-    override lateinit var viewModel: ArchiveFragmentViewModel
+class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>() {
+    override lateinit var viewModel: OwnPostsFragmentViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        viewModel = ViewModelProviders.of(this).get(ArchiveFragmentViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(OwnPostsFragmentViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return onCreateView(inflater, container, PostsAdapter(true), savedInstanceState == null)
-            ?.apply { findViewById<TextView>(R.id.text).setText(R.string.archive_empty) }
+        return onCreateView(inflater, container, PostsAdapter(false), savedInstanceState == null)
+            ?.apply { findViewById<TextView>(R.id.text).setText(R.string.posts_empty) }
     }
 }

@@ -6,7 +6,7 @@ import net.wildfyre.client.data.Author
 import net.wildfyre.client.data.Post
 
 /**
- * Adapter for displaying posts in [net.wildfyre.client.views.PostsFragment].
+ * Adapter for displaying posts with [net.wildfyre.client.views.PostsFragment] implementations.
  */
 open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(showAuthors) {
     override var data: List<Post> = listOf()
@@ -16,7 +16,7 @@ open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(showAuthors) 
 
         // TODO: replace this with switching to the post
         holder.container.setOnClickListener {
-            Toast.makeText(holder.itemView.context, R.string.main_nav_fragment_posts, Toast.LENGTH_SHORT)
+            Toast.makeText(holder.itemView.context, R.string.app_name, Toast.LENGTH_SHORT)
                 .show()
         }
     }
