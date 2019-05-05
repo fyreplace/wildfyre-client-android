@@ -21,6 +21,10 @@
             app:actionLayout="@layout/main_nav_actions_notifications"
             app:showAsAction="always" />
         <item
+            android:id="@+id/fragment_archive"
+            android:icon="@drawable/ic_folder_black_24dp"
+            android:title="@string/main_nav_fragment_archive" />
+        <item
             android:id="@+id/fragment_posts"
             android:icon="@drawable/ic_content_copy_black_24dp"
             android:title="@string/main_nav_fragment_posts"

@@ -41,7 +41,7 @@ class PostsFragment : ItemsListFragment<PostsFragmentViewModel, Post>(R.layout.f
             root
         }
 
-        return onCreateView(root, PostsAdapter(), savedInstanceState == null)
+        return onCreateView(root, PostsAdapter(false), savedInstanceState == null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

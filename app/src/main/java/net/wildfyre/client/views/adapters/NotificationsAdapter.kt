@@ -9,7 +9,7 @@ import net.wildfyre.client.data.Notification
 /**
  * Adapter for displaying notifications in [net.wildfyre.client.views.NotificationsFragment].
  */
-class NotificationsAdapter : ItemsAdapter<Notification>() {
+class NotificationsAdapter : ItemsAdapter<Notification>(true) {
     override var data: List<Notification> = listOf()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

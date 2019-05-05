@@ -169,7 +169,7 @@ interface WebService {
     // Notifications
 
     @GET("/areas/{areaName}/subscribed/")
-    fun getArchive(
+    fun getPosts(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Query("limit") limit: Long,

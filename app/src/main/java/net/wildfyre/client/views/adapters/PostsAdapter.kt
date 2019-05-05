@@ -8,7 +8,7 @@ import net.wildfyre.client.data.Post
 /**
  * Adapter for displaying posts in [net.wildfyre.client.views.PostsFragment].
  */
-open class PostsAdapter : ItemsAdapter<Post>() {
+open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(showAuthors) {
     override var data: List<Post> = listOf()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

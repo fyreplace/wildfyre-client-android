@@ -17,7 +17,7 @@ import net.wildfyre.client.data.Author
 /**
  * Standard adapter using a list of items as a data source.
  */
-abstract class ItemsAdapter<I> : RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
+abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
     abstract var data: List<I>
 
     final override fun getItemCount(): Int = data.size
@@ -44,7 +44,7 @@ abstract class ItemsAdapter<I> : RecyclerView.Adapter<ItemsAdapter.ViewHolder>()
         }
 
         val author = getAuthor(position)
-        holder.authorContainer.isVisible = author != null
+        holder.authorContainer.isVisible = author != null && showAuthors
 
         if (holder.authorContainer.isVisible) {
             holder.authorName.text = author!!.name

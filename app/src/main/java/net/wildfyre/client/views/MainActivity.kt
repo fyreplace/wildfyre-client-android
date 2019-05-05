@@ -182,6 +182,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             }
             R.id.fragment_home -> HomeFragment()
             R.id.fragment_notifications -> NotificationsFragment()
+            R.id.fragment_archive -> ArchiveFragment()
             R.id.fragment_posts -> PostsFragment()
             else -> null
         }

@@ -141,6 +141,30 @@ object NotificationRepository {
     }
 }
 
+object PostRepository {
+    private val delegate = AccumulatorRepositoryDelegate<Post>()
+
+    val superPost: LiveData<SuperPost> = delegate.mutableSuperItem
+    val posts: LiveData<List<Post>> = delegate.mutableItems
+
+    init {
+        resetPosts()
+    }
+
+    fun fetchNextPosts(fh: FailureHandler) {
+        val call = Services.webService.getPosts(
+            AuthRepository.authToken.value!!,
+            AreaRepository.preferredAreaName.value!!,
+            AccumulatorRepositoryDelegate.BUCKET_SIZE,
+            delegate.offset
+        )
+
+        delegate.fetchNextItems(call, fh, true)
+    }
+
+    fun resetPosts() = delegate.resetItems()
+}
+
 object OwnPostRepository {
     private val delegate = AccumulatorRepositoryDelegate<Post>()
 
