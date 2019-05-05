@@ -23,11 +23,7 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I>(contentLayoutId:
     private var resetting = false
     abstract val viewModel: VM
 
-    fun <A : ItemsAdapter<VH, I>, VH : RecyclerView.ViewHolder> onCreateView(
-        root: View,
-        adapter: A,
-        firstSetup: Boolean
-    ): View? {
+    fun <A : ItemsAdapter<I>> onCreateView(root: View, adapter: A, firstSetup: Boolean): View? {
         val notificationList = root.findViewById<RecyclerView>(R.id.items_list)
         val swipeRefresh = root.findViewById<SwipeRefreshLayout>(R.id.refresher)
 
