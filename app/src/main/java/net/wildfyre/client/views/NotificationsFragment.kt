@@ -77,7 +77,7 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
                 val layoutManager = notificationList.layoutManager!! as StaggeredGridLayoutManager
 
                 // No need to do anything if the user is scrolling up or if we have fetched all notifications already
-                if (dy <= 0 || viewModel.superNotification.value!!.count!!.toInt() == layoutManager.itemCount) {
+                if (dy <= 0 || viewModel.notificationCount.value!!.toInt() == layoutManager.itemCount) {
                     return
                 }
 
@@ -136,7 +136,7 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
         If all currently fetched notifications are being displayed, and there are more to fetch, then fetch more
         notifications to make sure that the view is completely filled with notifications.
          */
-        if (layoutManager.childCount == layoutManager.itemCount && viewModel.superNotification.value!!.count!! > layoutManager.itemCount) {
+        if (layoutManager.childCount == layoutManager.itemCount && viewModel.notificationCount.value!! > layoutManager.itemCount) {
             refresher.isRefreshing = true
             viewModel.fetchNextNotifications()
         }
