@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Notification
-import net.wildfyre.client.databinding.FragmentNotificationsBinding
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.NotificationsFragmentViewModel
 import net.wildfyre.client.views.adapters.NotificationsAdapter
@@ -19,7 +19,7 @@ import net.wildfyre.client.views.adapters.NotificationsAdapter
  * [androidx.fragment.app.Fragment] listing the user's notifications.
  */
 class NotificationsFragment :
-    ItemsListFragment<NotificationsFragmentViewModel, Notification>(R.layout.fragment_notifications),
+    ItemsListFragment<NotificationsFragmentViewModel, Notification>(),
     RecyclerView.OnChildAttachStateChangeListener, SwipeRefreshLayout.OnRefreshListener {
     override val viewModels: List<FailureHandlingViewModel>
         get() = listOf(viewModel)
@@ -37,13 +37,8 @@ class NotificationsFragment :
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = FragmentNotificationsBinding.inflate(inflater, container, false).run {
-            lifecycleOwner = this@NotificationsFragment
-            model = viewModel
-            root
-        }
-
-        return onCreateView(root, NotificationsAdapter(), savedInstanceState == null)
+        return onCreateView(inflater, container, NotificationsAdapter(), savedInstanceState == null)
+            ?.apply { findViewById<TextView>(R.id.text).setText(R.string.notifications_empty) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

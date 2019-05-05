@@ -1,21 +1,24 @@
 package net.wildfyre.client.views
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.android.synthetic.main.fragment_notifications.*
+import kotlinx.android.synthetic.main.fragment_item_list.*
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Failure
+import net.wildfyre.client.databinding.FragmentItemListBinding
 import net.wildfyre.client.viewmodels.ItemsListViewModel
 import net.wildfyre.client.views.adapters.ItemsAdapter
 
 /**
  * Base class for fragments displaying a list of items.
  */
-abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I>(contentLayoutId: Int) :
-    FailureHandlingFragment(contentLayoutId), RecyclerView.OnChildAttachStateChangeListener,
+abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
+    FailureHandlingFragment(R.layout.fragment_item_list), RecyclerView.OnChildAttachStateChangeListener,
     SwipeRefreshLayout.OnRefreshListener {
     /**
      * Indicates whether the next notification change is a manual reset.
@@ -23,7 +26,19 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I>(contentLayoutId:
     private var resetting = false
     abstract val viewModel: VM
 
-    fun <A : ItemsAdapter<I>> onCreateView(root: View, adapter: A, firstSetup: Boolean): View? {
+    fun <A : ItemsAdapter<I>> onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        adapter: A,
+        firstSetup: Boolean
+    ): View? {
+        val root = FragmentItemListBinding.inflate(inflater, container, false)
+            .run {
+                lifecycleOwner = this@ItemsListFragment
+                itemCount = viewModel.itemCount
+                root
+            }
+
         val notificationList = root.findViewById<RecyclerView>(R.id.items_list)
         val swipeRefresh = root.findViewById<SwipeRefreshLayout>(R.id.refresher)
 

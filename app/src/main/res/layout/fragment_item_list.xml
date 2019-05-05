@@ -7,8 +7,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="model"
-            type="net.wildfyre.client.viewmodels.ArchiveFragmentViewModel" />
+            name="itemCount"
+            type="androidx.lifecycle.LiveData&lt;Long&gt;" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -35,12 +35,13 @@
                 app:spanCount="@integer/post_preview_span_count" />
 
             <TextView
+                android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/archive_empty"
+                android:text="@string/posts_empty"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:visibility="@{safeUnbox(model.itemCount) == 0 ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{safeUnbox(itemCount) == 0 ? View.VISIBLE : View.GONE}" />
         </FrameLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
