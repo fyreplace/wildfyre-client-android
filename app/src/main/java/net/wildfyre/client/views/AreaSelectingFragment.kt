@@ -93,12 +93,17 @@ abstract class AreaSelectingFragment(contentLayoutId: Int, @MenuRes private val 
 
         val adapter = ArrayAdapter<String>(context!!, R.layout.actions_area_item)
         areaSpinner.adapter = adapter
+
+        areaSelectingViewModel.preferredArea.value?.let {
+            areaSpinner.setSelection(areaSelectingViewModel.areas.value!!.indexOf(it))
+        }
+
         areaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                areaSelectingViewModel.setPreferredAreaDisplayName(areaSpinner.selectedItem.toString())
+                areaSelectingViewModel.setPreferredAreaName(areaSelectingViewModel.areas.value!![position].name!!)
                 areaSelectingViewModel.updatePreferredArea()
             }
         }

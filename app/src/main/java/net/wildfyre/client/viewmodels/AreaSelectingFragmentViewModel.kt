@@ -33,9 +33,4 @@ class AreaSelectingFragmentViewModel(application: Application) : FailureHandling
     fun updatePreferredArea() = AreaRepository.fetchAreaReputation(this, preferredAreaName.value!!)
 
     fun setPreferredAreaName(areaName: String) = AreaRepository.setPreferredAreaName(areaName)
-
-    fun setPreferredAreaDisplayName(displayName: String) {
-        areas.value?.firstOrNull { it.displayname == displayName }
-            ?.name?.let { setPreferredAreaName(it) }
-    }
 }
