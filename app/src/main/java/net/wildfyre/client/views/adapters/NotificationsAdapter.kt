@@ -17,10 +17,8 @@ import net.wildfyre.client.data.Notification
 /**
  * Adapter for displaying notifications in [net.wildfyre.client.views.NotificationsFragment].
  */
-class NotificationsAdapter : RecyclerView.Adapter<NotificationsAdapter.ViewHolder>() {
-    var data: List<Notification> = listOf()
-
-    override fun getItemCount(): Int = data.size
+class NotificationsAdapter : ItemsAdapter<NotificationsAdapter.ViewHolder, Notification>() {
+    override var data: List<Notification> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(

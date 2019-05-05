@@ -39,9 +39,10 @@
         <item quantity="one">%1$s new comment</item>
         <item quantity="other">%1$s new comments</item>
     </plurals>
+    <string name="posts_empty">No posts</string>
     <string name="image_desc_user_picture">Profile picture</string>
     <string name="image_desc_author_picture">Author picture</string>
-    <string name="image_desc_notifications">Notifications</string>
+    <string name="image_desc_post_picture">Post picture</string>
     <string name="failure_request">Error during request</string>
     <string name="failure_login">Logging in failed</string>
     <string name="failure_profile_edit">Could not update profile</string>

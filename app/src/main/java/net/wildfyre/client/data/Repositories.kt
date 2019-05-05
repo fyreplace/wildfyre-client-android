@@ -164,3 +164,50 @@ object NotificationRepository {
             .then(fh, R.string.failure_request) { resetNotifications() }
     }
 }
+
+object OwnPostsRepository {
+    private const val BUCKET_SIZE = 12L
+
+    private val mutableSuperPost = MutableLiveData<SuperPost>()
+    private val mutablePosts = MutableLiveData<List<Post>>()
+    private var postsOffset = 0L
+    private var fetchingContent = false
+
+    val superPost: LiveData<SuperPost> = mutableSuperPost
+    val posts: LiveData<List<Post>> = mutablePosts
+
+    init {
+        resetPosts()
+    }
+
+    fun fetchNextPosts(fh: FailureHandler) {
+        if (fetchingContent) {
+            return
+        }
+
+        fetchingContent = true
+        Services.webService.getOwnPosts(
+            AuthRepository.authToken.value!!,
+            AreaRepository.preferredAreaName.value!!,
+            BUCKET_SIZE,
+            postsOffset
+        )
+            .then(fh, R.string.failure_request) {
+                fetchingContent = false
+                mutableSuperPost.value = it
+                it.results?.run {
+                    postsOffset += size
+                    mutablePosts.value = mutablePosts.value!! + this
+                }
+            }
+    }
+
+    fun resetPosts() {
+        postsOffset = 0
+        mutableSuperPost.value = mutableSuperPost.value?.apply {
+            count = 0
+            results = listOf()
+        } ?: SuperPost()
+        mutablePosts.value = listOf()
+    }
+}

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/margin_horizontal_tiny"
@@ -11,7 +10,7 @@
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="?attr/selectableItemBackground"
         android:orientation="vertical">
 
@@ -22,42 +21,20 @@
             android:layout_marginLeft="@dimen/margin_horizontal_small"
             android:layout_marginTop="@dimen/margin_vertical_small"
             android:layout_marginRight="@dimen/margin_horizontal_small"
+            android:layout_marginBottom="@dimen/margin_vertical_small"
             android:ellipsize="end"
-            android:maxLines="8"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/foreground" />
+            android:maxLines="8" />
 
-        <LinearLayout
-            android:id="@+id/author_container"
+        <ImageView
+            android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/margin_horizontal_small"
-            android:paddingTop="@dimen/margin_vertical_small"
-            android:paddingRight="@dimen/margin_horizontal_small"
-            tools:ignore="UseCompoundDrawables">
-
-            <ImageView
-                android:id="@+id/author_picture"
-                android:layout_width="@dimen/post_author_picture_size"
-                android:layout_height="@dimen/post_author_picture_size"
-                android:layout_marginEnd="@dimen/margin_horizontal_small"
-                android:layout_marginRight="@dimen/margin_horizontal_small"
-                android:contentDescription="@string/image_desc_author_picture" />
-
-            <TextView
-                android:id="@+id/author_name"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:contentDescription="@string/image_desc_post_picture" />
 
         <TextView
-            android:id="@+id/comment_count"
+            android:id="@+id/creation_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical_small"
             android:background="@color/backgroundHighlight"
             android:gravity="center"
             android:paddingLeft="@dimen/margin_horizontal_small"

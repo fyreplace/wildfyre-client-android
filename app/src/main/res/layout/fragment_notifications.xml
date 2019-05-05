@@ -21,7 +21,7 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/notification_list"
+                android:id="@+id/items_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipChildren="false"
@@ -32,15 +32,15 @@
                 android:paddingRight="@dimen/margin_horizontal_tiny"
                 android:paddingBottom="@dimen/margin_vertical_tiny"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                app:spanCount="@integer/notifications_span_count" />
+                app:spanCount="@integer/post_preview_span_count" />
 
             <TextView
-                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/notifications_empty"
-                android:visibility="@{safeUnbox(model.notificationCount) == 0 ? View.VISIBLE : View.GONE}" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:visibility="@{safeUnbox(model.itemCount) == 0 ? View.VISIBLE : View.GONE}" />
         </FrameLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
