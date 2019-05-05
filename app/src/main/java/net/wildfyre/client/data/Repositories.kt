@@ -9,6 +9,7 @@ import net.wildfyre.client.R
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Call
 
 object SettingsRepository {
     private val mutableTheme = MutableLiveData<Int>()
@@ -113,51 +114,26 @@ object AreaRepository {
 }
 
 object NotificationRepository {
-    private const val BUCKET_SIZE = 12L
+    private val delegate = AccumulatorRepositoryDelegate<Notification>()
 
-    private val mutableSuperNotification = MutableLiveData<SuperNotification>()
-    private val mutableNotifications = MutableLiveData<List<Notification>>()
-    private var notificationOffset = 0L
-    private var fetchingContent = false
-
-    val superNotification: LiveData<SuperNotification> = mutableSuperNotification
-    val notifications: LiveData<List<Notification>> = mutableNotifications
+    val superNotification: LiveData<SuperNotification> = delegate.mutableSuperItem
+    val notifications: LiveData<List<Notification>> = delegate.mutableItems
 
     init {
         resetNotifications()
     }
 
     fun fetchNextNotifications(fh: FailureHandler, forContent: Boolean) {
-        when {
-            fetchingContent -> return
-            forContent -> fetchingContent = true
-        }
-
-        Services.webService.getNotifications(
+        val call = Services.webService.getNotifications(
             AuthRepository.authToken.value!!,
-            if (forContent) BUCKET_SIZE else 1,
-            notificationOffset
-        ).then(fh, R.string.failure_request) {
-            fetchingContent = false
-            mutableSuperNotification.value = it
+            if (forContent) AccumulatorRepositoryDelegate.BUCKET_SIZE else 1,
+            delegate.offset
+        )
 
-            if (forContent) {
-                it.results?.run {
-                    notificationOffset += size
-                    mutableNotifications.value = mutableNotifications.value!! + this
-                }
-            }
-        }
+        delegate.fetchNextItems(call, fh, forContent)
     }
 
-    fun resetNotifications() {
-        notificationOffset = 0
-        mutableSuperNotification.value = mutableSuperNotification.value?.apply {
-            count = 0
-            results = listOf()
-        } ?: SuperNotification()
-        mutableNotifications.value = listOf()
-    }
+    fun resetNotifications() = delegate.resetItems()
 
     fun clearNotifications(fh: FailureHandler) {
         Services.webService.deleteNotifications(AuthRepository.authToken.value!!)
@@ -165,49 +141,62 @@ object NotificationRepository {
     }
 }
 
-object OwnPostsRepository {
-    private const val BUCKET_SIZE = 12L
+object OwnPostRepository {
+    private val delegate = AccumulatorRepositoryDelegate<Post>()
 
-    private val mutableSuperPost = MutableLiveData<SuperPost>()
-    private val mutablePosts = MutableLiveData<List<Post>>()
-    private var postsOffset = 0L
-    private var fetchingContent = false
-
-    val superPost: LiveData<SuperPost> = mutableSuperPost
-    val posts: LiveData<List<Post>> = mutablePosts
+    val superPost: LiveData<SuperPost> = delegate.mutableSuperItem
+    val posts: LiveData<List<Post>> = delegate.mutableItems
 
     init {
         resetPosts()
     }
 
     fun fetchNextPosts(fh: FailureHandler) {
-        if (fetchingContent) {
-            return
-        }
-
-        fetchingContent = true
-        Services.webService.getOwnPosts(
+        val call = Services.webService.getOwnPosts(
             AuthRepository.authToken.value!!,
             AreaRepository.preferredAreaName.value!!,
-            BUCKET_SIZE,
-            postsOffset
+            AccumulatorRepositoryDelegate.BUCKET_SIZE,
+            delegate.offset
         )
-            .then(fh, R.string.failure_request) {
-                fetchingContent = false
-                mutableSuperPost.value = it
-                it.results?.run {
-                    postsOffset += size
-                    mutablePosts.value = mutablePosts.value!! + this
-                }
-            }
+
+        delegate.fetchNextItems(call, fh, true)
     }
 
-    fun resetPosts() {
-        postsOffset = 0
-        mutableSuperPost.value = mutableSuperPost.value?.apply {
-            count = 0
-            results = listOf()
-        } ?: SuperPost()
-        mutablePosts.value = listOf()
+    fun resetPosts() = delegate.resetItems()
+}
+
+private class AccumulatorRepositoryDelegate<T> {
+    internal val mutableSuperItem = MutableLiveData<SuperItem<T>>()
+    internal val mutableItems = MutableLiveData<List<T>>()
+    internal var offset = 0L
+    internal var fetchingContent = false
+
+    fun fetchNextItems(call: Call<SuperItem<T>>, fh: FailureHandler, forContent: Boolean) {
+        when {
+            fetchingContent -> return
+            forContent -> fetchingContent = true
+        }
+
+        call.then(fh, R.string.failure_request) {
+            fetchingContent = false
+            mutableSuperItem.value = it
+
+            if (forContent) {
+                it.results?.run {
+                    offset += size
+                    mutableItems.value = mutableItems.value!! + this
+                }
+            }
+        }
+    }
+
+    fun resetItems() {
+        offset = 0
+        mutableSuperItem.value = mutableSuperItem.value?.apply { count = 0; results = listOf() } ?: SuperItem()
+        mutableItems.value = listOf()
+    }
+
+    companion object {
+        const val BUCKET_SIZE = 12L
     }
 }
