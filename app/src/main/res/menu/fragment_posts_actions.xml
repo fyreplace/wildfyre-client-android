@@ -8,15 +8,17 @@
         android:id="@+id/action_area_selector"
         android:title=""
         app:actionViewClass="androidx.appcompat.widget.AppCompatSpinner"
-        app:showAsAction="always" />
+        app:showAsAction="always|collapseActionView" />
     <item
         android:id="@+id/action_area_spread"
         android:title="@string/main_actions_area_spread"
+        android:visible="false"
         app:actionLayout="@layout/actions_area_spread"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_area_reputation"
         android:title="@string/main_actions_area_spread"
+        android:visible="false"
         app:actionLayout="@layout/actions_area_reputation"
         app:showAsAction="always" />
 </menu>
