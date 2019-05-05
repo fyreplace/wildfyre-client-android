@@ -7,7 +7,7 @@ import androidx.lifecycle.Transformations
 import net.wildfyre.client.data.Area
 import net.wildfyre.client.data.AreaRepository
 
-class HomeFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
+class AreaSelectingFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
     private val _preferredArea = MediatorLiveData<Area?>()
 
     val areas: LiveData<List<Area>> = AreaRepository.areas
@@ -35,8 +35,7 @@ class HomeFragmentViewModel(application: Application) : FailureHandlingViewModel
     fun setPreferredAreaName(areaName: String) = AreaRepository.setPreferredAreaName(areaName)
 
     fun setPreferredAreaDisplayName(displayName: String) {
-        areas.value?.firstOrNull { it.displayname == displayName }?.name?.let {
-            setPreferredAreaName(it)
-        }
+        areas.value?.firstOrNull { it.displayname == displayName }
+            ?.name?.let { setPreferredAreaName(it) }
     }
 }

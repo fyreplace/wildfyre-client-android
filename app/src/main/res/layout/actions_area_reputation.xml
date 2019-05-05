@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="net.wildfyre.client.viewmodels.HomeFragmentViewModel" />
+            type="net.wildfyre.client.viewmodels.AreaSelectingFragmentViewModel" />
     </data>
 
     <TextView
