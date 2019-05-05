@@ -225,7 +225,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Query("postId") postId: Long
-    ): Call<SuperPost>
+    ): Call<Post>
 
     @POST("/areas/{areaName}/")
     @Headers("Content-Type: application/json")
@@ -287,7 +287,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Query("postId") postId: Long
-    ): Call<SuperPost>
+    ): Call<Post>
 
     @POST("/areas/{areaName}/drafts/")
     @Headers("Content-Type: application/json")
