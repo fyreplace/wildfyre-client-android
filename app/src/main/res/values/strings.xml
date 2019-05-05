@@ -40,7 +40,7 @@
         <item quantity="one">%1$s new comment</item>
         <item quantity="other">%1$s new comments</item>
     </plurals>
-    <string name="archive_empty">No posts archived</string>
+    <string name="archive_empty">No archived posts from this area</string>
     <string name="posts_empty">No posts in this area</string>
     <string name="image_desc_user_picture">Profile picture</string>
     <string name="image_desc_author_picture">Author picture</string>

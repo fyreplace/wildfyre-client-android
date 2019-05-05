@@ -24,8 +24,8 @@ class PostsFragment : ItemsListFragment<PostsFragmentViewModel, Post>(), AreaSel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        areaSelectingViewModel = ViewModelProviders.of(activity!!).get(AreaSelectingFragmentViewModel::class.java)
         viewModel = ViewModelProviders.of(this).get(PostsFragmentViewModel::class.java)
+        areaSelectingViewModel = ViewModelProviders.of(activity!!).get(AreaSelectingFragmentViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
