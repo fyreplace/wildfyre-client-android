@@ -24,11 +24,11 @@ import net.wildfyre.client.viewmodels.MainActivityViewModel
  */
 abstract class AreaSelectingFragment(contentLayoutId: Int, @MenuRes private val menuResource: Int) :
     FailureHandlingFragment(contentLayoutId) {
-    override lateinit var viewModel: AreaSelectingFragmentViewModel
+    protected lateinit var areaSelectingViewModel: AreaSelectingFragmentViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        viewModel = ViewModelProviders.of(this).get(AreaSelectingFragmentViewModel::class.java)
+        areaSelectingViewModel = ViewModelProviders.of(activity!!).get(AreaSelectingFragmentViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,12 +42,12 @@ abstract class AreaSelectingFragment(contentLayoutId: Int, @MenuRes private val 
 
         ActionsAreaSpreadBinding.bind(menu.findItem(R.id.action_area_spread).actionView).apply {
             lifecycleOwner = viewLifecycleOwner
-            model = viewModel
+            model = areaSelectingViewModel
         }
 
         ActionsAreaReputationBinding.bind(menu.findItem(R.id.action_area_reputation).actionView).apply {
             lifecycleOwner = viewLifecycleOwner
-            model = viewModel
+            model = areaSelectingViewModel
         }
 
         val areaSelectorMenuItem = menu.findItem(R.id.action_area_selector)
@@ -80,13 +80,13 @@ abstract class AreaSelectingFragment(contentLayoutId: Int, @MenuRes private val 
             }
         })
 
-        viewModel.preferredArea.observe(viewLifecycleOwner, Observer { area ->
+        areaSelectingViewModel.preferredArea.observe(viewLifecycleOwner, Observer { area ->
             if (area == null) {
                 return@Observer
             }
 
             areaSelectorMenuItem.title = getString(R.string.main_actions_area_selector, area.displayname)
-            viewModel.areas.value
+            areaSelectingViewModel.areas.value
                 ?.indexOfFirst { it.name == area.name }
                 ?.run { areaSpinner.setSelection(this) }
         })
@@ -98,20 +98,20 @@ abstract class AreaSelectingFragment(contentLayoutId: Int, @MenuRes private val 
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.setPreferredAreaDisplayName(areaSpinner.selectedItem.toString())
-                viewModel.updatePreferredArea()
+                areaSelectingViewModel.setPreferredAreaDisplayName(areaSpinner.selectedItem.toString())
+                areaSelectingViewModel.updatePreferredArea()
             }
         }
 
-        viewModel.areas.observe(viewLifecycleOwner, Observer { areas ->
+        areaSelectingViewModel.areas.observe(viewLifecycleOwner, Observer { areas ->
             adapter.run { clear(); addAll(areas.map { it.displayname }) }
 
             // If there is no preferred area yet, then this is the first run; set it to the first area that comes
-            if (viewModel.preferredAreaName.value == null) {
-                viewModel.setPreferredAreaName(areas.first().name!!)
+            if (areaSelectingViewModel.preferredAreaName.value == null) {
+                areaSelectingViewModel.setPreferredAreaName(areas.first().name!!)
             }
         })
 
-        viewModel.updateAreas()
+        areaSelectingViewModel.updateAreas()
     }
 }

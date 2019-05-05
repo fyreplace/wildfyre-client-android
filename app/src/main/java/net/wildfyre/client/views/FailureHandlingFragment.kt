@@ -17,11 +17,11 @@ abstract class FailureHandlingFragment(contentLayoutId: Int) : Fragment(contentL
      * Subclasses must have a viewModel inheriting from [FailureHandlingViewModel]. It has to be initialized in
      * [onAttach] to it can then be used in [onCreate].
      */
-    protected abstract val viewModel: FailureHandlingViewModel
+    protected abstract val viewModels: List<FailureHandlingViewModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.lastFailure.observe(this, Observer { onFailure(it) })
+        viewModels.forEach { vm -> vm.lastFailure.observe(this, Observer { onFailure(it) }) }
     }
 
     @CallSuper

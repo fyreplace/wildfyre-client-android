@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_notifications.*
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Failure
 import net.wildfyre.client.databinding.FragmentNotificationsBinding
+import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.NotificationsFragmentViewModel
 import net.wildfyre.client.views.adapters.NotificationsAdapter
 
@@ -22,7 +23,9 @@ import net.wildfyre.client.views.adapters.NotificationsAdapter
  */
 class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifications),
     RecyclerView.OnChildAttachStateChangeListener, SwipeRefreshLayout.OnRefreshListener {
-    override lateinit var viewModel: NotificationsFragmentViewModel
+    override val viewModels: List<FailureHandlingViewModel>
+        get() = listOf(viewModel)
+    private lateinit var viewModel: NotificationsFragmentViewModel
     /**
      * Indicates whether the next notification change is a manual reset.
      */

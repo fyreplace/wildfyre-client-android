@@ -20,7 +20,9 @@ import net.wildfyre.client.viewmodels.LoginFragmentViewModel
  * [androidx.fragment.app.Fragment] showing a login screen to the user.
  */
 class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
-    override lateinit var viewModel: LoginFragmentViewModel
+    override val viewModels
+        get() = listOf(viewModel)
+    private lateinit var viewModel: LoginFragmentViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
