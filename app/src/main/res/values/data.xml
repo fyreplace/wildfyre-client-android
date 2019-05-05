@@ -5,4 +5,5 @@
         <item>@string/theme_light</item>
         <item>@string/theme_dark</item>
     </string-array>
+    <integer name="notifications_span_count">2</integer>
 </resources>

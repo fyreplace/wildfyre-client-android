@@ -32,7 +32,7 @@
                 android:paddingRight="@dimen/margin_horizontal_tiny"
                 android:paddingBottom="@dimen/margin_vertical_tiny"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-                app:spanCount="2" />
+                app:spanCount="@integer/notifications_span_count" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Large"

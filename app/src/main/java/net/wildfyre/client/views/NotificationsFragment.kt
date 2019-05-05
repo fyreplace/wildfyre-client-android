@@ -95,8 +95,12 @@ class NotificationsFragment : FailureHandlingFragment(R.layout.fragment_notifica
         swipeRefresh.setColorSchemeResources(R.color.colorAccent)
         swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.background)
         swipeRefresh.setOnRefreshListener(this)
-        swipeRefresh.isRefreshing = true
-        onRefresh()
+
+        if (savedInstanceState == null) {
+            swipeRefresh.isRefreshing = true
+            onRefresh()
+        }
+
         return root
     }
 

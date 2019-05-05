@@ -76,7 +76,7 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
         MainNavActionsBadgeBinding.bind(navigation_drawer.menu.findItem(R.id.badge_toggle).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
-        MainAppBarBinding.bind(findViewById(R.id.content))
+        MainAppBarBinding.bind(content)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
 
         viewModel.selectedThemeIndex.observe(this, Observer {
