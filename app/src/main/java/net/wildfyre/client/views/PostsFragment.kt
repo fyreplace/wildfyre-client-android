@@ -1,7 +1,6 @@
 package net.wildfyre.client.views
 
 import android.content.Context
-import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.lifecycle.Observer
@@ -20,16 +19,21 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> : ItemsListFragment<VM
     override lateinit var areaSelectingViewModel: AreaSelectingFragmentViewModel
     override val viewModels: List<FailureHandlingViewModel>
         get() = listOf(viewModel, areaSelectingViewModel)
+    private var settingUp = true
 
     override fun onAttach(context: Context) {
-        super.onAttach(context)
+        super<ItemsListFragment>.onAttach(context)
+        onAttach(this)
         areaSelectingViewModel = ViewModelProviders.of(activity!!).get(AreaSelectingFragmentViewModel::class.java)
-    }
+        areaSelectingViewModel.preferredAreaName.observe(this, Observer {
+            if (settingUp) {
+                settingUp = false
+                return@Observer
+            }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super<ItemsListFragment>.onCreate(savedInstanceState)
-        onCreate(this)
-        areaSelectingViewModel.preferredArea.observe(this, Observer { refresher.isRefreshing = true; onRefresh() })
+            refresher.isRefreshing = true
+            onRefresh()
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

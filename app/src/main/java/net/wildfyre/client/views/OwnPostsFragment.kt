@@ -20,6 +20,7 @@ class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         viewModel = ViewModelProviders.of(this).get(OwnPostsFragmentViewModel::class.java)
+        activity?.setTitle(R.string.main_nav_fragment_own_posts)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

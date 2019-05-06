@@ -27,6 +27,7 @@
     <string name="main_drawer_close">Close navigation drawer</string>
     <string name="main_actions_area_selector">Area: %1$s</string>
     <string name="main_actions_area_spread">Spread</string>
+    <string name="main_actions_area_reputation">Reputation</string>
     <string name="main_actions_comments">Comments</string>
     <string name="main_actions_subscribe">Subscribe</string>
     <string name="main_actions_posts_new">New post</string>

@@ -108,8 +108,10 @@ object AreaRepository {
         }
 
     fun setPreferredAreaName(name: String) {
-        Application.preferences.edit { putString(Constants.Preferences.AREA_PREFERRED, name) }
-        mutablePreferredAreaName.value = name
+        if (name != preferredAreaName.value) {
+            Application.preferences.edit { putString(Constants.Preferences.AREA_PREFERRED, name) }
+            mutablePreferredAreaName.value = name
+        }
     }
 }
 

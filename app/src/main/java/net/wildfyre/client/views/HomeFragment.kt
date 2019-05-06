@@ -1,7 +1,6 @@
 package net.wildfyre.client.views
 
 import android.content.Context
-import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.lifecycle.ViewModelProviders
@@ -20,14 +19,11 @@ class HomeFragment : FailureHandlingFragment(R.layout.fragment_home), AreaSelect
         get() = listOf(viewModel, areaSelectingViewModel)
 
     override fun onAttach(context: Context) {
-        super.onAttach(context)
+        super<FailureHandlingFragment>.onAttach(context)
+        onAttach(this)
+        activity?.title = ""
         viewModel = ViewModelProviders.of(this).get(HomeFragmentViewModel::class.java)
         areaSelectingViewModel = ViewModelProviders.of(activity!!).get(AreaSelectingFragmentViewModel::class.java)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super<FailureHandlingFragment>.onCreate(savedInstanceState)
-        onCreate(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -27,12 +27,8 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         viewModel = ViewModelProviders.of(this).get(LoginFragmentViewModel::class.java)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
         activity?.title = getString(R.string.app_name)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

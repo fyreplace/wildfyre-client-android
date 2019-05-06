@@ -22,9 +22,8 @@ import net.wildfyre.client.viewmodels.MainActivityViewModel
 interface AreaSelectingFragment {
     val areaSelectingViewModel: AreaSelectingFragmentViewModel
 
-    fun onCreate(fragment: Fragment) {
+    fun onAttach(fragment: Fragment) {
         fragment.setHasOptionsMenu(true)
-        fragment.activity?.title = ""
     }
 
     fun onCreateOptionsMenu(fragment: Fragment, menu: Menu) {
