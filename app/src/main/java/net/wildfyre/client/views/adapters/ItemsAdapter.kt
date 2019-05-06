@@ -14,12 +14,25 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Author
+import ru.noties.markwon.Markwon
+import ru.noties.markwon.core.CorePlugin
+import ru.noties.markwon.ext.tables.TablePlugin
 
 /**
  * Standard adapter using a list of items as a data source.
  */
 abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
+    private lateinit var markdown: Markwon
     abstract var data: List<I>
+
+    @CallSuper
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        markdown = Markwon.builder(recyclerView.context)
+            .usePlugin(CorePlugin.create())
+            .usePlugin(TablePlugin.create(recyclerView.context))
+            .build()
+    }
 
     final override fun getItemCount(): Int = data.size
 
@@ -41,7 +54,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
                 .load(image)
                 .into(holder.image)
         } else {
-            holder.text.text = getText(position)
+            holder.text.text = markdown.toMarkdown(getText(position)!!)
         }
 
         val author = getAuthor(position)
