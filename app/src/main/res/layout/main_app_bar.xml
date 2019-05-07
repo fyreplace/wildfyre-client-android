@@ -35,11 +35,9 @@
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
 
                 <TextView
+                    android:id="@+id/badge"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_marginStart="26dp"
-                    android:layout_marginLeft="26dp"
-                    android:layout_marginTop="12dp"
                     android:background="@drawable/ic_badge_background_daynight_24dp"
                     android:clickable="false"
                     android:focusable="false"

@@ -11,6 +11,7 @@ import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.ImageView
@@ -113,6 +114,16 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         navigation_drawer.setNavigationItemSelectedListener(this)
         navigation_drawer.doOnLayout {
             navigation_drawer.findViewById<View>(R.id.edit)?.setOnClickListener { editProfile() }
+        }
+
+        toolbar.doOnLayout {
+            val layoutParams = badge.layoutParams as ViewGroup.MarginLayoutParams
+            layoutParams.setMargins(
+                it.height / 2,
+                it.height / 2 - resources.getDimensionPixelOffset(R.dimen.margin_vertical_medium),
+                0,
+                0
+            )
         }
 
         tryNavigateTo(
