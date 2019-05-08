@@ -37,6 +37,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
 import net.wildfyre.client.AppGlide
+import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.*
 import net.wildfyre.client.viewmodels.MainActivityViewModel
@@ -89,9 +90,9 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 if (navController.currentDestination?.id !in LOGIN_DESTINATIONS) {
                     navController.navigate(
                         if (viewModel.startupLogin)
-                            R.id.action_global_fragment_login_startup
+                            NavigationMainDirections.actionGlobalFragmentLoginStartup()
                         else
-                            R.id.action_global_fragment_login
+                            NavigationMainDirections.actionGlobalFragmentLogin()
                     )
                 }
             }
@@ -205,13 +206,19 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
         val isLoginStep = destination.id in LOGIN_DESTINATIONS
         drawer_layout.setDrawerLockMode(if (isLoginStep) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
-        viewModel.setNotificationBadgeVisible(destination.id != R.id.fragment_notifications && !isLoginStep)
 
         if (isLoginStep) {
             toolbar.navigationIcon = null
         } else if (toolbar.navigationIcon == null) {
             toolbar.navigationIcon = DrawerArrowDrawable(this).apply { isSpinEnabled = true }
         }
+
+        viewModel.setNotificationBadgeVisible(
+            !isLoginStep && destination.id !in setOf(
+                R.id.fragment_notifications,
+                R.id.fragment_post
+            )
+        )
     }
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) {

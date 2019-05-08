@@ -67,9 +67,8 @@ object AuthorRepository {
     val self: LiveData<Author> = mutableSelf
 
     fun fetchSelf(fh: FailureHandler) =
-        Services.webService.getSelf(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) {
-            mutableSelf.value = it
-        }
+        Services.webService.getSelf(AuthRepository.authToken.value!!)
+            .then(fh, R.string.failure_request) { mutableSelf.value = it }
 
     fun updateSelfBio(fh: FailureHandler, bio: String) =
         Services.webService.patchBio(AuthRepository.authToken.value!!, Author().apply { this.bio = bio })
@@ -98,14 +97,12 @@ object AreaRepository {
     }
 
     fun fetchAreas(fh: FailureHandler) =
-        Services.webService.getAreas(AuthRepository.authToken.value!!).then(fh, R.string.failure_request) {
-            mutableAreas.value = it
-        }
+        Services.webService.getAreas(AuthRepository.authToken.value!!)
+            .then(fh, R.string.failure_request) { mutableAreas.value = it }
 
     fun fetchAreaReputation(fh: FailureHandler, areaName: String) =
-        Services.webService.getAreaRep(AuthRepository.authToken.value!!, areaName).then(fh, R.string.failure_request) {
-            mutablePreferredAreaReputation.value = it
-        }
+        Services.webService.getAreaRep(AuthRepository.authToken.value!!, areaName)
+            .then(fh, R.string.failure_request) { mutablePreferredAreaReputation.value = it }
 
     fun setPreferredAreaName(name: String) {
         if (name != preferredAreaName.value) {
@@ -144,6 +141,19 @@ object NotificationRepository {
 }
 
 object PostRepository {
+    fun getPost(fh: FailureHandler, id: Long): LiveData<Post> {
+        val post = MutableLiveData<Post>()
+
+        if (id >= 0) {
+            Services.webService.getPost(AuthRepository.authToken.value!!, AreaRepository.preferredAreaName.value!!, id)
+                .then(fh, R.string.failure_request) { post.value = it }
+        }
+
+        return post
+    }
+}
+
+object ArchiveRepository {
     private val delegate = AccumulatorRepositoryDelegate<Post>()
 
     val superPost: LiveData<SuperPost> = delegate.mutableSuperItem

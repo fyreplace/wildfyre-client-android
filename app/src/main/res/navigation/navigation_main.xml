@@ -39,6 +39,15 @@
         android:name="net.wildfyre.client.views.OwnPostsFragment"
         android:label="@string/main_nav_fragment_own_posts"
         tools:layout="@layout/fragment_item_list" />
+    <fragment
+        android:id="@+id/fragment_post"
+        android:name="net.wildfyre.client.views.PostFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_post">
+        <argument
+            android:name="postId"
+            app:argType="long" />
+    </fragment>
     <action
         android:id="@+id/action_global_fragment_login"
         app:destination="@id/fragment_login"
@@ -55,4 +64,11 @@
         app:popExitAnim="@anim/slide_out_left"
         app:popUpTo="@+id/fragment_home"
         app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_fragment_post"
+        app:destination="@id/fragment_post"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
 </navigation>

@@ -21,7 +21,6 @@ class HomeFragment : FailureHandlingFragment(R.layout.fragment_home), AreaSelect
     override fun onAttach(context: Context) {
         super<FailureHandlingFragment>.onAttach(context)
         onAttach(this)
-        activity?.title = ""
         viewModel = ViewModelProviders.of(this).get(HomeFragmentViewModel::class.java)
         areaSelectingViewModel = ViewModelProviders.of(activity!!).get(AreaSelectingFragmentViewModel::class.java)
     }

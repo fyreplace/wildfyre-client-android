@@ -23,7 +23,8 @@ import ru.noties.markwon.ext.tables.TablePlugin
  */
 abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
     private lateinit var markdown: Markwon
-    abstract var data: List<I>
+    var onItemClickedListener: OnItemClickedListener = OnItemClickedListener.default()
+    var data: List<I> = listOf()
 
     @CallSuper
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -77,6 +78,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
 
         holder.space.isVisible = holder.text.isVisible && !holder.authorContainer.isVisible
         holder.subtitle.text = getSubtitle(position)
+        holder.container.setOnClickListener { onItemClickedListener.onItemClicked(getId(position)) }
     }
 
     abstract fun getText(position: Int): String?
@@ -87,6 +89,8 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
 
     abstract fun getSubtitle(position: Int): String
 
+    abstract fun getId(position: Int): Long
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val container: ViewGroup = itemView.findViewById(R.id.container)
         val text: TextView = itemView.findViewById(R.id.text)
@@ -96,5 +100,16 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
         val authorPicture: ImageView = itemView.findViewById(R.id.author_picture)
         val space: Space = itemView.findViewById(R.id.space)
         val subtitle: TextView = itemView.findViewById(R.id.subtitle)
+    }
+
+    interface OnItemClickedListener {
+        fun onItemClicked(id: Long)
+
+        companion object {
+            fun default() = object : OnItemClickedListener {
+                override fun onItemClicked(id: Long) {
+                }
+            }
+        }
     }
 }

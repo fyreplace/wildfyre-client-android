@@ -4,10 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_item_list.*
+import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Failure
 import net.wildfyre.client.databinding.FragmentItemListBinding
@@ -19,7 +21,7 @@ import net.wildfyre.client.views.adapters.ItemsAdapter
  */
 abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
     FailureHandlingFragment(R.layout.fragment_item_list), RecyclerView.OnChildAttachStateChangeListener,
-    SwipeRefreshLayout.OnRefreshListener {
+    SwipeRefreshLayout.OnRefreshListener, ItemsAdapter.OnItemClickedListener {
     /**
      * Indicates whether the next notification change is a manual reset.
      */
@@ -59,6 +61,8 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
                     notifyItemRangeRemoved(0, previousCount)
                 }
             })
+
+            onItemClickedListener = this@ItemsListFragment
         }
 
         // When the user scrolls, new notifications should be fetched dynamically
@@ -128,5 +132,9 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
         resetting = true
         viewModel.resetItems()
         viewModel.fetchNextItems()
+    }
+
+    override fun onItemClicked(id: Long) {
+        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(id))
     }
 }

@@ -20,7 +20,6 @@ class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         viewModel = ViewModelProviders.of(this).get(ArchiveFragmentViewModel::class.java)
-        activity?.setTitle(R.string.main_nav_fragment_archive)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -13,13 +13,6 @@ object Constants {
     }
 
     /**
-     * Identifiers used for saving an activity's state.
-     */
-    object Save {
-        const val ACTIVITY_NAVIGATION = "activity.navigation"
-    }
-
-    /**
      * Simplified constants for day/night mode, merging [AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM] and
      * [AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY].
      */

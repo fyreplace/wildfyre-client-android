@@ -3,14 +3,14 @@ package net.wildfyre.client.viewmodels
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import net.wildfyre.client.data.ArchiveRepository
 import net.wildfyre.client.data.Post
-import net.wildfyre.client.data.PostRepository
 
 class ArchiveFragmentViewModel(application: Application) : PostsFragmentViewModel(application) {
-    override var itemCount: LiveData<Long> = Transformations.map(PostRepository.superPost) { it.count ?: 0 }
-    override val items: LiveData<List<Post>> = PostRepository.posts
+    override var itemCount: LiveData<Long> = Transformations.map(ArchiveRepository.superPost) { it.count ?: 0 }
+    override val items: LiveData<List<Post>> = ArchiveRepository.posts
 
-    override fun fetchNextItems() = PostRepository.fetchNextPosts(this)
+    override fun fetchNextItems() = ArchiveRepository.fetchNextPosts(this)
 
-    override fun resetItems() = PostRepository.resetPosts()
+    override fun resetItems() = ArchiveRepository.resetPosts()
 }

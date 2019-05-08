@@ -28,7 +28,6 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setHasOptionsMenu(true)
-        activity?.title = getString(R.string.app_name)
         viewModel = ViewModelProviders.of(this).get(LoginFragmentViewModel::class.java)
         viewModel.authToken.observe(this, Observer {
             if (it.isNotEmpty()) {
