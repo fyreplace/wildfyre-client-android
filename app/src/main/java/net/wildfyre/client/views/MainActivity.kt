@@ -213,6 +213,10 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             toolbar.navigationIcon = DrawerArrowDrawable(this).apply { isSpinEnabled = true }
         }
 
+        if (destination.id in setOf(R.id.fragment_home, R.id.fragment_post)) {
+            toolbar.title = ""
+        }
+
         viewModel.setNotificationBadgeVisible(
             !isLoginStep && destination.id !in setOf(
                 R.id.fragment_notifications,
