@@ -16,9 +16,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.doOnLayout
@@ -29,10 +29,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.*
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -51,7 +48,6 @@ import java.io.ByteArrayInputStream
 class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChangedListener,
     DrawerLayout.DrawerListener {
     override lateinit var viewModel: MainActivityViewModel
-    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,17 +114,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         })
 
         setSupportActionBar(toolbar)
-        actionBarDrawerToggle = ActionBarDrawerToggle(
-            this,
-            drawer_layout,
-            toolbar,
-            R.string.main_drawer_open,
-            R.string.main_drawer_close
-        )
-
-        drawer_layout.addDrawerListener(actionBarDrawerToggle)
         drawer_layout.addDrawerListener(this)
-        actionBarDrawerToggle.syncState()
 
         val hostFragment = supportFragmentManager.findFragmentById(R.id.navigation_host) as NavHostFragment
         appBarConfiguration = AppBarConfiguration(TOP_LEVELS, drawer_layout)
@@ -154,8 +140,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
 
         toolbar.doOnLayout {
-            val layoutParams = badge.layoutParams as ViewGroup.MarginLayoutParams
-            layoutParams.setMargins(
+            val layoutParams = badge.layoutParams as ViewGroup.MarginLayoutParams?
+            layoutParams?.setMargins(
                 it.height / 2,
                 it.height / 2 - resources.getDimensionPixelOffset(R.dimen.margin_vertical_medium),
                 0,
@@ -164,13 +150,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        actionBarDrawerToggle.onConfigurationChanged(newConfig)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return actionBarDrawerToggle.onOptionsItemSelected(item)
+        return item!!.onNavDestinationSelected(findNavController(R.id.navigation_host))
     }
 
     override fun onBackPressed() {
@@ -181,7 +162,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return findNavController(R.id.navigation_host).navigateUp(appBarConfiguration)
+        return findNavController(R.id.navigation_host).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -224,8 +205,13 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
         val isLoginStep = destination.id in LOGIN_DESTINATIONS
         drawer_layout.setDrawerLockMode(if (isLoginStep) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
-        actionBarDrawerToggle.isDrawerIndicatorEnabled = !isLoginStep
         viewModel.setNotificationBadgeVisible(destination.id != R.id.fragment_notifications && !isLoginStep)
+
+        if (isLoginStep) {
+            toolbar.navigationIcon = null
+        } else if (toolbar.navigationIcon == null) {
+            toolbar.navigationIcon = DrawerArrowDrawable(this).apply { isSpinEnabled = true }
+        }
     }
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
