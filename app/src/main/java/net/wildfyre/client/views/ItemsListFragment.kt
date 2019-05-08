@@ -26,13 +26,13 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
      * Indicates whether the next notification change is a manual reset.
      */
     private var resetting = false
+    private var firstSetup = true
     abstract val viewModel: VM
 
     fun <A : ItemsAdapter<I>> onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        adapter: A,
-        firstSetup: Boolean
+        adapter: A
     ): View? {
         val root = FragmentItemListBinding.inflate(inflater, container, false)
             .run {
@@ -94,6 +94,7 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
         swipeRefresh.setOnRefreshListener(this)
 
         if (firstSetup) {
+            firstSetup = false
             swipeRefresh.isRefreshing = true
             onRefresh()
         }

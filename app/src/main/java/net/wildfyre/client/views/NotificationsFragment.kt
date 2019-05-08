@@ -33,7 +33,7 @@ class NotificationsFragment :
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return onCreateView(inflater, container, NotificationsAdapter(), savedInstanceState == null)
+        return onCreateView(inflater, container, NotificationsAdapter())
             ?.apply { findViewById<TextView>(R.id.text).setText(R.string.notifications_empty) }
     }
 
