@@ -39,10 +39,10 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
                 root
             }
 
-        val notificationList = root.findViewById<RecyclerView>(R.id.items_list)
+        val itemsList = root.findViewById<RecyclerView>(R.id.items_list)
         val swipeRefresh = root.findViewById<SwipeRefreshLayout>(R.id.refresher)
 
-        notificationList.adapter = adapter.apply {
+        itemsList.adapter = adapter.apply {
             viewModel.items.observe(this@ItemsListFragment, Observer {
                 val previousCount = data.size
                 data = it
@@ -62,9 +62,9 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
         }
 
         // When the user scrolls, new notifications should be fetched dynamically
-        notificationList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        itemsList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val layoutManager = notificationList.layoutManager!! as StaggeredGridLayoutManager
+                val layoutManager = itemsList.layoutManager!! as StaggeredGridLayoutManager
 
                 // No need to do anything if the user is scrolling up or if we have fetched all notifications already
                 if (dy <= 0 || viewModel.itemCount.value!!.toInt() == layoutManager.itemCount) {
@@ -84,7 +84,7 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
             }
         })
 
-        notificationList.addOnChildAttachStateChangeListener(this)
+        itemsList.addOnChildAttachStateChangeListener(this)
         swipeRefresh.setColorSchemeResources(R.color.colorAccent)
         swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.background)
         swipeRefresh.setOnRefreshListener(this)
