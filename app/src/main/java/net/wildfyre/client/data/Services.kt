@@ -224,7 +224,7 @@ interface WebService {
     fun getPost(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
-        @Query("postId") postId: Long
+        @Path("postId") postId: Long
     ): Call<Post>
 
     @POST("/areas/{areaName}/")
