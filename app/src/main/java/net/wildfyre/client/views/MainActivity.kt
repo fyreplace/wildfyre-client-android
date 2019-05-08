@@ -40,7 +40,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
 import net.wildfyre.client.AppGlide
-import net.wildfyre.client.Constants
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.*
 import net.wildfyre.client.viewmodels.MainActivityViewModel
@@ -85,16 +84,20 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
 
         viewModel.authToken.observe(this, Observer {
-            when {
-                it.isNotEmpty() -> viewModel.updateInterfaceInformation()
-                savedInstanceState == null -> findNavController(R.id.navigation_host).navigate(
-                    if (viewModel.startupLogin) {
-                        viewModel.startupLogin = false
-                        R.id.action_global_fragment_login_startup
-                    } else {
-                        R.id.action_global_fragment_login
-                    }
-                )
+            if (it.isNotEmpty()) {
+                viewModel.startupLogin = false
+                viewModel.updateInterfaceInformation()
+            } else {
+                val navController = findNavController(R.id.navigation_host)
+
+                if (navController.currentDestination?.id !in LOGIN_DESTINATIONS) {
+                    navController.navigate(
+                        if (viewModel.startupLogin)
+                            R.id.action_global_fragment_login_startup
+                        else
+                            R.id.action_global_fragment_login
+                    )
+                }
             }
         })
 
@@ -161,11 +164,6 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        navigation_view.checkedItem?.run { outState.putInt(Constants.Save.ACTIVITY_NAVIGATION, itemId) }
-    }
-
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         actionBarDrawerToggle.onConfigurationChanged(newConfig)
@@ -224,7 +222,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     }
 
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
-        val isLoginStep = destination.id in setOf(R.id.fragment_login, R.id.action_global_fragment_login)
+        val isLoginStep = destination.id in LOGIN_DESTINATIONS
         drawer_layout.setDrawerLockMode(if (isLoginStep) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
         actionBarDrawerToggle.isDrawerIndicatorEnabled = !isLoginStep
         viewModel.setNotificationBadgeVisible(destination.id != R.id.fragment_notifications && !isLoginStep)
@@ -313,11 +311,16 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     companion object {
         private const val REQUEST_AVATAR = 0
         private const val MAX_AVATAR_IMAGE_SIZE = 512 * 1024
-        private var TOP_LEVELS = setOf(
+        private val TOP_LEVELS = setOf(
             R.id.fragment_home,
             R.id.fragment_notifications,
             R.id.fragment_archive,
             R.id.fragment_own_posts
+        )
+        private val LOGIN_DESTINATIONS = setOf(
+            R.id.fragment_login,
+            R.id.action_global_fragment_login,
+            R.id.action_global_fragment_login_startup
         )
     }
 }
