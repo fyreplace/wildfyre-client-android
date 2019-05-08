@@ -15,4 +15,5 @@
     <dimen name="post_author_picture_rounding">3dp</dimen>
     <dimen name="dialog_user_picture_size">144dp</dimen>
     <dimen name="dialog_user_picture_rounding">14dp</dimen>
+    <dimen name="login_form_width">-1px</dimen>
 </resources>
