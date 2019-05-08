@@ -233,6 +233,6 @@ private class AccumulatorRepositoryDelegate<T> {
     }
 
     companion object {
-        const val BUCKET_SIZE = 12L
+        const val BUCKET_SIZE = 24L
     }
 }
