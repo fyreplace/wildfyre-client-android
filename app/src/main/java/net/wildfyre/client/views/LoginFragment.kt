@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_login.*
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Failure
@@ -26,9 +27,14 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        viewModel = ViewModelProviders.of(this).get(LoginFragmentViewModel::class.java)
-        activity?.title = getString(R.string.app_name)
         setHasOptionsMenu(true)
+        activity?.title = getString(R.string.app_name)
+        viewModel = ViewModelProviders.of(this).get(LoginFragmentViewModel::class.java)
+        viewModel.authToken.observe(this, Observer {
+            if (it.isNotEmpty()) {
+                findNavController().navigate(R.id.action_fragment_login_to_fragment_home)
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

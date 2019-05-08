@@ -7,10 +7,6 @@
         android:id="@+id/navigation"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/fragment_login"
-            android:title="@string/main_nav_fragment_login"
-            android:visible="false" />
-        <item
             android:id="@+id/fragment_home"
             android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/main_nav_fragment_home" />

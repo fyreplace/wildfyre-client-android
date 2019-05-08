@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -25,15 +23,20 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.doOnLayout
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.transaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
 import net.wildfyre.client.AppGlide
@@ -46,10 +49,11 @@ import java.io.ByteArrayInputStream
 /**
  * The central activity that hosts the different fragments.
  */
-class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemSelectedListener,
+class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChangedListener,
     DrawerLayout.DrawerListener {
     override lateinit var viewModel: MainActivityViewModel
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
@@ -69,16 +73,30 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             }
         }
 
-        val navHeaderBinding = MainNavHeaderBinding.bind(navigation_drawer.getHeaderView(0))
+        val navHeaderBinding = MainNavHeaderBinding.bind(navigation_view.getHeaderView(0))
             .apply { lifecycleOwner = this@MainActivity; model = viewModel }
-        MainNavActionsNotificationsBinding.bind(navigation_drawer.menu.findItem(R.id.fragment_notifications).actionView)
+        MainNavActionsNotificationsBinding.bind(navigation_view.menu.findItem(R.id.fragment_notifications).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
-        MainNavActionsThemeBinding.bind(navigation_drawer.menu.findItem(R.id.theme_selector).actionView)
+        MainNavActionsThemeBinding.bind(navigation_view.menu.findItem(R.id.theme_selector).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
-        MainNavActionsBadgeBinding.bind(navigation_drawer.menu.findItem(R.id.badge_toggle).actionView)
+        MainNavActionsBadgeBinding.bind(navigation_view.menu.findItem(R.id.badge_toggle).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
         MainAppBarBinding.bind(content)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
+
+        viewModel.authToken.observe(this, Observer {
+            when {
+                it.isNotEmpty() -> viewModel.updateInterfaceInformation()
+                savedInstanceState == null -> findNavController(R.id.navigation_host).navigate(
+                    if (viewModel.startupLogin) {
+                        viewModel.startupLogin = false
+                        R.id.action_global_fragment_login_startup
+                    } else {
+                        R.id.action_global_fragment_login
+                    }
+                )
+            }
+        })
 
         viewModel.selectedThemeIndex.observe(this, Observer {
             AppCompatDelegate.setDefaultNightMode(MainActivityViewModel.THEMES[it])
@@ -104,16 +122,32 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
             R.string.main_drawer_open,
             R.string.main_drawer_close
         )
-    }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
         drawer_layout.addDrawerListener(actionBarDrawerToggle)
         drawer_layout.addDrawerListener(this)
         actionBarDrawerToggle.syncState()
-        navigation_drawer.setNavigationItemSelectedListener(this)
-        navigation_drawer.doOnLayout {
-            navigation_drawer.findViewById<View>(R.id.edit)?.setOnClickListener { editProfile() }
+
+        val hostFragment = supportFragmentManager.findFragmentById(R.id.navigation_host) as NavHostFragment
+        appBarConfiguration = AppBarConfiguration(TOP_LEVELS, drawer_layout)
+
+        setupActionBarWithNavController(hostFragment.navController, appBarConfiguration)
+        navigation_view.setupWithNavController(hostFragment.navController)
+        hostFragment.navController.addOnDestinationChangedListener(this)
+
+        MainActivityViewModel.NAVIGATION_LINKS.forEach { pair ->
+            navigation_view.menu.findItem(pair.key).setOnMenuItemClickListener {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(pair.value)))
+                true
+            }
+        }
+
+        navigation_view.menu.findItem(R.id.logout).setOnMenuItemClickListener {
+            viewModel.logout()
+            true
+        }
+
+        navigation_view.doOnLayout {
+            navigation_view.findViewById<View>(R.id.edit)?.setOnClickListener { editProfile() }
         }
 
         toolbar.doOnLayout {
@@ -125,18 +159,11 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
                 0
             )
         }
-
-        tryNavigateTo(
-            savedInstanceState?.getInt(
-                Constants.Save.ACTIVITY_NAVIGATION,
-                R.id.fragment_home
-            ) ?: R.id.fragment_home
-        )
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        navigation_drawer.checkedItem?.run { outState.putInt(Constants.Save.ACTIVITY_NAVIGATION, itemId) }
+        navigation_view.checkedItem?.run { outState.putInt(Constants.Save.ACTIVITY_NAVIGATION, itemId) }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -144,85 +171,19 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         actionBarDrawerToggle.onConfigurationChanged(newConfig)
     }
 
-    override fun onAttachFragment(fragment: Fragment) {
-        super.onAttachFragment(fragment)
-
-        if (fragment is FailureHandlingFragment) {
-            viewModel.setNotificationBadgeVisible(fragment is HomeFragment || fragment is ArchiveFragment || fragment is OwnPostsFragment)
-        }
-
-        if (fragment is LoginFragment) {
-            viewModel.authToken.observe(fragment, Observer {
-                if (it.isNotEmpty()) {
-                    viewModel.updateInterfaceInformation()
-                    navigateTo(R.id.fragment_home)
-                }
-            })
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val isLoginStep = isAtLogin()
-        drawer_layout.setDrawerLockMode(if (isLoginStep) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
-        actionBarDrawerToggle.isDrawerIndicatorEnabled = !isLoginStep
-        return super.onCreateOptionsMenu(menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return actionBarDrawerToggle.onOptionsItemSelected(item)
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+    override fun onBackPressed() {
         when {
-            MainActivityViewModel.NAVIGATION_LINKS.containsKey(item.itemId) -> startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(MainActivityViewModel.NAVIGATION_LINKS[item.itemId])
-                )
-            )
-            item.isChecked -> return false
+            drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
+            else -> super.onBackPressed()
         }
-
-        val newFragment = when (item.itemId) {
-            R.id.fragment_login,
-            R.id.logout -> LoginFragment().also {
-                if (item.itemId == R.id.logout) {
-                    viewModel.clearAuthToken()
-                    navigation_drawer.setCheckedItem(R.id.fragment_login)
-                }
-            }
-            R.id.fragment_home -> HomeFragment()
-            R.id.fragment_notifications -> NotificationsFragment()
-            R.id.fragment_archive -> ArchiveFragment()
-            R.id.fragment_own_posts -> OwnPostsFragment()
-            else -> null
-        }
-
-        newFragment?.let {
-            drawer_layout.closeDrawer(GravityCompat.START)
-            supportFragmentManager.transaction {
-                val isLoginStep = isAtLogin()
-
-                setCustomAnimations(
-                    if (isLoginStep) R.anim.slide_in_right else R.anim.fade_in,
-                    if (isLoginStep) R.anim.slide_out_left else R.anim.fade_out
-                )
-
-                replace(R.id.fragment_container, it)
-            }
-
-            return true
-        }
-
-        return false
     }
 
-    override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.navigation_host).navigateUp(appBarConfiguration)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -262,6 +223,13 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         }
     }
 
+    override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+        val isLoginStep = destination.id in setOf(R.id.fragment_login, R.id.action_global_fragment_login)
+        drawer_layout.setDrawerLockMode(if (isLoginStep) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
+        actionBarDrawerToggle.isDrawerIndicatorEnabled = !isLoginStep
+        viewModel.setNotificationBadgeVisible(destination.id != R.id.fragment_notifications && !isLoginStep)
+    }
+
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
     }
 
@@ -273,31 +241,6 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onDrawerStateChanged(newState: Int) {
-    }
-
-    /**
-     * Attempts to switch to the selected fragment if the user is logged in, and switch to [LoginFragment] if not. Only
-     * takes effect if no framgent is being used yet.
-     *
-     * @param id The resource identifier for the drawer menu item that should be checked
-     */
-    private fun tryNavigateTo(@IdRes id: Int) {
-        if (supportFragmentManager.fragments.isNotEmpty()) {
-            return
-        }
-
-        val token = viewModel.authToken.value ?: ""
-        navigateTo(if (token.isEmpty()) R.id.fragment_login else id)
-    }
-
-    /**
-     * Switches to the fragment corresponding to the provided resource id.
-     *
-     * @param id The resource identifier for the drawer menu item that should be checked
-     */
-    private fun navigateTo(@IdRes id: Int) {
-        onNavigationItemSelected(navigation_drawer.menu.findItem(id))
-        navigation_drawer.setCheckedItem(id)
     }
 
     /**
@@ -367,15 +310,14 @@ class MainActivity : FailureHandlingActivity(), NavigationView.OnNavigationItemS
         }
     }
 
-    /**
-     * Indicates whether the application is currently at the login step.
-     *
-     * @return `true` if the user has to login, `false` otherwise
-     */
-    private fun isAtLogin() = supportFragmentManager.fragments.count { it is LoginFragment } > 0
-
     companion object {
         private const val REQUEST_AVATAR = 0
         private const val MAX_AVATAR_IMAGE_SIZE = 512 * 1024
+        private var TOP_LEVELS = setOf(
+            R.id.fragment_home,
+            R.id.fragment_notifications,
+            R.id.fragment_archive,
+            R.id.fragment_own_posts
+        )
     }
 }

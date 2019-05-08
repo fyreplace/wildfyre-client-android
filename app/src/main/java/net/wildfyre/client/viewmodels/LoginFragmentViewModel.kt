@@ -11,6 +11,7 @@ class LoginFragmentViewModel(application: Application) : FailureHandlingViewMode
     val password = MutableLiveData<String>()
     val usernameValid: LiveData<Boolean> = Transformations.map(username) { it.isNotEmpty() }
     val passwordValid: LiveData<Boolean> = Transformations.map(password) { it.isNotEmpty() }
+    val authToken: LiveData<String> = AuthRepository.authToken
 
     fun attemptLogin(username: String, password: String) = AuthRepository.fetchAuthToken(this, username, password)
 }

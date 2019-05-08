@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_main"
+    app:startDestination="@id/fragment_home">
+    <fragment
+        android:id="@+id/fragment_login"
+        android:name="net.wildfyre.client.views.LoginFragment"
+        android:label="@string/main_nav_fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_fragment_login_to_fragment_home"
+            app:destination="@id/fragment_home"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/fragment_login"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_home"
+        android:name="net.wildfyre.client.views.HomeFragment"
+        android:label="@string/main_nav_fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/fragment_notifications"
+        android:name="net.wildfyre.client.views.NotificationsFragment"
+        android:label="@string/main_nav_fragment_notifications"
+        tools:layout="@layout/fragment_item_list" />
+    <fragment
+        android:id="@+id/fragment_archive"
+        android:name="net.wildfyre.client.views.ArchiveFragment"
+        android:label="@string/main_nav_fragment_archive"
+        tools:layout="@layout/fragment_item_list" />
+    <fragment
+        android:id="@+id/fragment_own_posts"
+        android:name="net.wildfyre.client.views.OwnPostsFragment"
+        android:label="@string/main_nav_fragment_own_posts"
+        tools:layout="@layout/fragment_item_list" />
+    <action
+        android:id="@+id/action_global_fragment_login"
+        app:destination="@id/fragment_login"
+        app:enterAnim="@anim/slide_in_left"
+        app:exitAnim="@anim/slide_out_right"
+        app:popEnterAnim="@anim/slide_in_right"
+        app:popExitAnim="@anim/slide_out_left"
+        app:popUpTo="@+id/fragment_home"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_fragment_login_startup"
+        app:destination="@id/fragment_login"
+        app:popEnterAnim="@anim/slide_in_right"
+        app:popExitAnim="@anim/slide_out_left"
+        app:popUpTo="@+id/fragment_home"
+        app:popUpToInclusive="true" />
+</navigation>
