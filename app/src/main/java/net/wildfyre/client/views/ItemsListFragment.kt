@@ -56,7 +56,11 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
                 }
 
                 if (it.isNotEmpty()) {
-                    notifyItemRangeInserted(previousCount, it.size - previousCount)
+                    notifyDataSetChanged()
+
+                    if (it.size < previousCount) {
+                        fillList()
+                    }
                 } else {
                     notifyItemRangeRemoved(0, previousCount)
                 }
@@ -68,22 +72,9 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
         // When the user scrolls, new notifications should be fetched dynamically
         itemsList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val layoutManager = itemsList.layoutManager!! as StaggeredGridLayoutManager
-
-                // No need to do anything if the user is scrolling up or if we have fetched all notifications already
-                if (dy <= 0 || viewModel.itemCount.value!!.toInt() == layoutManager.itemCount) {
-                    return
-                }
-
-                val lastPosition = layoutManager.findLastVisibleItemPositions(IntArray(layoutManager.spanCount)).max()!!
-
-                /*
-                If there are less notifications left to show, than the number currently displayed on screen, then fetch
-                more notifications to show the user.
-                 */
-                if (lastPosition + 1 >= layoutManager.itemCount - layoutManager.childCount && !swipeRefresh.isRefreshing) {
-                    swipeRefresh.isRefreshing = true
-                    viewModel.fetchNextItems()
+                // Only try to fill the list if the user is scrolling down and we haven't fetched all notifications yet
+                if (dy > 0 && viewModel.itemCount.value!!.toInt() > recyclerView.layoutManager!!.itemCount) {
+                    fillList()
                 }
             }
         })
@@ -137,5 +128,19 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
 
     override fun onItemClicked(id: Long) {
         findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(id))
+    }
+
+    private fun fillList() {
+        val layoutManager = items_list.layoutManager!! as StaggeredGridLayoutManager
+        val lastPosition = layoutManager.findLastVisibleItemPositions(IntArray(layoutManager.spanCount)).max()!!
+
+        /*
+        If there are less notifications left to show, than the number currently displayed on screen, then fetch
+        more notifications to show the user.
+         */
+        if (lastPosition + 1 >= layoutManager.itemCount - layoutManager.childCount && !refresher.isRefreshing) {
+            refresher.isRefreshing = true
+            viewModel.fetchNextItems()
+        }
     }
 }

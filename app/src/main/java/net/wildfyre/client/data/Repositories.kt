@@ -134,10 +134,15 @@ object NotificationRepository {
 
     fun resetNotifications() = delegate.resetItems()
 
-    fun clearNotifications(fh: FailureHandler) {
+    fun removeNotification(fh: FailureHandler, id: Long) =
+        notifications.value!!.firstOrNull { it.post?.id == id }?.let {
+            delegate.removeItem(it)
+            fetchNextNotifications(fh, false)
+        }
+
+    fun clearNotifications(fh: FailureHandler) =
         Services.webService.deleteNotifications(AuthRepository.authToken.value!!)
             .then(fh, R.string.failure_request) { resetNotifications() }
-    }
 }
 
 object PostRepository {
@@ -146,7 +151,10 @@ object PostRepository {
 
         if (id >= 0) {
             Services.webService.getPost(AuthRepository.authToken.value!!, AreaRepository.preferredAreaName.value!!, id)
-                .then(fh, R.string.failure_request) { post.value = it }
+                .then(fh, R.string.failure_request) {
+                    post.value = it
+                    NotificationRepository.removeNotification(fh, it.id!!)
+                }
         }
 
         return post
@@ -224,6 +232,11 @@ private class AccumulatorRepositoryDelegate<T> {
                 }
             }
         }
+    }
+
+    fun removeItem(item: T) {
+        mutableSuperItem.value = mutableSuperItem.value?.apply { count = count!! - 1 }
+        mutableItems.value = mutableItems.value?.subtract(setOf(item))?.toList()
     }
 
     fun resetItems() {

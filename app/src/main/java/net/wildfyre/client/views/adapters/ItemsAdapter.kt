@@ -26,6 +26,10 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
     var onItemClickedListener: OnItemClickedListener = OnItemClickedListener.default()
     var data: List<I> = listOf()
 
+    init {
+        setHasStableIds(true)
+    }
+
     @CallSuper
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -36,6 +40,10 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
     }
 
     final override fun getItemCount(): Int = data.size
+
+    final override fun setHasStableIds(hasStableIds: Boolean) = super.setHasStableIds(hasStableIds)
+
+    final override fun getItemId(position: Int): Long = getId(position)
 
     final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
