@@ -20,6 +20,7 @@ abstract class FailureHandlingViewModel(application: Application) : AndroidViewM
 
     @CallSuper
     override fun onFailure(failure: Failure) {
+        super.onFailure(failure)
         _lastFailure.value = failure
     }
 }

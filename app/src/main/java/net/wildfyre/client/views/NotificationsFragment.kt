@@ -50,7 +50,7 @@ class NotificationsFragment :
             AlertDialog.Builder(context!!)
                 .setTitle(getString(R.string.notifications_dialog_title))
                 .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> viewModel.clear() }
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> viewModel.clearItems() }
                 .show()
         }
     }

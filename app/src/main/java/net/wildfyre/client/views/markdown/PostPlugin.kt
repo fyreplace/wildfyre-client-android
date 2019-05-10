@@ -2,6 +2,7 @@ package net.wildfyre.client.views.markdown
 
 import android.content.Context
 import android.graphics.Rect
+import android.os.Build
 import androidx.core.content.ContextCompat
 import net.wildfyre.client.R
 import org.commonmark.node.SoftLineBreak
@@ -20,7 +21,14 @@ class PostPlugin private constructor(private val context: Context) : AbstractMar
     }
 
     override fun configureImages(builder: AsyncDrawableLoader.Builder) {
-        builder.placeholderDrawableProvider { ContextCompat.getDrawable(context, R.drawable.ic_image_daynight_24dp) }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.placeholderDrawableProvider {
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.ic_image_daynight_24dp
+                )
+            }
+        }
     }
 
     override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {

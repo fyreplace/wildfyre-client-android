@@ -16,5 +16,5 @@ class NotificationsFragmentViewModel(application: Application) : FailureHandling
 
     override fun resetItems() = NotificationRepository.resetNotifications()
 
-    fun clear() = NotificationRepository.clearNotifications(this)
+    fun clearItems() = NotificationRepository.clearNotifications(this)
 }
