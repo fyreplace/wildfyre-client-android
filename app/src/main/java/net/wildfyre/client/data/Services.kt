@@ -34,20 +34,29 @@ object Services {
  * @param callback The callback to run when the operation succeeds
  */
 fun <T> Call<T>.then(failureHandler: FailureHandler, @StringRes errorMessage: Int, callback: (result: T) -> Unit) {
-    enqueue(object : Callback<T> {
-        override fun onResponse(call: Call<T>, response: Response<T>) {
-            if (response.isSuccessful) {
-                callback(response.body()!!)
-            } else {
-                val body = response.errorBody()?.use { it.charStream().readText() } ?: "<no body>"
-                onFailure(call, ApiCallException(response.code(), response.message(), body))
-            }
-        }
+    enqueue(DefaultCallback<T>(failureHandler, errorMessage) { callback(it!!) })
+}
 
-        override fun onFailure(call: Call<T>, t: Throwable) {
-            failureHandler.onFailure(Failure(errorMessage, t))
+fun Call<Unit>.then(failureHandler: FailureHandler, @StringRes errorMessage: Int, callback: () -> Unit) =
+    enqueue(DefaultCallback<Unit>(failureHandler, errorMessage) { callback() })
+
+class DefaultCallback<T>(
+    private val failureHandler: FailureHandler,
+    @StringRes private val errorMessage: Int,
+    private val action: (result: T?) -> Unit
+) : Callback<T> {
+    override fun onResponse(call: Call<T>, response: Response<T>) {
+        if (response.isSuccessful) {
+            action(response.body())
+        } else {
+            val body = response.errorBody()?.use { it.charStream().readText() } ?: "<no body>"
+            onFailure(call, ApiCallException(response.code(), response.message(), body))
         }
-    })
+    }
+
+    override fun onFailure(call: Call<T>, t: Throwable) {
+        failureHandler.onFailure(Failure(errorMessage, t))
+    }
 }
 
 class ApiCallException(code: Int, message: String, body: String) : Exception("$code: $message\n\t$body")
