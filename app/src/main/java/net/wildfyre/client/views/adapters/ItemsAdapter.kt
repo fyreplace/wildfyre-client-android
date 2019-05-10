@@ -14,6 +14,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Author
+import net.wildfyre.client.views.markdown.PostPlugin
+import net.wildfyre.client.views.markdown.prepareForMarkdown
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
 import ru.noties.markwon.ext.tables.TablePlugin
@@ -35,6 +37,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
         super.onAttachedToRecyclerView(recyclerView)
         markdown = Markwon.builder(recyclerView.context)
             .usePlugin(CorePlugin.create())
+            .usePlugin(PostPlugin.create(recyclerView.context))
             .usePlugin(TablePlugin.create(recyclerView.context))
             .build()
     }
@@ -63,7 +66,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
                 .load(image)
                 .into(holder.image)
         } else {
-            holder.text.text = markdown.toMarkdown(getText(position)!!)
+            holder.text.text = markdown.toMarkdown(getText(position)!!.prepareForMarkdown(null))
         }
 
         val author = getAuthor(position)

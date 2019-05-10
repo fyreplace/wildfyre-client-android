@@ -2,4 +2,5 @@
 <resources>
     <drawable name="ic_add_daynight_24dp">@drawable/ic_add_white_24dp</drawable>
     <drawable name="ic_edit_daynight_24dp">@drawable/ic_edit_white_24dp</drawable>
+    <drawable name="ic_image_daynight_24dp">@drawable/ic_image_white_24dp</drawable>
 </resources>
