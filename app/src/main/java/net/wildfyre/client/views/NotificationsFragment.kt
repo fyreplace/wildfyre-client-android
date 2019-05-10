@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Notification
+import net.wildfyre.client.databinding.NotificationsActionsClearBinding
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.NotificationsFragmentViewModel
 import net.wildfyre.client.views.adapters.NotificationsAdapter
@@ -27,9 +28,9 @@ class NotificationsFragment :
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        viewModel = ViewModelProviders.of(this).get(NotificationsFragmentViewModel::class.java)
-        activity?.setTitle(R.string.main_nav_fragment_notifications)
         setHasOptionsMenu(true)
+        activity?.setTitle(R.string.main_nav_fragment_notifications)
+        viewModel = ViewModelProviders.of(this).get(NotificationsFragmentViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,7 +40,14 @@ class NotificationsFragment :
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_notifications_actions, menu)
-        menu.findItem(R.id.action_clear).actionView?.setOnClickListener {
+        val clear = menu.findItem(R.id.action_clear).actionView!!
+
+        NotificationsActionsClearBinding.bind(clear).run {
+            lifecycleOwner = this@NotificationsFragment
+            notificationCount = viewModel.itemCount
+        }
+
+        clear.setOnClickListener {
             AlertDialog.Builder(context!!)
                 .setTitle(getString(R.string.notifications_dialog_title))
                 .setNegativeButton(android.R.string.cancel, null)
