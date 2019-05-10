@@ -1,5 +1,6 @@
 package net.wildfyre.client.views
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,8 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
     fun <A : ItemsAdapter<I>> onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        adapter: A
+        adapter: A,
+        savedInstance: Bundle?
     ): View? {
         val root = FragmentItemListBinding.inflate(inflater, container, false)
             .run {
@@ -84,12 +86,12 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
         swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.background)
         swipeRefresh.setOnRefreshListener(this)
 
-        if (firstSetup) {
-            firstSetup = false
+        if (firstSetup && savedInstance == null) {
             swipeRefresh.isRefreshing = true
             onRefresh()
         }
 
+        firstSetup = false
         return root
     }
 

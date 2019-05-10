@@ -23,7 +23,7 @@ class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return onCreateView(inflater, container, PostsAdapter(false))
+        return onCreateView(inflater, container, PostsAdapter(false), savedInstanceState)
             ?.apply { findViewById<TextView>(R.id.text).setText(R.string.posts_empty) }
     }
 }
