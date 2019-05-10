@@ -29,7 +29,6 @@ class NotificationsFragment :
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setHasOptionsMenu(true)
-        activity?.setTitle(R.string.main_nav_fragment_notifications)
         viewModel = ViewModelProviders.of(this).get(NotificationsFragmentViewModel::class.java)
     }
 
