@@ -39,16 +39,8 @@ class PostPlugin private constructor(private val context: Context) : AbstractMar
                 canvasWidth: Int,
                 textSize: Float
             ): Rect {
-                val horizontalMargin = context.resources.getDimensionPixelOffset(R.dimen.margin_horizontal_medium)
-                val verticalMargin = context.resources.getDimensionPixelOffset(R.dimen.margin_vertical_medium)
-                val imageWidth = canvasWidth - horizontalMargin * 2
-                val factor = imageWidth.toFloat() / imageBounds.width()
-                return Rect(
-                    horizontalMargin,
-                    verticalMargin,
-                    horizontalMargin + imageWidth,
-                    (imageBounds.bottom * factor).toInt() + verticalMargin
-                )
+                val factor = canvasWidth.toFloat() / imageBounds.width()
+                return Rect(0, 0, canvasWidth, (imageBounds.bottom * factor).toInt())
             }
         })
     }
