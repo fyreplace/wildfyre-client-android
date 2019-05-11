@@ -12,7 +12,6 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
         android:orientation="vertical">
 
         <TextView
@@ -78,4 +77,10 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/foreground" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/clickable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackground" />
 </com.google.android.material.card.MaterialCardView>

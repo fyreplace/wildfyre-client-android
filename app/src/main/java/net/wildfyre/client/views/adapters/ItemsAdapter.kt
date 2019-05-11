@@ -89,7 +89,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
 
         holder.space.isVisible = holder.text.isVisible && !holder.authorContainer.isVisible
         holder.subtitle.text = getSubtitle(position)
-        holder.container.setOnClickListener { onItemClickedListener.onItemClicked(getId(position)) }
+        holder.clickable.setOnClickListener { onItemClickedListener.onItemClicked(getId(position)) }
     }
 
     abstract fun getText(position: Int): String?
@@ -103,7 +103,6 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
     abstract fun getId(position: Int): Long
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val container: ViewGroup = itemView.findViewById(R.id.container)
         val text: TextView = itemView.findViewById(R.id.text)
         val image: ImageView = itemView.findViewById(R.id.image)
         val authorContainer: ViewGroup = itemView.findViewById(R.id.author_container)
@@ -111,6 +110,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
         val authorPicture: ImageView = itemView.findViewById(R.id.author_picture)
         val space: Space = itemView.findViewById(R.id.space)
         val subtitle: TextView = itemView.findViewById(R.id.subtitle)
+        val clickable: View = itemView.findViewById(R.id.clickable)
     }
 
     interface OnItemClickedListener {
