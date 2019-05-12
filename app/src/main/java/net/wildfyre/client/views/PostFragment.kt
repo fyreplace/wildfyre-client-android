@@ -39,10 +39,11 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
             .build()
 
         viewModel.setPostId(args.postId)
-        viewModel.markdownContent.observe(this, Observer {
-            val adapter = content.adapter as MarkwonAdapter
-            adapter.setMarkdown(markdown, it)
-            adapter.notifyItemRangeInserted(0, adapter.itemCount)
+        viewModel.markdownContent.observe(this, Observer { markdownContent ->
+            (content.adapter as? MarkwonAdapter)?.let {
+                it.setMarkdown(markdown, markdownContent)
+                it.notifyItemRangeChanged(0, it.itemCount)
+            }
         })
     }
 
