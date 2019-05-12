@@ -11,9 +11,9 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/margin_horizontal_medium"
+        android:paddingLeft="@dimen/margin_horizontal_large"
         android:paddingTop="@dimen/margin_vertical_medium"
-        android:paddingRight="@dimen/margin_horizontal_medium"
+        android:paddingRight="@dimen/margin_horizontal_large"
         android:paddingBottom="@dimen/margin_vertical_medium"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 </FrameLayout>
