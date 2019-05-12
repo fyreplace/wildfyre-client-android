@@ -18,6 +18,7 @@ import net.wildfyre.client.views.markdown.PostPlugin
 import net.wildfyre.client.views.markdown.prepareForMarkdown
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
+import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import ru.noties.markwon.ext.tables.TablePlugin
 
 /**
@@ -37,6 +38,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
         super.onAttachedToRecyclerView(recyclerView)
         markdown = Markwon.builder(recyclerView.context)
             .usePlugin(CorePlugin.create())
+            .usePlugin(StrikethroughPlugin.create())
             .usePlugin(PostPlugin.create(recyclerView.context))
             .usePlugin(TablePlugin.create(recyclerView.context))
             .build()

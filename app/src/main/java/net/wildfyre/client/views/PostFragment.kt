@@ -14,6 +14,7 @@ import net.wildfyre.client.viewmodels.PostFragmentViewModel
 import net.wildfyre.client.views.markdown.PostPlugin
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
+import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import ru.noties.markwon.image.ImagesPlugin
 import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin
 import ru.noties.markwon.recycler.MarkwonAdapter
@@ -32,6 +33,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         viewModel = ViewModelProviders.of(this).get(PostFragmentViewModel::class.java)
         markdown = Markwon.builder(context)
             .usePlugin(CorePlugin.create())
+            .usePlugin(StrikethroughPlugin.create())
             .usePlugin(PostPlugin.create(context))
             .usePlugin(ImagesPlugin.create(context))
             .usePlugin(OkHttpImagesPlugin.create())
