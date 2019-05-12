@@ -20,6 +20,8 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     }
 
     fun setPostId(id: Long) {
-        _postId.value = id
+        if (_postId.value != id) {
+            _postId.value = id
+        }
     }
 }
