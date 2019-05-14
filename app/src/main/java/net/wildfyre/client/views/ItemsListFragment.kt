@@ -113,7 +113,9 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
         If all currently fetched notifications are being displayed, and there are more to fetch, then fetch more
         notifications to make sure that the view is completely filled with notifications.
          */
-        if (layoutManager.childCount == layoutManager.itemCount && viewModel.itemCount.value!! > layoutManager.itemCount) {
+        if (layoutManager.childCount == layoutManager.itemCount && (viewModel.itemCount.value
+                ?: 0) > layoutManager.itemCount
+        ) {
             refresher.isRefreshing = true
             viewModel.fetchNextItems()
         }
@@ -134,7 +136,7 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
 
     private fun fillList() {
         val layoutManager = items_list.layoutManager!! as StaggeredGridLayoutManager
-        val lastPosition = layoutManager.findLastVisibleItemPositions(IntArray(layoutManager.spanCount)).max()!!
+        val lastPosition = layoutManager.findLastVisibleItemPositions(IntArray(layoutManager.spanCount)).max() ?: 0
 
         /*
         If there are less notifications left to show, than the number currently displayed on screen, then fetch

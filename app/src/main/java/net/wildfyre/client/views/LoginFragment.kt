@@ -92,10 +92,11 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
             focusView?.requestFocus()
         } else {
             // Automatically hide the keyboard since otherwise it won't hide itself
-            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(login.windowToken, 0)
-            showProgress(true)
-            viewModel.attemptLogin(usernameStr, passwordStr)
+            context?.getSystemService(Context.INPUT_METHOD_SERVICE)?.let {
+                (it as InputMethodManager).hideSoftInputFromWindow(login.windowToken, 0)
+                showProgress(true)
+                viewModel.attemptLogin(usernameStr, passwordStr)
+            }
         }
     }
 

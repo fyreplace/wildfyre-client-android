@@ -60,12 +60,12 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
             AuthorRepository.updateSelfBio(this, bio)
         }
 
-        userAvatarNewData.value?.let {
+        if (userAvatarNewData.value != null && _userAvatarFileName != null && _userAvatarMimeType != null) {
             AuthorRepository.updateSelfAvatar(
                 this,
                 _userAvatarFileName!!,
                 _userAvatarMimeType!!,
-                it
+                userAvatarNewData.value!!
             )
         }
     }

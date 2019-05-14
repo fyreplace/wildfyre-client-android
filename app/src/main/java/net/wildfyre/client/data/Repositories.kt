@@ -119,10 +119,6 @@ object NotificationRepository {
     val superNotification: LiveData<SuperNotification> = delegate.mutableSuperItem
     val notifications: LiveData<List<Notification>> = delegate.mutableItems
 
-    init {
-        resetNotifications()
-    }
-
     fun fetchNextNotifications(fh: FailureHandler, forContent: Boolean) {
         val call = Services.webService.getNotifications(
             AuthRepository.authToken.value!!,
@@ -151,7 +147,7 @@ object PostRepository {
         val post = MutableLiveData<Post>()
 
         if (id >= 0) {
-            Services.webService.getPost(AreaRepository.preferredAreaName.value!!, id)
+            Services.webService.getPost(AreaRepository.preferredAreaName.value ?: "", id)
                 .then(fh, R.string.failure_request) {
                     post.value = it
                     NotificationRepository.removeNotification(fh, it.id!!)
@@ -168,14 +164,10 @@ object ArchiveRepository {
     val superPost: LiveData<SuperPost> = delegate.mutableSuperItem
     val posts: LiveData<List<Post>> = delegate.mutableItems
 
-    init {
-        resetPosts()
-    }
-
     fun fetchNextPosts(fh: FailureHandler) {
         val call = Services.webService.getPosts(
             AuthRepository.authToken.value!!,
-            AreaRepository.preferredAreaName.value!!,
+            AreaRepository.preferredAreaName.value ?: "",
             AccumulatorRepositoryDelegate.BUCKET_SIZE,
             delegate.offset
         )
@@ -192,14 +184,10 @@ object OwnPostRepository {
     val superPost: LiveData<SuperPost> = delegate.mutableSuperItem
     val posts: LiveData<List<Post>> = delegate.mutableItems
 
-    init {
-        resetPosts()
-    }
-
     fun fetchNextPosts(fh: FailureHandler) {
         val call = Services.webService.getOwnPosts(
             AuthRepository.authToken.value!!,
-            AreaRepository.preferredAreaName.value!!,
+            AreaRepository.preferredAreaName.value ?: "",
             AccumulatorRepositoryDelegate.BUCKET_SIZE,
             delegate.offset
         )
@@ -215,6 +203,10 @@ private class AccumulatorRepositoryDelegate<T> {
     internal val mutableItems = MutableLiveData<List<T>>()
     internal var offset = 0L
     internal var fetchingContent = false
+
+    init {
+        resetItems()
+    }
 
     fun fetchNextItems(call: Call<SuperItem<T>>, fh: FailureHandler, forContent: Boolean) {
         when {
@@ -242,7 +234,7 @@ private class AccumulatorRepositoryDelegate<T> {
 
     fun resetItems() {
         offset = 0
-        mutableSuperItem.value = mutableSuperItem.value?.apply { count = 0; results = listOf() } ?: SuperItem()
+        mutableSuperItem.value = (mutableSuperItem.value ?: SuperItem()).apply { count = 0; results = listOf() }
         mutableItems.value = listOf()
     }
 
