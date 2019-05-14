@@ -2,63 +2,59 @@ package net.wildfyre.client.data
 
 import java.util.*
 
-abstract class ApiItem {
-    var _body: String? = null
-}
-
-class Account : ApiItem() {
+class Account {
     var id: Long? = null
     var username: String? = null
     var email: String? = null
 
-    class Auth : ApiItem() {
+    class Auth {
         var username: String? = null
         var password: String? = null
     }
 
-    class Patch : ApiItem() {
+    class Patch {
         var email: String? = null
         var password: String? = null
     }
 
-    class Registration : ApiItem() {
+    class Registration {
         var username: String? = null
         var email: String? = null
         var password: String? = null
         var captcha: String? = null
     }
 
-    class PasswordRecoveryStep1 : ApiItem() {
+    class PasswordRecoveryStep1 {
         var email: String? = null
         var password: String? = null
         var captcha: String? = null
     }
 
-    class PasswordRecoveryStep2 : ApiItem() {
+    class PasswordRecoveryStep2 {
         var new_password: String? = null
         var token: String? = null
         var transaction: String? = null
         var captcha: String? = null
     }
 
-    class UsernameRecovery : ApiItem() {
+    class UsernameRecovery {
         var email: String? = null
         var captcha: String? = null
     }
 }
 
-class Area : ApiItem() {
+class Area {
     var name: String? = null
     var displayname: String? = null
     var rep: Long? = null
     var spread: Long? = null
 }
 
-class Auth : ApiItem() {
+class Auth {
     var token: String? = null
 }
 
-class Author : ApiItem() {
+class Author {
     var user: Long? = null
     var name: String? = null
     var avatar: String? = null
@@ -66,7 +62,7 @@ class Author : ApiItem() {
     var banned: Boolean? = null
 }
 
-class Ban : ApiItem() {
+class Ban {
     var timestamp: Date? = null
     var reason: Long? = null
     var comment: String? = null
@@ -78,12 +74,12 @@ class Ban : ApiItem() {
     var ban_flag: Boolean? = null
 }
 
-class Choice : ApiItem() {
+class Choice {
     var key: Long? = null
     var value: String? = null
 }
 
-class Comment : ApiItem() {
+class Comment {
     var id: Long? = null
     var author: Author? = null
     var created: Date? = null
@@ -91,41 +87,41 @@ class Comment : ApiItem() {
     var image: String? = null
 }
 
-class CommentData : ApiItem() {
+class CommentData {
     var comment: String? = null
     var image: Any? = null
 }
 
-class Flag : ApiItem() {
+class Flag {
     var reason: String? = null
     var comment: String? = null
 }
 
-class Image : ApiItem() {
+class Image {
     var num: Long? = null
     var image: String? = null
     var comment: String? = null
 }
 
-class Link : ApiItem() {
+class Link {
     var url: String? = null
     var description: String? = null
     var author: String? = null
 }
 
-class Notification : ApiItem() {
+class Notification {
     var area: String? = null
     var post: NotificationPost? = null
     var comments: List<Long>? = null
 }
 
-open class NotificationPost : ApiItem() {
+open class NotificationPost {
     var id: Long? = null
     var author: Author? = null
     var text: String? = null
 }
 
-class Password : ApiItem()
+class Password
 
 class Post : NotificationPost() {
     var anonym: Boolean? = null
@@ -136,29 +132,29 @@ class Post : NotificationPost() {
     var additional_images: List<Image>? = null
     var comments: List<Comment>? = null
 
-    class Spread : ApiItem() {
+    class Spread {
         var spread: Boolean? = null
     }
 
-    class Subscription : ApiItem() {
+    class Subscription {
         var subscribed: Boolean? = null
     }
 }
 
-class RecoverTransaction : ApiItem() {
+class RecoverTransaction {
     var transaction: String? = null
 }
 
-class Registration : ApiItem()
+class Registration
 
-class Reputation : ApiItem() {
+class Reputation {
     var reputation: Long? = null
     var spread: Long? = null
 }
 
-class Reset : ApiItem()
+class Reset
 
-class SuperItem<T> : ApiItem() {
+class SuperItem<T> {
     var count: Long? = null
     var next: String? = null
     var previous: String? = null
