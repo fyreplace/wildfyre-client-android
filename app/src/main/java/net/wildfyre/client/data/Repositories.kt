@@ -3,9 +3,9 @@ package net.wildfyre.client.data
 import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import net.wildfyre.client.Application
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
+import net.wildfyre.client.WildFyreApplication
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -19,17 +19,18 @@ object SettingsRepository {
     val badgeToggle: LiveData<Boolean> = mutableBadgeToggle
 
     init {
-        mutableTheme.value = Application.preferences.getInt(Constants.Preferences.UI_THEME, Constants.Themes.AUTOMATIC)
-        mutableBadgeToggle.value = Application.preferences.getBoolean(Constants.Preferences.UI_BADGE, true)
+        mutableTheme.value =
+            WildFyreApplication.preferences.getInt(Constants.Preferences.UI_THEME, Constants.Themes.AUTOMATIC)
+        mutableBadgeToggle.value = WildFyreApplication.preferences.getBoolean(Constants.Preferences.UI_BADGE, true)
     }
 
     fun setTheme(theme: Int) {
-        Application.preferences.edit { putInt(Constants.Preferences.UI_THEME, theme) }
+        WildFyreApplication.preferences.edit { putInt(Constants.Preferences.UI_THEME, theme) }
         mutableTheme.value = theme
     }
 
     fun toggleBadge(show: Boolean) {
-        Application.preferences.edit { putBoolean(Constants.Preferences.UI_BADGE, show) }
+        WildFyreApplication.preferences.edit { putBoolean(Constants.Preferences.UI_BADGE, show) }
         mutableBadgeToggle.value = show
     }
 }
@@ -40,7 +41,7 @@ object AuthRepository {
     val authToken: LiveData<String> = mutableAuthToken
 
     init {
-        mutableAuthToken.value = Application.preferences.getString(Constants.Preferences.AUTH_TOKEN, "")
+        mutableAuthToken.value = WildFyreApplication.preferences.getString(Constants.Preferences.AUTH_TOKEN, "")
     }
 
     fun clearAuthToken() = setAuthToken("")
@@ -57,7 +58,7 @@ object AuthRepository {
 
     private fun setAuthToken(token: String) {
         mutableAuthToken.value = token
-        Application.preferences.edit { putString(Constants.Preferences.AUTH_TOKEN, token) }
+        WildFyreApplication.preferences.edit { putString(Constants.Preferences.AUTH_TOKEN, token) }
     }
 }
 
@@ -92,7 +93,7 @@ object AreaRepository {
     val preferredAreaReputation: LiveData<Reputation> = mutablePreferredAreaReputation
 
     init {
-        Application.preferences.getString(Constants.Preferences.AREA_PREFERRED, null)
+        WildFyreApplication.preferences.getString(Constants.Preferences.AREA_PREFERRED, null)
             ?.let { mutablePreferredAreaName.value = it }
     }
 
@@ -106,7 +107,7 @@ object AreaRepository {
 
     fun setPreferredAreaName(name: String) {
         if (name != preferredAreaName.value) {
-            Application.preferences.edit { putString(Constants.Preferences.AREA_PREFERRED, name) }
+            WildFyreApplication.preferences.edit { putString(Constants.Preferences.AREA_PREFERRED, name) }
             mutablePreferredAreaName.value = name
         }
     }

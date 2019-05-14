@@ -1,7 +1,7 @@
 package net.wildfyre.client.views.adapters
 
-import net.wildfyre.client.Application
 import net.wildfyre.client.R
+import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.Author
 import net.wildfyre.client.data.Notification
 
@@ -17,7 +17,7 @@ class NotificationsAdapter : ItemsAdapter<Notification>(true) {
 
     override fun getSubtitle(position: Int): String {
         val commentCount = data[position].comments?.size ?: 0
-        return Application.context.resources.getQuantityString(
+        return WildFyreApplication.context.resources.getQuantityString(
             R.plurals.notifications_item_comment_count,
             commentCount,
             commentCount

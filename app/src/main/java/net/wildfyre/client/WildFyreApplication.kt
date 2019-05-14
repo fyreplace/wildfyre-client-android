@@ -9,7 +9,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.security.ProviderInstaller
 import java.lang.ref.WeakReference
 
-class Application : Application() {
+class WildFyreApplication : Application() {
     companion object {
         private lateinit var instance: WeakReference<Context>
 
