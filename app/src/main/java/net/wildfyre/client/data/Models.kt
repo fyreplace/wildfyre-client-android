@@ -6,41 +6,11 @@ class Account {
     var id: Long? = null
     var username: String? = null
     var email: String? = null
+}
 
-    class Auth {
-        var username: String? = null
-        var password: String? = null
-    }
-
-    class Patch {
-        var email: String? = null
-        var password: String? = null
-    }
-
-    class Registration {
-        var username: String? = null
-        var email: String? = null
-        var password: String? = null
-        var captcha: String? = null
-    }
-
-    class PasswordRecoveryStep1 {
-        var email: String? = null
-        var password: String? = null
-        var captcha: String? = null
-    }
-
-    class PasswordRecoveryStep2 {
-        var new_password: String? = null
-        var token: String? = null
-        var transaction: String? = null
-        var captcha: String? = null
-    }
-
-    class UsernameRecovery {
-        var email: String? = null
-        var captcha: String? = null
-    }
+class AccountPatch {
+    var email: String? = null
+    var password: String? = null
 }
 
 class Area {
@@ -51,6 +21,11 @@ class Area {
 }
 
 class Auth {
+    var username: String? = null
+    var password: String? = null
+}
+
+class AuthToken {
     var token: String? = null
 }
 
@@ -131,21 +106,46 @@ class Post : NotificationPost() {
     var image: String? = null
     var additional_images: List<Image>? = null
     var comments: List<Comment>? = null
-
-    class Spread {
-        var spread: Boolean? = null
-    }
-
-    class Subscription {
-        var subscribed: Boolean? = null
-    }
 }
 
 class RecoverTransaction {
     var transaction: String? = null
 }
 
-class Registration
+class PasswordRecoveryStep1 {
+    var email: String? = null
+    var password: String? = null
+    var captcha: String? = null
+}
+
+class PasswordRecoveryStep2 {
+    var new_password: String? = null
+    var token: String? = null
+    var transaction: String? = null
+    var captcha: String? = null
+}
+
+class Registration {
+    var username: String? = null
+    var email: String? = null
+    var password: String? = null
+    var captcha: String? = null
+}
+
+class Spread {
+    var spread: Boolean? = null
+}
+
+class Subscription {
+    var subscribed: Boolean? = null
+}
+
+class RegistrationResult
+
+class UsernameRecovery {
+    var email: String? = null
+    var captcha: String? = null
+}
 
 class Reputation {
     var reputation: Long? = null

@@ -47,7 +47,7 @@ object AuthRepository {
     fun clearAuthToken() = setAuthToken("")
 
     fun fetchAuthToken(fh: FailureHandler, username: String, password: String) {
-        val auth = Account.Auth().also { it.username = username; it.password = password }
+        val auth = Auth().also { it.username = username; it.password = password }
 
         Services.webService.postAuth(auth).then(fh, R.string.failure_login) {
             if (it.token != null) {

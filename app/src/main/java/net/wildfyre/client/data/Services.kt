@@ -70,8 +70,8 @@ interface WebService {
     @POST("/account/auth/")
     @Headers("Content-Type: application/json")
     fun postAuth(
-        @Body auth: Account.Auth
-    ): Call<Auth>
+        @Body auth: Auth
+    ): Call<AuthToken>
 
 
     // Account
@@ -116,7 +116,7 @@ interface WebService {
     @Headers("Content-Type: application/json")
     fun patchAccount(
         @Header("Authorization") authorization: String,
-        @Body accountPatch: Account.Patch
+        @Body accountPatch: AccountPatch
     ): Call<Unit>
 
 
@@ -125,25 +125,25 @@ interface WebService {
     @POST("/account/register/")
     @Headers("Content-Type: application/json")
     fun postRegistration(
-        @Body recover: Account.Registration
-    ): Call<Registration>
+        @Body recover: Registration
+    ): Call<RegistrationResult>
 
     @POST("/account/recover/")
     @Headers("Content-Type: application/json")
     fun postRecovery(
-        @Body recovery: Account.PasswordRecoveryStep1
+        @Body recovery: PasswordRecoveryStep1
     ): Call<RecoverTransaction>
 
     @POST("/account/recover/reset/")
     @Headers("Content-Type: application/json")
     fun postRecovery(
-        @Body recovery: Account.PasswordRecoveryStep2
+        @Body recovery: PasswordRecoveryStep2
     ): Call<Reset>
 
     @POST("/account/recover/reset/")
     @Headers("Content-Type: application/json")
     fun postRecovery(
-        @Body recovery: Account.UsernameRecovery
+        @Body recovery: UsernameRecovery
     ): Call<RecoverTransaction>
 
 
@@ -259,7 +259,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Body spread: Post.Spread
+        @Body spread: Spread
     ): Call<Unit>
 
     @PUT("/areas/{areaName}/{postId}/subscribe/")
@@ -268,7 +268,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Body subscription: Post.Subscription
+        @Body subscription: Subscription
     ): Call<Unit>
 
     @DELETE("/areas/{areaName}/{postId}/")
