@@ -57,10 +57,10 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
                     return@OnEditorActionListener true
                 }
 
-                false
+                return@OnEditorActionListener false
             })
             login.setOnClickListener { attemptLogin() }
-            root
+            return@run root
         }
     }
 
