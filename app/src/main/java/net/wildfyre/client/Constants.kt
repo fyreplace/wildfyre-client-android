@@ -17,9 +17,11 @@ object Constants {
      * [AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY].
      */
     object Themes {
-        val AUTOMATIC = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM else
-            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+        val AUTOMATIC =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            else
+                AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
         const val LIGHT = AppCompatDelegate.MODE_NIGHT_NO
         const val DARK = AppCompatDelegate.MODE_NIGHT_YES
     }
