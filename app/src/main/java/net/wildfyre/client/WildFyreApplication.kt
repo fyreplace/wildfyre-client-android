@@ -11,6 +11,9 @@ import java.lang.ref.WeakReference
 
 class WildFyreApplication : Application() {
     companion object {
+        /**
+         * Instance of the current application. Initialized in [onCreate].
+         */
         private lateinit var instance: WeakReference<Context>
 
         /**
