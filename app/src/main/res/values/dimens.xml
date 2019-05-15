@@ -16,4 +16,5 @@
     <dimen name="list_item_author_picture_rounding">3dp</dimen>
     <dimen name="dialog_user_picture_size">144dp</dimen>
     <dimen name="dialog_user_picture_rounding">14dp</dimen>
+    <dimen name="post_comments_min_height">240dp</dimen>
 </resources>

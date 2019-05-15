@@ -39,6 +39,11 @@
     </plurals>
     <string name="archive_empty">No archived posts from this area</string>
     <string name="posts_empty">No posts in this area</string>
+    <plurals name="post_comment_count">
+        <item quantity="zero">No comments</item>
+        <item quantity="one">%1$d comment</item>
+        <item quantity="other">%1$d comments</item>
+    </plurals>
     <string name="image_desc_user_picture">Profile picture</string>
     <string name="image_desc_author_picture">Author picture</string>
     <string name="image_desc_post_picture">Post picture</string>

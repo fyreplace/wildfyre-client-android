@@ -1,19 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <net.wildfyre.client.views.markdown.MarkdownRecyclerView
-        android:id="@+id/content"
+    <data>
+
+        <variable
+            name="model"
+            type="net.wildfyre.client.viewmodels.PostFragmentViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/margin_horizontal_large"
-        android:paddingTop="@dimen/margin_vertical_medium"
-        android:paddingRight="@dimen/margin_horizontal_large"
-        android:paddingBottom="@dimen/margin_vertical_medium"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-</FrameLayout>
+        android:layout_height="match_parent">
+
+        <net.wildfyre.client.views.markdown.MarkdownRecyclerView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/margin_horizontal_large"
+            android:paddingTop="@dimen/margin_vertical_medium"
+            android:paddingRight="@dimen/margin_horizontal_large"
+            android:paddingBottom="@dimen/margin_vertical_medium"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <LinearLayout
+            android:id="@+id/comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="?android:windowBackground"
+            android:minHeight="@dimen/post_comments_min_height"
+            android:orientation="vertical"
+            android:theme="@style/AppTheme.NoActionBar"
+            app:behavior_hideable="true"
+            app:behavior_skipCollapsed="true"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <TextView
+                android:id="@+id/comment_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundHighlight"
+                android:gravity="center"
+                android:paddingTop="@dimen/margin_vertical_small"
+                android:paddingBottom="@dimen/margin_vertical_small"
+                android:text="@{@plurals/post_comment_count(safeUnbox(model.commentCount), safeUnbox(model.commentCount))}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

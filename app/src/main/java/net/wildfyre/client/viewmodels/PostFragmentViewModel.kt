@@ -18,6 +18,7 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
         it.text?.run { markdownContent.append(prepareForMarkdown(it.additional_images)) }
         markdownContent.toString()
     }
+    val commentCount: LiveData<Int> = Transformations.map(post) { it.comments?.size ?: 0 }
 
     fun setPostId(id: Long) {
         if (_postId.value != id) {

@@ -7,8 +7,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_post.*
 import net.wildfyre.client.R
+import net.wildfyre.client.databinding.FragmentPostBinding
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.PostFragmentViewModel
 import net.wildfyre.client.views.markdown.PostPlugin
@@ -50,12 +52,34 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)?.apply {
-            findViewById<RecyclerView>(R.id.content).adapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
+        return FragmentPostBinding.inflate(inflater, container, false).run {
+            lifecycleOwner = this@PostFragment
+            model = viewModel
+            root.findViewById<RecyclerView>(R.id.content).adapter =
+                MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
+            return@run root
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_post_actions, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_comments -> toggleComments()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun toggleComments() {
+        val commentsBehavior = BottomSheetBehavior.from(comments)
+
+        if (commentsBehavior.state in setOf(BottomSheetBehavior.STATE_HIDDEN, BottomSheetBehavior.STATE_COLLAPSED)) {
+            commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        } else if (commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            commentsBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
     }
 }
