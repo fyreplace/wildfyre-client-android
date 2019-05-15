@@ -34,8 +34,8 @@
     <string name="notifications_dialog_title">Clear all notifications ?</string>
     <string name="notifications_empty">No notifications</string>
     <plurals name="notifications_item_comment_count">
-        <item quantity="one">%1$s new comment</item>
-        <item quantity="other">%1$s new comments</item>
+        <item quantity="one">%1$d new comment</item>
+        <item quantity="other">%1$d new comments</item>
     </plurals>
     <string name="archive_empty">No archived posts from this area</string>
     <string name="posts_empty">No posts in this area</string>
