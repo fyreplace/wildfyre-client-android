@@ -38,10 +38,10 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
             updateInterfaceInformation()
         }
 
-        selectedThemeIndex.value = THEMES.indexOfFirst { it == SettingsRepository.theme.value }
-        selectedThemeIndex.observeForever { SettingsRepository.setTheme(THEMES[it]) }
-        shouldShowNotificationBadge.value = SettingsRepository.badgeToggle.value
-        shouldShowNotificationBadge.observeForever(SettingsRepository::toggleBadge)
+        selectedThemeIndex.value = THEMES.indexOfFirst { it == SettingsRepository.theme }
+        selectedThemeIndex.observeForever { SettingsRepository.theme = THEMES[it] }
+        shouldShowNotificationBadge.value = SettingsRepository.showBadge
+        shouldShowNotificationBadge.observeForever { SettingsRepository.showBadge = it }
     }
 
     fun logout() = AuthRepository.clearAuthToken()

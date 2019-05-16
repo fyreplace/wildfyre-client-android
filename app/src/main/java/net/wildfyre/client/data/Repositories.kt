@@ -12,27 +12,12 @@ import okhttp3.RequestBody
 import retrofit2.Call
 
 object SettingsRepository {
-    private val mutableTheme = MutableLiveData<Int>()
-    private val mutableBadgeToggle = MutableLiveData<Boolean>()
-
-    val theme: LiveData<Int> = mutableTheme
-    val badgeToggle: LiveData<Boolean> = mutableBadgeToggle
-
-    init {
-        mutableTheme.value =
-            WildFyreApplication.preferences.getInt(Constants.Preferences.UI_THEME, Constants.Themes.AUTOMATIC)
-        mutableBadgeToggle.value = WildFyreApplication.preferences.getBoolean(Constants.Preferences.UI_BADGE, true)
-    }
-
-    fun setTheme(theme: Int) {
-        WildFyreApplication.preferences.edit { putInt(Constants.Preferences.UI_THEME, theme) }
-        mutableTheme.value = theme
-    }
-
-    fun toggleBadge(show: Boolean) {
-        WildFyreApplication.preferences.edit { putBoolean(Constants.Preferences.UI_BADGE, show) }
-        mutableBadgeToggle.value = show
-    }
+    var theme: Int
+        get() = WildFyreApplication.preferences.getInt(Constants.Preferences.UI_THEME, Constants.Themes.AUTOMATIC)
+        set(value) = WildFyreApplication.preferences.edit { putInt(Constants.Preferences.UI_THEME, value) }
+    var showBadge: Boolean
+        get() = WildFyreApplication.preferences.getBoolean(Constants.Preferences.UI_BADGE, true)
+        set(value) = WildFyreApplication.preferences.edit { putBoolean(Constants.Preferences.UI_BADGE, value) }
 }
 
 object AuthRepository {
