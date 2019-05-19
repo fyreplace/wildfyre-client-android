@@ -33,21 +33,23 @@ object Services {
  * @param errorMessage The error message string resource that should be displayed to the user upon error
  * @param callback The callback to run when the operation succeeds
  */
-fun <T> Call<T>.then(failureHandler: FailureHandler, @StringRes errorMessage: Int, callback: (result: T) -> Unit) {
-    enqueue(DefaultCallback<T>(failureHandler, errorMessage) { callback(it!!) })
-}
+fun <T> Call<T>.then(failureHandler: FailureHandler, @StringRes errorMessage: Int, callback: (result: T) -> Unit) =
+    enqueue(DefaultCallback<T>(failureHandler, errorMessage) { callback(it) })
 
+/**
+ * @see then
+ */
 fun Call<Unit>.then(failureHandler: FailureHandler, @StringRes errorMessage: Int, callback: () -> Unit) =
     enqueue(DefaultCallback<Unit>(failureHandler, errorMessage) { callback() })
 
 class DefaultCallback<T>(
     private val failureHandler: FailureHandler,
     @StringRes private val errorMessage: Int,
-    private val action: (result: T?) -> Unit
+    private val action: (result: T) -> Unit
 ) : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
         if (response.isSuccessful) {
-            action(response.body())
+            response.body()?.let { action(it) } ?: onFailure(call, ApiNoResultException())
         } else {
             val body = response.errorBody()?.use { it.charStream().readText() } ?: "<no body>"
             onFailure(call, ApiCallException(response.code(), response.message(), body))
@@ -60,6 +62,8 @@ class DefaultCallback<T>(
 }
 
 class ApiCallException(code: Int, message: String, body: String) : Exception("$code: $message\n\t$body")
+
+class ApiNoResultException : Exception("No body result received")
 
 /**
  * Retrofit implementation of the WildFyre API.
