@@ -8,4 +8,4 @@
     android:drawablePadding="@dimen/margin_horizontal_small"
     android:text="@string/main_actions_posts_new"
     android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
-    app:icon="@drawable/ic_add_daynight_24dp" />
+    app:icon="@drawable/ic_add_black_24dp" />

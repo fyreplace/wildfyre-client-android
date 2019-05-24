@@ -25,8 +25,8 @@ class PostPlugin private constructor(private val context: Context) : AbstractMar
             builder.placeholderDrawableProvider {
                 ContextCompat.getDrawable(
                     context,
-                    R.drawable.ic_image_daynight_24dp
-                )
+                    R.drawable.ic_image_black_24dp
+                )?.apply { setTint(ContextCompat.getColor(context, R.color.foreground)) }
             }
         }
     }
