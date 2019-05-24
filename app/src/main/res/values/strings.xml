@@ -26,11 +26,11 @@
     <string name="main_actions_area_reputation">Reputation</string>
     <string name="main_actions_comments">Comments</string>
     <string name="main_actions_subscribe">Subscribe</string>
-    <string name="main_actions_posts_new">New post</string>
+    <string name="main_actions_posts_new">Create</string>
     <string name="main_profile_editor_avatar_change">Change avatar</string>
     <string name="main_profile_editor_avatar_chooser">Select an avatar</string>
     <string name="main_profile_editor_bio">Your bio</string>
-    <string name="notifications_actions_clear">Mark all as read</string>
+    <string name="notifications_actions_clear">Clear</string>
     <string name="notifications_dialog_title">Clear all notifications ?</string>
     <string name="notifications_empty">No notifications</string>
     <plurals name="notifications_item_comment_count">

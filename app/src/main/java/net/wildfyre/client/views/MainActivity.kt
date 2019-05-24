@@ -243,7 +243,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         lateinit var avatarDataObserver: Observer<ByteArray>
 
         dialog = AlertDialog.Builder(this)
-            .setView(R.layout.main_profile_editor)
+            .setView(R.layout.profile_editor)
             .setNegativeButton(android.R.string.cancel) { _: DialogInterface, _: Int ->
                 viewModel.userAvatarNewData.removeObserver(avatarDataObserver)
                 viewModel.resetPendingProfileAvatar()

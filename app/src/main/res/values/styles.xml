@@ -1,9 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorAccent</item>
     </style>
@@ -23,14 +27,22 @@
         <item name="android:windowBackground">@drawable/ic_splash_screen</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
-    <style name="AppTheme.Button.Colored" parent="Widget.AppCompat.Button.Colored">
-        <item name="android:textColor">@android:color/white</item>
+    <style name="AppTheme.ActionBar.Button.NeutralButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorOnPrimary">@android:color/black</item>
+        <item name="colorSecondary">@android:color/black</item>
+        <item name="colorOnSecondary">@android:color/white</item>
     </style>
 
-    <style name="AppTheme.ActionBar.Button" parent="AppTheme.Button.Colored" />
+    <style name="AppTheme.Button.NeutralButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="colorPrimary">@color/foreground</item>
+        <item name="colorOnPrimary">@color/background</item>
+        <item name="colorSecondary">@color/background</item>
+        <item name="colorOnSecondary">@color/foreground</item>
+    </style>
 
 </resources>

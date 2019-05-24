@@ -46,7 +46,7 @@ class NotificationsFragment :
             notificationCount = viewModel.itemCount
         }
 
-        clear.setOnClickListener {
+        clear.findViewById<View>(R.id.button).setOnClickListener {
             AlertDialog.Builder(context!!)
                 .setTitle(getString(R.string.notifications_dialog_title))
                 .setNegativeButton(android.R.string.cancel, null)

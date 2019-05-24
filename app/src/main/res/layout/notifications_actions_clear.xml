@@ -10,12 +10,23 @@
             type="androidx.lifecycle.LiveData&lt;Long&gt;" />
     </data>
 
-    <Button
-        style="@style/AppTheme.ActionBar.Button"
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:drawablePadding="@dimen/margin_horizontal_small"
-        android:text="@string/notifications_actions_clear"
-        android:visibility="@{safeUnbox(notificationCount) == 0 ? View.GONE : View.VISIBLE}" />
+        android:paddingLeft="@dimen/margin_horizontal_small"
+        android:paddingRight="@dimen/margin_horizontal_small">
+
+        <Button
+            android:id="@+id/button"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="@dimen/margin_horizontal_small"
+            android:text="@string/notifications_actions_clear"
+            android:textColor="@android:color/white"
+            android:theme="@style/AppTheme.ActionBar.Button.NeutralButtonOverlay"
+            android:visibility="@{safeUnbox(notificationCount) == 0 ? View.GONE : View.VISIBLE}" />
+    </FrameLayout>
 </layout>

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimary">#FF7043</color>
+    <color name="colorPrimaryVariant">#FF5722</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorControlNormalNeutral">#AFAFAF</color>
     <color name="colorSwitchThumbNormalNeutral">#4F4F4F</color>
     <color name="foreground">@android:color/white</color>
     <color name="background">@android:color/background_dark</color>
-    <color name="backgroundHighlight">#7F000000</color>
+    <color name="backgroundHighlight">#1FFFFFFF</color>
     <color name="navigation">@android:color/background_dark</color>
     <color name="loginLogo">@android:color/white</color>
     <color name="badgeBackground">#BF0000</color>
