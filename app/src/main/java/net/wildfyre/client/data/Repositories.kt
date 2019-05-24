@@ -132,11 +132,14 @@ object PostRepository {
         val post = MutableLiveData<Post>()
 
         if (id >= 0) {
-            Services.webService.getPost(AreaRepository.preferredAreaName.value ?: "", id)
-                .then(fh, R.string.failure_request) {
-                    post.value = it
-                    NotificationRepository.removeNotification(fh, it.id!!)
-                }
+            Services.webService.getPost(
+                AuthRepository.authToken.value!!,
+                AreaRepository.preferredAreaName.value ?: "",
+                id
+            ).then(fh, R.string.failure_request) {
+                post.value = it
+                NotificationRepository.removeNotification(fh, it.id!!)
+            }
         }
 
         return post

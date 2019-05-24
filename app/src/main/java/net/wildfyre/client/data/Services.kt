@@ -99,6 +99,7 @@ interface WebService {
 
     @GET("/users/{userId}/")
     fun getUser(
+        @Header("Authorization") authorization: String,
         @Path("userId") userId: Long
     ): Call<Author>
 
@@ -234,6 +235,7 @@ interface WebService {
 
     @GET("/areas/{areaName}/{postId}/")
     fun getPost(
+        @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long
     ): Call<Post>
