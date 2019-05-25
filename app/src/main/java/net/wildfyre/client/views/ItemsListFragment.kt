@@ -121,7 +121,7 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
         }
     }
 
-    override fun onChildViewDetachedFromWindow(view: View) {}
+    override fun onChildViewDetachedFromWindow(view: View) = Unit
 
     override fun onRefresh() {
         resetting = true

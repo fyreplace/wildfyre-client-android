@@ -20,5 +20,5 @@ class MarkdownRecyclerView @JvmOverloads constructor(
         }
     }
 
-    override fun onChildViewDetachedFromWindow(view: View) {}
+    override fun onChildViewDetachedFromWindow(view: View) = Unit
 }

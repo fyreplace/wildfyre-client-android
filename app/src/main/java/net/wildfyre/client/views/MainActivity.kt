@@ -224,15 +224,15 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         )
     }
 
-    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+    override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
 
     override fun onDrawerOpened(drawerView: View) {
         viewModel.updateNotificationCount()
     }
 
-    override fun onDrawerClosed(drawerView: View) {}
+    override fun onDrawerClosed(drawerView: View) = Unit
 
-    override fun onDrawerStateChanged(newState: Int) {}
+    override fun onDrawerStateChanged(newState: Int) = Unit
 
     /**
      * Shows a dialog to let the user edit their profile bio and their avatar.
