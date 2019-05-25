@@ -17,8 +17,7 @@ import net.wildfyre.client.viewmodels.PostsFragmentViewModel
  */
 abstract class PostsFragment<VM : PostsFragmentViewModel> : ItemsListFragment<VM, Post>(), AreaSelectingFragment {
     override lateinit var areaSelectingViewModel: AreaSelectingFragmentViewModel
-    override val viewModels: List<FailureHandlingViewModel>
-        get() = listOf(viewModel, areaSelectingViewModel)
+    override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     private var settingUp = true
 
     override fun onAttach(context: Context) {

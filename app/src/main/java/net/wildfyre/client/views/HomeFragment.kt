@@ -15,8 +15,7 @@ import net.wildfyre.client.viewmodels.HomeFragmentViewModel
 class HomeFragment : FailureHandlingFragment(R.layout.fragment_home), AreaSelectingFragment {
     private lateinit var viewModel: HomeFragmentViewModel
     override lateinit var areaSelectingViewModel: AreaSelectingFragmentViewModel
-    override val viewModels: List<FailureHandlingViewModel>
-        get() = listOf(viewModel, areaSelectingViewModel)
+    override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
 
     override fun onAttach(context: Context) {
         super<FailureHandlingFragment>.onAttach(context)

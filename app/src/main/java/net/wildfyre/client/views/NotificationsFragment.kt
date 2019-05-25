@@ -22,8 +22,7 @@ import net.wildfyre.client.views.adapters.NotificationsAdapter
 class NotificationsFragment :
     ItemsListFragment<NotificationsFragmentViewModel, Notification>(),
     RecyclerView.OnChildAttachStateChangeListener, SwipeRefreshLayout.OnRefreshListener {
-    override val viewModels: List<FailureHandlingViewModel>
-        get() = listOf(viewModel)
+    override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     override lateinit var viewModel: NotificationsFragmentViewModel
 
     override fun onAttach(context: Context) {
