@@ -129,8 +129,8 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
         viewModel.fetchNextItems()
     }
 
-    override fun onItemClicked(id: Long) {
-        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(id))
+    override fun onItemClicked(areaName: String?, id: Long) {
+        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(areaName, id))
     }
 
     private fun fillList() {

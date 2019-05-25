@@ -128,13 +128,13 @@ object NotificationRepository {
 }
 
 object PostRepository {
-    fun getPost(fh: FailureHandler, id: Long): LiveData<Post> {
+    fun getPost(fh: FailureHandler, areaName: String?, id: Long): LiveData<Post> {
         val post = MutableLiveData<Post>()
 
         if (id >= 0) {
             Services.webService.getPost(
                 AuthRepository.authToken.value!!,
-                AreaRepository.preferredAreaName.value ?: "",
+                areaName ?: AreaRepository.preferredAreaName.value ?: "",
                 id
             ).then(fh, R.string.failure_request) {
                 post.value = it

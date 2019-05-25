@@ -24,5 +24,7 @@ class NotificationsAdapter : ItemsAdapter<Notification>(true) {
         )
     }
 
+    override fun getAreaName(position: Int): String? = data[position].area
+
     override fun getId(position: Int): Long = data[position].post?.id ?: -1
 }

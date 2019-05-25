@@ -42,7 +42,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
             .usePlugin(TableEntryPlugin.create(context))
             .build()
 
-        viewModel.setPostId(args.postId)
+        viewModel.setPostData(args.postAreaName, args.postId)
         viewModel.markdownContent.observe(this, Observer { markdownContent ->
             (content.adapter as? MarkwonAdapter)?.let {
                 it.setMarkdown(markdown, markdownContent)

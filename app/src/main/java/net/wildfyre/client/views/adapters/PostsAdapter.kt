@@ -18,5 +18,7 @@ open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(showAuthors) 
 
     override fun getSubtitle(position: Int): String = dateFormat.format(data[position].created)
 
+    override fun getAreaName(position: Int): String? = null
+
     override fun getId(position: Int): Long = data[position].id ?: -1
 }

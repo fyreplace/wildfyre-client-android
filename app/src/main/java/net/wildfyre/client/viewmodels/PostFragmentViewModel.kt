@@ -9,9 +9,10 @@ import net.wildfyre.client.data.PostRepository
 import net.wildfyre.client.views.markdown.prepareForMarkdown
 
 class PostFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
+    private var _postAreaName: String? = null
     private val _postId = MutableLiveData<Long>()
 
-    val post: LiveData<Post> = Transformations.switchMap(_postId) { PostRepository.getPost(this, it) }
+    val post: LiveData<Post> = Transformations.switchMap(_postId) { PostRepository.getPost(this, _postAreaName, it) }
     val markdownContent: LiveData<String> = Transformations.map(post) {
         val markdownContent = StringBuilder()
         it.image?.run { markdownContent.append("![]($this)\n\n") }
@@ -20,8 +21,9 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     }
     val commentCount: LiveData<Int> = Transformations.map(post) { it.comments?.size ?: 0 }
 
-    fun setPostId(id: Long) {
+    fun setPostData(areaName: String?, id: Long) {
         if (_postId.value != id) {
+            _postAreaName = areaName
             _postId.value = id
         }
     }

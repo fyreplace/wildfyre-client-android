@@ -91,7 +91,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
 
         holder.space.isVisible = holder.text.isVisible && !holder.authorContainer.isVisible
         holder.subtitle.text = getSubtitle(position)
-        holder.clickable.setOnClickListener { onItemClickedListener.onItemClicked(getId(position)) }
+        holder.clickable.setOnClickListener { onItemClickedListener.onItemClicked(getAreaName(position), getId(position)) }
     }
 
     abstract fun getText(position: Int): String?
@@ -101,6 +101,8 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
     abstract fun getAuthor(position: Int): Author?
 
     abstract fun getSubtitle(position: Int): String
+
+    abstract fun getAreaName(position: Int): String?
 
     abstract fun getId(position: Int): Long
 
@@ -116,11 +118,11 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
     }
 
     interface OnItemClickedListener {
-        fun onItemClicked(id: Long)
+        fun onItemClicked(areaName: String?, id: Long)
 
         companion object {
             fun default() = object : OnItemClickedListener {
-                override fun onItemClicked(id: Long) {
+                override fun onItemClicked(areaName: String?, id: Long) {
                 }
             }
         }
