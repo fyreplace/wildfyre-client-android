@@ -1,5 +1,8 @@
 package net.wildfyre.client.views
 
+import android.animation.LayoutTransition
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -13,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -80,11 +84,39 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         content.adapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
-        comments_list.adapter = CommentsAdapter(markdown)
+        val commentsAdapter = CommentsAdapter(markdown)
+        comments_list.adapter = commentsAdapter
+        comments_list.addItemDecoration(
+            DividerItemDecoration(
+                view.context,
+                (comments_list.layoutManager as LinearLayoutManager).orientation
+            )
+        )
 
-        val layoutManager = comments_list.layoutManager as LinearLayoutManager
-        comments_list.addItemDecoration(DividerItemDecoration(view.context, layoutManager.orientation))
+        listOf(go_up.parent as ViewGroup, go_down.parent as ViewGroup).forEach {
+            it.layoutTransition.setAnimator(LayoutTransition.APPEARING, ANIMATOR_SCALE_UP)
+            it.layoutTransition.setAnimator(LayoutTransition.DISAPPEARING, ANIMATOR_SCALE_DOWN)
+        }
+
+        comments_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val upVisibility = recyclerView.canScrollVertically(-1) && dy < 0
+
+                if (go_up.isVisible != upVisibility) {
+                    go_up.isVisible = upVisibility
+                }
+
+                val downVisibility = recyclerView.canScrollVertically(1) && dy > 0
+
+                if (go_down.isVisible != downVisibility) {
+                    go_down.isVisible = downVisibility
+                }
+            }
+        })
+
         comment_count.setOnClickListener { toggleComments() }
+        go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
+        go_down.setOnClickListener { comments_list.smoothScrollToPosition(Math.max(commentsAdapter.itemCount - 1, 0)) }
 
         comments.doOnNextLayout { requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback) }
         BottomSheetBehavior.from(comments).setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -158,7 +190,17 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         }
     }
 
-    companion object {
-        private const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
+    private companion object {
+        const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
+        val ANIMATOR_SCALE_DOWN: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
+            Unit,
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 0f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f)
+        )
+        val ANIMATOR_SCALE_UP: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
+            Unit,
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 1f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
+        )
     }
 }
