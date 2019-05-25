@@ -65,7 +65,8 @@
                     android:textColor="@color/foreground"
                     android:theme="@style/AppTheme.Button.HighlightButtonOverlay"
                     app:drawableLeftCompat="@drawable/ic_comment_black_24dp"
-                    app:drawableStartCompat="@drawable/ic_comment_black_24dp" />
+                    app:drawableStartCompat="@drawable/ic_comment_black_24dp"
+                    app:drawableTint="@color/foreground" />
 
                 <ImageView
                     android:layout_width="wrap_content"
