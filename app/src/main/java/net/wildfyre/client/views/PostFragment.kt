@@ -3,6 +3,7 @@ package net.wildfyre.client.views
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
@@ -47,6 +48,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         viewModel.setPostData(args.postAreaName, args.postId)
         viewModel.markdownContent.observe(this, Observer { markdownContent ->
             (content.adapter as? MarkwonAdapter)?.let {
+                loader.isVisible = false
                 it.setMarkdown(markdown, markdownContent)
                 it.notifyItemRangeChanged(0, it.itemCount)
             }
