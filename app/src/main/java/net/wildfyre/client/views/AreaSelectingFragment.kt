@@ -50,14 +50,14 @@ interface AreaSelectingFragment {
 
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 switchItems(true)
-                ViewModelProviders.of(fragment.activity!!).get(MainActivityViewModel::class.java)
+                ViewModelProviders.of(fragment.requireActivity()).get(MainActivityViewModel::class.java)
                     .setNotificationBadgeVisible(false)
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
                 switchItems(false)
-                ViewModelProviders.of(fragment.activity!!).get(MainActivityViewModel::class.java)
+                ViewModelProviders.of(fragment.requireActivity()).get(MainActivityViewModel::class.java)
                     .setNotificationBadgeVisible(true)
                 return true
             }
