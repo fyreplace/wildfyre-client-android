@@ -115,7 +115,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
                 drawable.start()
                 drawable.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
                     override fun onAnimationEnd(drawable: Drawable?) {
-                        arrow.setImageDrawable(AnimatedVectorDrawableCompat.create(requireContext(), res))
+                        arrow?.setImageDrawable(AnimatedVectorDrawableCompat.create(requireContext(), res))
                     }
                 })
             }
