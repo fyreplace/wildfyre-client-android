@@ -14,6 +14,7 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     private val _postId = MutableLiveData<Long>()
 
     val post: LiveData<Post> = Transformations.switchMap(_postId) { PostRepository.getPost(this, _postAreaName, it) }
+    val contentLoaded: LiveData<Boolean> = Transformations.map(post) { it != null }
     val markdownContent: LiveData<String> = Transformations.map(post) {
         val markdownContent = StringBuilder()
         it.image?.run { markdownContent.append("![]($this)\n\n") }

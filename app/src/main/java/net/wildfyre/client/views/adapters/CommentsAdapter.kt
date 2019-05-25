@@ -18,6 +18,17 @@ import java.text.SimpleDateFormat
 class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     private val dateFormat = SimpleDateFormat.getDateTimeInstance()
     private var data: List<CommentWrapper> = listOf()
+    private val recyclers: MutableList<RecyclerView> = mutableListOf()
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        recyclers.add(recyclerView)
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        recyclers.remove(recyclerView)
+    }
 
     override fun getItemCount(): Int = data.size
 
@@ -62,13 +73,23 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
 
     fun setComments(comments: List<Comment>, newIds: List<Long>?) {
         val newOnes = newIds?.toMutableList()
-        data = comments.map {
-            CommentWrapper(it).apply {
-                newOnes?.firstOrNull { id -> comment.id == id }?.run {
+        var scrollPosition = -1
+
+        data = comments.mapIndexed { index, comment ->
+            CommentWrapper(comment).also { wrapper ->
+                newOnes?.firstOrNull { id -> wrapper.comment.id == id }?.run {
+                    if (scrollPosition == -1) {
+                        scrollPosition = index
+                    }
+
                     newOnes.remove(this)
-                    isNew = true
+                    wrapper.isNew = true
                 }
             }
+        }
+
+        if (scrollPosition > -1) {
+            recyclers.forEach { it.scrollToPosition(scrollPosition) }
         }
     }
 

@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="model"
             type="net.wildfyre.client.viewmodels.PostFragmentViewModel" />
@@ -14,10 +16,10 @@
         android:layout_height="match_parent">
 
         <ProgressBar
-            android:id="@+id/loader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:visibility="@{safeUnbox(model.contentLoaded) ? View.GONE : View.VISIBLE}" />
 
         <net.wildfyre.client.views.markdown.MarkdownRecyclerView
             android:id="@+id/content"
@@ -82,6 +84,12 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="@{safeUnbox(model.contentLoaded) ? View.GONE : View.VISIBLE}" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/comments_list"

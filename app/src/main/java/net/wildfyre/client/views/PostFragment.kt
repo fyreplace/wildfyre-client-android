@@ -60,7 +60,6 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         viewModel.setPostData(args.postAreaName, args.postId)
         viewModel.markdownContent.observe(this, Observer { markdownContent ->
             (content.adapter as? MarkwonAdapter)?.let {
-                loader.isVisible = false
                 it.setMarkdown(markdown, markdownContent)
                 it.notifyItemRangeChanged(0, it.itemCount)
             }
@@ -151,7 +150,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
             }
         })
 
-        val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED) == true
+        val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED) ?: (args.newCommentsIds != null)
 
         if (commentsExpanded) {
             onBackPressedCallback.isEnabled = true
