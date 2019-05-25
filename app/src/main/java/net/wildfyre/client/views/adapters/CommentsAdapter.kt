@@ -11,9 +11,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Comment
+import ru.noties.markwon.Markwon
 import java.text.SimpleDateFormat
 
-class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
+class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     private val dateFormat = SimpleDateFormat.getDateTimeInstance()
     var data: List<Comment> = listOf()
 
@@ -30,7 +31,6 @@ class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val comment = data[position]
         holder.date.text = dateFormat.format(comment.created)
-        holder.text.text = comment.text
         comment.author?.let {
             holder.authorName.text = it.name
             AppGlide.with(holder.itemView.context)
@@ -45,6 +45,11 @@ class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
                 )
                 .into(holder.authorPicture)
         }
+
+        val markdownContent = StringBuilder()
+        comment.image?.let { markdownContent.append("![]($it)") }
+        comment.text?.let { markdownContent.append(it) }
+        markdown.setMarkdown(holder.text, markdownContent.toString())
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

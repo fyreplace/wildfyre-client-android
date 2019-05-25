@@ -72,7 +72,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         content.adapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
-        comments_list.adapter = CommentsAdapter()
+        comments_list.adapter = CommentsAdapter(markdown)
 
         val layoutManager = comments_list.layoutManager as LinearLayoutManager
         comments_list.addItemDecoration(DividerItemDecoration(view.context, layoutManager.orientation))
