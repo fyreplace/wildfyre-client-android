@@ -69,13 +69,13 @@
                     app:drawableTint="@color/foreground" />
 
                 <ImageView
+                    android:id="@+id/arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|end"
                     android:layout_marginEnd="@dimen/margin_horizontal_small"
                     android:layout_marginRight="@dimen/margin_horizontal_small"
                     android:contentDescription="@string/image_desc_comments_toggle"
-                    app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp"
                     app:tint="@color/foreground" />
             </FrameLayout>
 

@@ -1,9 +1,12 @@
 package net.wildfyre.client.views
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.DrawableRes
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -11,6 +14,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_post.*
 import net.wildfyre.client.R
@@ -85,17 +90,53 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
 
         comments.doOnNextLayout { requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback) }
         BottomSheetBehavior.from(comments).setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            @SuppressLint("SwitchIntDef")
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 onBackPressedCallback.isEnabled = newState == BottomSheetBehavior.STATE_EXPANDED
+
+                (arrow.drawable as? Animatable2Compat)?.let {
+                    when (newState) {
+                        BottomSheetBehavior.STATE_COLLAPSED -> animateAndSwitchTo(
+                            it,
+                            R.drawable.ic_arrow_drop_up_down_anim_black_24dp
+                        )
+                        BottomSheetBehavior.STATE_EXPANDED -> animateAndSwitchTo(
+                            it,
+                            R.drawable.ic_arrow_drop_down_up_anim_black_24dp
+                        )
+                    }
+                }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
+
+            private fun animateAndSwitchTo(drawable: Animatable2Compat, @DrawableRes res: Int) {
+                drawable.stop()
+                drawable.start()
+                drawable.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
+                    override fun onAnimationEnd(drawable: Drawable?) {
+                        arrow.setImageDrawable(AnimatedVectorDrawableCompat.create(requireContext(), res))
+                    }
+                })
+            }
         })
 
-        if (savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED) == true) {
+        val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED) == true
+
+        if (commentsExpanded) {
             onBackPressedCallback.isEnabled = true
             toggleComments()
         }
+
+        arrow.setImageDrawable(
+            AnimatedVectorDrawableCompat.create(
+                requireContext(),
+                if (commentsExpanded)
+                    R.drawable.ic_arrow_drop_down_up_anim_black_24dp
+                else
+                    R.drawable.ic_arrow_drop_up_down_anim_black_24dp
+            )
+        )
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
