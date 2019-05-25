@@ -17,6 +17,7 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/comment_header_height"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical"
@@ -29,28 +30,50 @@
         <LinearLayout
             android:id="@+id/comments"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:background="?android:windowBackground"
-            android:minHeight="@dimen/post_comments_min_height"
             android:orientation="vertical"
             android:theme="@style/AppTheme.NoActionBar"
-            app:behavior_hideable="true"
-            app:behavior_skipCollapsed="true"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="@dimen/comment_header_height"
+            app:behavior_skipCollapsed="false"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-            <TextView
-                android:id="@+id/comment_count"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/backgroundHighlight"
-                android:gravity="center"
-                android:paddingTop="@dimen/margin_vertical_small"
-                android:paddingBottom="@dimen/margin_vertical_small"
-                android:text="@{@plurals/post_comment_count(safeUnbox(model.commentCount), safeUnbox(model.commentCount))}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:layout_height="@dimen/comment_header_height"
+                android:background="@color/backgroundHighlight">
+
+                <TextView
+                    android:id="@+id/comment_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/comment_header_height"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawablePadding="@dimen/margin_horizontal_medium"
+                    android:gravity="center_vertical|start"
+                    android:paddingLeft="@dimen/margin_horizontal_medium"
+                    android:paddingRight="@dimen/margin_horizontal_medium"
+                    android:text="@{@plurals/post_comment_count(safeUnbox(model.commentCount), safeUnbox(model.commentCount))}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/foreground"
+                    android:theme="@style/AppTheme.Button.HighlightButtonOverlay"
+                    app:drawableLeftCompat="@drawable/ic_comment_black_24dp"
+                    app:drawableStartCompat="@drawable/ic_comment_black_24dp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginEnd="@dimen/margin_horizontal_small"
+                    android:layout_marginRight="@dimen/margin_horizontal_small"
+                    android:contentDescription="@string/image_desc_comments_toggle"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp"
+                    app:tint="@color/foreground" />
+            </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comments_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

@@ -24,7 +24,6 @@
     <string name="main_actions_area_selector">Area: %1$s</string>
     <string name="main_actions_area_spread">Spread</string>
     <string name="main_actions_area_reputation">Reputation</string>
-    <string name="main_actions_comments">Comments</string>
     <string name="main_actions_subscribe">Subscribe</string>
     <string name="main_actions_posts_new">Create</string>
     <string name="main_profile_editor_avatar_change">Change avatar</string>
@@ -47,6 +46,7 @@
     <string name="image_desc_user_picture">Profile picture</string>
     <string name="image_desc_author_picture">Author picture</string>
     <string name="image_desc_post_picture">Post picture</string>
+    <string name="image_desc_comments_toggle">Toggle comments</string>
     <string name="failure_request">Error during request</string>
     <string name="failure_login">Logging in failed</string>
     <string name="failure_profile_edit">Could not update profile</string>

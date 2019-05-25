@@ -45,4 +45,8 @@
         <item name="colorOnSecondary">@color/foreground</item>
     </style>
 
+    <style name="AppTheme.Button.HighlightButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="colorControlHighlight">@color/colorPrimary</item>
+    </style>
+
 </resources>

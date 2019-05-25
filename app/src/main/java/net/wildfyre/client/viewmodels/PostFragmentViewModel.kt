@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import net.wildfyre.client.data.Comment
 import net.wildfyre.client.data.Post
 import net.wildfyre.client.data.PostRepository
 import net.wildfyre.client.views.markdown.prepareForMarkdown
@@ -19,7 +20,8 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
         it.text?.run { markdownContent.append(prepareForMarkdown(it.additional_images)) }
         markdownContent.toString()
     }
-    val commentCount: LiveData<Int> = Transformations.map(post) { it.comments?.size ?: 0 }
+    val comments: LiveData<List<Comment>> = Transformations.map(post) { it.comments ?: listOf() }
+    val commentCount: LiveData<Int> = Transformations.map(comments) { it?.size ?: 0 }
 
     fun setPostData(areaName: String?, id: Long) {
         if (_postId.value != id) {

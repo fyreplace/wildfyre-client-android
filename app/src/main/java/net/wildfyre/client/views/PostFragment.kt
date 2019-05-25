@@ -6,13 +6,15 @@ import android.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_post.*
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.FragmentPostBinding
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.PostFragmentViewModel
+import net.wildfyre.client.views.adapters.CommentsAdapter
 import net.wildfyre.client.views.markdown.PostPlugin
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
@@ -49,29 +51,46 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
                 it.notifyItemRangeChanged(0, it.itemCount)
             }
         })
+        viewModel.comments.observe(this, Observer { commentList ->
+            (comments_list.adapter as? CommentsAdapter)?.let {
+                it.data = commentList
+                it.notifyItemRangeChanged(0, it.itemCount)
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return FragmentPostBinding.inflate(inflater, container, false).run {
             lifecycleOwner = this@PostFragment
             model = viewModel
-            root.findViewById<RecyclerView>(R.id.content).adapter =
-                MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
             return@run root
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_post_actions, menu)
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        content.adapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
+        comments_list.adapter = CommentsAdapter()
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_comments -> toggleComments()
+        val layoutManager = comments_list.layoutManager as LinearLayoutManager
+        comments_list.addItemDecoration(DividerItemDecoration(view.context, layoutManager.orientation))
+        comment_count.setOnClickListener { toggleComments() }
+
+        if (savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED) == true) {
+            toggleComments()
         }
-
-        return super.onOptionsItemSelected(item)
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(
+            SAVE_COMMENTS_EXPANDED,
+            BottomSheetBehavior.from(comments).state == BottomSheetBehavior.STATE_EXPANDED
+        )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
+        inflater.inflate(R.menu.fragment_post_actions, menu)
 
     private fun toggleComments() {
         val commentsBehavior = BottomSheetBehavior.from(comments)
@@ -79,7 +98,11 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         if (commentsBehavior.state in setOf(BottomSheetBehavior.STATE_HIDDEN, BottomSheetBehavior.STATE_COLLAPSED)) {
             commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         } else if (commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-            commentsBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
+    }
+
+    companion object {
+        private const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
     }
 }
