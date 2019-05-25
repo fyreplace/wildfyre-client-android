@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -16,6 +15,7 @@ import net.wildfyre.client.data.Notification
 import net.wildfyre.client.databinding.NotificationsActionsClearBinding
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.NotificationsFragmentViewModel
+import net.wildfyre.client.viewmodels.lazyViewModel
 import net.wildfyre.client.views.adapters.NotificationsAdapter
 
 /**
@@ -25,12 +25,11 @@ class NotificationsFragment :
     ItemsListFragment<NotificationsFragmentViewModel, Notification>(),
     RecyclerView.OnChildAttachStateChangeListener, SwipeRefreshLayout.OnRefreshListener {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
-    override lateinit var viewModel: NotificationsFragmentViewModel
+    override val viewModel by lazyViewModel<NotificationsFragmentViewModel>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setHasOptionsMenu(true)
-        viewModel = ViewModelProviders.of(this).get(NotificationsFragmentViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

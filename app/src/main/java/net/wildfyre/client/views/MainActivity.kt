@@ -24,7 +24,6 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.doOnLayout
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -41,6 +40,7 @@ import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.*
 import net.wildfyre.client.viewmodels.MainActivityViewModel
+import net.wildfyre.client.viewmodels.lazyViewModel
 import java.io.ByteArrayInputStream
 
 /**
@@ -48,11 +48,10 @@ import java.io.ByteArrayInputStream
  */
 class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChangedListener,
     DrawerLayout.DrawerListener {
-    override lateinit var viewModel: MainActivityViewModel
+    override val viewModel by lazyViewModel<MainActivityViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

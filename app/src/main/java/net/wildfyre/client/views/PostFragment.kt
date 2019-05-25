@@ -10,7 +10,6 @@ import androidx.annotation.DrawableRes
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +21,7 @@ import net.wildfyre.client.R
 import net.wildfyre.client.databinding.FragmentPostBinding
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.PostFragmentViewModel
+import net.wildfyre.client.viewmodels.lazyViewModel
 import net.wildfyre.client.views.adapters.CommentsAdapter
 import net.wildfyre.client.views.markdown.PostPlugin
 import ru.noties.markwon.Markwon
@@ -33,8 +33,8 @@ import ru.noties.markwon.recycler.MarkwonAdapter
 import ru.noties.markwon.recycler.table.TableEntryPlugin
 
 class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
-    private lateinit var viewModel: PostFragmentViewModel
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
+    private val viewModel by lazyViewModel<PostFragmentViewModel>()
     private val args by navArgs<PostFragmentArgs>()
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() = toggleComments()
@@ -44,7 +44,6 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setHasOptionsMenu(true)
-        viewModel = ViewModelProviders.of(this).get(PostFragmentViewModel::class.java)
         markdown = Markwon.builder(context)
             .usePlugin(CorePlugin.create())
             .usePlugin(StrikethroughPlugin.create())

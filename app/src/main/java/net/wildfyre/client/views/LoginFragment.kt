@@ -9,25 +9,24 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_login.*
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Failure
 import net.wildfyre.client.databinding.FragmentLoginBinding
 import net.wildfyre.client.viewmodels.LoginFragmentViewModel
+import net.wildfyre.client.viewmodels.lazyViewModel
 
 /**
  * [androidx.fragment.app.Fragment] showing a login screen to the user.
  */
 class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override val viewModels by lazy { listOf(viewModel) }
-    private lateinit var viewModel: LoginFragmentViewModel
+    private val viewModel by lazyViewModel<LoginFragmentViewModel>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setHasOptionsMenu(true)
-        viewModel = ViewModelProviders.of(this).get(LoginFragmentViewModel::class.java)
         viewModel.authToken.observe(this, Observer {
             if (it.isNotEmpty()) {
                 findNavController().navigate(R.id.action_fragment_login_to_fragment_home)
