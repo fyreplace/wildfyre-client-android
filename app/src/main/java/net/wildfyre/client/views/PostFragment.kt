@@ -3,6 +3,8 @@ package net.wildfyre.client.views
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import androidx.activity.OnBackPressedCallback
+import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -30,6 +32,9 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     override val viewModels: List<FailureHandlingViewModel>
         get() = listOf(viewModel)
     private val args by navArgs<PostFragmentArgs>()
+    private val onBackPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() = toggleComments()
+    }
     private lateinit var markdown: Markwon
 
     override fun onAttach(context: Context) {
@@ -78,7 +83,17 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         comments_list.addItemDecoration(DividerItemDecoration(view.context, layoutManager.orientation))
         comment_count.setOnClickListener { toggleComments() }
 
+        comments.doOnNextLayout { requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback) }
+        BottomSheetBehavior.from(comments).setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                onBackPressedCallback.isEnabled = newState == BottomSheetBehavior.STATE_EXPANDED
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
+        })
+
         if (savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED) == true) {
+            onBackPressedCallback.isEnabled = true
             toggleComments()
         }
     }
