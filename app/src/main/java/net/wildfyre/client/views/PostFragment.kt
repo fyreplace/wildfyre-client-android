@@ -63,9 +63,9 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
             }
         })
         viewModel.comments.observe(this, Observer { commentList ->
-            (comments_list.adapter as? CommentsAdapter)?.let {
-                it.data = commentList
-                it.notifyItemRangeChanged(0, it.itemCount)
+            (comments_list.adapter as? CommentsAdapter)?.run {
+                setComments(commentList, args.newCommentsIds?.asList())
+                notifyItemRangeChanged(0, itemCount)
             }
         })
     }

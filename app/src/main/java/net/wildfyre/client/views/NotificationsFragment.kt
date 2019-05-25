@@ -7,8 +7,10 @@ import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Notification
 import net.wildfyre.client.databinding.NotificationsActionsClearBinding
@@ -52,5 +54,15 @@ class NotificationsFragment :
                 .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> viewModel.clearItems() }
                 .show()
         }
+    }
+
+    override fun onItemClicked(areaName: String?, id: Long) {
+        findNavController().navigate(
+            NavigationMainDirections.actionGlobalFragmentPost(
+                areaName,
+                id,
+                viewModel.items.value?.firstOrNull { it.post?.id == id }?.comments?.toLongArray()
+            )
+        )
     }
 }

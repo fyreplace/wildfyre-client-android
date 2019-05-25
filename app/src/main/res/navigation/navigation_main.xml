@@ -51,6 +51,10 @@
         <argument
             android:name="postId"
             app:argType="long" />
+        <argument
+            android:name="newCommentsIds"
+            app:argType="long[]"
+            app:nullable="true" />
     </fragment>
     <action
         android:id="@+id/action_global_fragment_login"

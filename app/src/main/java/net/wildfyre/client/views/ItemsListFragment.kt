@@ -82,7 +82,7 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
         })
 
         itemsList.addOnChildAttachStateChangeListener(this)
-        swipeRefresh.setColorSchemeResources(R.color.colorAccent)
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
         swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.background)
         swipeRefresh.setOnRefreshListener(this)
 
@@ -130,7 +130,7 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
     }
 
     override fun onItemClicked(areaName: String?, id: Long) {
-        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(areaName, id))
+        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(areaName, id, null))
     }
 
     private fun fillList() {

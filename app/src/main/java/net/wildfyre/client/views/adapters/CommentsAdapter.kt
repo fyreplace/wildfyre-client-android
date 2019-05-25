@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -16,7 +17,7 @@ import java.text.SimpleDateFormat
 
 class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     private val dateFormat = SimpleDateFormat.getDateTimeInstance()
-    var data: List<Comment> = listOf()
+    private var data: List<CommentWrapper> = listOf()
 
     override fun getItemCount(): Int = data.size
 
@@ -29,7 +30,8 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val comment = data[position]
+        val wrapper = data[position]
+        val comment = wrapper.comment
         holder.date.text = dateFormat.format(comment.created)
         comment.author?.let {
             holder.authorName.text = it.name
@@ -50,6 +52,24 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
         comment.image?.let { markdownContent.append("![]($it)") }
         comment.text?.let { markdownContent.append(it) }
         markdown.setMarkdown(holder.text, markdownContent.toString())
+        holder.text.setTextColor(
+            ContextCompat.getColor(
+                holder.itemView.context,
+                if (wrapper.isNew) R.color.colorPrimary else R.color.foreground
+            )
+        )
+    }
+
+    fun setComments(comments: List<Comment>, newIds: List<Long>?) {
+        val newOnes = newIds?.toMutableList()
+        data = comments.map {
+            CommentWrapper(it).apply {
+                newOnes?.firstOrNull { id -> comment.id == id }?.run {
+                    newOnes.remove(this)
+                    isNew = true
+                }
+            }
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -57,5 +77,9 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
         val authorPicture: ImageView = itemView.findViewById(R.id.author_picture)
         val date: TextView = itemView.findViewById(R.id.date)
         val text: TextView = itemView.findViewById(R.id.text)
+    }
+
+    private data class CommentWrapper(val comment: Comment) {
+        var isNew: Boolean = false
     }
 }
