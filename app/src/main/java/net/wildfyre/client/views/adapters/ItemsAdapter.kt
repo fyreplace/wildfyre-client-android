@@ -68,7 +68,9 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
                 .load(image)
                 .into(holder.image)
         } else {
-            holder.text.text = markdown.toMarkdown(getText(position)!!.prepareForMarkdown(null))
+            getText(position)?.let {
+                holder.text.text = markdown.toMarkdown(it.prepareForMarkdown(null))
+            }
         }
 
         val author = getAuthor(position)
@@ -91,7 +93,12 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
 
         holder.space.isVisible = holder.text.isVisible && !holder.authorContainer.isVisible
         holder.subtitle.text = getSubtitle(position)
-        holder.clickable.setOnClickListener { onItemClickedListener.onItemClicked(getAreaName(position), getId(position)) }
+        holder.clickable.setOnClickListener {
+            onItemClickedListener.onItemClicked(
+                getAreaName(position),
+                getId(position)
+            )
+        }
     }
 
     abstract fun getText(position: Int): String?
