@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_post.*
+import kotlinx.android.synthetic.main.fragment_post_comments.*
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.FragmentPostBinding
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
@@ -110,49 +111,63 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
             it.layoutTransition.setAnimator(LayoutTransition.DISAPPEARING, ANIMATOR_SCALE_DOWN)
         }
 
-        comment_count.setOnClickListener { toggleComments() }
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(Math.max(commentsAdapter.itemCount - 1, 0)) }
-        comments.doOnNextLayout { requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback) }
 
-        val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED) ?: (args.newCommentsIds != null)
-        val arrowWrapper = BottomSheetArrowDrawableWrapper(arrow, !commentsExpanded)
+        collapsible_comments?.let {
+            comment_count.setOnClickListener { toggleComments() }
+            it.doOnNextLayout { requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback) }
 
-        BottomSheetBehavior.from(comments).setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            @SuppressLint("SwitchIntDef")
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                onBackPressedCallback.isEnabled = newState == BottomSheetBehavior.STATE_EXPANDED
+            val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED)
+                ?: (args.newCommentsIds != null)
+            val arrowWrapper = BottomSheetArrowDrawableWrapper(arrow, !commentsExpanded)
 
-                when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> arrowWrapper.setPointingUp(true)
-                    BottomSheetBehavior.STATE_EXPANDED -> arrowWrapper.setPointingUp(false)
+            BottomSheetBehavior.from(it).setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                @SuppressLint("SwitchIntDef")
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    onBackPressedCallback.isEnabled = newState == BottomSheetBehavior.STATE_EXPANDED
+
+                    when (newState) {
+                        BottomSheetBehavior.STATE_COLLAPSED -> arrowWrapper.setPointingUp(true)
+                        BottomSheetBehavior.STATE_EXPANDED -> arrowWrapper.setPointingUp(false)
+                    }
                 }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
+            })
+
+            if (commentsExpanded) {
+                onBackPressedCallback.isEnabled = true
+                toggleComments()
             }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
-        })
-
-        if (commentsExpanded) {
-            onBackPressedCallback.isEnabled = true
-            toggleComments()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBoolean(
-            SAVE_COMMENTS_EXPANDED,
-            BottomSheetBehavior.from(comments).state == BottomSheetBehavior.STATE_EXPANDED
-        )
+        collapsible_comments?.let {
+            outState.putBoolean(
+                SAVE_COMMENTS_EXPANDED,
+                BottomSheetBehavior.from(it).state == BottomSheetBehavior.STATE_EXPANDED
+            )
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
         inflater.inflate(R.menu.fragment_post_actions, menu)
 
     private fun toggleComments() {
-        val commentsBehavior = BottomSheetBehavior.from(comments)
+        if (collapsible_comments == null) {
+            return
+        }
 
-        if (commentsBehavior.state in setOf(BottomSheetBehavior.STATE_HIDDEN, BottomSheetBehavior.STATE_COLLAPSED)) {
+        val commentsBehavior = BottomSheetBehavior.from(collapsible_comments)
+
+        if (commentsBehavior.state in setOf(
+                BottomSheetBehavior.STATE_HIDDEN,
+                BottomSheetBehavior.STATE_COLLAPSED
+            )
+        ) {
             commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         } else if (commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED

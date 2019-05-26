@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="model"
+            type="net.wildfyre.client.viewmodels.PostFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:windowBackground"
+        android:theme="@style/AppTheme.NoActionBar">
+
+        <FrameLayout
+            android:id="@+id/comments_header"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/comment_header_height"
+            android:background="@color/backgroundHighlight"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/comment_count"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/comment_header_height"
+                android:background="?attr/selectableItemBackground"
+                android:drawablePadding="@dimen/margin_horizontal_medium"
+                android:gravity="center_vertical|start"
+                android:paddingLeft="@dimen/margin_horizontal_medium"
+                android:paddingRight="@dimen/margin_horizontal_medium"
+                android:text="@{@plurals/post_comment_count(safeUnbox(model.commentCount), safeUnbox(model.commentCount))}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/foreground"
+                android:theme="@style/AppTheme.Button.HighlightButtonOverlay"
+                app:drawableLeftCompat="@drawable/ic_comment_black_24dp"
+                app:drawableStartCompat="@drawable/ic_comment_black_24dp"
+                app:drawableTint="@color/foreground" />
+
+            <ImageView
+                android:id="@+id/arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="@dimen/margin_horizontal_small"
+                android:layout_marginRight="@dimen/margin_horizontal_small"
+                android:contentDescription="@string/image_desc_comments_toggle"
+                app:tint="@color/foreground" />
+        </FrameLayout>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{safeUnbox(model.contentLoaded) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/comments_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/comments_header" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:animateLayoutChanges="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/comments_header">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/go_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
+                android:visibility="gone"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp"
+                app:useCompatPadding="true" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:animateLayoutChanges="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/comments_header">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/go_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
+                android:visibility="gone"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp"
+                app:useCompatPadding="true" />
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
