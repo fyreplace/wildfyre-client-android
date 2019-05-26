@@ -5,11 +5,9 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.DrawableRes
 import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -17,8 +15,6 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_post.*
 import net.wildfyre.client.R
@@ -27,6 +23,7 @@ import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.PostFragmentViewModel
 import net.wildfyre.client.viewmodels.lazyViewModel
 import net.wildfyre.client.views.adapters.CommentsAdapter
+import net.wildfyre.client.views.drawables.BottomSheetArrowDrawableWrapper
 import net.wildfyre.client.views.markdown.PostPlugin
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
@@ -92,11 +89,6 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
             )
         )
 
-        listOf(go_up.parent as ViewGroup, go_down.parent as ViewGroup).forEach {
-            it.layoutTransition.setAnimator(LayoutTransition.APPEARING, ANIMATOR_SCALE_UP)
-            it.layoutTransition.setAnimator(LayoutTransition.DISAPPEARING, ANIMATOR_SCALE_DOWN)
-        }
-
         comments_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val upVisibility = recyclerView.canScrollVertically(-1) && dy < 0
@@ -113,59 +105,37 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
             }
         })
 
+        listOf(go_up.parent as ViewGroup, go_down.parent as ViewGroup).forEach {
+            it.layoutTransition.setAnimator(LayoutTransition.APPEARING, ANIMATOR_SCALE_UP)
+            it.layoutTransition.setAnimator(LayoutTransition.DISAPPEARING, ANIMATOR_SCALE_DOWN)
+        }
+
         comment_count.setOnClickListener { toggleComments() }
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(Math.max(commentsAdapter.itemCount - 1, 0)) }
-
         comments.doOnNextLayout { requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback) }
+
+        val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED) ?: (args.newCommentsIds != null)
+        val arrowWrapper = BottomSheetArrowDrawableWrapper(arrow, !commentsExpanded)
+
         BottomSheetBehavior.from(comments).setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             @SuppressLint("SwitchIntDef")
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 onBackPressedCallback.isEnabled = newState == BottomSheetBehavior.STATE_EXPANDED
 
-                (arrow.drawable as? Animatable2Compat)?.let {
-                    when (newState) {
-                        BottomSheetBehavior.STATE_COLLAPSED -> animateAndSwitchTo(
-                            it,
-                            R.drawable.ic_arrow_drop_up_down_anim_black_24dp
-                        )
-                        BottomSheetBehavior.STATE_EXPANDED -> animateAndSwitchTo(
-                            it,
-                            R.drawable.ic_arrow_drop_down_up_anim_black_24dp
-                        )
-                    }
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> arrowWrapper.setPointingUp(true)
+                    BottomSheetBehavior.STATE_EXPANDED -> arrowWrapper.setPointingUp(false)
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
-
-            private fun animateAndSwitchTo(drawable: Animatable2Compat, @DrawableRes res: Int) {
-                drawable.stop()
-                drawable.start()
-                drawable.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
-                    override fun onAnimationEnd(drawable: Drawable?) {
-                        arrow?.setImageDrawable(AnimatedVectorDrawableCompat.create(requireContext(), res))
-                    }
-                })
-            }
         })
-
-        val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED) ?: (args.newCommentsIds != null)
 
         if (commentsExpanded) {
             onBackPressedCallback.isEnabled = true
             toggleComments()
         }
-
-        arrow.setImageDrawable(
-            AnimatedVectorDrawableCompat.create(
-                requireContext(),
-                if (commentsExpanded)
-                    R.drawable.ic_arrow_drop_down_up_anim_black_24dp
-                else
-                    R.drawable.ic_arrow_drop_up_down_anim_black_24dp
-            )
-        )
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
