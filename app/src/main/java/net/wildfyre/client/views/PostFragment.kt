@@ -8,7 +8,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.doOnNextLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -58,6 +57,11 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
             .usePlugin(OkHttpImagesPlugin.create())
             .usePlugin(TableEntryPlugin.create(context))
             .build()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -118,9 +122,9 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(Math.max(commentsAdapter.itemCount - 1, 0)) }
 
+        onBackPressedCallback.isEnabled = false
         collapsible_comments?.let {
             comment_count.setOnClickListener { toggleComments() }
-            it.doOnNextLayout { requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback) }
 
             val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED)
                 ?: (highlightedCommentIds != null)
