@@ -233,9 +233,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
 
-    override fun onDrawerOpened(drawerView: View) {
-        viewModel.updateNotificationCount()
-    }
+    override fun onDrawerOpened(drawerView: View) = viewModel.updateNotificationCount()
 
     override fun onDrawerClosed(drawerView: View) = Unit
 

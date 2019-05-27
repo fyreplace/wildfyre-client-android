@@ -22,9 +22,7 @@ import net.wildfyre.client.viewmodels.MainActivityViewModel
 interface AreaSelectingFragment {
     val areaSelectingViewModel: AreaSelectingFragmentViewModel
 
-    fun onAttach(fragment: Fragment) {
-        fragment.setHasOptionsMenu(true)
-    }
+    fun onAttach(fragment: Fragment) = fragment.setHasOptionsMenu(true)
 
     fun onCreateOptionsMenu(fragment: Fragment, menu: Menu) {
         ActionsAreaSpreadBinding.bind(menu.findItem(R.id.action_area_spread).actionView).apply {
