@@ -15,6 +15,7 @@ android {
         applicationId "net.wildfyre.client.native"
         minSdkVersion 16
         targetSdkVersion 28
+        multiDexEnabled true
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -41,6 +42,7 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'

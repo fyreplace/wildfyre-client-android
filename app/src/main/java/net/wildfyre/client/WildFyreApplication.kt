@@ -1,15 +1,16 @@
 package net.wildfyre.client
 
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.multidex.MultiDex
+import androidx.multidex.MultiDexApplication
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.security.ProviderInstaller
 import java.lang.ref.WeakReference
 
-class WildFyreApplication : Application() {
+class WildFyreApplication : MultiDexApplication() {
     companion object {
         /**
          * Instance of the current application. Initialized in [onCreate].
@@ -36,6 +37,7 @@ class WildFyreApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        MultiDex.install(this)
         instance = WeakReference(this)
 
         // This is needed to solve an issue with okhttp and SSL on Android < 21
