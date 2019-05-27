@@ -150,25 +150,34 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return item!!.onNavDestinationSelected(findNavController(R.id.navigation_host))
-    }
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
 
-    override fun onBackPressed() {
-        when {
-            drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
-            else -> super.onBackPressed()
+        if (intent == null) {
+            return
+        }
+
+        POST_REGEX.matchEntire(intent.data?.path ?: "")?.let { result ->
+            findNavController(R.id.navigation_host).navigate(
+                NavigationMainDirections.actionGlobalFragmentPost(
+                    result.groupValues[1],
+                    result.groupValues[2].toLong(),
+                    result.groupValues[3].takeIf { it.isNotEmpty() }?.toLong() ?: -1
+                )
+            )
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.navigation_host)
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean =
+        item!!.onNavDestinationSelected(findNavController(R.id.navigation_host))
 
-        return if (navController.currentDestination?.id in TOP_LEVEL_DESTINATIONS)
-            navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-        else
-            true.also { onBackPressed() }
+    override fun onBackPressed() = when {
+        drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
+        else -> super.onBackPressed()
     }
+
+    override fun onSupportNavigateUp(): Boolean =
+        findNavController(R.id.navigation_host).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -309,6 +318,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     private companion object {
         const val REQUEST_AVATAR = 0
         const val MAX_AVATAR_IMAGE_SIZE = 512 * 1024
+
         val TOP_LEVEL_DESTINATIONS = setOf(
             R.id.fragment_home,
             R.id.fragment_notifications,
@@ -324,5 +334,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             R.id.fragment_home,
             R.id.fragment_post
         )
+
+        val POST_REGEX = Regex("/areas/(\\w+)/(\\d+)(?:/(\\d+))?")
     }
 }

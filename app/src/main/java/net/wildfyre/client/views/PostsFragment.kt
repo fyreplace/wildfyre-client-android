@@ -1,8 +1,10 @@
 package net.wildfyre.client.views
 
 import android.content.Context
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import net.wildfyre.client.R
@@ -23,6 +25,10 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> : ItemsListFragment<VM
     override fun onAttach(context: Context) {
         super<ItemsListFragment>.onAttach(context)
         onAttach(this)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         areaSelectingViewModel.preferredAreaName.observe(this, Observer {
             if (settingUp) {
                 settingUp = false

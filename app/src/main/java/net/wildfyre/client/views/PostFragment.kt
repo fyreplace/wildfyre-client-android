@@ -58,20 +58,6 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
             .usePlugin(OkHttpImagesPlugin.create())
             .usePlugin(TableEntryPlugin.create(context))
             .build()
-
-        viewModel.setPostData(args.postAreaName, args.postId)
-        viewModel.markdownContent.observe(this, Observer { markdownContent ->
-            (content.adapter as? MarkwonAdapter)?.let {
-                it.setMarkdown(markdown, markdownContent)
-                it.notifyItemRangeChanged(0, it.itemCount)
-            }
-        })
-        viewModel.comments.observe(this, Observer { commentList ->
-            (comments_list.adapter as? CommentsAdapter)?.run {
-                setComments(commentList, highlightedCommentIds)
-                notifyItemRangeChanged(0, itemCount)
-            }
-        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -93,6 +79,20 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
                 (comments_list.layoutManager as LinearLayoutManager).orientation
             )
         )
+
+        viewModel.setPostData(args.areaName, args.postId)
+        viewModel.markdownContent.observe(this, Observer { markdownContent ->
+            (content.adapter as? MarkwonAdapter)?.let {
+                it.setMarkdown(markdown, markdownContent)
+                it.notifyItemRangeChanged(0, it.itemCount)
+            }
+        })
+        viewModel.comments.observe(this, Observer { commentList ->
+            (comments_list.adapter as? CommentsAdapter)?.run {
+                setComments(commentList, highlightedCommentIds)
+                notifyItemRangeChanged(0, itemCount)
+            }
+        })
 
         comments_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

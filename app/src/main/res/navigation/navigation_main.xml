@@ -23,11 +23,7 @@
         android:id="@+id/fragment_home"
         android:name="net.wildfyre.client.views.HomeFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_fragment_home_to_fragment_post"
-            app:destination="@id/fragment_post" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/fragment_notifications"
         android:name="net.wildfyre.client.views.NotificationsFragment"
@@ -49,7 +45,7 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_post">
         <argument
-            android:name="postAreaName"
+            android:name="areaName"
             app:argType="string"
             app:nullable="true" />
         <argument
@@ -64,11 +60,8 @@
             android:defaultValue="@null"
             app:argType="long[]"
             app:nullable="true" />
-        <deepLink app:uri="client.wildfyre.net/areas/{postAreaName}/{postId}" />
-        <deepLink app:uri="client.wildfyre.net/areas/{postAreaName}/{postId}/{selectedCommentId}" />
-        <action
-            android:id="@+id/action_fragment_post_self"
-            app:destination="@id/fragment_post" />
+        <deepLink app:uri="client.wildfyre.net/areas/{areaName}/{postId}" />
+        <deepLink app:uri="client.wildfyre.net/areas/{areaName}/{postId}/{selectedCommentId}" />
     </fragment>
     <action
         android:id="@+id/action_global_fragment_login"
