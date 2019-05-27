@@ -153,6 +153,13 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.markdownContent.removeObservers(this)
+        viewModel.comments.removeObservers(this)
+        viewModel.newCommentData.removeObservers(this)
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         collapsible_comments?.let {

@@ -27,6 +27,11 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setHasOptionsMenu(true)
+        viewModel.authToken.observe(this, Observer {
+            if (it.isNotEmpty()) {
+                findNavController().navigate(R.id.action_fragment_login_to_fragment_home)
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,15 +60,6 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
             login.setOnClickListener { attemptLogin() }
             return@run root
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.authToken.observe(this, Observer {
-            if (it.isNotEmpty()) {
-                findNavController().navigate(R.id.action_fragment_login_to_fragment_home)
-            }
-        })
     }
 
     override fun onFailure(failure: Failure) {

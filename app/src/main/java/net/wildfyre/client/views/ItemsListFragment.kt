@@ -97,6 +97,7 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.items.removeObservers(this)
         items_list.removeOnChildAttachStateChangeListener(this)
         items_list.clearOnScrollListeners()
     }
