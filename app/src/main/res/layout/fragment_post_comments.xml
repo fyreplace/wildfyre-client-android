@@ -67,14 +67,12 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_vertical_medium"
             app:endIconContentDescription="@string/image_desc_comments_send_comment"
             app:endIconDrawable="@drawable/ic_send_black_24dp"
             app:endIconMode="custom"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/comment_new_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/post_comment_new_comment"
