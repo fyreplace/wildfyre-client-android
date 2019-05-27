@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -63,11 +62,8 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
         comment.image?.let { markdownContent.append("![]($it)") }
         comment.text?.let { markdownContent.append(it) }
         markdown.setMarkdown(holder.text, markdownContent.toString())
-        holder.text.setTextColor(
-            ContextCompat.getColor(
-                holder.itemView.context,
-                if (wrapper.isNew) R.color.colorPrimary else R.color.foreground
-            )
+        holder.itemView.setBackgroundResource(
+            if (wrapper.isNew) R.color.backgroundHighlight else android.R.color.transparent
         )
     }
 

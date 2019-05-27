@@ -12,7 +12,8 @@
     <color name="colorSwitchThumbNormalNeutral">#DFDFDF</color>
     <color name="foreground">@android:color/black</color>
     <color name="background">@android:color/background_light</color>
-    <color name="backgroundHighlight">#1F000000</color>
+    <color name="backgroundHighlight">#3FE64A19</color>
+    <color name="backgroundHighlightNeutral">#1F000000</color>
     <color name="navigation">@android:color/background_dark</color>
     <color name="loginLogo">@color/colorAccent</color>
     <color name="badgeBackground">#FFFF00</color>

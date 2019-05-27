@@ -68,7 +68,7 @@
             android:id="@+id/subtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/backgroundHighlight"
+            android:background="@color/backgroundHighlightNeutral"
             android:gravity="center"
             android:paddingLeft="@dimen/margin_horizontal_small"
             android:paddingTop="@dimen/margin_vertical_tiny"

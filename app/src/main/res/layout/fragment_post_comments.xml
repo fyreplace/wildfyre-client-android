@@ -21,7 +21,7 @@
             android:id="@+id/comments_header"
             android:layout_width="match_parent"
             android:layout_height="@dimen/comment_header_height"
-            android:background="@color/backgroundHighlight"
+            android:background="@color/backgroundHighlightNeutral"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
