@@ -65,13 +65,12 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return FragmentPostBinding.inflate(inflater, container, false).run {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        FragmentPostBinding.inflate(inflater, container, false).run {
             lifecycleOwner = this@PostFragment
             model = viewModel
             return@run root
         }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -101,6 +100,12 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         viewModel.newCommentData.observe(this, Observer { comment_new.isEndIconVisible = it.isNotBlank() })
 
         comments_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING && comment_new.hasFocus()) {
+                    clearCommentInput()
+                }
+            }
+
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val upVisibility = recyclerView.canScrollVertically(-1) && dy < 0
 
@@ -123,7 +128,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
 
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(Math.max(commentsAdapter.itemCount - 1, 0)) }
-        comment_new.setEndIconOnClickListener { viewModel.sendComment() }
+        comment_new.setEndIconOnClickListener { clearCommentInput(); viewModel.sendComment() }
 
         collapsible_comments?.let {
             comment_count.setOnClickListener { toggleComments() }
@@ -189,6 +194,11 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         } else if (commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
+    }
+
+    private fun clearCommentInput() {
+        hideSoftKeyboard(comment_new)
+        comment_new.clearFocus()
     }
 
     private companion object {

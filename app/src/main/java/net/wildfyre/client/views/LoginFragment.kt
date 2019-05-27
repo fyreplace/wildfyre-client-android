@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -89,12 +88,9 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         if (cancel) {
             focusView?.requestFocus()
         } else {
-            // Automatically hide the keyboard since otherwise it won't hide itself
-            context?.getSystemService(Context.INPUT_METHOD_SERVICE)?.let {
-                (it as InputMethodManager).hideSoftInputFromWindow(login.windowToken, 0)
-                showProgress(true)
-                viewModel.attemptLogin(usernameStr, passwordStr)
-            }
+            hideSoftKeyboard(login)
+            showProgress(true)
+            viewModel.attemptLogin(usernameStr, passwordStr)
         }
     }
 
