@@ -122,12 +122,11 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(Math.max(commentsAdapter.itemCount - 1, 0)) }
 
-        onBackPressedCallback.isEnabled = false
         collapsible_comments?.let {
             comment_count.setOnClickListener { toggleComments() }
 
             val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED)
-                ?: (highlightedCommentIds != null)
+                ?: (highlightedCommentIds != null) || onBackPressedCallback.isEnabled
             val arrowWrapper = BottomSheetArrowDrawableWrapper(arrow, !commentsExpanded)
 
             BottomSheetBehavior.from(it).setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
