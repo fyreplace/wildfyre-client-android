@@ -18,6 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.fragment_post_comments.*
 import net.wildfyre.client.R
+import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.databinding.FragmentPostBinding
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.PostFragmentViewModel
@@ -187,13 +188,16 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
         val ANIMATOR_SCALE_DOWN: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
             Unit,
-            PropertyValuesHolder.ofFloat(View.SCALE_X, 0f),
-            PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f)
+            PropertyValuesHolder.ofFloat(
+                View.TRANSLATION_X,
+                WildFyreApplication.context.resources.getDimension(R.dimen.comments_button_translation)
+            ),
+            PropertyValuesHolder.ofFloat(View.ALPHA, 0f)
         )
         val ANIMATOR_SCALE_UP: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
             Unit,
-            PropertyValuesHolder.ofFloat(View.SCALE_X, 1f),
-            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
+            PropertyValuesHolder.ofFloat(View.TRANSLATION_X, 0f),
+            PropertyValuesHolder.ofFloat(View.ALPHA, 1f)
         )
     }
 }

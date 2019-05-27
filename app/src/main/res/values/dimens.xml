@@ -16,7 +16,8 @@
     <dimen name="dialog_user_picture_rounding">14dp</dimen>
     <dimen name="list_item_author_picture_size">32dp</dimen>
     <dimen name="list_item_author_picture_rounding">3dp</dimen>
-    <dimen name="comment_header_height">32dp</dimen>
+    <dimen name="comments_header_height">32dp</dimen>
+    <dimen name="comments_button_translation">32dp</dimen>
     <dimen name="comment_author_picture_size">48dp</dimen>
     <dimen name="comment_author_picture_rounding">5dp</dimen>
 </resources>

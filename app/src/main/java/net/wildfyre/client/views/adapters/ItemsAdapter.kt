@@ -83,9 +83,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
                 .transform(
                     CenterCrop(),
                     RoundedCorners(
-                        holder.itemView.resources
-                            .getDimension(R.dimen.list_item_author_picture_rounding)
-                            .toInt()
+                        holder.itemView.resources.getDimensionPixelOffset(R.dimen.list_item_author_picture_rounding)
                     )
                 )
                 .into(holder.authorPicture)

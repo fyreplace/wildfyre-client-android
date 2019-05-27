@@ -50,9 +50,7 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
                 .transform(
                     CenterCrop(),
                     RoundedCorners(
-                        holder.itemView.resources
-                            .getDimension(R.dimen.comment_author_picture_rounding)
-                            .toInt()
+                        holder.itemView.resources.getDimensionPixelOffset(R.dimen.comment_author_picture_rounding)
                     )
                 )
                 .into(holder.authorPicture)

@@ -30,14 +30,14 @@
         <FrameLayout
             android:id="@+id/comments_header"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/comment_header_height"
+            android:layout_height="@dimen/comments_header_height"
             android:background="@color/backgroundHighlightNeutral"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/comment_count"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/comment_header_height"
+                android:layout_height="@dimen/comments_header_height"
                 android:background="?attr/selectableItemBackground"
                 android:drawablePadding="@dimen/margin_horizontal_medium"
                 android:gravity="center_vertical|start"

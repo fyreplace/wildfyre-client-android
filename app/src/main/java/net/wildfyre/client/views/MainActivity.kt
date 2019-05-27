@@ -107,7 +107,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 .load(it)
                 .transform(
                     CenterCrop(),
-                    RoundedCorners(resources.getDimension(R.dimen.nav_header_user_picture_rounding).toInt())
+                    RoundedCorners(resources.getDimensionPixelOffset(R.dimen.nav_header_user_picture_rounding))
                 )
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(navHeaderBinding.userPicture)
@@ -272,7 +272,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         val avatar = dialog.findViewById<ImageView>(R.id.user_picture)!!
         val transformations = MultiTransformation(
             CenterCrop(),
-            RoundedCorners(resources.getDimension(R.dimen.dialog_user_picture_rounding).toInt())
+            RoundedCorners(resources.getDimensionPixelOffset(R.dimen.dialog_user_picture_rounding))
         )
         val transition = DrawableTransitionOptions.withCrossFade()
 
