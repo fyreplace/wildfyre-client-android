@@ -46,7 +46,7 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
         comment.author?.let {
             holder.authorName.text = it.name
             AppGlide.with(holder.itemView.context)
-                .load(it.avatar)
+                .load(it.avatar ?: R.drawable.ic_launcher)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(
@@ -61,7 +61,10 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
         comment.text?.let { markdownContent.append(it) }
         markdown.setMarkdown(holder.text, markdownContent.toString())
         holder.itemView.setBackgroundResource(
-            if (wrapper.isNew) R.color.backgroundHighlight else android.R.color.transparent
+            if (wrapper.isNew)
+                R.color.backgroundHighlight
+            else
+                android.R.color.transparent
         )
     }
 
