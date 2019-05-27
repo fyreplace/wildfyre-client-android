@@ -162,7 +162,12 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return findNavController(R.id.navigation_host).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        val navController = findNavController(R.id.navigation_host)
+
+        return if (navController.currentDestination?.id in TOP_LEVEL_DESTINATIONS)
+            navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        else
+            true.also { onBackPressed() }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -60,6 +60,7 @@ class NotificationsFragment :
             NavigationMainDirections.actionGlobalFragmentPost(
                 areaName,
                 id,
+                -1,
                 viewModel.items.value?.firstOrNull { it.post?.id == id }?.comments?.toLongArray()
             )
         )

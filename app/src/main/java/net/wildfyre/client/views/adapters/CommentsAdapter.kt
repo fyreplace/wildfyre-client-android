@@ -67,18 +67,18 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
         )
     }
 
-    fun setComments(comments: List<Comment>, newIds: List<Long>?) {
-        val newOnes = newIds?.toMutableList()
+    fun setComments(comments: List<Comment>, highlightedIds: List<Long>?) {
+        val highlightedOnes = highlightedIds?.toMutableList()
         var scrollPosition = -1
 
         data = comments.mapIndexed { index, comment ->
             CommentWrapper(comment).also { wrapper ->
-                newOnes?.firstOrNull { id -> wrapper.comment.id == id }?.run {
+                highlightedOnes?.firstOrNull { id -> wrapper.comment.id == id }?.run {
                     if (scrollPosition == -1) {
                         scrollPosition = index
                     }
 
-                    newOnes.remove(this)
+                    highlightedOnes.remove(this)
                     wrapper.isNew = true
                 }
             }

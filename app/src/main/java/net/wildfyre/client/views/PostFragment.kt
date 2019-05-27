@@ -42,6 +42,10 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         override fun handleOnBackPressed() = toggleComments()
     }
     private lateinit var markdown: Markwon
+    private val highlightedCommentIds by lazy {
+        args.newCommentsIds?.asList()
+            ?: (if (args.selectedCommentId >= 0) listOf(args.selectedCommentId) else null)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -64,7 +68,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         })
         viewModel.comments.observe(this, Observer { commentList ->
             (comments_list.adapter as? CommentsAdapter)?.run {
-                setComments(commentList, args.newCommentsIds?.asList())
+                setComments(commentList, highlightedCommentIds)
                 notifyItemRangeChanged(0, itemCount)
             }
         })
@@ -119,7 +123,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
             it.doOnNextLayout { requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback) }
 
             val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED)
-                ?: (args.newCommentsIds != null)
+                ?: (highlightedCommentIds != null)
             val arrowWrapper = BottomSheetArrowDrawableWrapper(arrow, !commentsExpanded)
 
             BottomSheetBehavior.from(it).setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {

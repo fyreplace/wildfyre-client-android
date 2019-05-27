@@ -130,7 +130,7 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
     }
 
     override fun onItemClicked(areaName: String?, id: Long) {
-        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(areaName, id, null))
+        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(areaName, id))
     }
 
     private fun fillList() {
