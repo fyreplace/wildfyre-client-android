@@ -117,7 +117,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         drawer_layout.addDrawerListener(this)
 
         val hostFragment = supportFragmentManager.findFragmentById(R.id.navigation_host) as NavHostFragment
-        appBarConfiguration = AppBarConfiguration(TOP_LEVELS, drawer_layout)
+        appBarConfiguration = AppBarConfiguration(TOP_LEVEL_DESTINATIONS, drawer_layout)
 
         setupActionBarWithNavController(hostFragment.navController, appBarConfiguration)
         navigation_view.setupWithNavController(hostFragment.navController)
@@ -203,25 +203,27 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     }
 
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
-        val isLoginStep = destination.id in LOGIN_DESTINATIONS
-        drawer_layout.setDrawerLockMode(if (isLoginStep) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
+        drawer_layout.setDrawerLockMode(
+            if (destination.id in TOP_LEVEL_DESTINATIONS)
+                DrawerLayout.LOCK_MODE_UNLOCKED
+            else
+                DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+        )
 
-        if (isLoginStep) {
-            toolbar.navigationIcon = null
-        } else if (toolbar.navigationIcon == null) {
-            toolbar.navigationIcon = DrawerArrowDrawable(this).apply { isSpinEnabled = true }
-        }
-
-        if (destination.id in setOf(R.id.fragment_home, R.id.fragment_post)) {
-            toolbar.title = ""
+        when {
+            destination.id in LOGIN_DESTINATIONS -> toolbar.navigationIcon = null
+            toolbar.navigationIcon == null -> toolbar.navigationIcon =
+                DrawerArrowDrawable(this).apply { isSpinEnabled = true }
         }
 
         viewModel.setNotificationBadgeVisible(
-            !isLoginStep && destination.id !in setOf(
-                R.id.fragment_notifications,
-                R.id.fragment_post
-            )
+            destination.id != R.id.fragment_notifications
+                && destination.id in TOP_LEVEL_DESTINATIONS
         )
+
+        if (destination.id in NO_TITLE_DESTINATIONS) {
+            toolbar.title = ""
+        }
     }
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
@@ -301,19 +303,23 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
     }
 
-    companion object {
-        private const val REQUEST_AVATAR = 0
-        private const val MAX_AVATAR_IMAGE_SIZE = 512 * 1024
-        private val TOP_LEVELS = setOf(
+    private companion object {
+        const val REQUEST_AVATAR = 0
+        const val MAX_AVATAR_IMAGE_SIZE = 512 * 1024
+        val TOP_LEVEL_DESTINATIONS = setOf(
             R.id.fragment_home,
             R.id.fragment_notifications,
             R.id.fragment_archive,
             R.id.fragment_own_posts
         )
-        private val LOGIN_DESTINATIONS = setOf(
+        val LOGIN_DESTINATIONS = setOf(
             R.id.fragment_login,
             R.id.action_global_fragment_login,
             R.id.action_global_fragment_login_startup
+        )
+        val NO_TITLE_DESTINATIONS = setOf(
+            R.id.fragment_home,
+            R.id.fragment_post
         )
     }
 }
