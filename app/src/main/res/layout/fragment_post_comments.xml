@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -16,6 +17,15 @@
         android:layout_height="match_parent"
         android:background="?android:windowBackground"
         android:theme="@style/AppTheme.NoActionBar">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{safeUnbox(model.contentLoaded) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/comments_header"
@@ -52,14 +62,28 @@
                 app:tint="@color/foreground" />
         </FrameLayout>
 
-        <ProgressBar
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/comment_new"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="@{safeUnbox(model.contentLoaded) ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginBottom="@dimen/margin_vertical_medium"
+            app:endIconContentDescription="@string/image_desc_comments_send_comment"
+            app:endIconDrawable="@drawable/ic_send_black_24dp"
+            app:endIconMode="custom"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/comment_new_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/post_comment_new_comment"
+                android:imeOptions="actionSend"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:text="@={model.newCommentData}"
+                tools:ignore="UnusedAttribute" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/comments_list"
@@ -67,7 +91,7 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/comment_new"
             app:layout_constraintTop_toBottomOf="@id/comments_header" />
 
         <FrameLayout
@@ -93,7 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:animateLayoutChanges="true"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/comment_new"
             app:layout_constraintTop_toBottomOf="@id/comments_header">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

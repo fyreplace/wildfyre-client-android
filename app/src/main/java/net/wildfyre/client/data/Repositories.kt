@@ -129,7 +129,7 @@ object NotificationRepository {
 
 object PostRepository {
     fun getPost(fh: FailureHandler, areaName: String?, id: Long): LiveData<Post> {
-        val post = MutableLiveData<Post>()
+        val futurePost = MutableLiveData<Post>()
 
         if (id >= 0) {
             Services.webService.getPost(
@@ -137,12 +137,12 @@ object PostRepository {
                 areaName ?: AreaRepository.preferredAreaName.value ?: "",
                 id
             ).then(fh, R.string.failure_request) {
-                post.value = it
+                futurePost.value = it
                 NotificationRepository.removeNotification(fh, it.id!!)
             }
         }
 
-        return post
+        return futurePost
     }
 }
 
@@ -228,5 +228,20 @@ private class AccumulatorRepositoryDelegate<T> {
 
     companion object {
         const val BUCKET_SIZE = 24L
+    }
+}
+
+object CommentRepository {
+    fun sendComment(fh: FailureHandler, areaName: String?, postId: Long, comment: String): LiveData<Comment> {
+        val futureComment = MutableLiveData<Comment>()
+
+        Services.webService.postComment(
+            AuthRepository.authToken.value!!,
+            areaName ?: AreaRepository.preferredAreaName.value ?: "",
+            postId,
+            Comment().apply { text = comment }
+        ).then(fh, R.string.failure_request) { futureComment.value = it }
+
+        return futureComment
     }
 }

@@ -97,6 +97,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
                 notifyItemRangeChanged(0, itemCount)
             }
         })
+        viewModel.newCommentData.observe(this, Observer { comment_new.isEndIconVisible = it.isNotBlank() })
 
         comments_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -121,6 +122,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
 
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(Math.max(commentsAdapter.itemCount - 1, 0)) }
+        comment_new.setEndIconOnClickListener { viewModel.sendComment() }
 
         collapsible_comments?.let {
             comment_count.setOnClickListener { toggleComments() }

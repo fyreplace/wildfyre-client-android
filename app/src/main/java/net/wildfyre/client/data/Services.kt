@@ -380,8 +380,18 @@ interface WebService {
     fun postComment(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
-        @Query("postId") postId: Long,
+        @Path("postId") postId: Long,
         @Body comment: Comment
+    ): Call<Comment>
+
+    @POST("/areas/{areaName}/{postId}/")
+    @Headers("Content-Type: application/json")
+    fun postImage(
+        @Header("Authorization") authorization: String,
+        @Path("areaName") areaName: String,
+        @Path("postId") postId: Long,
+        @Part image: MultipartBody.Part, // name = "image"
+        @Part commentText: MultipartBody.Part // name = "text"
     ): Call<Comment>
 
     @DELETE("/areas/{areaName}/{postId}/{commentId}/")
