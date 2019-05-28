@@ -72,7 +72,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         comment.text?.let { markdownContent.append(it) }
         markdown.setMarkdown(holder.text, markdownContent.toString())
 
-        holder.clickable.setOnLongClickListener {
+        holder.text.setOnLongClickListener {
             AlertDialog.Builder(holder.itemView.context)
                 .setAdapter(
                     getMenuAdapter(
@@ -156,7 +156,6 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         val authorPicture: ImageView = itemView.findViewById(R.id.author_picture)
         val date: TextView = itemView.findViewById(R.id.date)
         val text: TextView = itemView.findViewById(R.id.text)
-        val clickable: View = itemView.findViewById(R.id.clickable)
     }
 
     private data class CommentWrapper(val comment: Comment) {
