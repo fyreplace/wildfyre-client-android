@@ -34,22 +34,22 @@ object Services {
  * @param callback The callback to run when the operation succeeds
  */
 fun <T> Call<T>.then(failureHandler: FailureHandler, @StringRes errorMessage: Int, callback: (result: T) -> Unit) =
-    enqueue(DefaultCallback<T>(failureHandler, errorMessage) { callback(it) })
+    enqueue(ResultCallback<T>(failureHandler, errorMessage) { callback(it) })
 
 /**
  * @see then
  */
 fun Call<Unit>.then(failureHandler: FailureHandler, @StringRes errorMessage: Int, callback: () -> Unit) =
-    enqueue(DefaultCallback<Unit>(failureHandler, errorMessage) { callback() })
+    enqueue(NoResultCallback(failureHandler, errorMessage) { callback() })
 
-class DefaultCallback<T>(
+abstract class DefaultCallback<T>(
     private val failureHandler: FailureHandler,
     @StringRes private val errorMessage: Int,
     private val action: (result: T) -> Unit
 ) : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
         if (response.isSuccessful) {
-            response.body()?.let { action(it) } ?: onFailure(call, ApiNoResultException())
+            getResult(response)?.let { action(it) } ?: onFailure(call, ApiNoResultException())
         } else {
             val body = response.errorBody()?.use { it.charStream().readText() } ?: "<no body>"
             onFailure(call, ApiCallException(response.code(), response.message(), body))
@@ -59,6 +59,18 @@ class DefaultCallback<T>(
     override fun onFailure(call: Call<T>, t: Throwable) {
         failureHandler.onFailure(Failure(errorMessage, t))
     }
+
+    abstract fun getResult(response: Response<T>): T?
+}
+
+class ResultCallback<T>(failureHandler: FailureHandler, errorMessage: Int, action: (result: T) -> Unit) :
+    DefaultCallback<T>(failureHandler, errorMessage, action) {
+    override fun getResult(response: Response<T>): T? = response.body()
+}
+
+class NoResultCallback(failureHandler: FailureHandler, errorMessage: Int, action: (result: Unit) -> Unit) :
+    DefaultCallback<Unit>(failureHandler, errorMessage, action) {
+    override fun getResult(response: Response<Unit>): Unit? = Unit
 }
 
 class ApiCallException(code: Int, message: String, body: String) : Exception("$code: $message\n\t$body")
