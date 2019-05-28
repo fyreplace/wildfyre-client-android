@@ -19,7 +19,7 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     val markdownContent: LiveData<String> = Transformations.map(post) {
         val markdownContent = StringBuilder()
         it.image?.run { markdownContent.append("![]($this)\n\n") }
-        it.text?.run { markdownContent.append(prepareForMarkdown(it.additional_images)) }
+        it.text?.run { markdownContent.append(prepareForMarkdown(it.additionalImages)) }
         markdownContent.toString()
     }
     val comments: LiveData<List<Comment>> = Transformations.map(post) { it.comments }

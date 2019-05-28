@@ -1,5 +1,6 @@
 package net.wildfyre.client.data
 
+import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class Account {
@@ -43,10 +44,14 @@ class Ban {
     var comment: String? = null
     var expiry: Date? = null
     var auto: Boolean? = null
-    var ban_all: Boolean? = null
-    var ban_post: Boolean? = null
-    var ban_comment: Boolean? = null
-    var ban_flag: Boolean? = null
+    @SerializedName("ban_all")
+    var banAll: Boolean? = null
+    @SerializedName("ban_post")
+    var banPost: Boolean? = null
+    @SerializedName("ban_comment")
+    var banComment: Boolean? = null
+    @SerializedName("ban_flag")
+    var banFlag: Boolean? = null
 }
 
 class Choice {
@@ -104,7 +109,8 @@ class Post : NotificationPost() {
     var created: Date? = null
     var active: Boolean? = null
     var image: String? = null
-    var additional_images: List<Image>? = null
+    @SerializedName("additional_images")
+    var additionalImages: List<Image>? = null
     var comments: List<Comment>? = null
 }
 
@@ -119,7 +125,8 @@ class PasswordRecoveryStep1 {
 }
 
 class PasswordRecoveryStep2 {
-    var new_password: String? = null
+    @SerializedName("new_password")
+    var newPassword: String? = null
     var token: String? = null
     var transaction: String? = null
     var captcha: String? = null
