@@ -19,7 +19,8 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     private val _notificationCount: LiveData<Long> =
         Transformations.map(NotificationRepository.superNotification) { it.count ?: 0 }
 
-    var startupLogin: Boolean = AuthRepository.authToken.value!!.isEmpty()
+    var startupLogin = true
+        private set
     val authToken: LiveData<String> = AuthRepository.authToken
     val userName: LiveData<String> = Transformations.map(AuthorRepository.self) { it.name }
     val userBio: LiveData<String> = Transformations.map(AuthorRepository.self) { it.bio }
@@ -34,17 +35,16 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     val shouldShowNotificationBadge = MutableLiveData<Boolean>()
 
     init {
-        if (!startupLogin) {
-            updateInterfaceInformation()
-        }
-
         selectedThemeIndex.value = THEMES.indexOfFirst { it == SettingsRepository.theme }
         selectedThemeIndex.observeForever { SettingsRepository.theme = THEMES[it] }
         shouldShowNotificationBadge.value = SettingsRepository.showBadge
         shouldShowNotificationBadge.observeForever { SettingsRepository.showBadge = it }
     }
 
-    fun logout() = AuthRepository.clearAuthToken()
+    fun logout() {
+        startupLogin = false
+        AuthRepository.clearAuthToken()
+    }
 
     fun updateProfile() = AuthorRepository.fetchSelf(this)
 

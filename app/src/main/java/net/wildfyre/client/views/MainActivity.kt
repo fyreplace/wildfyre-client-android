@@ -81,7 +81,6 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
         viewModel.authToken.observe(this, Observer {
             if (it.isNotEmpty()) {
-                viewModel.startupLogin = false
                 viewModel.updateInterfaceInformation()
             } else {
                 val navController = findNavController(R.id.navigation_host)
