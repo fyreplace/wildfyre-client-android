@@ -2,20 +2,18 @@ package net.wildfyre.client.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import net.wildfyre.client.data.Comment
-import net.wildfyre.client.data.CommentRepository
-import net.wildfyre.client.data.Post
-import net.wildfyre.client.data.PostRepository
+import net.wildfyre.client.data.*
 import net.wildfyre.client.views.markdown.prepareForMarkdown
 
 class PostFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
     private var _postAreaName: String? = null
     private val _postId = MutableLiveData<Long>()
-    private val _comments = MediatorLiveData<List<Comment>>()
+    private val _commentAddedEvent = SingleLiveEvent<Comment>()
+    private val _commentRemovedEvent = SingleLiveEvent<Int>()
 
+    val selfId: LiveData<Long> = Transformations.map(AuthorRepository.self) { it.user }
     val post: LiveData<Post> = Transformations.switchMap(_postId) { PostRepository.getPost(this, _postAreaName, it) }
     val contentLoaded: LiveData<Boolean> = Transformations.map(post) { it != null }
     val markdownContent: LiveData<String> = Transformations.map(post) {
@@ -24,12 +22,13 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
         it.text?.run { markdownContent.append(prepareForMarkdown(it.additional_images)) }
         markdownContent.toString()
     }
-    val comments: LiveData<List<Comment>> = _comments
+    val comments: LiveData<List<Comment>> = Transformations.map(post) { it.comments }
+    val commentAddedEvent: LiveData<Comment> = _commentAddedEvent
+    val commentRemovedEvent: LiveData<Int> = _commentRemovedEvent
     val commentCount: LiveData<Int> = Transformations.map(comments) { it?.size ?: 0 }
     val newCommentData = MutableLiveData<String>()
 
     init {
-        _comments.addSource(post) { _comments.value = it.comments ?: listOf() }
         newCommentData.value = ""
     }
 
@@ -40,19 +39,24 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
         }
     }
 
-    fun sendComment() {
+    fun sendNewComment() {
         if (newCommentData.value != null && _postId.value != null) {
-            val futureComment = CommentRepository.sendComment(
+            CommentRepository.sendComment(
                 this,
                 _postAreaName,
                 _postId.value!!,
                 newCommentData.value!!
-            )
-
-            _comments.addSource(futureComment) {
-                _comments.removeSource(futureComment)
-                _comments.value = (_comments.value ?: listOf()) + it
+            ) {
+                _commentAddedEvent.value = it
                 newCommentData.value = ""
+            }
+        }
+    }
+
+    fun deleteComment(position: Int, comment: Comment) {
+        _postId.value?.let {
+            CommentRepository.deleteComment(this, _postAreaName, it, comment.id ?: -1) {
+                _commentRemovedEvent.value = position
             }
         }
     }

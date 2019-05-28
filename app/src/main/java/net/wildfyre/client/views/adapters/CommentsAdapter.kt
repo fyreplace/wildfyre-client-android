@@ -1,10 +1,13 @@
 package net.wildfyre.client.views.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -14,10 +17,16 @@ import net.wildfyre.client.data.Comment
 import ru.noties.markwon.Markwon
 import java.text.SimpleDateFormat
 
-class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
+class CommentsAdapter(private val markdown: Markwon, private val onCommentActionSelected: OnCommentDeleted) :
+    RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     private val dateFormat = SimpleDateFormat.getDateTimeInstance()
-    private var data: List<CommentWrapper> = listOf()
+    private var data: MutableList<CommentWrapper> = mutableListOf()
     private val recyclers: MutableList<RecyclerView> = mutableListOf()
+    var selfId: Long = -1L
+
+    init {
+        setHasStableIds(true)
+    }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -30,6 +39,8 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
     }
 
     override fun getItemCount(): Int = data.size
+
+    override fun getItemId(position: Int): Long = data[position].comment.id ?: -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -60,6 +71,26 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
         comment.image?.let { markdownContent.append("![]($it)") }
         comment.text?.let { markdownContent.append(it) }
         markdown.setMarkdown(holder.text, markdownContent.toString())
+
+        holder.clickable.setOnLongClickListener {
+            AlertDialog.Builder(holder.itemView.context)
+                .setAdapter(
+                    getMenuAdapter(
+                        holder.itemView.context,
+                        comment.author?.user ?: -1
+                    )
+                ) { _, i ->
+                    when (i) {
+                        0 -> copyComment(position)
+                        1 -> shareComment(position)
+                        2 -> deleteComment(position)
+                    }
+                }
+                .show()
+
+            return@setOnLongClickListener true
+        }
+
         holder.itemView.setBackgroundResource(
             if (wrapper.isNew)
                 R.color.backgroundHighlight
@@ -83,21 +114,66 @@ class CommentsAdapter(private val markdown: Markwon) : RecyclerView.Adapter<Comm
                     wrapper.isNew = true
                 }
             }
-        }
+        }.toMutableList()
 
         if (scrollPosition > -1) {
             recyclers.forEach { it.scrollToPosition(scrollPosition) }
         }
     }
 
+    fun addComment(comment: Comment) {
+        data.add(CommentWrapper(comment))
+    }
+
+    fun removeComment(position: Int) {
+        data.removeAt(position)
+    }
+
+    private fun getMenuAdapter(context: Context, id: Long): CommentMenuAdapter = CommentMenuAdapter(context,
+        mutableListOf(
+            R.drawable.ic_content_copy_daynight_24dp to R.string.post_comment_menu_copy,
+            R.drawable.ic_share_daynight_24dp to R.string.post_comment_menu_share
+        ).apply {
+            if (id == selfId) {
+                add(R.drawable.ic_delete_daynight_24dp to R.string.post_comment_menu_delete)
+            }
+        }
+    )
+
+    private fun copyComment(position: Int) {
+        // TODO
+    }
+
+    private fun shareComment(position: Int) {
+        // TODO
+    }
+
+    private fun deleteComment(position: Int) =
+        onCommentActionSelected.onCommentDeleted(position, data[position].comment)
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val authorName: TextView = itemView.findViewById(R.id.author_name)
         val authorPicture: ImageView = itemView.findViewById(R.id.author_picture)
         val date: TextView = itemView.findViewById(R.id.date)
         val text: TextView = itemView.findViewById(R.id.text)
+        val clickable: View = itemView.findViewById(R.id.clickable)
     }
 
     private data class CommentWrapper(val comment: Comment) {
         var isNew: Boolean = false
+    }
+
+    private class CommentMenuAdapter(context: Context, private val items: List<Pair<Int, Int>>) :
+        ArrayAdapter<Pair<Int, Int>>(context, R.layout.comment_menu_item, items) {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View =
+            super.getView(position, convertView, parent).apply {
+                val textView = this as TextView
+                textView.setText(items[position].second)
+                textView.setCompoundDrawablesWithIntrinsicBounds(items[position].first, 0, 0, 0)
+            }
+    }
+
+    interface OnCommentDeleted {
+        fun onCommentDeleted(position: Int, comment: Comment)
     }
 }

@@ -127,25 +127,6 @@ object NotificationRepository {
             .then(fh, R.string.failure_request) { resetNotifications() }
 }
 
-object PostRepository {
-    fun getPost(fh: FailureHandler, areaName: String?, id: Long): LiveData<Post> {
-        val futurePost = MutableLiveData<Post>()
-
-        if (id >= 0) {
-            Services.webService.getPost(
-                AuthRepository.authToken.value!!,
-                areaName ?: AreaRepository.preferredAreaName.value ?: "",
-                id
-            ).then(fh, R.string.failure_request) {
-                futurePost.value = it
-                NotificationRepository.removeNotification(fh, it.id!!)
-            }
-        }
-
-        return futurePost
-    }
-}
-
 object ArchiveRepository {
     private val delegate = AccumulatorRepositoryDelegate<Post>()
 
@@ -231,17 +212,41 @@ private class AccumulatorRepositoryDelegate<T> {
     }
 }
 
-object CommentRepository {
-    fun sendComment(fh: FailureHandler, areaName: String?, postId: Long, comment: String): LiveData<Comment> {
-        val futureComment = MutableLiveData<Comment>()
+object PostRepository {
+    fun getPost(fh: FailureHandler, areaName: String?, id: Long): LiveData<Post> {
+        val futurePost = MutableLiveData<Post>()
 
+        if (id >= 0) {
+            Services.webService.getPost(
+                AuthRepository.authToken.value!!,
+                areaName ?: AreaRepository.preferredAreaName.value ?: "",
+                id
+            ).then(fh, R.string.failure_request) {
+                futurePost.value = it
+                NotificationRepository.removeNotification(fh, it.id!!)
+            }
+        }
+
+        return futurePost
+    }
+}
+
+object CommentRepository {
+    fun sendComment(fh: FailureHandler, areaName: String?, postId: Long, comment: String, callback: (Comment) -> Unit) {
         Services.webService.postComment(
             AuthRepository.authToken.value!!,
             areaName ?: AreaRepository.preferredAreaName.value ?: "",
             postId,
             Comment().apply { text = comment }
-        ).then(fh, R.string.failure_request) { futureComment.value = it }
+        ).then(fh, R.string.failure_request, callback)
+    }
 
-        return futureComment
+    fun deleteComment(fh: FailureHandler, areaName: String?, postId: Long, commentId: Long, callback: () -> Unit) {
+        Services.webService.deleteComment(
+            AuthRepository.authToken.value!!,
+            areaName ?: AreaRepository.preferredAreaName.value ?: "",
+            postId,
+            commentId
+        ).then(fh, R.string.failure_request, callback)
     }
 }

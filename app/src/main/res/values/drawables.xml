@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="ic_content_copy_daynight_24dp">@drawable/ic_content_copy_black_24dp</drawable>
+    <drawable name="ic_delete_daynight_24dp">@drawable/ic_delete_black_24dp</drawable>
+    <drawable name="ic_share_daynight_24dp">@drawable/ic_share_black_24dp</drawable>
+</resources>

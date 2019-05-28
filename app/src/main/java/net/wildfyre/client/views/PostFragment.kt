@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.fragment_post_comments.*
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
+import net.wildfyre.client.data.Comment
 import net.wildfyre.client.databinding.FragmentPostBinding
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.PostFragmentViewModel
@@ -34,7 +35,7 @@ import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin
 import ru.noties.markwon.recycler.MarkwonAdapter
 import ru.noties.markwon.recycler.table.TableEntryPlugin
 
-class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
+class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAdapter.OnCommentDeleted {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     private val viewModel by lazyViewModel<PostFragmentViewModel>()
     private val args by navArgs<PostFragmentArgs>()
@@ -75,7 +76,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         content.adapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
-        val commentsAdapter = CommentsAdapter(markdown)
+        val commentsAdapter = CommentsAdapter(markdown, this)
         comments_list.adapter = commentsAdapter
         comments_list.addItemDecoration(
             DividerItemDecoration(
@@ -85,16 +86,29 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         )
 
         viewModel.setPostData(args.areaName, args.postId)
+        viewModel.selfId.observe(this, Observer { commentsAdapter.selfId = it })
         viewModel.markdownContent.observe(this, Observer { markdownContent ->
-            (content.adapter as? MarkwonAdapter)?.let {
-                it.setMarkdown(markdown, markdownContent)
-                it.notifyItemRangeChanged(0, it.itemCount)
+            (content.adapter as? MarkwonAdapter)?.run {
+                setMarkdown(markdown, markdownContent)
+                notifyItemRangeChanged(0, itemCount)
             }
         })
         viewModel.comments.observe(this, Observer { commentList ->
             (comments_list.adapter as? CommentsAdapter)?.run {
                 setComments(commentList, highlightedCommentIds)
-                notifyItemRangeChanged(0, itemCount)
+                notifyDataSetChanged()
+            }
+        })
+        viewModel.commentAddedEvent.observe(this, Observer {
+            (comments_list.adapter as? CommentsAdapter)?.run {
+                addComment(it)
+                notifyItemInserted(itemCount - 1)
+            }
+        })
+        viewModel.commentRemovedEvent.observe(this, Observer {
+            (comments_list.adapter as? CommentsAdapter)?.run {
+                removeComment(it)
+                notifyItemRemoved(it)
             }
         })
         viewModel.newCommentData.observe(this, Observer { comment_new.isEndIconVisible = it.isNotBlank() })
@@ -128,7 +142,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
 
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(Math.max(commentsAdapter.itemCount - 1, 0)) }
-        comment_new.setEndIconOnClickListener { clearCommentInput(); viewModel.sendComment() }
+        comment_new.setEndIconOnClickListener { clearCommentInput(); viewModel.sendNewComment() }
 
         collapsible_comments?.let {
             comment_count.setOnClickListener { toggleComments() }
@@ -160,8 +174,11 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.selfId.removeObservers(this)
         viewModel.markdownContent.removeObservers(this)
         viewModel.comments.removeObservers(this)
+        viewModel.commentAddedEvent.removeObservers(this)
+        viewModel.commentRemovedEvent.removeObservers(this)
         viewModel.newCommentData.removeObservers(this)
     }
 
@@ -177,6 +194,8 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
         inflater.inflate(R.menu.fragment_post_actions, menu)
+
+    override fun onCommentDeleted(position: Int, comment: Comment) = viewModel.deleteComment(position, comment)
 
     private fun toggleComments() {
         if (collapsible_comments == null) {
