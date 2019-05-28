@@ -136,7 +136,7 @@ object ArchiveRepository {
     fun fetchNextPosts(fh: FailureHandler) {
         val call = Services.webService.getPosts(
             AuthRepository.authToken.value!!,
-            AreaRepository.preferredAreaName.value ?: "",
+            AreaRepository.preferredAreaName.value.orEmpty(),
             AccumulatorRepositoryDelegate.BUCKET_SIZE,
             delegate.offset
         )
@@ -156,7 +156,7 @@ object OwnPostRepository {
     fun fetchNextPosts(fh: FailureHandler) {
         val call = Services.webService.getOwnPosts(
             AuthRepository.authToken.value!!,
-            AreaRepository.preferredAreaName.value ?: "",
+            AreaRepository.preferredAreaName.value.orEmpty(),
             AccumulatorRepositoryDelegate.BUCKET_SIZE,
             delegate.offset
         )
@@ -219,7 +219,7 @@ object PostRepository {
         if (id >= 0) {
             Services.webService.getPost(
                 AuthRepository.authToken.value!!,
-                areaName ?: AreaRepository.preferredAreaName.value ?: "",
+                areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
                 id
             ).then(fh, R.string.failure_request) {
                 futurePost.value = it
@@ -235,7 +235,7 @@ object CommentRepository {
     fun sendComment(fh: FailureHandler, areaName: String?, postId: Long, comment: String, callback: (Comment) -> Unit) {
         Services.webService.postComment(
             AuthRepository.authToken.value!!,
-            areaName ?: AreaRepository.preferredAreaName.value ?: "",
+            areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
             postId,
             Comment().apply { text = comment }
         ).then(fh, R.string.failure_request, callback)
@@ -244,7 +244,7 @@ object CommentRepository {
     fun deleteComment(fh: FailureHandler, areaName: String?, postId: Long, commentId: Long, callback: () -> Unit) {
         Services.webService.deleteComment(
             AuthRepository.authToken.value!!,
-            areaName ?: AreaRepository.preferredAreaName.value ?: "",
+            areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
             postId,
             commentId
         ).then(fh, R.string.failure_request, callback)

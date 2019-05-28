@@ -156,7 +156,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             return
         }
 
-        POST_REGEX.matchEntire(intent.data?.path ?: "")?.let { result ->
+        POST_REGEX.matchEntire(intent.data?.path.orEmpty())?.let { result ->
             findNavController(R.id.navigation_host).navigate(
                 NavigationMainDirections.actionGlobalFragmentPost(
                     result.groupValues[1],
