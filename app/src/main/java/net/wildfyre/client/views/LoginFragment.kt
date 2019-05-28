@@ -65,7 +65,7 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         super.onFailure(failure)
 
         if (failure.error == R.string.failure_login) {
-            showProgress(false)
+            viewModel.setLoginAllowed(true)
         }
     }
 
@@ -89,13 +89,8 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
             focusView?.requestFocus()
         } else {
             hideSoftKeyboard(login)
-            showProgress(true)
+            viewModel.setLoginAllowed(false)
             viewModel.attemptLogin(usernameStr, passwordStr)
         }
-    }
-
-    private fun showProgress(show: Boolean) {
-        login.visibility = if (show) View.GONE else View.VISIBLE
-        progress.visibility = if (show) View.VISIBLE else View.GONE
     }
 }
