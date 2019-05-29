@@ -165,7 +165,10 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
                     onBackPressedCallback.isEnabled = newState == BottomSheetBehavior.STATE_EXPANDED
 
                     when (newState) {
-                        BottomSheetBehavior.STATE_COLLAPSED -> arrowWrapper.setPointingUp(true)
+                        BottomSheetBehavior.STATE_COLLAPSED -> {
+                            clearCommentInput()
+                            arrowWrapper.setPointingUp(true)
+                        }
                         BottomSheetBehavior.STATE_EXPANDED -> arrowWrapper.setPointingUp(false)
                     }
                 }
@@ -224,8 +227,10 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
     }
 
     private fun clearCommentInput() {
-        hideSoftKeyboard(comment_new)
-        comment_new.clearFocus()
+        comment_new?.let {
+            hideSoftKeyboard(it)
+            it.clearFocus()
+        }
     }
 
     private companion object {
