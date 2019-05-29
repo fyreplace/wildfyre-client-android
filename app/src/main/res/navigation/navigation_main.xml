@@ -6,7 +6,7 @@
     app:startDestination="@id/fragment_home">
     <fragment
         android:id="@+id/fragment_login"
-        android:name="net.wildfyre.client.views.LoginFragment"
+        android:name="net.wildfyre.client.views.fragments.LoginFragment"
         android:label="@string/main_nav_fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -21,27 +21,27 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_home"
-        android:name="net.wildfyre.client.views.HomeFragment"
+        android:name="net.wildfyre.client.views.fragments.HomeFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/fragment_notifications"
-        android:name="net.wildfyre.client.views.NotificationsFragment"
+        android:name="net.wildfyre.client.views.fragments.NotificationsFragment"
         android:label="@string/main_nav_fragment_notifications"
         tools:layout="@layout/fragment_item_list" />
     <fragment
         android:id="@+id/fragment_archive"
-        android:name="net.wildfyre.client.views.ArchiveFragment"
+        android:name="net.wildfyre.client.views.fragments.ArchiveFragment"
         android:label="@string/main_nav_fragment_archive"
         tools:layout="@layout/fragment_item_list" />
     <fragment
         android:id="@+id/fragment_own_posts"
-        android:name="net.wildfyre.client.views.OwnPostsFragment"
+        android:name="net.wildfyre.client.views.fragments.OwnPostsFragment"
         android:label="@string/main_nav_fragment_own_posts"
         tools:layout="@layout/fragment_item_list" />
     <fragment
         android:id="@+id/fragment_post"
-        android:name="net.wildfyre.client.views.PostFragment"
+        android:name="net.wildfyre.client.views.fragments.PostFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_post">
         <argument

@@ -1,4 +1,4 @@
-package net.wildfyre.client.views
+package net.wildfyre.client.views.fragments
 
 import android.content.Context
 import android.content.DialogInterface

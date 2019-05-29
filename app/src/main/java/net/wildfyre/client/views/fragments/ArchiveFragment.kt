@@ -1,4 +1,4 @@
-package net.wildfyre.client.views
+package net.wildfyre.client.views.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

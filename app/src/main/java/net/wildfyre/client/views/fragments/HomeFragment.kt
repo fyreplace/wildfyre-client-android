@@ -1,4 +1,4 @@
-package net.wildfyre.client.views
+package net.wildfyre.client.views.fragments
 
 import android.content.Context
 import android.view.Menu
@@ -9,7 +9,8 @@ import net.wildfyre.client.viewmodels.*
 /**
  * [androidx.fragment.app.Fragment] for showing new posts to the user.
  */
-class HomeFragment : FailureHandlingFragment(R.layout.fragment_home), AreaSelectingFragment {
+class HomeFragment : FailureHandlingFragment(R.layout.fragment_home),
+    AreaSelectingFragment {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
     private val viewModel by lazyViewModel<HomeFragmentViewModel>()

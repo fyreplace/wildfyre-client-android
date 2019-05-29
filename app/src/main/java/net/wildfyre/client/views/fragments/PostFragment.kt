@@ -1,4 +1,4 @@
-package net.wildfyre.client.views
+package net.wildfyre.client.views.fragments
 
 import android.animation.LayoutTransition
 import android.animation.ObjectAnimator
@@ -26,6 +26,7 @@ import net.wildfyre.client.viewmodels.PostFragmentViewModel
 import net.wildfyre.client.viewmodels.lazyViewModel
 import net.wildfyre.client.views.adapters.CommentsAdapter
 import net.wildfyre.client.views.drawables.BottomSheetArrowDrawableWrapper
+import net.wildfyre.client.views.hideSoftKeyboard
 import net.wildfyre.client.views.markdown.PostPlugin
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
@@ -136,8 +137,14 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
         })
 
         listOf(go_up.parent as ViewGroup, go_down.parent as ViewGroup).forEach {
-            it.layoutTransition.setAnimator(LayoutTransition.APPEARING, ANIMATOR_SCALE_UP)
-            it.layoutTransition.setAnimator(LayoutTransition.DISAPPEARING, ANIMATOR_SCALE_DOWN)
+            it.layoutTransition.setAnimator(
+                LayoutTransition.APPEARING,
+                ANIMATOR_SCALE_UP
+            )
+            it.layoutTransition.setAnimator(
+                LayoutTransition.DISAPPEARING,
+                ANIMATOR_SCALE_DOWN
+            )
         }
 
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }

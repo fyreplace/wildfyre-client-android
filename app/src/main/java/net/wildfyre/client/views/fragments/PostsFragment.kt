@@ -1,4 +1,4 @@
-package net.wildfyre.client.views
+package net.wildfyre.client.views.fragments
 
 import android.content.Context
 import android.view.Menu
@@ -15,7 +15,8 @@ import net.wildfyre.client.viewmodels.lazyActivityViewModel
 /**
  * [androidx.fragment.app.Fragment] listing posts.
  */
-abstract class PostsFragment<VM : PostsFragmentViewModel> : ItemsListFragment<VM, Post>(), AreaSelectingFragment {
+abstract class PostsFragment<VM : PostsFragmentViewModel> : ItemsListFragment<VM, Post>(),
+    AreaSelectingFragment {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
     private var settingUp = true
