@@ -100,8 +100,8 @@ interface WebService {
     @GET("/bans/")
     fun getBans(
         @Header("Authorization/") authorization: String,
-        @Query("limit") limit: Long,
-        @Query("offset") offset: Long
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
     ): Call<SuperBan>
 
     @GET("/users/")
@@ -197,15 +197,15 @@ interface WebService {
     fun getPosts(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
-        @Query("limit") limit: Long,
-        @Query("offset") offset: Long
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
     ): Call<SuperPost>
 
     @GET("/areas/notification/")
     fun getNotifications(
         @Header("Authorization") authorization: String,
-        @Query("limit") limit: Long,
-        @Query("offset") offset: Long
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
     ): Call<SuperNotification>
 
     @DELETE("/areas/notification/")
@@ -234,15 +234,15 @@ interface WebService {
     fun getPosts(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
-        @Query("limit") limit: Long
+        @Query("limit") limit: Int
     ): Call<List<Post>>
 
     @GET("/areas/{areaName}/own/")
     fun getOwnPosts(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
-        @Query("limit") limit: Long,
-        @Query("offset") offset: Long
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
     ): Call<SuperPost>
 
     @GET("/areas/{areaName}/{postId}/")
@@ -303,8 +303,8 @@ interface WebService {
     fun getDrafts(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
-        @Query("limit") limit: Long,
-        @Query("offset") offset: Long
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
     ): Call<SuperPost>
 
     @GET("/areas/{areaName}/drafts/{postId}/")
@@ -355,7 +355,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Path("postId") slot: Long,
+        @Path("postId") slot: Int,
         @Part image: MultipartBody.Part, // name = "image"
         @Part comment: MultipartBody.Part // name = "comment"
     ): Call<Image>
@@ -381,7 +381,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Path("postId") slot: Long
+        @Path("postId") slot: Int
     ): Call<Unit>
 
 

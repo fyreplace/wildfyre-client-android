@@ -18,7 +18,7 @@
         android:gravity="center"
         android:paddingEnd="@dimen/margin_horizontal_small"
         android:paddingRight="@dimen/margin_horizontal_small"
-        android:text="@{Long.toString(safeUnbox(model.currentAreaSpread))}"
+        android:text="@{Integer.toString(safeUnbox(model.currentAreaSpread))}"
         android:textAppearance="@style/TextAppearance.AppCompat.Menu"
         app:drawableLeftCompat="@drawable/ic_settings_input_antenna_white_24dp"
         app:drawableStartCompat="@drawable/ic_settings_input_antenna_white_24dp"

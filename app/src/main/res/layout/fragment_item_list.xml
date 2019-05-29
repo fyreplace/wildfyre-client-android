@@ -8,7 +8,7 @@
 
         <variable
             name="itemCount"
-            type="androidx.lifecycle.LiveData&lt;Long&gt;" />
+            type="androidx.lifecycle.LiveData&lt;Integer&gt;" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

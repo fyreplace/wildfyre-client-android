@@ -1,15 +1,16 @@
 package net.wildfyre.client.viewmodels
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 
 /**
  * Interface for ViewModels containing a list of items.
  */
-interface ItemsListViewModel<I> {
-    val itemCount: LiveData<Long>
-    val items: LiveData<List<I>>
+abstract class ItemsListViewModel<I>(application: Application) : FailureHandlingViewModel(application) {
+    abstract val itemCount: LiveData<Int>
+    abstract val items: LiveData<List<I>>
 
-    fun fetchNextItems()
+    abstract fun fetchNextItems()
 
-    fun resetItems()
+    abstract fun resetItems()
 }

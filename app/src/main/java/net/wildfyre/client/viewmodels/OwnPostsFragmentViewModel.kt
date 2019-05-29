@@ -7,7 +7,7 @@ import net.wildfyre.client.data.Post
 import net.wildfyre.client.data.repositories.OwnPostRepository
 
 class OwnPostsFragmentViewModel(application: Application) : PostsFragmentViewModel(application) {
-    override var itemCount: LiveData<Long> = Transformations.map(OwnPostRepository.superPost) { it.count ?: 0 }
+    override var itemCount: LiveData<Int> = Transformations.map(OwnPostRepository.superPost) { it.count ?: 0 }
     override val items: LiveData<List<Post>> = OwnPostRepository.posts
 
     override fun fetchNextItems() = OwnPostRepository.fetchNextPosts(this)

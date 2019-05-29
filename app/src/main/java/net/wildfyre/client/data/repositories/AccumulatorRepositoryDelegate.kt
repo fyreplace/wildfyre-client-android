@@ -11,7 +11,7 @@ class AccumulatorRepositoryDelegate<T> {
     private var fetchingContent = false
     val mutableSuperItem = MutableLiveData<SuperItem<T>>()
     val mutableItems = MutableLiveData<List<T>>()
-    var offset = 0L
+    var offset = 0
 
     init {
         resetItems()
@@ -48,6 +48,6 @@ class AccumulatorRepositoryDelegate<T> {
     }
 
     companion object {
-        const val BUCKET_SIZE = 24L
+        const val BUCKET_SIZE = 24
     }
 }

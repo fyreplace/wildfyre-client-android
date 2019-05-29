@@ -16,7 +16,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     private var _userAvatarMimeType: String? = null
     private val _userAvatarNewData = MutableLiveData<ByteArray>()
     private val _notificationBadgeVisible = MutableLiveData<Boolean>()
-    private val _notificationCount: LiveData<Long> =
+    private val _notificationCount: LiveData<Int> =
         Transformations.map(NotificationRepository.superNotification) { it.count ?: 0 }
 
     var startupLogin = true
@@ -26,7 +26,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     val userBio: LiveData<String> = Transformations.map(AuthorRepository.self) { it.bio }
     val userAvatar: LiveData<String> = Transformations.map(AuthorRepository.self) { it.avatar }
     val userAvatarNewData: LiveData<ByteArray> = _userAvatarNewData
-    val notificationCount: LiveData<Long> = _notificationCount
+    val notificationCount: LiveData<Int> = _notificationCount
     val notificationCountText: LiveData<String> =
         Transformations.map(_notificationCount) { if (it < 100) it.toString() else "99" }
     val notificationBadgeVisible: LiveData<Boolean> = _notificationBadgeVisible

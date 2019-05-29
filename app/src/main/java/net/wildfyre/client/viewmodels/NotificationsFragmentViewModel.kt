@@ -6,9 +6,8 @@ import androidx.lifecycle.Transformations
 import net.wildfyre.client.data.Notification
 import net.wildfyre.client.data.repositories.NotificationRepository
 
-class NotificationsFragmentViewModel(application: Application) : FailureHandlingViewModel(application),
-    ItemsListViewModel<Notification> {
-    override val itemCount: LiveData<Long> =
+class NotificationsFragmentViewModel(application: Application) : ItemsListViewModel<Notification>(application) {
+    override val itemCount: LiveData<Int> =
         Transformations.map(NotificationRepository.superNotification) { it.count ?: 0 }
     override val items: LiveData<List<Notification>> = NotificationRepository.notifications
 

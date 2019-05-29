@@ -17,8 +17,6 @@ class AccountPatch {
 class Area {
     var name: String? = null
     var displayname: String? = null
-    var rep: Long? = null
-    var spread: Long? = null
 }
 
 class Auth {
@@ -78,7 +76,7 @@ class Flag {
 }
 
 class Image {
-    var num: Long? = null
+    var num: Int? = null
     var image: String? = null
     var comment: String? = null
 }
@@ -155,14 +153,14 @@ class UsernameRecovery {
 }
 
 class Reputation {
-    var reputation: Long? = null
-    var spread: Long? = null
+    var reputation: Int? = null
+    var spread: Int? = null
 }
 
 class Reset
 
 class SuperItem<T> {
-    var count: Long? = null
+    var count: Int? = null
     var next: String? = null
     var previous: String? = null
     var results: List<T>? = null
