@@ -4,7 +4,12 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import net.wildfyre.client.data.*
+import net.wildfyre.client.data.Comment
+import net.wildfyre.client.data.Post
+import net.wildfyre.client.data.SingleLiveEvent
+import net.wildfyre.client.data.repositories.AuthorRepository
+import net.wildfyre.client.data.repositories.CommentRepository
+import net.wildfyre.client.data.repositories.PostRepository
 import net.wildfyre.client.views.markdown.prepareForMarkdown
 
 class PostFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {

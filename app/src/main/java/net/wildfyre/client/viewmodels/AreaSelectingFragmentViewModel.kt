@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
 import net.wildfyre.client.data.Area
-import net.wildfyre.client.data.AreaRepository
+import net.wildfyre.client.data.repositories.AreaRepository
 
 class AreaSelectingFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
     private val _preferredArea = MediatorLiveData<Area?>()

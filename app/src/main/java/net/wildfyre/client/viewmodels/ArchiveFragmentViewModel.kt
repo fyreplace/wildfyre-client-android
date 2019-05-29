@@ -3,8 +3,8 @@ package net.wildfyre.client.viewmodels
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import net.wildfyre.client.data.ArchiveRepository
 import net.wildfyre.client.data.Post
+import net.wildfyre.client.data.repositories.ArchiveRepository
 
 class ArchiveFragmentViewModel(application: Application) : PostsFragmentViewModel(application) {
     override var itemCount: LiveData<Long> = Transformations.map(ArchiveRepository.superPost) { it.count ?: 0 }

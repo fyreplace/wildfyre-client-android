@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import net.wildfyre.client.data.AuthRepository
+import net.wildfyre.client.data.repositories.AuthRepository
 
 class LoginFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
     private val _loginAllowed = MutableLiveData<Boolean>()

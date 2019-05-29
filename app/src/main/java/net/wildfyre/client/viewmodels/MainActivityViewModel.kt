@@ -6,10 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
-import net.wildfyre.client.data.AuthRepository
-import net.wildfyre.client.data.AuthorRepository
-import net.wildfyre.client.data.NotificationRepository
-import net.wildfyre.client.data.SettingsRepository
+import net.wildfyre.client.data.repositories.AuthRepository
+import net.wildfyre.client.data.repositories.AuthorRepository
+import net.wildfyre.client.data.repositories.NotificationRepository
+import net.wildfyre.client.data.repositories.SettingsRepository
 
 class MainActivityViewModel(application: Application) : FailureHandlingViewModel(application) {
     private var _userAvatarFileName: String? = null

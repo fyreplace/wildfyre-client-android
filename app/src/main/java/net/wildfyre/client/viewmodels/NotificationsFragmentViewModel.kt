@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import net.wildfyre.client.data.Notification
-import net.wildfyre.client.data.NotificationRepository
+import net.wildfyre.client.data.repositories.NotificationRepository
 
 class NotificationsFragmentViewModel(application: Application) : FailureHandlingViewModel(application),
     ItemsListViewModel<Notification> {
