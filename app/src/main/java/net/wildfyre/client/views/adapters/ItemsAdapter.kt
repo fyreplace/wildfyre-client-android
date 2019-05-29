@@ -8,6 +8,8 @@ import android.widget.Space
 import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.core.view.isVisible
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -24,9 +26,10 @@ import ru.noties.markwon.ext.tables.TablePlugin
 /**
  * Standard adapter using a list of items as a data source.
  */
-abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.Adapter<ItemsAdapter.ViewHolder>() {
+abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private val showAuthors: Boolean) :
+    PagedListAdapter<I, ItemsAdapter.ViewHolder>(diffCallback) {
     private lateinit var markdown: Markwon
-    var onItemClickedListener: OnItemClickedListener = OnItemClickedListener.default()
+    var onItemClickedListener: OnItemClickedListener<I>? = null
     var data: List<I> = listOf()
 
     init {
@@ -44,11 +47,9 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
             .build()
     }
 
-    final override fun getItemCount(): Int = data.size
-
     final override fun setHasStableIds(hasStableIds: Boolean) = super.setHasStableIds(hasStableIds)
 
-    final override fun getItemId(position: Int): Long = getId(position)
+    abstract override fun getItemId(position: Int): Long
 
     final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
@@ -91,12 +92,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
 
         holder.space.isVisible = holder.text.isVisible && !holder.authorContainer.isVisible
         holder.subtitle.text = getSubtitle(position)
-        holder.clickable.setOnClickListener {
-            onItemClickedListener.onItemClicked(
-                getAreaName(position),
-                getId(position)
-            )
-        }
+        holder.clickable.setOnClickListener { getItem(position)?.let { onItemClickedListener?.onItemClicked(it) } }
     }
 
     abstract fun getText(position: Int): String?
@@ -109,8 +105,6 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
 
     abstract fun getAreaName(position: Int): String?
 
-    abstract fun getId(position: Int): Long
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val text: TextView = itemView.findViewById(R.id.text)
         val image: ImageView = itemView.findViewById(R.id.image)
@@ -122,14 +116,7 @@ abstract class ItemsAdapter<I>(private val showAuthors: Boolean) : RecyclerView.
         val clickable: View = itemView.findViewById(R.id.clickable)
     }
 
-    interface OnItemClickedListener {
-        fun onItemClicked(areaName: String?, id: Long)
-
-        companion object {
-            fun default() = object : OnItemClickedListener {
-                override fun onItemClicked(areaName: String?, id: Long) {
-                }
-            }
-        }
+    interface OnItemClickedListener<I> {
+        fun onItemClicked(item: I)
     }
 }

@@ -17,7 +17,7 @@ class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>() {
     override val viewModel by lazyViewModel<OwnPostsFragmentViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return onCreateView(inflater, container, PostsAdapter(false), savedInstanceState)
+        return onCreateView(inflater, container, PostsAdapter(false))
             ?.apply { findViewById<TextView>(R.id.text).setText(R.string.posts_empty) }
     }
 }

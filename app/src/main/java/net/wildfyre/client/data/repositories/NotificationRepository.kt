@@ -1,35 +1,32 @@
 package net.wildfyre.client.data.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import net.wildfyre.client.R
 import net.wildfyre.client.data.*
 
 object NotificationRepository {
-    private val delegate =
-        AccumulatorRepositoryDelegate<Notification>()
+    private val mutableSuperNotification = MutableLiveData<SuperNotification>()
 
-    val superNotification: LiveData<SuperNotification> = delegate.mutableSuperItem
-    val notifications: LiveData<List<Notification>> = delegate.mutableItems
+    val superNotification: LiveData<SuperNotification> = mutableSuperNotification
 
-    fun fetchNextNotifications(fh: FailureHandler, forContent: Boolean) {
-        val call = Services.webService.getNotifications(
+    fun getNotificationsSync(fh: FailureHandler, offset: Int, size: Int): SuperNotification? = try {
+        Services.webService.getNotifications(
             AuthRepository.authToken.value!!,
-            if (forContent) AccumulatorRepositoryDelegate.BUCKET_SIZE else 1,
-            delegate.offset
-        )
-
-        delegate.fetchNextItems(call, fh, forContent)
+            size,
+            offset
+        ).execute().toResult()
+    } catch (e: Exception) {
+        fh.onFailure(Failure(R.string.failure_request, e))
+        null
     }
 
-    fun resetNotifications() = delegate.resetItems()
-
-    fun removeNotification(fh: FailureHandler, id: Long) =
-        notifications.value!!.firstOrNull { it.post?.id == id }?.let {
-            delegate.removeItem(it)
-            fetchNextNotifications(fh, false)
-        }
+    fun fetchSuperNotification(fh: FailureHandler) {
+        Services.webService.getNotifications(AuthRepository.authToken.value!!, 1, 0)
+            .then(fh, R.string.failure_request) { mutableSuperNotification.postValue(it) }
+    }
 
     fun clearNotifications(fh: FailureHandler) =
         Services.webService.deleteNotifications(AuthRepository.authToken.value!!)
-            .then(fh, R.string.failure_request) { resetNotifications() }
+            .then(fh, R.string.failure_request) { mutableSuperNotification.postValue(SuperNotification()) }
 }

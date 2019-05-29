@@ -28,17 +28,17 @@
         android:id="@+id/fragment_notifications"
         android:name="net.wildfyre.client.views.fragments.NotificationsFragment"
         android:label="@string/main_nav_fragment_notifications"
-        tools:layout="@layout/fragment_item_list" />
+        tools:layout="@layout/fragment_items_list" />
     <fragment
         android:id="@+id/fragment_archive"
         android:name="net.wildfyre.client.views.fragments.ArchiveFragment"
         android:label="@string/main_nav_fragment_archive"
-        tools:layout="@layout/fragment_item_list" />
+        tools:layout="@layout/fragment_items_list" />
     <fragment
         android:id="@+id/fragment_own_posts"
         android:name="net.wildfyre.client.views.fragments.OwnPostsFragment"
         android:label="@string/main_nav_fragment_own_posts"
-        tools:layout="@layout/fragment_item_list" />
+        tools:layout="@layout/fragment_items_list" />
     <fragment
         android:id="@+id/fragment_post"
         android:name="net.wildfyre.client.views.fragments.PostFragment"

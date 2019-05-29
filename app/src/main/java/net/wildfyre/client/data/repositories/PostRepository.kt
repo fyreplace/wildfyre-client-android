@@ -17,10 +17,7 @@ object PostRepository {
                 AuthRepository.authToken.value!!,
                 areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
                 id
-            ).then(fh, R.string.failure_request) {
-                futurePost.value = it
-                NotificationRepository.removeNotification(fh, it.id!!)
-            }
+            ).then(fh, R.string.failure_request) { futurePost.value = it }
         }
 
         return futurePost

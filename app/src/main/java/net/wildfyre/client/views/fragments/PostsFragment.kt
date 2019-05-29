@@ -4,18 +4,20 @@ import android.content.Context
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_item_list.*
+import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.fragment_items_list.*
+import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Post
 import net.wildfyre.client.viewmodels.AreaSelectingFragmentViewModel
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
-import net.wildfyre.client.viewmodels.PostsFragmentViewModel
+import net.wildfyre.client.viewmodels.ItemsListViewModel
 import net.wildfyre.client.viewmodels.lazyActivityViewModel
 
 /**
  * [androidx.fragment.app.Fragment] listing posts.
  */
-abstract class PostsFragment<VM : PostsFragmentViewModel> : ItemsListFragment<VM, Post>(),
+abstract class PostsFragment<VM : ItemsListViewModel<Post>> : ItemsListFragment<VM, Post>(),
     AreaSelectingFragment {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
@@ -31,7 +33,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> : ItemsListFragment<VM
             }
 
             refresher.isRefreshing = true
-            onRefresh()
+            onRefreshListener?.onRefresh()
         })
     }
 
@@ -39,4 +41,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> : ItemsListFragment<VM
         inflater.inflate(R.menu.fragment_posts_actions, menu)
         onCreateOptionsMenu(this, menu)
     }
+
+    override fun onItemClicked(item: Post) =
+        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(null, item.id ?: -1))
 }

@@ -6,8 +6,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="notificationCount"
-            type="androidx.lifecycle.LiveData&lt;Integer&gt;" />
+            name="hasData"
+            type="androidx.lifecycle.LiveData&lt;Boolean&gt;" />
     </data>
 
     <FrameLayout
@@ -27,6 +27,6 @@
             android:text="@string/notifications_actions_clear"
             android:textColor="@android:color/white"
             android:theme="@style/AppTheme.ActionBar.Button.NeutralButtonOverlay"
-            android:visibility="@{safeUnbox(notificationCount) == 0 ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{safeUnbox(hasData) ? View.VISIBLE : View.GONE}" />
     </FrameLayout>
 </layout>

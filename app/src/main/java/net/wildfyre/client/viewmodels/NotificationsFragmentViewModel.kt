@@ -1,19 +1,13 @@
 package net.wildfyre.client.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import net.wildfyre.client.data.Notification
 import net.wildfyre.client.data.repositories.NotificationRepository
+import net.wildfyre.client.data.sources.ItemsDataSourceFactory
+import net.wildfyre.client.data.sources.NotificationsDataSourceFactory
 
 class NotificationsFragmentViewModel(application: Application) : ItemsListViewModel<Notification>(application) {
-    override val itemCount: LiveData<Int> =
-        Transformations.map(NotificationRepository.superNotification) { it.count ?: 0 }
-    override val items: LiveData<List<Notification>> = NotificationRepository.notifications
+    override val factory: ItemsDataSourceFactory<Notification> = NotificationsDataSourceFactory(this, this)
 
-    override fun fetchNextItems() = NotificationRepository.fetchNextNotifications(this, true)
-
-    override fun resetItems() = NotificationRepository.resetNotifications()
-
-    fun clearItems() = NotificationRepository.clearNotifications(this)
+    fun clearNotifications() = NotificationRepository.clearNotifications(this)
 }

@@ -7,8 +7,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="itemCount"
-            type="androidx.lifecycle.LiveData&lt;Integer&gt;" />
+            name="hasData"
+            type="androidx.lifecycle.LiveData&lt;Boolean&gt;" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:visibility="@{safeUnbox(itemCount) == 0 ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{safeUnbox(hasData) ? View.GONE : View.VISIBLE}" />
         </FrameLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

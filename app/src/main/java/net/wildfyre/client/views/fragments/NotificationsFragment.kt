@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Notification
@@ -23,9 +22,10 @@ import net.wildfyre.client.views.adapters.NotificationsAdapter
  */
 class NotificationsFragment :
     ItemsListFragment<NotificationsFragmentViewModel, Notification>(),
-    RecyclerView.OnChildAttachStateChangeListener, SwipeRefreshLayout.OnRefreshListener {
+    RecyclerView.OnChildAttachStateChangeListener {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<NotificationsFragmentViewModel>()
+    private var shouldRefresh = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -33,8 +33,23 @@ class NotificationsFragment :
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return onCreateView(inflater, container, NotificationsAdapter(), savedInstanceState)
+        return onCreateView(inflater, container, NotificationsAdapter())
             ?.apply { findViewById<TextView>(R.id.text).setText(R.string.notifications_empty) }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        savedInstanceState?.let { shouldRefresh = it.getBoolean(SAVE_SHOULD_REFRESH, false) }
+
+        if (shouldRefresh) {
+            shouldRefresh = false
+            onRefreshListener?.onRefresh()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(SAVE_SHOULD_REFRESH, shouldRefresh)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -43,26 +58,31 @@ class NotificationsFragment :
 
         NotificationsActionsClearBinding.bind(clear).run {
             lifecycleOwner = this@NotificationsFragment
-            notificationCount = viewModel.itemCount
+            hasData = viewModel.hasData
         }
 
         clear.findViewById<View>(R.id.button).setOnClickListener {
             AlertDialog.Builder(context!!)
                 .setTitle(getString(R.string.notifications_dialog_title))
                 .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> viewModel.clearItems() }
+                .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> viewModel.clearNotifications() }
                 .show()
         }
     }
 
-    override fun onItemClicked(areaName: String?, id: Long) {
+    override fun onItemClicked(item: Notification) {
+        shouldRefresh = true
         findNavController().navigate(
             NavigationMainDirections.actionGlobalFragmentPost(
-                areaName,
-                id,
+                item.area,
+                item.post?.id ?: -1,
                 -1,
-                viewModel.items.value?.firstOrNull { it.post?.id == id }?.comments?.toLongArray()
+                item.comments?.toLongArray()
             )
         )
+    }
+
+    private companion object {
+        const val SAVE_SHOULD_REFRESH = "save.shouldRefresh"
     }
 }

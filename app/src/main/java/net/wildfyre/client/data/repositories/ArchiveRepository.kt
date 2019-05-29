@@ -1,28 +1,18 @@
 package net.wildfyre.client.data.repositories
 
-import androidx.lifecycle.LiveData
-import net.wildfyre.client.data.FailureHandler
-import net.wildfyre.client.data.Post
-import net.wildfyre.client.data.Services
-import net.wildfyre.client.data.SuperPost
+import net.wildfyre.client.R
+import net.wildfyre.client.data.*
 
 object ArchiveRepository {
-    private val delegate =
-        AccumulatorRepositoryDelegate<Post>()
-
-    val superPost: LiveData<SuperPost> = delegate.mutableSuperItem
-    val posts: LiveData<List<Post>> = delegate.mutableItems
-
-    fun fetchNextPosts(fh: FailureHandler) {
-        val call = Services.webService.getPosts(
+    fun getPostsSync(fh: FailureHandler, offset: Int, size: Int): SuperPost? = try {
+        Services.webService.getPosts(
             AuthRepository.authToken.value!!,
             AreaRepository.preferredAreaName.value.orEmpty(),
-            AccumulatorRepositoryDelegate.BUCKET_SIZE,
-            delegate.offset
-        )
-
-        delegate.fetchNextItems(call, fh, true)
+            size,
+            offset
+        ).execute().toResult()
+    } catch (e: Exception) {
+        fh.onFailure(Failure(R.string.failure_request, e))
+        null
     }
-
-    fun resetPosts() = delegate.resetItems()
 }

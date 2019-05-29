@@ -17,7 +17,7 @@ class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>() {
     override val viewModel by lazyViewModel<ArchiveFragmentViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return onCreateView(inflater, container, PostsAdapter(true), savedInstanceState)
+        return onCreateView(inflater, container, PostsAdapter(true))
             ?.apply { findViewById<TextView>(R.id.text).setText(R.string.archive_empty) }
     }
 }

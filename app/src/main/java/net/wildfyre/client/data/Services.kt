@@ -34,7 +34,7 @@ object Services {
  * @param callback The callback to run when the operation succeeds
  */
 fun <T> Call<T>.then(failureHandler: FailureHandler, @StringRes errorMessage: Int, callback: (result: T) -> Unit) =
-    enqueue(ResultCallback<T>(failureHandler, errorMessage) { callback(it) })
+    enqueue(DefaultCallback<T>(failureHandler, errorMessage) { callback(it) })
 
 /**
  * @see then
@@ -42,14 +42,16 @@ fun <T> Call<T>.then(failureHandler: FailureHandler, @StringRes errorMessage: In
 fun Call<Unit>.then(failureHandler: FailureHandler, @StringRes errorMessage: Int, callback: () -> Unit) =
     enqueue(NoResultCallback(failureHandler, errorMessage) { callback() })
 
-abstract class DefaultCallback<T>(
+fun <T> Response<T>.toResult(): T? = if (isSuccessful) body() else null
+
+open class DefaultCallback<T>(
     private val failureHandler: FailureHandler,
     @StringRes private val errorMessage: Int,
     private val action: (result: T) -> Unit
 ) : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
         if (response.isSuccessful) {
-            getResult(response)?.let { action(it) } ?: onFailure(call, ApiNoResultException())
+            getResult(response)?.let(action) ?: onFailure(call, ApiNoResultException())
         } else {
             val body = response.errorBody()?.use { it.charStream().readText() } ?: "<no body>"
             onFailure(call, ApiCallException(response.code(), response.message(), body))
@@ -60,12 +62,7 @@ abstract class DefaultCallback<T>(
         failureHandler.onFailure(Failure(errorMessage, t))
     }
 
-    abstract fun getResult(response: Response<T>): T?
-}
-
-class ResultCallback<T>(failureHandler: FailureHandler, errorMessage: Int, action: (result: T) -> Unit) :
-    DefaultCallback<T>(failureHandler, errorMessage, action) {
-    override fun getResult(response: Response<T>): T? = response.body()
+    protected open fun getResult(response: Response<T>): T? = response.body()
 }
 
 class NoResultCallback(failureHandler: FailureHandler, errorMessage: Int, action: (result: Unit) -> Unit) :
