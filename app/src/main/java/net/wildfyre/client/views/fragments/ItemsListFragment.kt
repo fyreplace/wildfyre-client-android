@@ -46,6 +46,7 @@ abstract class ItemsListFragment<VM : ItemsListViewModel<I>, I> :
         val itemsList = root.findViewById<RecyclerView>(R.id.items_list)
         val swipeRefresh = root.findViewById<SwipeRefreshLayout>(R.id.refresher)
 
+        itemsList.setHasFixedSize(true)
         itemsList.adapter = adapter.apply {
             viewModel.items.observe(this@ItemsListFragment, Observer {
                 val previousCount = data.size
