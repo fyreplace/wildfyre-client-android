@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.adapters
+package net.wildfyre.client.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
 import net.wildfyre.client.data.Author
@@ -6,7 +6,7 @@ import net.wildfyre.client.data.Post
 import java.text.SimpleDateFormat
 
 /**
- * Adapter for displaying posts with [net.wildfyre.client.views.PostsFragment] implementations.
+ * Adapter for displaying posts with [net.wildfyre.client.ui.PostsFragment] implementations.
  */
 open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(), showAuthors) {
     override fun getItemId(position: Int): Long = getItem(position)?.id ?: -1

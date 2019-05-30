@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.fragments
+package net.wildfyre.client.ui.fragments
 
 import android.view.Menu
 import android.view.MenuItem

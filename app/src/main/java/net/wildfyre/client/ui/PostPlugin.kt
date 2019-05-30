@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.markdown
+package net.wildfyre.client.ui
 
 import android.content.Context
 import android.graphics.Rect

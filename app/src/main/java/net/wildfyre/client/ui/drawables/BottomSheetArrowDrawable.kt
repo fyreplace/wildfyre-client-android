@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.drawables
+package net.wildfyre.client.ui.drawables
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView

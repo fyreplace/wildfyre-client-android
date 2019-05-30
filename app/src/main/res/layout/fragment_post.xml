@@ -21,7 +21,7 @@
             android:layout_gravity="center"
             android:visibility="@{safeUnbox(model.contentLoaded) ? View.GONE : View.VISIBLE}" />
 
-        <net.wildfyre.client.views.markdown.MarkdownRecyclerView
+        <net.wildfyre.client.ui.widgets.MarkdownRecyclerView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

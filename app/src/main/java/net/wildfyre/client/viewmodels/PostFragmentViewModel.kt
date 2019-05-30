@@ -10,7 +10,7 @@ import net.wildfyre.client.data.SingleLiveEvent
 import net.wildfyre.client.data.repositories.AuthorRepository
 import net.wildfyre.client.data.repositories.CommentRepository
 import net.wildfyre.client.data.repositories.PostRepository
-import net.wildfyre.client.views.markdown.prepareForMarkdown
+import net.wildfyre.client.ui.prepareForMarkdown
 
 class PostFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
     private var _postAreaName: String? = null

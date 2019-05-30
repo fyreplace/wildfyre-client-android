@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.activities
+package net.wildfyre.client.ui.activities
 
 import android.content.DialogInterface
 import android.content.Intent

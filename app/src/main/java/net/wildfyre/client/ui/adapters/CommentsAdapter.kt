@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.adapters
+package net.wildfyre.client.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

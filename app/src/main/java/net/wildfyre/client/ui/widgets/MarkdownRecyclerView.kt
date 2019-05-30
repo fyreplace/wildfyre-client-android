@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.markdown
+package net.wildfyre.client.ui.widgets
 
 import android.content.Context
 import android.util.AttributeSet

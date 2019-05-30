@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.activities
+package net.wildfyre.client.ui.activities
 
 import android.os.Bundle
 import android.widget.Toast

@@ -8,7 +8,7 @@
     android:background="?android:windowBackground"
     android:fitsSystemWindows="true"
     android:theme="@style/AppTheme.NoActionBar"
-    tools:context=".views.activities.MainActivity"
+    tools:context=".ui.activities.MainActivity"
     tools:openDrawer="start">
 
     <include

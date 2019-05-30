@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.fragments
+package net.wildfyre.client.ui.fragments
 
 import android.content.Context
 import android.content.DialogInterface
@@ -12,10 +12,10 @@ import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Notification
 import net.wildfyre.client.databinding.NotificationsActionsClearBinding
+import net.wildfyre.client.ui.adapters.NotificationsAdapter
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.NotificationsFragmentViewModel
 import net.wildfyre.client.viewmodels.lazyViewModel
-import net.wildfyre.client.views.adapters.NotificationsAdapter
 
 /**
  * [androidx.fragment.app.Fragment] listing the user's notifications.

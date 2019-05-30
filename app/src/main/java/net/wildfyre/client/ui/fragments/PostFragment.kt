@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.fragments
+package net.wildfyre.client.ui.fragments
 
 import android.animation.LayoutTransition
 import android.animation.ObjectAnimator
@@ -21,13 +21,13 @@ import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.Comment
 import net.wildfyre.client.databinding.FragmentPostBinding
+import net.wildfyre.client.ui.PostPlugin
+import net.wildfyre.client.ui.adapters.CommentsAdapter
+import net.wildfyre.client.ui.drawables.BottomSheetArrowDrawableWrapper
+import net.wildfyre.client.ui.hideSoftKeyboard
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.PostFragmentViewModel
 import net.wildfyre.client.viewmodels.lazyViewModel
-import net.wildfyre.client.views.adapters.CommentsAdapter
-import net.wildfyre.client.views.drawables.BottomSheetArrowDrawableWrapper
-import net.wildfyre.client.views.hideSoftKeyboard
-import net.wildfyre.client.views.markdown.PostPlugin
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
 import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin

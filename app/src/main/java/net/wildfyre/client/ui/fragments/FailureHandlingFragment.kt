@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.fragments
+package net.wildfyre.client.ui.fragments
 
 import android.os.Bundle
 import android.widget.Toast

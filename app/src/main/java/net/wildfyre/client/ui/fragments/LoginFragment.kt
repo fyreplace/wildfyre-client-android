@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.fragments
+package net.wildfyre.client.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -13,9 +13,9 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Failure
 import net.wildfyre.client.databinding.FragmentLoginBinding
+import net.wildfyre.client.ui.hideSoftKeyboard
 import net.wildfyre.client.viewmodels.LoginFragmentViewModel
 import net.wildfyre.client.viewmodels.lazyViewModel
-import net.wildfyre.client.views.hideSoftKeyboard
 
 /**
  * [androidx.fragment.app.Fragment] showing a login screen to the user.

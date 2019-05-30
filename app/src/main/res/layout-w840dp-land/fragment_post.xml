@@ -34,7 +34,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <net.wildfyre.client.views.markdown.MarkdownRecyclerView
+        <net.wildfyre.client.ui.widgets.MarkdownRecyclerView
             android:id="@+id/content"
             android:layout_width="0dp"
             android:layout_height="match_parent"

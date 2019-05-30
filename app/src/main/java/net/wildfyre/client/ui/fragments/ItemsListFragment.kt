@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.fragments
+package net.wildfyre.client.ui.fragments
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +10,8 @@ import kotlinx.android.synthetic.main.fragment_items_list.*
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Failure
 import net.wildfyre.client.databinding.FragmentItemsListBinding
+import net.wildfyre.client.ui.adapters.ItemsAdapter
 import net.wildfyre.client.viewmodels.ItemsListViewModel
-import net.wildfyre.client.views.adapters.ItemsAdapter
 
 /**
  * Base class for fragments displaying a list of items.

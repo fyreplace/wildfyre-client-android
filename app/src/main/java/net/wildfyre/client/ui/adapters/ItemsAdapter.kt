@@ -1,4 +1,4 @@
-package net.wildfyre.client.views.adapters
+package net.wildfyre.client.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +16,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Author
-import net.wildfyre.client.views.markdown.PostPlugin
-import net.wildfyre.client.views.markdown.prepareForMarkdown
+import net.wildfyre.client.ui.PostPlugin
+import net.wildfyre.client.ui.prepareForMarkdown
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
 import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
