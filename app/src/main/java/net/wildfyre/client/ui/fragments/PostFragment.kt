@@ -126,16 +126,9 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
             }
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val upVisibility = recyclerView.canScrollVertically(-1) && dy < 0
-
-                if (go_up.isVisible != upVisibility) {
-                    go_up.isVisible = upVisibility
-                }
-
-                val downVisibility = recyclerView.canScrollVertically(1) && dy > 0
-
-                if (go_down.isVisible != downVisibility) {
-                    go_down.isVisible = downVisibility
+                if (dy != 0) {
+                    go_up.isVisible = recyclerView.canScrollVertically(-1) && dy < 0
+                    go_down.isVisible = recyclerView.canScrollVertically(1) && dy > 0
                 }
             }
         })
@@ -208,11 +201,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
 
         val commentsBehavior = BottomSheetBehavior.from(collapsible_comments)
 
-        if (commentsBehavior.state in setOf(
-                BottomSheetBehavior.STATE_HIDDEN,
-                BottomSheetBehavior.STATE_COLLAPSED
-            )
-        ) {
+        if (commentsBehavior.state in setOf(BottomSheetBehavior.STATE_HIDDEN, BottomSheetBehavior.STATE_COLLAPSED)) {
             commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         } else if (commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -228,18 +217,16 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
 
     private companion object {
         const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
+        val TRANSLATION_BUTTON = WildFyreApplication.context.resources.getDimension(R.dimen.comments_button_translation)
         val ANIMATOR_SCALE_DOWN: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
             Unit,
-            PropertyValuesHolder.ofFloat(
-                View.TRANSLATION_X,
-                WildFyreApplication.context.resources.getDimension(R.dimen.comments_button_translation)
-            ),
-            PropertyValuesHolder.ofFloat(View.ALPHA, 0f)
+            PropertyValuesHolder.ofFloat(View.TRANSLATION_X, 0f, TRANSLATION_BUTTON),
+            PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0f)
         )
         val ANIMATOR_SCALE_UP: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
             Unit,
-            PropertyValuesHolder.ofFloat(View.TRANSLATION_X, 0f),
-            PropertyValuesHolder.ofFloat(View.ALPHA, 1f)
+            PropertyValuesHolder.ofFloat(View.TRANSLATION_X, TRANSLATION_BUTTON, 0f),
+            PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f)
         )
     }
 }
