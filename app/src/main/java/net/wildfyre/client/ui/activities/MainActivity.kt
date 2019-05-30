@@ -38,6 +38,7 @@ import kotlinx.android.synthetic.main.main_app_bar.*
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
+import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.databinding.*
 import net.wildfyre.client.viewmodels.MainActivityViewModel
 import net.wildfyre.client.viewmodels.lazyViewModel
@@ -270,16 +271,11 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             .apply { show() }
 
         val avatar = dialog.findViewById<ImageView>(R.id.user_picture)!!
-        val transformations = MultiTransformation(
-            CenterCrop(),
-            RoundedCorners(resources.getDimensionPixelOffset(R.dimen.dialog_user_picture_rounding))
-        )
-        val transition = DrawableTransitionOptions.withCrossFade()
 
         AppGlide.with(this)
             .load(viewModel.userAvatar.value)
-            .transform(transformations)
-            .transition(transition)
+            .transition(IMAGE_TRANSITION)
+            .transform(IMAGE_TRANSFORM)
             .into(avatar)
 
         avatarDataObserver = Observer {
@@ -287,8 +283,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 val input = ByteArrayInputStream(this)
                 AppGlide.with(this@MainActivity)
                     .load(Drawable.createFromStream(input, "avatar"))
-                    .transform(transformations)
-                    .transition(transition)
+                    .transition(IMAGE_TRANSITION)
+                    .transform(IMAGE_TRANSFORM)
                     .into(avatar)
             }
         }
@@ -336,5 +332,11 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         )
 
         val POST_REGEX = Regex("/areas/(\\w+)/(\\d+)(?:/(\\d+))?")
+
+        val IMAGE_TRANSITION = DrawableTransitionOptions.withCrossFade()
+        val IMAGE_TRANSFORM = MultiTransformation(
+            CenterCrop(),
+            RoundedCorners(WildFyreApplication.context.resources.getDimensionPixelOffset(R.dimen.dialog_user_picture_rounding))
+        )
     }
 }

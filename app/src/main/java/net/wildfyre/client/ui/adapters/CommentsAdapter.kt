@@ -9,10 +9,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.R
+import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.Comment
 import ru.noties.markwon.Markwon
 import java.text.SimpleDateFormat
@@ -58,12 +61,9 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
             holder.authorName.text = it.name
             AppGlide.with(holder.itemView.context)
                 .load(it.avatar ?: R.drawable.ic_launcher)
-                .transform(
-                    CenterCrop(),
-                    RoundedCorners(
-                        holder.itemView.resources.getDimensionPixelOffset(R.dimen.comment_author_picture_rounding)
-                    )
-                )
+                .placeholder(android.R.color.transparent)
+                .transition(IMAGE_TRANSITION)
+                .transform(IMAGE_TRANSFORM)
                 .into(holder.authorPicture)
         }
 
@@ -74,12 +74,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
 
         holder.text.setOnLongClickListener {
             AlertDialog.Builder(holder.itemView.context)
-                .setAdapter(
-                    getMenuAdapter(
-                        holder.itemView.context,
-                        comment.author?.user ?: -1
-                    )
-                ) { _, i ->
+                .setAdapter(getMenuAdapter(holder.itemView.context, comment.author?.user ?: -1)) { _, i ->
                     when (i) {
                         0 -> copyComment(position)
                         1 -> shareComment(position)
@@ -151,6 +146,14 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
     private fun deleteComment(position: Int) =
         onCommentActionSelected.onCommentDeleted(position, data[position].comment)
 
+    private companion object {
+        val IMAGE_TRANSITION = DrawableTransitionOptions.withCrossFade()
+        val IMAGE_TRANSFORM = MultiTransformation(
+            CenterCrop(),
+            RoundedCorners(WildFyreApplication.context.resources.getDimensionPixelOffset(R.dimen.comment_author_picture_rounding))
+        )
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val authorName: TextView = itemView.findViewById(R.id.author_name)
         val authorPicture: ImageView = itemView.findViewById(R.id.author_picture)
@@ -166,9 +169,10 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         ArrayAdapter<Pair<Int, Int>>(context, R.layout.comment_menu_item, items) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View =
             super.getView(position, convertView, parent).apply {
-                val textView = this as TextView
-                textView.setText(items[position].second)
-                textView.setCompoundDrawablesWithIntrinsicBounds(items[position].first, 0, 0, 0)
+                (this as? TextView)?.run {
+                    setText(items[position].second)
+                    setCompoundDrawablesWithIntrinsicBounds(items[position].first, 0, 0, 0)
+                }
             }
     }
 
