@@ -15,7 +15,7 @@ object NotificationRepository {
             AuthRepository.authToken.value!!,
             size,
             offset
-        ).execute().toResult()
+        ).execute().toResult()?.also { mutableSuperNotification.postValue(it) }
     } catch (e: Exception) {
         fh.onFailure(Failure(R.string.failure_request, e))
         null
