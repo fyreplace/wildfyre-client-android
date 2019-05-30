@@ -179,6 +179,11 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
         }
     }
 
+    override fun onDestroyView() {
+        clearCommentInput()
+        super.onDestroyView()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         collapsible_comments?.let {
