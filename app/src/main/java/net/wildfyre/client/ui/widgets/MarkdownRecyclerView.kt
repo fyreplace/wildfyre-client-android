@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.noties.markwon.image.AsyncDrawableScheduler
 
 class MarkdownRecyclerView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr), RecyclerView.OnChildAttachStateChangeListener {
     init {
         addOnChildAttachStateChangeListener(this)

@@ -93,7 +93,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
         viewModel.markdownContent.observe(viewLifecycleOwner, Observer { markdownContent ->
             markdownAdapter.run {
                 setMarkdown(markdown, markdownContent)
-                notifyItemRangeChanged(0, itemCount)
+                notifyDataSetChanged()
             }
         })
         viewModel.comments.observe(viewLifecycleOwner, Observer { commentList ->
