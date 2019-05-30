@@ -1,7 +1,7 @@
 package net.wildfyre.client.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import net.wildfyre.client.data.Author
+import androidx.recyclerview.widget.RecyclerView
 import net.wildfyre.client.data.Post
 import java.text.SimpleDateFormat
 
@@ -9,17 +9,14 @@ import java.text.SimpleDateFormat
  * Adapter for displaying posts with [net.wildfyre.client.ui.PostsFragment] implementations.
  */
 open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(), showAuthors) {
-    override fun getItemId(position: Int): Long = getItem(position)?.id ?: -1
+    override fun getItemId(position: Int): Long = getItem(position)?.id ?: RecyclerView.NO_ID
 
-    override fun getText(position: Int): String? = getItem(position)?.text
-
-    override fun getImage(position: Int): String? = getItem(position)?.image
-
-    override fun getAuthor(position: Int): Author? = getItem(position)?.author
-
-    override fun getSubtitle(position: Int): String = dateFormat.format(getItem(position)?.created)
-
-    override fun getAreaName(position: Int): String? = null
+    override fun getItemData(item: Post): ItemDataHolder = ItemDataHolder(
+        item.text,
+        item.image,
+        item.author,
+        item.created?.let { dateFormat.format(it) }.orEmpty()
+    )
 
     companion object {
         private val dateFormat = SimpleDateFormat.getDateTimeInstance()

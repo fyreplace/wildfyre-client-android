@@ -51,36 +51,34 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
 
     abstract override fun getItemId(position: Int): Long
 
-    final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(
+    final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val totalWidth = parent.measuredWidth
+        val spanCount = parent.resources.getInteger(R.integer.post_preview_span_count)
+
+        return ViewHolder(
+            totalWidth / spanCount,
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.list_item, parent, false)
         )
+    }
 
     @CallSuper
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val image = getImage(position)
-        holder.text.isVisible = image == null
+        val item = getItem(position)!!
+        val itemData = getItemData(item)
+
+        holder.text.isVisible = itemData.image == null
         holder.image.isVisible = !holder.text.isVisible
-
-        if (holder.image.isVisible) {
-            AppGlide.with(holder.itemView.context)
-                .load(image)
-                .into(holder.image)
-        } else {
-            getText(position)?.let {
-                holder.text.text = markdown.toMarkdown(it.prepareForMarkdown(null))
-            }
-        }
-
-        val author = getAuthor(position)
-        holder.authorContainer.isVisible = author != null && showAuthors
+        holder.space.isVisible = holder.text.isVisible && !holder.authorContainer.isVisible
+        holder.subtitle.text = itemData.subtitle
+        holder.authorContainer.isVisible = showAuthors && itemData.author != null
+        holder.clickable.setOnClickListener { getItem(position)?.let { onItemClickedListener?.onItemClicked(it) } }
 
         if (holder.authorContainer.isVisible) {
-            holder.authorName.text = author!!.name
+            holder.authorName.text = itemData.author!!.name
             AppGlide.with(holder.itemView.context)
-                .load(author.avatar ?: R.drawable.ic_launcher)
+                .load(itemData.author.avatar ?: R.drawable.ic_launcher)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(
@@ -90,22 +88,20 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
                 .into(holder.authorPicture)
         }
 
-        holder.space.isVisible = holder.text.isVisible && !holder.authorContainer.isVisible
-        holder.subtitle.text = getSubtitle(position)
-        holder.clickable.setOnClickListener { getItem(position)?.let { onItemClickedListener?.onItemClicked(it) } }
+        if (holder.image.isVisible) {
+            holder.image.setImageDrawable(null)
+            AppGlide.with(holder.itemView.context)
+                .load(itemData.image)
+                .into(holder.image)
+        } else {
+            holder.text.text = markdown.toMarkdown(itemData.text.orEmpty().prepareForMarkdown(null))
+        }
     }
 
-    abstract fun getText(position: Int): String?
+    abstract fun getItemData(item: I): ItemDataHolder
 
-    abstract fun getImage(position: Int): String?
-
-    abstract fun getAuthor(position: Int): Author?
-
-    abstract fun getSubtitle(position: Int): String
-
-    abstract fun getAreaName(position: Int): String?
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(approxWidth: Int, itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val container: View = itemView.findViewById(R.id.container)
         val text: TextView = itemView.findViewById(R.id.text)
         val image: ImageView = itemView.findViewById(R.id.image)
         val authorContainer: ViewGroup = itemView.findViewById(R.id.author_container)
@@ -114,7 +110,22 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         val space: Space = itemView.findViewById(R.id.space)
         val subtitle: TextView = itemView.findViewById(R.id.subtitle)
         val clickable: View = itemView.findViewById(R.id.clickable)
+
+        init {
+            container.layoutParams.height = (approxWidth * HEIGHT_RATIO).toInt()
+        }
+
+        private companion object {
+            const val HEIGHT_RATIO = 1.4
+        }
     }
+
+    data class ItemDataHolder(
+        val text: String?,
+        val image: String?,
+        val author: Author?,
+        val subtitle: String
+    )
 
     interface OnItemClickedListener<I> {
         fun onItemClicked(item: I)

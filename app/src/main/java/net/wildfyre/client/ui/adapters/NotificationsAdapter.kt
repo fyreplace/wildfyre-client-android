@@ -1,33 +1,29 @@
 package net.wildfyre.client.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
-import net.wildfyre.client.data.Author
 import net.wildfyre.client.data.Notification
 
 /**
  * Adapter for displaying notifications in [net.wildfyre.client.ui.NotificationsFragment].
  */
 class NotificationsAdapter : ItemsAdapter<Notification>(NotificationCallback(), true) {
-    override fun getItemId(position: Int): Long = getItem(position)?.post?.id ?: -1
+    override fun getItemId(position: Int): Long = getItem(position)?.post?.id ?: RecyclerView.NO_ID
 
-    override fun getText(position: Int): String? = getItem(position)?.post?.text
-
-    override fun getImage(position: Int): String? = null
-
-    override fun getAuthor(position: Int): Author? = getItem(position)?.post?.author
-
-    override fun getSubtitle(position: Int): String {
-        val commentCount = getItem(position)?.comments?.size ?: 0
-        return WildFyreApplication.context.resources.getQuantityString(
-            R.plurals.notifications_item_comment_count,
-            commentCount,
-            commentCount
-        )
-    }
-
-    override fun getAreaName(position: Int): String? = getItem(position)?.area
+    override fun getItemData(item: Notification): ItemDataHolder = ItemDataHolder(
+        item.post?.text,
+        null,
+        item.post?.author,
+        item.comments?.size?.let {
+            WildFyreApplication.context.resources.getQuantityString(
+                R.plurals.notifications_item_comment_count,
+                it,
+                it
+            )
+        }.orEmpty()
+    )
 
     companion object {
         class NotificationCallback : DiffUtil.ItemCallback<Notification>() {
