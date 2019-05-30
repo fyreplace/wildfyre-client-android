@@ -6,4 +6,5 @@
         <item>@string/theme_dark</item>
     </string-array>
     <integer name="post_preview_span_count">2</integer>
+    <integer name="post_preview_load_page_size">16</integer>
 </resources>

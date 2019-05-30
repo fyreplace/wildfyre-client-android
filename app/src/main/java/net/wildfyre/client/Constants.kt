@@ -10,7 +10,6 @@ object Constants {
     object Api {
         const val BASE_URL = "https://api.wildfyre.net"
         val IMAGE_REGEX = Regex("\\[img:\\s*(\\d+)]")
-        const val PAGE_SIZE = 16
     }
 
     /**

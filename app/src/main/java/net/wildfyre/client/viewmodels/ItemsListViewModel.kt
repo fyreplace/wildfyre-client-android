@@ -7,7 +7,8 @@ import androidx.paging.Config
 import androidx.paging.DataSource
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
-import net.wildfyre.client.Constants
+import net.wildfyre.client.R
+import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.sources.DataLoadingListener
 import net.wildfyre.client.data.sources.ItemsDataSourceFactory
 
@@ -23,11 +24,12 @@ abstract class ItemsListViewModel<I>(application: Application) : FailureHandling
     abstract val factory: ItemsDataSourceFactory<I>
     val dataSource: LiveData<DataSource<Int, I>> by lazy { factory.dataSource }
     val itemsPagedList: LiveData<PagedList<I>> by lazy {
-        factory.toLiveData(
+        val pageSize = WildFyreApplication.context.resources.getInteger(R.integer.post_preview_load_page_size)
+        return@lazy factory.toLiveData(
             Config(
                 enablePlaceholders = true,
-                pageSize = Constants.Api.PAGE_SIZE,
-                initialLoadSizeHint = Constants.Api.PAGE_SIZE
+                pageSize = pageSize,
+                initialLoadSizeHint = pageSize
             )
         )
     }
