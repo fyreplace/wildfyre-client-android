@@ -14,9 +14,9 @@ class AreaSelectingFragmentViewModel(application: Application) : FailureHandling
     val preferredAreaName: LiveData<String> = AreaRepository.preferredAreaName
     val preferredArea: LiveData<Area?> = _preferredArea
     val currentAreaSpread: LiveData<Int> =
-        Transformations.map(AreaRepository.preferredAreaReputation) { it.spread ?: 0 }
+        Transformations.map(AreaRepository.preferredAreaReputation) { it.spread }
     val currentAreaReputation: LiveData<Int> =
-        Transformations.map(AreaRepository.preferredAreaReputation) { it.reputation ?: 0 }
+        Transformations.map(AreaRepository.preferredAreaReputation) { it.reputation }
 
     init {
         _preferredArea.addSource(areas) {

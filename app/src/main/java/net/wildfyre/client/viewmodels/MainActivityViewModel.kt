@@ -17,7 +17,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     private val _userAvatarNewData = MutableLiveData<ByteArray>()
     private val _notificationBadgeVisible = MutableLiveData<Boolean>()
     private val _notificationCount: LiveData<Int> =
-        Transformations.map(NotificationRepository.superNotification) { it.count ?: 0 }
+        Transformations.map(NotificationRepository.superNotification) { it.count }
 
     var startupLogin = true
         private set
@@ -49,11 +49,6 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     fun updateProfile() = AuthorRepository.fetchSelf(this)
 
     fun updateNotificationCount() = NotificationRepository.fetchSuperNotification(this)
-
-    fun updateInterfaceInformation() {
-        updateProfile()
-        updateNotificationCount()
-    }
 
     fun setProfile(bio: String) {
         if (bio != userBio.value) {

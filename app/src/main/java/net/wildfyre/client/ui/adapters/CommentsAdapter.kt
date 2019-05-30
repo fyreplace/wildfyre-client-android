@@ -40,7 +40,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
 
     override fun getItemCount(): Int = data.size
 
-    override fun getItemId(position: Int): Long = data[position].comment.id ?: RecyclerView.NO_ID
+    override fun getItemId(position: Int): Long = data[position].comment.id
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(

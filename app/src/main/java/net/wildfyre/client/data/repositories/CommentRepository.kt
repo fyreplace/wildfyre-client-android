@@ -1,10 +1,7 @@
 package net.wildfyre.client.data.repositories
 
 import net.wildfyre.client.R
-import net.wildfyre.client.data.Comment
-import net.wildfyre.client.data.FailureHandler
-import net.wildfyre.client.data.Services
-import net.wildfyre.client.data.then
+import net.wildfyre.client.data.*
 
 object CommentRepository {
     fun sendComment(fh: FailureHandler, areaName: String?, postId: Long, comment: String, callback: (Comment) -> Unit) {
@@ -12,7 +9,7 @@ object CommentRepository {
             AuthRepository.authToken.value!!,
             areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
             postId,
-            Comment().apply { text = comment }
+            CommentText(comment)
         ).then(fh, R.string.failure_request, callback)
     }
 

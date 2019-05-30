@@ -12,17 +12,18 @@ open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(
         item.text,
         item.image,
         item.author,
-        item.created?.let { dateFormat.format(it) }.orEmpty()
+        dateFormat.format(item.created)
     )
 
     companion object {
         private val dateFormat = SimpleDateFormat.getDateTimeInstance()
 
         class PostCallback : DiffUtil.ItemCallback<Post>() {
-            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem.id == newItem.id
+            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean =
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
-                oldItem.text == newItem.text && oldItem.image == newItem.image && areItemsTheSame(oldItem, newItem)
+                oldItem == newItem
         }
     }
 }

@@ -81,7 +81,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
         viewModel.authToken.observe(this, Observer {
             if (it.isNotEmpty()) {
-                viewModel.updateInterfaceInformation()
+                viewModel.updateProfile()
+                viewModel.updateNotificationCount()
             } else {
                 val navController = findNavController(R.id.navigation_host)
 

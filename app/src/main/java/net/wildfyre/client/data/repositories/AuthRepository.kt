@@ -23,13 +23,8 @@ object AuthRepository {
     fun clearAuthToken() = setAuthToken("")
 
     fun fetchAuthToken(fh: FailureHandler, username: String, password: String) {
-        val auth = Auth().also { it.username = username; it.password = password }
-
-        Services.webService.postAuth(auth).then(fh, R.string.failure_login) {
-            if (it.token != null) {
-                setAuthToken("token " + it.token)
-            }
-        }
+        Services.webService.postAuth(Auth(username, password))
+            .then(fh, R.string.failure_login) { setAuthToken("token " + it.token) }
     }
 
     private fun setAuthToken(token: String) {

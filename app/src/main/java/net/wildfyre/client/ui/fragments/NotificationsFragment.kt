@@ -76,9 +76,9 @@ class NotificationsFragment :
         findNavController().navigate(
             NavigationMainDirections.actionGlobalFragmentPost(
                 item.area,
-                item.post?.id ?: -1,
+                item.post.id,
                 -1,
-                item.comments?.toLongArray()
+                item.comments.toLongArray()
             )
         )
     }

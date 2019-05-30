@@ -60,7 +60,7 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
 
     fun deleteComment(position: Int, comment: Comment) {
         _postId.value?.let {
-            CommentRepository.deleteComment(this, _postAreaName, it, comment.id ?: -1) {
+            CommentRepository.deleteComment(this, _postAreaName, it, comment.id) {
                 _commentRemovedEvent.value = position
             }
         }

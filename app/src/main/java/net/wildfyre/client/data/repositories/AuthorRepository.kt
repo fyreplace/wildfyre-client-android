@@ -3,10 +3,7 @@ package net.wildfyre.client.data.repositories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import net.wildfyre.client.R
-import net.wildfyre.client.data.Author
-import net.wildfyre.client.data.FailureHandler
-import net.wildfyre.client.data.Services
-import net.wildfyre.client.data.then
+import net.wildfyre.client.data.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -22,7 +19,7 @@ object AuthorRepository {
             .then(fh, R.string.failure_request) { mutableSelf.value = it }
 
     fun updateSelfBio(fh: FailureHandler, bio: String) =
-        Services.webService.patchBio(AuthRepository.authToken.value!!, Author().apply { this.bio = bio })
+        Services.webService.patchBio(AuthRepository.authToken.value!!, AuthorPatch(bio))
             .then(fh, R.string.failure_profile_edit) { mutableSelf.value = it }
 
     fun updateSelfAvatar(fh: FailureHandler, fileName: String, mimeType: String, avatar: ByteArray) {

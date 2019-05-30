@@ -28,5 +28,7 @@ object NotificationRepository {
 
     fun clearNotifications(fh: FailureHandler) =
         Services.webService.deleteNotifications(AuthRepository.authToken.value!!)
-            .then(fh, R.string.failure_request) { mutableSuperNotification.postValue(SuperNotification()) }
+            .then(fh, R.string.failure_request) {
+                mutableSuperNotification.postValue(SuperNotification(count = 0, results = emptyList()))
+            }
 }

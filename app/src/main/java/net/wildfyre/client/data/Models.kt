@@ -3,168 +3,166 @@ package net.wildfyre.client.data
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-class Account {
-    var id: Long? = null
-    var username: String? = null
-    var email: String? = null
-}
+data class Account(
+    val id: Long,
+    val username: String,
+    val email: String? = null
+)
 
-class AccountPatch {
-    var email: String? = null
-    var password: String? = null
-}
+data class AccountPatch(
+    val email: String? = null,
+    val password: String? = null
+)
 
-class Area {
-    var name: String? = null
-    var displayname: String? = null
-}
+data class Area(
+    val name: String,
+    val displayname: String
+)
 
-class Auth {
-    var username: String? = null
-    var password: String? = null
-}
+data class Auth(
+    val username: String,
+    val password: String
+)
 
-class AuthToken {
-    var token: String? = null
-}
+data class AuthToken(
+    val token: String
+)
 
-class Author {
-    var user: Long? = null
-    var name: String? = null
-    var avatar: String? = null
-    var bio: String? = null
-    var banned: Boolean? = null
-}
+data class Author(
+    val user: Long,
+    val name: String,
+    val avatar: String? = null,
+    val bio: String? = null,
+    val banned: Boolean
+)
 
-class Ban {
-    var timestamp: Date? = null
-    var reason: Long? = null
-    var comment: String? = null
-    var expiry: Date? = null
-    var auto: Boolean? = null
+data class AuthorPatch(
+    val bio: String
+)
+
+data class Ban(
+    val timestamp: Date,
+    val reason: Long,
+    val comment: String? = null,
+    val expiry: Date,
+    val auto: Boolean? = null,
     @SerializedName("ban_all")
-    var banAll: Boolean? = null
+    val banAll: Boolean? = null,
     @SerializedName("ban_post")
-    var banPost: Boolean? = null
+    val banPost: Boolean? = null,
     @SerializedName("ban_comment")
-    var banComment: Boolean? = null
+    val banComment: Boolean? = null,
     @SerializedName("ban_flag")
-    var banFlag: Boolean? = null
-}
+    val banFlag: Boolean
+)
 
-class Choice {
-    var key: Long? = null
-    var value: String? = null
-}
+data class Choice(
+    val key: Long,
+    val value: String
+)
 
-class Comment {
-    var id: Long? = null
-    var author: Author? = null
-    var created: Date? = null
-    var text: String? = null
-    var image: String? = null
-}
+data class Comment(
+    val id: Long,
+    val author: Author? = null,
+    val created: Date,
+    val text: String? = null,
+    val image: String? = null
+)
 
-class CommentData {
-    var comment: String? = null
-    var image: Any? = null
-}
+data class CommentText(
+    val text: String
+)
 
-class Flag {
-    var reason: String? = null
-    var comment: String? = null
-}
+data class Flag(
+    val reason: String,
+    val comment: String? = null
+)
 
-class Image {
-    var num: Int? = null
-    var image: String? = null
-    var comment: String? = null
-}
+data class Image(
+    val num: Int,
+    val image: String,
+    val comment: String? = null
+)
 
-class Link {
-    var url: String? = null
-    var description: String? = null
-    var author: String? = null
-}
+data class Notification(
+    val area: String,
+    val post: NotificationPost,
+    val comments: List<Long>
+)
 
-class Notification {
-    var area: String? = null
-    var post: NotificationPost? = null
-    var comments: List<Long>? = null
-}
+data class NotificationPost(
+    val id: Long,
+    val author: Author? = null,
+    val text: String? = null
+)
 
-open class NotificationPost {
-    var id: Long? = null
-    var author: Author? = null
-    var text: String? = null
-}
-
-class Password
-
-class Post : NotificationPost() {
-    var anonym: Boolean? = null
-    var subscribed: Boolean? = null
-    var created: Date? = null
-    var active: Boolean? = null
-    var image: String? = null
+data class Post(
+    val id: Long,
+    val author: Author? = null,
+    val text: String? = null,
+    val anonym: Boolean,
+    val subscribed: Boolean,
+    val created: Date,
+    val active: Boolean,
+    val image: String? = null,
     @SerializedName("additional_images")
-    var additionalImages: List<Image>? = null
-    var comments: List<Comment>? = null
-}
+    val additionalImages: List<Image>? = null,
+    val comments: List<Comment>
+)
 
-class RecoverTransaction {
-    var transaction: String? = null
-}
+data class RecoverTransaction(
+    val transaction: String
+)
 
-class PasswordRecoveryStep1 {
-    var email: String? = null
-    var password: String? = null
-    var captcha: String? = null
-}
+data class PasswordRecoveryStep1(
+    val email: String,
+    val password: String,
+    val captcha: String
+)
 
-class PasswordRecoveryStep2 {
+data class PasswordRecoveryStep2(
     @SerializedName("new_password")
-    var newPassword: String? = null
-    var token: String? = null
-    var transaction: String? = null
-    var captcha: String? = null
-}
+    val newPassword: String,
+    val token: String,
+    val transaction: String,
+    val captcha: String
+)
 
-class Registration {
-    var username: String? = null
-    var email: String? = null
-    var password: String? = null
-    var captcha: String? = null
-}
+data class Registration(
+    val username: String,
+    val email: String,
+    val password: String,
+    val captcha: String
+)
 
-class Spread {
-    var spread: Boolean? = null
-}
+data class Spread(
+    val spread: Boolean
+)
 
-class Subscription {
-    var subscribed: Boolean? = null
-}
+data class Subscription(
+    val subscribed: Boolean
+)
 
 class RegistrationResult
 
-class UsernameRecovery {
-    var email: String? = null
-    var captcha: String? = null
-}
+data class UsernameRecovery(
+    val email: String,
+    val captcha: String
+)
 
-class Reputation {
-    var reputation: Int? = null
-    var spread: Int? = null
-}
+data class Reputation(
+    val reputation: Int,
+    val spread: Int
+)
 
 class Reset
 
-class SuperItem<T> {
-    var count: Int? = null
-    var next: String? = null
-    var previous: String? = null
-    var results: List<T>? = null
-}
+data class SuperItem<T>(
+    val count: Int,
+    val next: String? = null,
+    val previous: String? = null,
+    val results: List<T>
+)
 
 typealias SuperBan = SuperItem<Ban>
 typealias SuperNotification = SuperItem<Notification>

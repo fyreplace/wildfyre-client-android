@@ -123,7 +123,7 @@ interface WebService {
     @Headers("Content-Type: application/json")
     fun patchBio(
         @Header("Authorization") authorization: String,
-        @Body bio: Author
+        @Body bio: AuthorPatch
     ): Call<Author>
 
     @PATCH("/account/")
@@ -390,7 +390,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Body comment: Comment
+        @Body comment: CommentText
     ): Call<Comment>
 
     @POST("/areas/{areaName}/{postId}/")
