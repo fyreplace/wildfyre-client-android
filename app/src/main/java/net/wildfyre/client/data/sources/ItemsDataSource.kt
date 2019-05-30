@@ -19,11 +19,8 @@ abstract class ItemsDataSource<I>(
         listener.onLoadingStop()
     }
 
-    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<I>) {
-        listener.onLoadingStart()
+    override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<I>) =
         callback.onResult(loadRange(params.startPosition, params.loadSize))
-        listener.onLoadingStop()
-    }
 
     private fun loadRange(position: Int, size: Int): List<I> =
         fetcher(failureHandler, position, size)?.results ?: emptyList()
