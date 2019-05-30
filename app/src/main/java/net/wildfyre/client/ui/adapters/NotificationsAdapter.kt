@@ -1,7 +1,6 @@
 package net.wildfyre.client.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.Notification
@@ -10,8 +9,6 @@ import net.wildfyre.client.data.Notification
  * Adapter for displaying notifications in [net.wildfyre.client.ui.NotificationsFragment].
  */
 class NotificationsAdapter : ItemsAdapter<Notification>(NotificationCallback(), true) {
-    override fun getItemId(position: Int): Long = getItem(position)?.post?.id ?: RecyclerView.NO_ID
-
     override fun getItemData(item: Notification): ItemDataHolder = ItemDataHolder(
         item.post?.text,
         null,

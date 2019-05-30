@@ -25,7 +25,7 @@ abstract class ItemsListViewModel<I>(application: Application) : FailureHandling
     val itemsPagedList: LiveData<PagedList<I>> by lazy {
         factory.toLiveData(
             Config(
-                enablePlaceholders = false,
+                enablePlaceholders = true,
                 pageSize = Constants.Api.PAGE_SIZE,
                 initialLoadSizeHint = Constants.Api.PAGE_SIZE
             )

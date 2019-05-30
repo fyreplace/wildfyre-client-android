@@ -32,10 +32,6 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
     var onItemClickedListener: OnItemClickedListener<I>? = null
     var data: List<I> = listOf()
 
-    init {
-        setHasStableIds(true)
-    }
-
     @CallSuper
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -46,10 +42,6 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
             .usePlugin(TablePlugin.create(recyclerView.context))
             .build()
     }
-
-    final override fun setHasStableIds(hasStableIds: Boolean) = super.setHasStableIds(hasStableIds)
-
-    abstract override fun getItemId(position: Int): Long
 
     final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val totalWidth = parent.measuredWidth
@@ -65,7 +57,13 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
 
     @CallSuper
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)!!
+        val item = getItem(position)
+
+        if (item == null) {
+            holder.hide()
+            return
+        }
+
         val itemData = getItemData(item)
 
         holder.text.isVisible = itemData.image == null
@@ -74,6 +72,7 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         holder.subtitle.text = itemData.subtitle
         holder.authorContainer.isVisible = showAuthors && itemData.author != null
         holder.clickable.setOnClickListener { getItem(position)?.let { onItemClickedListener?.onItemClicked(it) } }
+        holder.loader.isVisible = false
 
         if (holder.authorContainer.isVisible) {
             holder.authorName.text = itemData.author!!.name
@@ -101,7 +100,7 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
     abstract fun getItemData(item: I): ItemDataHolder
 
     class ViewHolder(approxWidth: Int, itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val container: View = itemView.findViewById(R.id.container)
+        private val container: View = itemView.findViewById(R.id.container)
         val text: TextView = itemView.findViewById(R.id.text)
         val image: ImageView = itemView.findViewById(R.id.image)
         val authorContainer: ViewGroup = itemView.findViewById(R.id.author_container)
@@ -110,9 +109,19 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         val space: Space = itemView.findViewById(R.id.space)
         val subtitle: TextView = itemView.findViewById(R.id.subtitle)
         val clickable: View = itemView.findViewById(R.id.clickable)
+        val loader: View = itemView.findViewById(R.id.loader)
 
         init {
             container.layoutParams.height = (approxWidth * HEIGHT_RATIO).toInt()
+        }
+
+        fun hide() {
+            text.isVisible = false
+            image.isVisible = false
+            authorContainer.isVisible = false
+            space.isVisible = false
+            subtitle.text = ""
+            loader.isVisible = true
         }
 
         private companion object {

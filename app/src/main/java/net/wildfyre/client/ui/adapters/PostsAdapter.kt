@@ -1,7 +1,6 @@
 package net.wildfyre.client.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import net.wildfyre.client.data.Post
 import java.text.SimpleDateFormat
 
@@ -9,8 +8,6 @@ import java.text.SimpleDateFormat
  * Adapter for displaying posts with [net.wildfyre.client.ui.PostsFragment] implementations.
  */
 open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(), showAuthors) {
-    override fun getItemId(position: Int): Long = getItem(position)?.id ?: RecyclerView.NO_ID
-
     override fun getItemData(item: Post): ItemDataHolder = ItemDataHolder(
         item.text,
         item.image,
