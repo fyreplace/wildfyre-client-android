@@ -7,7 +7,6 @@ import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.data.Notification
@@ -20,9 +19,7 @@ import net.wildfyre.client.viewmodels.lazyViewModel
 /**
  * [androidx.fragment.app.Fragment] listing the user's notifications.
  */
-class NotificationsFragment :
-    ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>(),
-    RecyclerView.OnChildAttachStateChangeListener {
+class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>() {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<NotificationsFragmentViewModel>()
     private var shouldRefresh = false

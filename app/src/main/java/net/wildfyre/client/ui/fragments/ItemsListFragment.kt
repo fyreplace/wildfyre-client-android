@@ -18,8 +18,7 @@ import net.wildfyre.client.viewmodels.ItemsListViewModel
  * Base class for fragments displaying a list of items.
  */
 abstract class ItemsListFragment<I, VM : ItemsListViewModel<I>, A : ItemsAdapter<I>> :
-    FailureHandlingFragment(R.layout.fragment_items_list), RecyclerView.OnChildAttachStateChangeListener,
-    ItemsAdapter.OnItemClickedListener<I> {
+    FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemClickedListener<I> {
     protected var onRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     abstract val viewModel: VM
 
@@ -37,10 +36,17 @@ abstract class ItemsListFragment<I, VM : ItemsListViewModel<I>, A : ItemsAdapter
         itemsList.adapter = getItemsAdapter().apply {
             onItemClickedListener = this@ItemsListFragment
             viewModel.loading.observe(viewLifecycleOwner, Observer { swipeRefresh.isRefreshing = it })
-            viewModel.itemsPagedList.observe(viewLifecycleOwner, Observer { it?.run { submitList(it) } })
+            viewModel.itemsPagedList.observe(
+                viewLifecycleOwner,
+                Observer {
+                    it?.run {
+                        submitList(it)
+                        viewModel.setHasData(it.size > 0)
+                    }
+                }
+            )
         }
 
-        itemsList.addOnChildAttachStateChangeListener(this)
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
         swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.background)
         viewModel.dataSource.observe(viewLifecycleOwner, Observer {
@@ -51,19 +57,10 @@ abstract class ItemsListFragment<I, VM : ItemsListViewModel<I>, A : ItemsAdapter
         return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        items_list.removeOnChildAttachStateChangeListener(this)
-    }
-
     override fun onFailure(failure: Failure) {
         super.onFailure(failure)
         refresher.isRefreshing = false
     }
-
-    override fun onChildViewAttachedToWindow(view: View) = viewModel.setHasData(items_list.childCount > 0)
-
-    override fun onChildViewDetachedFromWindow(view: View) = viewModel.setHasData(items_list.childCount > 0)
 
     abstract fun getItemsAdapter(): A
 }
