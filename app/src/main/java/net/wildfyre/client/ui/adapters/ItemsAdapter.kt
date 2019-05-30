@@ -11,10 +11,13 @@ import androidx.core.view.isVisible
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.R
+import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.Author
 import net.wildfyre.client.ui.PostPlugin
 import net.wildfyre.client.ui.prepareForMarkdown
@@ -78,12 +81,9 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
             holder.authorName.text = itemData.author!!.name
             AppGlide.with(holder.itemView.context)
                 .load(itemData.author.avatar ?: R.drawable.ic_launcher)
-                .transform(
-                    CenterCrop(),
-                    RoundedCorners(
-                        holder.itemView.resources.getDimensionPixelOffset(R.dimen.list_item_author_picture_rounding)
-                    )
-                )
+                .placeholder(android.R.color.transparent)
+                .transition(IMAGE_TRANSITION)
+                .transform(IMAGE_TRANSFORM)
                 .into(holder.authorPicture)
         }
 
@@ -91,6 +91,9 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
             holder.image.setImageDrawable(null)
             AppGlide.with(holder.itemView.context)
                 .load(itemData.image)
+                .placeholder(android.R.color.transparent)
+                .transition(IMAGE_TRANSITION)
+                .transform(IMAGE_TRANSFORM)
                 .into(holder.image)
         } else {
             holder.text.text = markdown.toMarkdown(itemData.text.orEmpty().prepareForMarkdown(null))
@@ -98,6 +101,14 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
     }
 
     abstract fun getItemData(item: I): ItemDataHolder
+
+    private companion object {
+        val IMAGE_TRANSITION = DrawableTransitionOptions.withCrossFade()
+        val IMAGE_TRANSFORM = MultiTransformation(
+            CenterCrop(),
+            RoundedCorners(WildFyreApplication.context.resources.getDimensionPixelOffset(R.dimen.list_item_author_picture_rounding))
+        )
+    }
 
     class ViewHolder(approxWidth: Int, itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val container: View = itemView.findViewById(R.id.container)
