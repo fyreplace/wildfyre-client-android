@@ -74,7 +74,7 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         holder.space.isVisible = holder.text.isVisible && !holder.authorContainer.isVisible
         holder.subtitle.text = itemData.subtitle
         holder.authorContainer.isVisible = showAuthors && itemData.author != null
-        holder.clickable.setOnClickListener { getItem(position)?.let { onItemClickedListener?.onItemClicked(it) } }
+        holder.clickable.setOnClickListener { onItemClickedListener?.onItemClicked(item) }
         holder.loader.isVisible = false
 
         if (holder.authorContainer.isVisible) {
