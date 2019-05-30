@@ -2,6 +2,7 @@ package net.wildfyre.client.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import net.wildfyre.client.data.Comment
@@ -17,6 +18,7 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     private val _postId = MutableLiveData<Long>()
     private val _commentAddedEvent = SingleLiveEvent<Comment>()
     private val _commentRemovedEvent = SingleLiveEvent<Int>()
+    private val _commentCount = MediatorLiveData<Int>()
 
     val selfId: LiveData<Long> = Transformations.map(AuthorRepository.self) { it.user }
     val post: LiveData<Post> = Transformations.switchMap(_postId) { PostRepository.getPost(this, _postAreaName, it) }
@@ -30,10 +32,13 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     val comments: LiveData<List<Comment>> = Transformations.map(post) { it.comments }
     val commentAddedEvent: LiveData<Comment> = _commentAddedEvent
     val commentRemovedEvent: LiveData<Int> = _commentRemovedEvent
-    val commentCount: LiveData<Int> = Transformations.map(comments) { it?.size ?: 0 }
+    val commentCount: LiveData<Int> = _commentCount
     val newCommentData = MutableLiveData<String>()
 
     init {
+        _commentCount.addSource(comments) { _commentCount.value = it.size }
+        _commentCount.addSource(commentAddedEvent) { _commentCount.value = _commentCount.value!! + 1 }
+        _commentCount.addSource(commentRemovedEvent) { _commentCount.value = _commentCount.value!! - 1 }
         newCommentData.value = ""
     }
 
