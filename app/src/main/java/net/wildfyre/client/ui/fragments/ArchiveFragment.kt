@@ -16,8 +16,9 @@ import net.wildfyre.client.viewmodels.lazyViewModel
 class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>() {
     override val viewModel by lazyViewModel<ArchiveFragmentViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return onCreateView(inflater, container, PostsAdapter(true))
-            ?.apply { findViewById<TextView>(R.id.text).setText(R.string.archive_empty) }
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        super.onCreateView(inflater, container, savedInstanceState)
+            .apply { findViewById<TextView>(R.id.text).setText(R.string.archive_empty) }
+
+    override fun getItemsAdapter(): PostsAdapter = PostsAdapter(true)
 }

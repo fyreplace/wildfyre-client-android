@@ -69,14 +69,15 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         FragmentPostBinding.inflate(inflater, container, false).run {
-            lifecycleOwner = this@PostFragment
+            lifecycleOwner = viewLifecycleOwner
             model = viewModel
             return@run root
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        content.adapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
+        val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
+        content.adapter = markdownAdapter
         val commentsAdapter = CommentsAdapter(markdown, this)
         comments_list.setHasFixedSize(true)
         comments_list.adapter = commentsAdapter
@@ -88,32 +89,34 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
         )
 
         viewModel.setPostData(args.areaName, args.postId)
-        viewModel.selfId.observe(this, Observer { commentsAdapter.selfId = it })
-        viewModel.markdownContent.observe(this, Observer { markdownContent ->
-            (content.adapter as? MarkwonAdapter)?.run {
+        viewModel.selfId.observe(viewLifecycleOwner, Observer { commentsAdapter.selfId = it })
+        viewModel.markdownContent.observe(viewLifecycleOwner, Observer { markdownContent ->
+            markdownAdapter.run {
                 setMarkdown(markdown, markdownContent)
                 notifyItemRangeChanged(0, itemCount)
             }
         })
-        viewModel.comments.observe(this, Observer { commentList ->
-            (comments_list.adapter as? CommentsAdapter)?.run {
+        viewModel.comments.observe(viewLifecycleOwner, Observer { commentList ->
+            commentsAdapter.run {
                 setComments(commentList, highlightedCommentIds)
                 notifyDataSetChanged()
             }
         })
-        viewModel.commentAddedEvent.observe(this, Observer {
-            (comments_list.adapter as? CommentsAdapter)?.run {
+        viewModel.commentAddedEvent.observe(viewLifecycleOwner, Observer {
+            commentsAdapter.run {
                 addComment(it)
                 notifyItemInserted(itemCount - 1)
             }
         })
-        viewModel.commentRemovedEvent.observe(this, Observer {
-            (comments_list.adapter as? CommentsAdapter)?.run {
+        viewModel.commentRemovedEvent.observe(viewLifecycleOwner, Observer {
+            commentsAdapter.run {
                 removeComment(it)
                 notifyItemRemoved(it)
             }
         })
-        viewModel.newCommentData.observe(this, Observer { comment_new.isEndIconVisible = it.isNotBlank() })
+        viewModel.newCommentData.observe(
+            viewLifecycleOwner,
+            Observer { comment_new.isEndIconVisible = it.isNotBlank() })
 
         comments_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -181,16 +184,6 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
                 toggleComments()
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.selfId.removeObservers(this)
-        viewModel.markdownContent.removeObservers(this)
-        viewModel.comments.removeObservers(this)
-        viewModel.commentAddedEvent.removeObservers(this)
-        viewModel.commentRemovedEvent.removeObservers(this)
-        viewModel.newCommentData.removeObservers(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

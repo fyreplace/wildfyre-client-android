@@ -21,7 +21,7 @@ import net.wildfyre.client.viewmodels.lazyViewModel
  * [androidx.fragment.app.Fragment] listing the user's notifications.
  */
 class NotificationsFragment :
-    ItemsListFragment<NotificationsFragmentViewModel, Notification>(),
+    ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>(),
     RecyclerView.OnChildAttachStateChangeListener {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<NotificationsFragmentViewModel>()
@@ -32,13 +32,12 @@ class NotificationsFragment :
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return onCreateView(inflater, container, NotificationsAdapter())
-            ?.apply { findViewById<TextView>(R.id.text).setText(R.string.notifications_empty) }
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        super.onCreateView(inflater, container, savedInstanceState)
+            .apply { findViewById<TextView>(R.id.text).setText(R.string.notifications_empty) }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
         savedInstanceState?.let { shouldRefresh = it.getBoolean(SAVE_SHOULD_REFRESH, false) }
 
         if (shouldRefresh) {
@@ -69,6 +68,8 @@ class NotificationsFragment :
                 .show()
         }
     }
+
+    override fun getItemsAdapter(): NotificationsAdapter = NotificationsAdapter()
 
     override fun onItemClicked(item: Notification) {
         shouldRefresh = true

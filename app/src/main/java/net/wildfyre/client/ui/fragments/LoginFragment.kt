@@ -47,7 +47,7 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
             }
 
             model = viewModel
-            lifecycleOwner = this@LoginFragment
+            lifecycleOwner = viewLifecycleOwner
             password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
                 // Allow the user to use the keyboard "done" button to trigger a login attempt
                 if (id == EditorInfo.IME_ACTION_DONE) {
