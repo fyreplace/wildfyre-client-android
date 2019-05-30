@@ -12,17 +12,19 @@ abstract class ItemsDataSource<I>(
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<I>) {
         listener.onLoadingStart()
-        fetcher(failureHandler, params.requestedStartPosition, params.requestedLoadSize)?.let {
-            callback.onResult(it.results!!, params.requestedStartPosition, it.count!!)
-        }
+        val count = fetcher(failureHandler, 0, 1)?.count ?: 0
+        val initialPosition = computeInitialLoadPosition(params, count)
+        val initialSize = computeInitialLoadSize(params, initialPosition, count)
+        callback.onResult(loadRange(initialPosition, initialSize), initialPosition, count)
         listener.onLoadingStop()
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<I>) {
         listener.onLoadingStart()
-        fetcher(failureHandler, params.startPosition, params.loadSize)?.let {
-            callback.onResult(it.results!!)
-        }
+        callback.onResult(loadRange(params.startPosition, params.loadSize))
         listener.onLoadingStop()
     }
+
+    private fun loadRange(position: Int, size: Int): List<I> =
+        fetcher(failureHandler, position, size)?.results ?: emptyList()
 }
