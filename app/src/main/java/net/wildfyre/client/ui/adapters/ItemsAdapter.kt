@@ -33,7 +33,7 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
     PagedListAdapter<I, ItemsAdapter.ViewHolder>(diffCallback) {
     private lateinit var markdown: Markwon
     var onItemClickedListener: OnItemClickedListener<I>? = null
-    var data: List<I> = listOf()
+    var data: List<I> = emptyList()
 
     @CallSuper
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -93,7 +93,6 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
                 .load(itemData.image)
                 .placeholder(android.R.color.transparent)
                 .transition(IMAGE_TRANSITION)
-                .transform(IMAGE_TRANSFORM)
                 .into(holder.image)
         } else {
             holder.text.text = markdown.toMarkdown(itemData.text.orEmpty().prepareForMarkdown(null))
