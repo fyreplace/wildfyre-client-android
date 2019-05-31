@@ -23,11 +23,12 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     val selfId: LiveData<Long> = Transformations.map(AuthorRepository.self) { it.user }
     val post: LiveData<Post> = Transformations.switchMap(_postId) { PostRepository.getPost(this, _postAreaName, it) }
     val contentLoaded: LiveData<Boolean> = Transformations.map(post) { it != null }
+    val authorId: LiveData<Long> = Transformations.map(post) { it.author?.user ?: -1 }
     val markdownContent: LiveData<String> = Transformations.map(post) {
         val markdownContent = StringBuilder()
         it.image?.run { markdownContent.append("![]($this)\n\n") }
         it.text?.run { markdownContent.append(prepareForMarkdown(it.additionalImages)) }
-        markdownContent.toString()
+        return@map markdownContent.toString()
     }
     val comments: LiveData<List<Comment>> = Transformations.map(post) { it.comments }
     val commentAddedEvent: LiveData<Comment> = _commentAddedEvent

@@ -90,6 +90,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
 
         viewModel.setPostData(args.areaName, args.postId)
         viewModel.selfId.observe(viewLifecycleOwner, Observer { commentsAdapter.selfId = it })
+        viewModel.authorId.observe(viewLifecycleOwner, Observer { commentsAdapter.authorId = it })
         viewModel.markdownContent.observe(viewLifecycleOwner, Observer { markdownContent ->
             markdownAdapter.run {
                 setMarkdown(markdown, markdownContent)

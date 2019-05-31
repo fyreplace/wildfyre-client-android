@@ -1,6 +1,10 @@
 package net.wildfyre.client.ui.adapters
 
 import android.content.Context
+import android.graphics.Typeface
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +12,9 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.core.text.set
+import androidx.core.text.toSpanned
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -25,7 +32,8 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
     private val dateFormat = SimpleDateFormat.getDateTimeInstance()
     private var data: MutableList<CommentWrapper> = mutableListOf()
     private val recyclers: MutableList<RecyclerView> = mutableListOf()
-    var selfId: Long = -1L
+    var selfId: Long = -1
+    var authorId: Long = -1
 
     init {
         setHasStableIds(true)
@@ -56,9 +64,21 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val wrapper = data[position]
         val comment = wrapper.comment
+
         holder.date.text = dateFormat.format(comment.created)
         comment.author?.let {
-            holder.authorName.text = it.name
+            val authorName = SpannableStringBuilder(it.name)
+            authorName[0..it.name.length] = StyleSpan(Typeface.BOLD)
+            authorName[0..it.name.length] =
+                ForegroundColorSpan(ContextCompat.getColor(holder.itemView.context, R.color.foreground))
+
+            if (authorId != -1L && authorId == it.user) {
+                val authorBadge = "Author"
+                authorName.append(" ", authorBadge)
+                authorName[it.name.length + 1..authorName.length] = StyleSpan(Typeface.ITALIC)
+            }
+
+            holder.authorName.text = authorName.toSpanned()
             AppGlide.with(holder.itemView.context)
                 .load(it.avatar ?: R.drawable.ic_launcher)
                 .placeholder(android.R.color.transparent)
