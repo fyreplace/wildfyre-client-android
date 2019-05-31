@@ -2,7 +2,6 @@ package net.wildfyre.client.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import net.wildfyre.client.R
 import net.wildfyre.client.data.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -16,16 +15,16 @@ object AuthorRepository {
 
     fun fetchSelf(fh: FailureHandler) =
         Services.webService.getSelf(AuthRepository.authToken.value!!)
-            .then(fh, R.string.failure_request) { mutableSelf.value = it }
+            .then(fh) { mutableSelf.value = it }
 
     fun updateSelfBio(fh: FailureHandler, bio: String) =
         Services.webService.patchBio(AuthRepository.authToken.value!!, AuthorPatch(bio))
-            .then(fh, R.string.failure_profile_edit) { mutableSelf.value = it }
+            .then(fh) { mutableSelf.value = it }
 
     fun updateSelfAvatar(fh: FailureHandler, fileName: String, mimeType: String, avatar: ByteArray) {
         val avatarBody = RequestBody.create(MediaType.parse(mimeType), avatar)
         val avatarPart = MultipartBody.Part.createFormData("avatar", fileName, avatarBody)
         Services.webService.putAvatar(AuthRepository.authToken.value!!, avatarPart)
-            .then(fh, R.string.failure_profile_edit) { mutableSelf.value = it }
+            .then(fh) { mutableSelf.value = it }
     }
 }

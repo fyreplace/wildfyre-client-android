@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.annotation.CallSuper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import net.wildfyre.client.data.Failure
 import net.wildfyre.client.data.FailureHandler
 import net.wildfyre.client.data.SingleLiveEvent
 
@@ -13,13 +12,13 @@ import net.wildfyre.client.data.SingleLiveEvent
  * [net.wildfyre.client.ui.fragments.FailureHandlingFragment] that implements basic error propagation.
  */
 abstract class FailureHandlingViewModel(application: Application) : AndroidViewModel(application), FailureHandler {
-    private var _lastFailure = SingleLiveEvent<Failure>()
+    private var _lastFailure = SingleLiveEvent<Throwable>()
 
-    val lastFailure: LiveData<Failure>
+    val lastFailure: LiveData<Throwable>
         get() = _lastFailure
 
     @CallSuper
-    override fun onFailure(failure: Failure) {
+    override fun onFailure(failure: Throwable) {
         super.onFailure(failure)
         _lastFailure.value = failure
     }

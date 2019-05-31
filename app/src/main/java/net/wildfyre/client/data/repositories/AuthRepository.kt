@@ -4,7 +4,6 @@ import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import net.wildfyre.client.Constants
-import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.Auth
 import net.wildfyre.client.data.FailureHandler
@@ -24,7 +23,7 @@ object AuthRepository {
 
     fun fetchAuthToken(fh: FailureHandler, username: String, password: String) {
         Services.webService.postAuth(Auth(username, password))
-            .then(fh, R.string.failure_login) { setAuthToken("token " + it.token) }
+            .then(fh) { setAuthToken("token " + it.token) }
     }
 
     private fun setAuthToken(token: String) {

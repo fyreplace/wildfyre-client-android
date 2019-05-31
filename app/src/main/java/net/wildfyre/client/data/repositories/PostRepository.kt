@@ -2,7 +2,6 @@ package net.wildfyre.client.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import net.wildfyre.client.R
 import net.wildfyre.client.data.*
 
 object PostRepository {
@@ -14,7 +13,7 @@ object PostRepository {
                 AuthRepository.authToken.value!!,
                 areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
                 id
-            ).then(fh, R.string.failure_request) { futurePost.value = it }
+            ).then(fh) { futurePost.value = it }
         }
 
         return futurePost
@@ -28,7 +27,7 @@ object PostRepository {
             offset
         ).execute().toResult()
     } catch (e: Exception) {
-        fh.onFailure(Failure(R.string.failure_request, e))
+        fh.onFailure(e)
         null
     }
 
@@ -40,7 +39,7 @@ object PostRepository {
             offset
         ).execute().toResult()
     } catch (e: Exception) {
-        fh.onFailure(Failure(R.string.failure_request, e))
+        fh.onFailure(e)
         null
     }
 }

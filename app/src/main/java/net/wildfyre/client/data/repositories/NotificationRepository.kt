@@ -2,7 +2,6 @@ package net.wildfyre.client.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import net.wildfyre.client.R
 import net.wildfyre.client.data.*
 
 object NotificationRepository {
@@ -17,18 +16,18 @@ object NotificationRepository {
             offset
         ).execute().toResult()?.also { mutableSuperNotification.postValue(it) }
     } catch (e: Exception) {
-        fh.onFailure(Failure(R.string.failure_request, e))
+        fh.onFailure(e)
         null
     }
 
     fun fetchSuperNotification(fh: FailureHandler) {
         Services.webService.getNotifications(AuthRepository.authToken.value!!, 1, 0)
-            .then(fh, R.string.failure_request) { mutableSuperNotification.postValue(it) }
+            .then(fh) { mutableSuperNotification.postValue(it) }
     }
 
     fun clearNotifications(fh: FailureHandler) =
         Services.webService.deleteNotifications(AuthRepository.authToken.value!!)
-            .then(fh, R.string.failure_request) {
+            .then(fh) {
                 mutableSuperNotification.postValue(SuperNotification(count = 0, results = emptyList()))
             }
 }

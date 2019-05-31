@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_items_list.*
 import net.wildfyre.client.R
-import net.wildfyre.client.data.Failure
 import net.wildfyre.client.databinding.FragmentItemsListBinding
 import net.wildfyre.client.ui.adapters.ItemsAdapter
 import net.wildfyre.client.viewmodels.ItemsListViewModel
@@ -57,7 +56,7 @@ abstract class ItemsListFragment<I, VM : ItemsListViewModel<I>, A : ItemsAdapter
         return root
     }
 
-    override fun onFailure(failure: Failure) {
+    override fun onFailure(failure: Throwable) {
         super.onFailure(failure)
         refresher.isRefreshing = false
     }

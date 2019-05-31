@@ -4,7 +4,6 @@ import androidx.core.content.edit
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import net.wildfyre.client.Constants
-import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.*
 
@@ -28,11 +27,11 @@ object AreaRepository {
 
     fun fetchAreas(fh: FailureHandler) =
         Services.webService.getAreas(AuthRepository.authToken.value!!)
-            .then(fh, R.string.failure_request) { mutableAreas.value = it }
+            .then(fh) { mutableAreas.value = it }
 
     fun fetchAreaReputation(fh: FailureHandler, areaName: String) =
         Services.webService.getAreaRep(AuthRepository.authToken.value!!, areaName)
-            .then(fh, R.string.failure_request) { mutablePreferredAreaReputation.value = it }
+            .then(fh) { mutablePreferredAreaReputation.value = it }
 
     fun setPreferredAreaName(name: String) {
         if (name != preferredAreaName.value) {

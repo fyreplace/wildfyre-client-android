@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_login.*
 import net.wildfyre.client.R
-import net.wildfyre.client.data.Failure
 import net.wildfyre.client.databinding.FragmentLoginBinding
 import net.wildfyre.client.ui.hideSoftKeyboard
 import net.wildfyre.client.viewmodels.LoginFragmentViewModel
@@ -62,12 +61,9 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         }
     }
 
-    override fun onFailure(failure: Failure) {
+    override fun onFailure(failure: Throwable) {
         super.onFailure(failure)
-
-        if (failure.error == R.string.failure_login) {
-            viewModel.setLoginAllowed(true)
-        }
+        viewModel.setLoginAllowed(true)
     }
 
     private fun attemptLogin() {
