@@ -64,22 +64,23 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val wrapper = data[position]
         val comment = wrapper.comment
+        val context = holder.itemView.context
 
         holder.date.text = dateFormat.format(comment.created)
         comment.author?.let {
             val authorName = SpannableStringBuilder(it.name)
             authorName[0..it.name.length] = StyleSpan(Typeface.BOLD)
             authorName[0..it.name.length] =
-                ForegroundColorSpan(ContextCompat.getColor(holder.itemView.context, R.color.foreground))
+                ForegroundColorSpan(ContextCompat.getColor(context, R.color.foreground))
 
             if (authorId != -1L && authorId == it.user) {
-                val authorBadge = "Author"
+                val authorBadge = context.getString(R.string.post_comment_author)
                 authorName.append(" ", authorBadge)
                 authorName[it.name.length + 1..authorName.length] = StyleSpan(Typeface.ITALIC)
             }
 
             holder.authorName.text = authorName.toSpanned()
-            AppGlide.with(holder.itemView.context)
+            AppGlide.with(context)
                 .load(it.avatar ?: R.drawable.ic_launcher)
                 .placeholder(android.R.color.transparent)
                 .transition(IMAGE_TRANSITION)
@@ -93,8 +94,8 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         markdown.setMarkdown(holder.text, markdownContent.toString())
 
         holder.text.setOnLongClickListener {
-            AlertDialog.Builder(holder.itemView.context)
-                .setAdapter(getMenuAdapter(holder.itemView.context, comment.author?.user ?: -1)) { _, i ->
+            AlertDialog.Builder(context)
+                .setAdapter(getMenuAdapter(context, comment.author?.user ?: -1)) { _, i ->
                     when (i) {
                         0 -> copyComment(position)
                         1 -> shareComment(position)
