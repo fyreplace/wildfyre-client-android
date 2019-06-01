@@ -85,8 +85,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
         viewModel.authToken.observe(this, Observer {
             if (it.isNotEmpty()) {
-                viewModel.updateProfile()
-                viewModel.updateNotificationCount()
+                viewModel.updateProfileAsync()
+                viewModel.updateNotificationCountAsync()
             } else {
                 val navController = findNavController(R.id.navigation_host)
 
@@ -258,7 +258,9 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
 
-    override fun onDrawerOpened(drawerView: View) = viewModel.updateNotificationCount()
+    override fun onDrawerOpened(drawerView: View) {
+        viewModel.updateNotificationCountAsync()
+    }
 
     override fun onDrawerClosed(drawerView: View) = Unit
 
@@ -302,7 +304,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             }
             .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
                 viewModel.userAvatarNewData.removeObserver(avatarDataObserver)
-                viewModel.setProfile(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString())
+                viewModel.setProfileAsync(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString())
                 viewModel.resetPendingProfileAvatar()
             }
             .create()

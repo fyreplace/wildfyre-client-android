@@ -1,23 +1,23 @@
 package net.wildfyre.client.data.repositories
 
-import net.wildfyre.client.data.*
+import net.wildfyre.client.data.CommentText
+import net.wildfyre.client.data.Services
+import net.wildfyre.client.data.await
 
 object CommentRepository {
-    fun sendComment(fh: FailureHandler, areaName: String?, postId: Long, comment: String, callback: (Comment) -> Unit) {
+    suspend fun sendComment(areaName: String?, postId: Long, comment: String) =
         Services.webService.postComment(
             AuthRepository.authToken.value!!,
             areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
             postId,
             CommentText(comment)
-        ).then(fh, callback)
-    }
+        ).await()
 
-    fun deleteComment(fh: FailureHandler, areaName: String?, postId: Long, commentId: Long, callback: () -> Unit) {
+    suspend fun deleteComment(areaName: String?, postId: Long, commentId: Long) =
         Services.webService.deleteComment(
             AuthRepository.authToken.value!!,
             areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
             postId,
             commentId
-        ).then(fh, callback)
-    }
+        ).await()
 }

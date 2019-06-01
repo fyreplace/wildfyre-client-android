@@ -89,8 +89,8 @@ interface AreaSelectingFragment {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 areaSelectingViewModel.areas.value?.get(position)?.name?.let {
-                    areaSelectingViewModel.setPreferredAreaName(it)
-                    areaSelectingViewModel.updatePreferredArea()
+                    areaSelectingViewModel.setPreferredAreaNameAsync(it)
+                    areaSelectingViewModel.updatePreferredAreaAsync()
                 }
             }
         }
@@ -100,10 +100,10 @@ interface AreaSelectingFragment {
 
             // If there is no preferred area yet, then this is the first run; set it to the first area that comes
             if (areaSelectingViewModel.preferredAreaName.value == null) {
-                areas.firstOrNull()?.name?.let { areaSelectingViewModel.setPreferredAreaName(it) }
+                areas.firstOrNull()?.name?.let { areaSelectingViewModel.setPreferredAreaNameAsync(it) }
             }
         })
 
-        areaSelectingViewModel.updateAreas()
+        areaSelectingViewModel.updateAreasAsync()
     }
 }

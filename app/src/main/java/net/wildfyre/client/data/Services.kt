@@ -3,8 +3,6 @@ package net.wildfyre.client.data
 import net.wildfyre.client.Constants
 import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -23,52 +21,6 @@ object Services {
         .build()
         .create(WebService::class.java)
 }
-
-/**
- * Helper function lifting some boilerplate code out of the repositories and hooking errors to a [FailureHandler].
- *
- * @param T The type of the object that is going to be received by the callback if the operation succeeds
- * @param failureHandler An object capable of propagating any error
- * @param callback The callback to run when the operation succeeds
- */
-fun <T> Call<T>.then(failureHandler: FailureHandler, callback: (result: T) -> Unit) =
-    enqueue(DefaultCallback<T>(failureHandler) { callback(it) })
-
-/**
- * @see then
- */
-fun Call<Unit>.then(failureHandler: FailureHandler, callback: () -> Unit) =
-    enqueue(NoResultCallback(failureHandler) { callback() })
-
-fun <T> Response<T>.toResult(): T? = if (isSuccessful) body() else null
-
-open class DefaultCallback<T>(
-    private val failureHandler: FailureHandler,
-    private val action: (result: T) -> Unit
-) : Callback<T> {
-    override fun onResponse(call: Call<T>, response: Response<T>) = if (response.isSuccessful) {
-        getResult(response)?.let(action) ?: onFailure(call, ApiNoResultException())
-    } else {
-        val body = response.errorBody()?.use { it.charStream().readText() } ?: "<no body>"
-        onFailure(call, ApiCallException(response.code(), response.message(), body))
-    }
-
-    override fun onFailure(call: Call<T>, t: Throwable) = failureHandler.onFailure(t)
-
-    protected open fun getResult(response: Response<T>): T? = response.body()
-}
-
-class NoResultCallback(
-    failureHandler: FailureHandler,
-    action: (result: Unit) -> Unit
-) :
-    DefaultCallback<Unit>(failureHandler, action) {
-    override fun getResult(response: Response<Unit>): Unit? = Unit
-}
-
-class ApiCallException(code: Int, message: String, body: String) : Exception("$code: $message\n\t$body")
-
-class ApiNoResultException : Exception("No body result received")
 
 /**
  * Retrofit implementation of the WildFyre API.

@@ -20,9 +20,8 @@ class LoginFragmentViewModel(application: Application) : FailureHandlingViewMode
         _loginAllowed.value = true
     }
 
-    fun attemptLogin(username: String, password: String) = AuthRepository.fetchAuthToken(this, username, password)
+    fun attemptLoginAsync(username: String, password: String) =
+        launchCatching { AuthRepository.fetchAuthToken(username, password) }
 
-    fun setLoginAllowed(allowed: Boolean) {
-        _loginAllowed.value = allowed
-    }
+    fun setLoginAllowed(allowed: Boolean) = _loginAllowed.postValue(allowed)
 }

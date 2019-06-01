@@ -15,12 +15,13 @@ import net.wildfyre.client.ui.prepareForMarkdown
 
 class PostFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
     private var _postAreaName: String? = null
-    private val _postId = MutableLiveData<Long>()
+    private var _postId: Long? = null
+    private val _post = MutableLiveData<Post>()
     private val _commentAddedEvent = SingleLiveEvent<Comment>()
     private val _commentRemovedEvent = SingleLiveEvent<Int>()
     private val _commentCount = MediatorLiveData<Int>()
 
-    val post: LiveData<Post> = Transformations.switchMap(_postId) { PostRepository.getPost(this, _postAreaName, it) }
+    val post: LiveData<Post> = _post
     val contentLoaded: LiveData<Boolean> = Transformations.map(post) { it != null }
     val selfId: LiveData<Long> = Transformations.map(AuthorRepository.self) { it.user }
     val authorId: LiveData<Long> = Transformations.map(post) { it.author?.user ?: -1 }
@@ -37,38 +38,37 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     val newCommentData = MutableLiveData<String>()
 
     init {
-        _commentCount.addSource(comments) { _commentCount.value = it.size }
-        _commentCount.addSource(commentAddedEvent) { _commentCount.value = _commentCount.value!! + 1 }
-        _commentCount.addSource(commentRemovedEvent) { _commentCount.value = _commentCount.value!! - 1 }
+        _commentCount.addSource(comments) { _commentCount.postValue(it.size) }
+        _commentCount.addSource(commentAddedEvent) { _commentCount.postValue(_commentCount.value!! + 1) }
+        _commentCount.addSource(commentRemovedEvent) { _commentCount.postValue(_commentCount.value!! - 1) }
         newCommentData.value = ""
     }
 
-    fun setPostData(areaName: String?, id: Long) {
-        if (_postId.value != id) {
+    fun setPostDataAsync(areaName: String?, id: Long) = launchCatching {
+        if (_postId != id) {
             _postAreaName = areaName
-            _postId.value = id
+            _postId = id
+            _post.postValue(PostRepository.getPost(areaName, id))
         }
     }
 
-    fun sendNewComment() {
-        if (newCommentData.value != null && _postId.value != null) {
-            CommentRepository.sendComment(
-                this,
-                _postAreaName,
-                _postId.value!!,
-                newCommentData.value!!
-            ) {
-                _commentAddedEvent.value = it
-                newCommentData.value = ""
-            }
+    fun sendNewCommentAsync() = launchCatching {
+        if (newCommentData.value != null && _postId != null) {
+            newCommentData.postValue("")
+            _commentAddedEvent.postValue(
+                CommentRepository.sendComment(
+                    _postAreaName,
+                    _postId!!,
+                    newCommentData.value!!
+                )
+            )
         }
     }
 
-    fun deleteComment(position: Int, comment: Comment) {
-        _postId.value?.let {
-            CommentRepository.deleteComment(this, _postAreaName, it, comment.id) {
-                _commentRemovedEvent.value = position
-            }
+    fun deleteCommentAsync(position: Int, comment: Comment) = launchCatching {
+        _postId?.let {
+            CommentRepository.deleteComment(_postAreaName, it, comment.id)
+            _commentRemovedEvent.postValue(position)
         }
     }
 }

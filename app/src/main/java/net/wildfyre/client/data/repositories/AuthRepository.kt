@@ -6,9 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import net.wildfyre.client.Constants
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.Auth
-import net.wildfyre.client.data.FailureHandler
 import net.wildfyre.client.data.Services
-import net.wildfyre.client.data.then
+import net.wildfyre.client.data.await
 
 object AuthRepository {
     private val mutableAuthToken = MutableLiveData<String>()
@@ -17,17 +16,18 @@ object AuthRepository {
 
     init {
         mutableAuthToken.value = WildFyreApplication.preferences.getString(Constants.Preferences.AUTH_TOKEN, "")
+        WildFyreApplication.preferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+            if (key == Constants.Preferences.AUTH_TOKEN) {
+                mutableAuthToken.postValue(sharedPreferences.getString(key, ""))
+            }
+        }
     }
 
     fun clearAuthToken() = setAuthToken("")
 
-    fun fetchAuthToken(fh: FailureHandler, username: String, password: String) {
-        Services.webService.postAuth(Auth(username, password))
-            .then(fh) { setAuthToken("token " + it.token) }
-    }
+    suspend fun fetchAuthToken(username: String, password: String) =
+        setAuthToken("token " + Services.webService.postAuth(Auth(username, password)).await().token)
 
-    private fun setAuthToken(token: String) {
-        mutableAuthToken.value = token
+    private fun setAuthToken(token: String) =
         WildFyreApplication.preferences.edit { putString(Constants.Preferences.AUTH_TOKEN, token) }
-    }
 }

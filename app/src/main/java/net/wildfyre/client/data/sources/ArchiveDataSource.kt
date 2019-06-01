@@ -6,5 +6,5 @@ import net.wildfyre.client.data.repositories.PostRepository
 
 class ArchiveDataSource(failureHandler: FailureHandler, listener: DataLoadingListener) :
     ItemsDataSource<Post>(failureHandler, listener) {
-    override val fetcher = PostRepository::getArchiveSync
+    override val fetcher = PostRepository::getArchive
 }

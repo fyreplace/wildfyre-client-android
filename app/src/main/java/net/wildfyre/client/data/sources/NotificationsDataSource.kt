@@ -6,5 +6,5 @@ import net.wildfyre.client.data.repositories.NotificationRepository
 
 class NotificationsDataSource(failureHandler: FailureHandler, listener: DataLoadingListener) :
     ItemsDataSource<Notification>(failureHandler, listener) {
-    override val fetcher = NotificationRepository::getNotificationsSync
+    override val fetcher = NotificationRepository::getNotifications
 }

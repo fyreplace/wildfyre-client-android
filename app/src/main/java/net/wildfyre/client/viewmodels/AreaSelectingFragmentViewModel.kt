@@ -20,17 +20,17 @@ class AreaSelectingFragmentViewModel(application: Application) : FailureHandling
 
     init {
         _preferredArea.addSource(areas) {
-            _preferredArea.value = it?.firstOrNull { area -> area.name == preferredAreaName.value }
+            _preferredArea.postValue(it?.firstOrNull { area -> area.name == preferredAreaName.value })
         }
 
         _preferredArea.addSource(preferredAreaName) {
-            _preferredArea.value = areas.value?.firstOrNull { area -> area.name == it }
+            _preferredArea.postValue(areas.value?.firstOrNull { area -> area.name == it })
         }
     }
 
-    fun updateAreas() = AreaRepository.fetchAreas(this)
+    fun updateAreasAsync() = launchCatching { AreaRepository.fetchAreas() }
 
-    fun updatePreferredArea() = AreaRepository.fetchAreaReputation(this, preferredAreaName.value!!)
+    fun updatePreferredAreaAsync() = launchCatching { AreaRepository.fetchAreaReputation(preferredAreaName.value!!) }
 
-    fun setPreferredAreaName(areaName: String) = AreaRepository.setPreferredAreaName(areaName)
+    fun setPreferredAreaNameAsync(areaName: String) = launchCatching { AreaRepository.setPreferredAreaName(areaName) }
 }

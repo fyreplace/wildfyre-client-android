@@ -87,7 +87,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
             )
         )
 
-        viewModel.setPostData(args.areaName, args.postId)
+        viewModel.setPostDataAsync(args.areaName, args.postId)
         viewModel.post.observe(viewLifecycleOwner, Observer { mainViewModel.setPost(it) })
         viewModel.selfId.observe(viewLifecycleOwner, Observer { commentsAdapter.selfId = it })
         viewModel.authorId.observe(viewLifecycleOwner, Observer { commentsAdapter.authorId = it })
@@ -147,7 +147,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
 
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(Math.max(commentsAdapter.itemCount - 1, 0)) }
-        comment_new.setEndIconOnClickListener { clearCommentInput(); viewModel.sendNewComment() }
+        comment_new.setEndIconOnClickListener { clearCommentInput(); viewModel.sendNewCommentAsync() }
 
         collapsible_comments?.let {
             comment_count.setOnClickListener { toggleComments() }
@@ -198,7 +198,9 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
         inflater.inflate(R.menu.fragment_post_actions, menu)
 
-    override fun onCommentDeleted(position: Int, comment: Comment) = viewModel.deleteComment(position, comment)
+    override fun onCommentDeleted(position: Int, comment: Comment) {
+        viewModel.deleteCommentAsync(position, comment)
+    }
 
     private fun toggleComments() {
         if (collapsible_comments == null) {

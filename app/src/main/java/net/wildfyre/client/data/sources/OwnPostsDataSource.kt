@@ -6,5 +6,5 @@ import net.wildfyre.client.data.repositories.PostRepository
 
 class OwnPostsDataSource(failureHandler: FailureHandler, listener: DataLoadingListener) :
     ItemsDataSource<Post>(failureHandler, listener) {
-    override val fetcher = PostRepository::getOwnPostsSync
+    override val fetcher = PostRepository::getOwnPosts
 }

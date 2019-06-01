@@ -47,18 +47,17 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         AuthRepository.clearAuthToken()
     }
 
-    fun updateProfile() = AuthorRepository.fetchSelf(this)
+    fun updateProfileAsync() = launchCatching { AuthorRepository.fetchSelf() }
 
-    fun updateNotificationCount() = NotificationRepository.fetchSuperNotification(this)
+    fun updateNotificationCountAsync() = launchCatching { NotificationRepository.fetchSuperNotification() }
 
-    fun setProfile(bio: String) {
+    fun setProfileAsync(bio: String) = launchCatching {
         if (bio != userBio.value) {
-            AuthorRepository.updateSelfBio(this, bio)
+            AuthorRepository.updateSelfBio(bio)
         }
 
         if (userAvatarNewData.value != null && _userAvatarFileName != null && _userAvatarMimeType != null) {
             AuthorRepository.updateSelfAvatar(
-                this,
                 _userAvatarFileName!!,
                 _userAvatarMimeType!!,
                 userAvatarNewData.value!!
@@ -69,18 +68,16 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     fun setPendingProfileAvatar(fileName: String, mimeType: String, avatar: ByteArray) {
         _userAvatarFileName = fileName
         _userAvatarMimeType = mimeType
-        _userAvatarNewData.value = avatar
+        _userAvatarNewData.postValue(avatar)
     }
 
     fun resetPendingProfileAvatar() {
         _userAvatarFileName = null
         _userAvatarMimeType = null
-        _userAvatarNewData.value = null
+        _userAvatarNewData.postValue(null)
     }
 
-    fun setNotificationBadgeVisible(visible: Boolean) {
-        _notificationBadgeVisible.value = visible
-    }
+    fun setNotificationBadgeVisible(visible: Boolean) = _notificationBadgeVisible.postValue(visible)
 
     fun setPost(post: Post) = _titleInfo.postValue(
         PostInfo(

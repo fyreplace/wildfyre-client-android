@@ -2,32 +2,36 @@ package net.wildfyre.client.data.repositories
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import net.wildfyre.client.data.*
+import net.wildfyre.client.data.Services
+import net.wildfyre.client.data.SuperNotification
+import net.wildfyre.client.data.await
 
 object NotificationRepository {
     private val mutableSuperNotification = MutableLiveData<SuperNotification>()
 
     val superNotification: LiveData<SuperNotification> = mutableSuperNotification
 
-    fun getNotificationsSync(fh: FailureHandler, offset: Int, size: Int): SuperNotification? = try {
+    suspend fun getNotifications(offset: Int, size: Int) =
         Services.webService.getNotifications(
             AuthRepository.authToken.value!!,
             size,
             offset
-        ).execute().toResult()?.also { mutableSuperNotification.postValue(it) }
-    } catch (e: Exception) {
-        fh.onFailure(e)
-        null
-    }
+        ).await().also { mutableSuperNotification.postValue(it) }
 
-    fun fetchSuperNotification(fh: FailureHandler) {
-        Services.webService.getNotifications(AuthRepository.authToken.value!!, 1, 0)
-            .then(fh) { mutableSuperNotification.postValue(it) }
-    }
+    suspend fun fetchSuperNotification() = mutableSuperNotification.postValue(
+        Services.webService.getNotifications(
+            AuthRepository.authToken.value!!,
+            1,
+            0
+        ).await()
+    )
 
-    fun clearNotifications(fh: FailureHandler) =
-        Services.webService.deleteNotifications(AuthRepository.authToken.value!!)
-            .then(fh) {
-                mutableSuperNotification.postValue(SuperNotification(count = 0, results = emptyList()))
-            }
+    suspend fun clearNotifications() = mutableSuperNotification.postValue(
+        Services.webService.deleteNotifications(AuthRepository.authToken.value!!).await().let {
+            SuperNotification(
+                count = 0,
+                results = emptyList()
+            )
+        }
+    )
 }

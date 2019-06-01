@@ -87,7 +87,7 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         } else {
             hideSoftKeyboard(login)
             viewModel.setLoginAllowed(false)
-            viewModel.attemptLogin(usernameStr, passwordStr)
+            viewModel.attemptLoginAsync(usernameStr, passwordStr)
         }
     }
 }
