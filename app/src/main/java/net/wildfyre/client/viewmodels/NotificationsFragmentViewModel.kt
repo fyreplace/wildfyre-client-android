@@ -9,5 +9,8 @@ import net.wildfyre.client.data.sources.NotificationsDataSourceFactory
 class NotificationsFragmentViewModel(application: Application) : ItemsListViewModel<Notification>(application) {
     override val factory: ItemsDataSourceFactory<Notification> = NotificationsDataSourceFactory(this, this)
 
-    fun clearNotificationsAsync() = launchCatching { NotificationRepository.clearNotifications() }
+    fun clearNotificationsAsync() = launchCatching {
+        NotificationRepository.clearNotifications()
+        dataSource.value?.invalidate()
+    }
 }

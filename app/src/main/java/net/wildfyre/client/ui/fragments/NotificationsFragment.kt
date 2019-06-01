@@ -53,7 +53,7 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
         val clear = menu.findItem(R.id.action_clear).actionView!!
 
         NotificationsActionsClearBinding.bind(clear).run {
-            lifecycleOwner = this@NotificationsFragment
+            lifecycleOwner = viewLifecycleOwner
             hasData = viewModel.hasData
         }
 
