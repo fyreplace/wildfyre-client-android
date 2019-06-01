@@ -254,6 +254,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         toolbar.subtitle = ""
         toolbar.logo = null
         toolbar.contentInsetStartWithNavigation = toolbarInset
+        toolbar.setTitleTextAppearance(this, R.style.AppTheme_TextAppearance_ActionBar_Title)
     }
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
@@ -270,6 +271,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         toolbar.title = " " + (info.authorName ?: getString(R.string.main_author_anonymous))
         toolbar.subtitle = " " + info.date
         toolbar.contentInsetStartWithNavigation = 0
+        toolbar.setTitleTextAppearance(this, R.style.AppTheme_TextAppearance_ActionBar_Title_Condensed)
 
         val size = resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_size)
 
