@@ -90,7 +90,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             } else {
                 val navController = findNavController(R.id.navigation_host)
 
-                if (navController.currentDestination?.id !in LOGIN_DESTINATIONS) {
+                if (navController.currentDestination?.id != R.id.fragment_login) {
                     navController.navigate(
                         if (viewModel.startupLogin)
                             NavigationMainDirections.actionGlobalFragmentLoginStartup()
@@ -237,7 +237,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         )
 
         when {
-            destination.id in LOGIN_DESTINATIONS -> toolbar.navigationIcon = null
+            destination.id == R.id.fragment_login -> toolbar.navigationIcon = null
             toolbar.navigationIcon == null -> toolbar.navigationIcon =
                 DrawerArrowDrawable(this).apply { isSpinEnabled = true }
         }
@@ -247,7 +247,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 && destination.id in TOP_LEVEL_DESTINATIONS
         )
 
-        if (destination.id !in NO_TITLE_DESTINATIONS && toolbar.title.toString() == getString(R.string.app_name)) {
+        if (destination.id in NO_TITLE_DESTINATIONS && toolbar.title.toString() == getString(R.string.app_name)) {
             toolbar.title = ""
         }
 
@@ -360,9 +360,6 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             R.id.fragment_notifications,
             R.id.fragment_archive,
             R.id.fragment_own_posts
-        )
-        val LOGIN_DESTINATIONS = setOf(
-            R.id.fragment_login
         )
         val NO_TITLE_DESTINATIONS = setOf(
             R.id.fragment_home,

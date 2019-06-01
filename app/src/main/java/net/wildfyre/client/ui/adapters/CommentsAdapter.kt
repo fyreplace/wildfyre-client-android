@@ -108,7 +108,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         }
 
         holder.itemView.setBackgroundResource(
-            if (wrapper.isNew)
+            if (wrapper.isHighlighted)
                 R.color.backgroundHighlight
             else
                 android.R.color.transparent
@@ -127,7 +127,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
                     }
 
                     highlightedOnes.remove(this)
-                    wrapper.isNew = true
+                    wrapper.isHighlighted = true
                 }
             }
         }.toMutableList()
@@ -183,7 +183,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
     }
 
     private data class CommentWrapper(val comment: Comment) {
-        var isNew: Boolean = false
+        var isHighlighted: Boolean = false
     }
 
     private class CommentMenuAdapter(context: Context, private val items: List<Pair<Int, Int>>) :
