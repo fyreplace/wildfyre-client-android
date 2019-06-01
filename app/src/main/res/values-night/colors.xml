@@ -8,7 +8,7 @@
     <color name="foreground">@android:color/white</color>
     <color name="background">@android:color/background_dark</color>
     <color name="backgroundHighlight">#3FFF7043</color>
-    <color name="backgroundHighlightNeutral">#1FFFFFFF</color>
+    <color name="backgroundHighlightNeutral">#3F3F3F</color>
     <color name="navigation">@android:color/background_dark</color>
     <color name="loginLogo">@android:color/white</color>
     <color name="badgeBackground">#BF0000</color>

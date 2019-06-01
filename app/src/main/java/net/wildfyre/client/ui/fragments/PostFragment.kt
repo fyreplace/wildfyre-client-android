@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.fragment_post_comments.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.Comment
@@ -91,33 +94,30 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
         viewModel.post.observe(viewLifecycleOwner, Observer { mainViewModel.setPost(it) })
         viewModel.selfId.observe(viewLifecycleOwner, Observer { commentsAdapter.selfId = it })
         viewModel.authorId.observe(viewLifecycleOwner, Observer { commentsAdapter.authorId = it })
-        viewModel.markdownContent.observe(viewLifecycleOwner, Observer { markdownContent ->
-            markdownAdapter.run {
-                setMarkdown(markdown, markdownContent)
-                notifyDataSetChanged()
+        viewModel.markdownContent.observe(viewLifecycleOwner, Observer {
+            launch(Dispatchers.Default) {
+                markdownAdapter.setMarkdown(markdown, it)
+                withContext(Dispatchers.Main) { markdownAdapter.notifyDataSetChanged() }
             }
         })
         viewModel.comments.observe(viewLifecycleOwner, Observer { commentList ->
-            commentsAdapter.run {
-                setComments(commentList, highlightedCommentIds)
-                notifyDataSetChanged()
+            launch(Dispatchers.Default) {
+                commentsAdapter.setComments(commentList, highlightedCommentIds)
+                withContext(Dispatchers.Main) { commentsAdapter.notifyDataSetChanged() }
             }
         })
         viewModel.commentAddedEvent.observe(viewLifecycleOwner, Observer {
-            commentsAdapter.run {
-                addComment(it)
-                notifyItemInserted(itemCount - 1)
-            }
+            commentsAdapter.addComment(it)
+            commentsAdapter.notifyItemInserted(commentsAdapter.itemCount - 1)
         })
         viewModel.commentRemovedEvent.observe(viewLifecycleOwner, Observer {
-            commentsAdapter.run {
-                removeComment(it)
-                notifyItemRemoved(it)
-            }
+            commentsAdapter.removeComment(it)
+            commentsAdapter.notifyItemRemoved(it)
         })
         viewModel.newCommentData.observe(
             viewLifecycleOwner,
-            Observer { comment_new.isEndIconVisible = it.isNotBlank() })
+            Observer { comment_new.isEndIconVisible = it.isNotBlank() }
+        )
 
         comments_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -160,6 +160,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
                 @SuppressLint("SwitchIntDef")
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     onBackPressedCallback.isEnabled = newState == BottomSheetBehavior.STATE_EXPANDED
+                    content?.isVisible = newState != BottomSheetBehavior.STATE_EXPANDED
 
                     when (newState) {
                         BottomSheetBehavior.STATE_COLLAPSED -> {

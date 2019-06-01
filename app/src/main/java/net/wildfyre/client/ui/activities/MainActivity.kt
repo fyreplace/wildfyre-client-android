@@ -58,6 +58,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        window.setBackgroundDrawable(null)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.navigationBarColor = ActivityCompat.getColor(this, R.color.navigation)

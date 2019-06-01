@@ -5,11 +5,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 
-inline fun <reified VM : ViewModel> FragmentActivity.lazyViewModel(): Lazy<VM> =
+inline fun <reified VM : ViewModel> FragmentActivity.lazyViewModel() =
     lazy { ViewModelProviders.of(this).get(VM::class.java) }
 
-inline fun <reified VM : ViewModel> Fragment.lazyViewModel(): Lazy<VM> =
+inline fun <reified VM : ViewModel> Fragment.lazyViewModel() =
     lazy { ViewModelProviders.of(this).get(VM::class.java) }
 
-inline fun <reified VM : ViewModel> Fragment.lazyActivityViewModel(): Lazy<VM> =
+inline fun <reified VM : ViewModel> Fragment.lazyActivityViewModel() =
     lazy { ViewModelProviders.of(requireActivity()).get(VM::class.java) }
