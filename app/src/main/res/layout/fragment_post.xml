@@ -24,7 +24,8 @@
         <net.wildfyre.client.ui.widgets.MarkdownRecyclerView
             android:id="@+id/content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginBottom="@dimen/comments_header_height"
             android:clipChildren="false"
             android:clipToPadding="false"
