@@ -14,6 +14,8 @@
     <dimen name="nav_header_user_picture_rounding">8dp</dimen>
     <dimen name="dialog_user_picture_size">144dp</dimen>
     <dimen name="dialog_user_picture_rounding">14dp</dimen>
+    <dimen name="toolbar_logo_picture_size">40dp</dimen>
+    <dimen name="toolbar_logo_picture_rounding">4dp</dimen>
     <dimen name="list_item_author_picture_size">32dp</dimen>
     <dimen name="list_item_author_picture_rounding">3dp</dimen>
     <dimen name="comments_header_height">32dp</dimen>

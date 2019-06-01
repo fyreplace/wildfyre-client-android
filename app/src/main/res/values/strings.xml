@@ -29,6 +29,7 @@
     <string name="main_profile_editor_avatar_change">Change avatar</string>
     <string name="main_profile_editor_avatar_chooser">Select an avatar</string>
     <string name="main_profile_editor_bio">Your bio</string>
+    <string name="main_author_anonymous">Anonymous</string>
     <string name="notifications_actions_clear">Clear</string>
     <string name="notifications_dialog_title">Clear all notifications ?</string>
     <string name="notifications_empty">No notifications</string>
@@ -38,6 +39,7 @@
     </plurals>
     <string name="archive_empty">No archived posts from this area</string>
     <string name="posts_empty">No posts in this area</string>
+    <string name="post_actions_author">Author</string>
     <plurals name="post_comment_count">
         <item quantity="zero">No comments</item>
         <item quantity="one">%1$d comment</item>

@@ -83,8 +83,8 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
             AppGlide.with(context)
                 .load(it.avatar ?: R.drawable.ic_launcher)
                 .placeholder(android.R.color.transparent)
-                .transition(IMAGE_TRANSITION)
-                .transform(IMAGE_TRANSFORM)
+                .transition(AVATAR_TRANSITION)
+                .transform(AVATAR_TRANSFORM)
                 .into(holder.authorPicture)
         }
 
@@ -168,8 +168,8 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         onCommentActionSelected.onCommentDeleted(position, data[position].comment)
 
     private companion object {
-        val IMAGE_TRANSITION = DrawableTransitionOptions.withCrossFade()
-        val IMAGE_TRANSFORM = MultiTransformation(
+        val AVATAR_TRANSITION = DrawableTransitionOptions.withCrossFade()
+        val AVATAR_TRANSFORM = MultiTransformation(
             CenterCrop(),
             RoundedCorners(WildFyreApplication.context.resources.getDimensionPixelOffset(R.dimen.comment_author_picture_rounding))
         )

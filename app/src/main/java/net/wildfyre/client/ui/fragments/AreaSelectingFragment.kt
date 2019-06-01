@@ -25,12 +25,12 @@ interface AreaSelectingFragment {
     fun onAttach(fragment: Fragment) = fragment.setHasOptionsMenu(true)
 
     fun onCreateOptionsMenu(fragment: Fragment, menu: Menu) {
-        ActionsAreaSpreadBinding.bind(menu.findItem(R.id.action_area_spread).actionView).apply {
+        ActionsAreaSpreadBinding.bind(menu.findItem(R.id.action_area_spread).actionView).run {
             lifecycleOwner = fragment.viewLifecycleOwner
             model = areaSelectingViewModel
         }
 
-        ActionsAreaReputationBinding.bind(menu.findItem(R.id.action_area_reputation).actionView).apply {
+        ActionsAreaReputationBinding.bind(menu.findItem(R.id.action_area_reputation).actionView).run {
             lifecycleOwner = fragment.viewLifecycleOwner
             model = areaSelectingViewModel
         }

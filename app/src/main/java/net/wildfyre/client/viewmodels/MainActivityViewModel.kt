@@ -6,18 +6,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
+import net.wildfyre.client.data.Post
 import net.wildfyre.client.data.repositories.AuthRepository
 import net.wildfyre.client.data.repositories.AuthorRepository
 import net.wildfyre.client.data.repositories.NotificationRepository
 import net.wildfyre.client.data.repositories.SettingsRepository
+import java.text.SimpleDateFormat
 
 class MainActivityViewModel(application: Application) : FailureHandlingViewModel(application) {
     private var _userAvatarFileName: String? = null
     private var _userAvatarMimeType: String? = null
     private val _userAvatarNewData = MutableLiveData<ByteArray>()
     private val _notificationBadgeVisible = MutableLiveData<Boolean>()
-    private val _notificationCount: LiveData<Int> =
-        Transformations.map(NotificationRepository.superNotification) { it.count }
+    private var _titleInfo = MutableLiveData<PostInfo>()
 
     var startupLogin = true
         private set
@@ -26,11 +27,11 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     val userBio: LiveData<String> = Transformations.map(AuthorRepository.self) { it.bio }
     val userAvatar: LiveData<String> = Transformations.map(AuthorRepository.self) { it.avatar }
     val userAvatarNewData: LiveData<ByteArray> = _userAvatarNewData
-    val notificationCount: LiveData<Int> = _notificationCount
+    val notificationCount: LiveData<Int> = Transformations.map(NotificationRepository.superNotification) { it.count }
     val notificationCountText: LiveData<String> =
-        Transformations.map(_notificationCount) { if (it < 100) it.toString() else "99" }
+        Transformations.map(notificationCount) { if (it < 100) it.toString() else "99" }
     val notificationBadgeVisible: LiveData<Boolean> = _notificationBadgeVisible
-
+    val postInfo: LiveData<PostInfo> = _titleInfo
     val selectedThemeIndex = MutableLiveData<Int>()
     val shouldShowNotificationBadge = MutableLiveData<Boolean>()
 
@@ -81,7 +82,17 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         _notificationBadgeVisible.value = visible
     }
 
+    fun setPost(post: Post) = _titleInfo.postValue(
+        PostInfo(
+            post.author?.name,
+            post.author?.avatar,
+            DATE_FORMAT.format(post.created)
+        )
+    )
+
     companion object {
+        private val DATE_FORMAT = SimpleDateFormat.getDateInstance()
+
         val THEMES = arrayOf(
             Constants.Themes.AUTOMATIC,
             Constants.Themes.LIGHT,
@@ -96,4 +107,10 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
             R.id.privacy_policy to Constants.Links.PRIVACY_POLICY
         )
     }
+
+    data class PostInfo(
+        val authorName: String?,
+        val authorPicture: String?,
+        val date: String
+    )
 }

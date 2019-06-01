@@ -33,6 +33,8 @@ import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
 import net.wildfyre.client.AppGlide
@@ -51,6 +53,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     DrawerLayout.DrawerListener {
     override val viewModel by lazyViewModel<MainActivityViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private var toolbarInset: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,11 +117,19 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 .into(navHeaderBinding.userPicture)
         })
 
+        val hostFragment = supportFragmentManager.findFragmentById(R.id.navigation_host) as NavHostFragment
+
+        viewModel.postInfo.observe(this, Observer { info ->
+            if (hostFragment.navController.currentDestination?.id in NO_TITLE_DESTINATIONS) {
+                info?.let { setTitleInfo(it) }
+            }
+        })
+
         setSupportActionBar(toolbar)
         drawer_layout.addDrawerListener(this)
 
-        val hostFragment = supportFragmentManager.findFragmentById(R.id.navigation_host) as NavHostFragment
         appBarConfiguration = AppBarConfiguration(TOP_LEVEL_DESTINATIONS, drawer_layout)
+        toolbarInset = toolbar.contentInsetStartWithNavigation
 
         setupActionBarWithNavController(hostFragment.navController, appBarConfiguration)
         navigation_view.setupWithNavController(hostFragment.navController)
@@ -236,9 +247,13 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 && destination.id in TOP_LEVEL_DESTINATIONS
         )
 
-        if (destination.id in NO_TITLE_DESTINATIONS) {
+        if (destination.id !in NO_TITLE_DESTINATIONS && toolbar.title.toString() == getString(R.string.app_name)) {
             toolbar.title = ""
         }
+
+        toolbar.subtitle = ""
+        toolbar.logo = null
+        toolbar.contentInsetStartWithNavigation = toolbarInset
     }
 
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
@@ -248,6 +263,29 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     override fun onDrawerClosed(drawerView: View) = Unit
 
     override fun onDrawerStateChanged(newState: Int) = Unit
+
+    private fun setTitleInfo(info: MainActivityViewModel.PostInfo) {
+        toolbar.title = " " + (info.authorName ?: getString(R.string.main_author_anonymous))
+        toolbar.subtitle = " " + info.date
+        toolbar.contentInsetStartWithNavigation = 0
+
+        val size = resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_size)
+
+        if (info.authorName != null) {
+            AppGlide.with(ImageView(this))
+                .load(info.authorPicture ?: R.drawable.ic_launcher)
+                .placeholder(android.R.color.transparent)
+                .transition(IMAGE_TRANSITION)
+                .transform(LOGO_TRANSFORM)
+                .into(object : CustomTarget<Drawable>(size, size) {
+                    override fun onLoadCleared(placeholder: Drawable?) = Unit
+
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        toolbar.logo = resource
+                    }
+                })
+        }
+    }
 
     /**
      * Shows a dialog to let the user edit their profile bio and their avatar.
@@ -275,7 +313,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         AppGlide.with(this)
             .load(viewModel.userAvatar.value)
             .transition(IMAGE_TRANSITION)
-            .transform(IMAGE_TRANSFORM)
+            .transform(AVATAR_TRANSFORM)
             .into(avatar)
 
         avatarDataObserver = Observer {
@@ -284,7 +322,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 AppGlide.with(this@MainActivity)
                     .load(Drawable.createFromStream(input, "avatar"))
                     .transition(IMAGE_TRANSITION)
-                    .transform(IMAGE_TRANSFORM)
+                    .transform(AVATAR_TRANSFORM)
                     .into(avatar)
             }
         }
@@ -322,9 +360,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             R.id.fragment_own_posts
         )
         val LOGIN_DESTINATIONS = setOf(
-            R.id.fragment_login,
-            R.id.action_global_fragment_login,
-            R.id.action_global_fragment_login_startup
+            R.id.fragment_login
         )
         val NO_TITLE_DESTINATIONS = setOf(
             R.id.fragment_home,
@@ -334,9 +370,13 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         val POST_REGEX = Regex("/areas/(\\w+)/(\\d+)(?:/(\\d+))?")
 
         val IMAGE_TRANSITION = DrawableTransitionOptions.withCrossFade()
-        val IMAGE_TRANSFORM = MultiTransformation(
+        val AVATAR_TRANSFORM = MultiTransformation(
             CenterCrop(),
             RoundedCorners(WildFyreApplication.context.resources.getDimensionPixelOffset(R.dimen.dialog_user_picture_rounding))
+        )
+        val LOGO_TRANSFORM = MultiTransformation(
+            CenterCrop(),
+            RoundedCorners(WildFyreApplication.context.resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_rounding))
         )
     }
 }

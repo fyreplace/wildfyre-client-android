@@ -20,9 +20,9 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     private val _commentRemovedEvent = SingleLiveEvent<Int>()
     private val _commentCount = MediatorLiveData<Int>()
 
-    val selfId: LiveData<Long> = Transformations.map(AuthorRepository.self) { it.user }
     val post: LiveData<Post> = Transformations.switchMap(_postId) { PostRepository.getPost(this, _postAreaName, it) }
     val contentLoaded: LiveData<Boolean> = Transformations.map(post) { it != null }
+    val selfId: LiveData<Long> = Transformations.map(AuthorRepository.self) { it.user }
     val authorId: LiveData<Long> = Transformations.map(post) { it.author?.user ?: -1 }
     val markdownContent: LiveData<String> = Transformations.map(post) {
         val markdownContent = StringBuilder()

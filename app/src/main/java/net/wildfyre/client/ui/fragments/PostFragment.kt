@@ -25,9 +25,7 @@ import net.wildfyre.client.ui.PostPlugin
 import net.wildfyre.client.ui.adapters.CommentsAdapter
 import net.wildfyre.client.ui.drawables.BottomSheetArrowDrawableWrapper
 import net.wildfyre.client.ui.hideSoftKeyboard
-import net.wildfyre.client.viewmodels.FailureHandlingViewModel
-import net.wildfyre.client.viewmodels.PostFragmentViewModel
-import net.wildfyre.client.viewmodels.lazyViewModel
+import net.wildfyre.client.viewmodels.*
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
 import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
@@ -39,6 +37,7 @@ import ru.noties.markwon.recycler.table.TableEntryPlugin
 class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAdapter.OnCommentDeleted {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     private val viewModel by lazyViewModel<PostFragmentViewModel>()
+    private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
     private val args by navArgs<PostFragmentArgs>()
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() = toggleComments()
@@ -89,6 +88,7 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
         )
 
         viewModel.setPostData(args.areaName, args.postId)
+        viewModel.post.observe(viewLifecycleOwner, Observer { mainViewModel.setPost(it) })
         viewModel.selfId.observe(viewLifecycleOwner, Observer { commentsAdapter.selfId = it })
         viewModel.authorId.observe(viewLifecycleOwner, Observer { commentsAdapter.authorId = it })
         viewModel.markdownContent.observe(viewLifecycleOwner, Observer { markdownContent ->
@@ -207,10 +207,11 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
 
         val commentsBehavior = BottomSheetBehavior.from(collapsible_comments)
 
-        if (commentsBehavior.state in setOf(BottomSheetBehavior.STATE_HIDDEN, BottomSheetBehavior.STATE_COLLAPSED)) {
-            commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        } else if (commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
-            commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        when {
+            commentsBehavior.state in setOf(BottomSheetBehavior.STATE_HIDDEN, BottomSheetBehavior.STATE_COLLAPSED) ->
+                commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED ->
+                commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 
