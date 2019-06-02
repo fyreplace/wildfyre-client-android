@@ -4,13 +4,11 @@ import androidx.paging.PositionalDataSource
 import kotlinx.coroutines.*
 import net.wildfyre.client.data.FailureHandler
 import net.wildfyre.client.data.SuperItem
-import kotlin.coroutines.CoroutineContext
 
 abstract class ItemsDataSource<I>(
     private val failureHandler: FailureHandler,
     private val listener: DataLoadingListener
-) : PositionalDataSource<I>(), CoroutineScope {
-    override val coroutineContext: CoroutineContext = SupervisorJob() + Dispatchers.IO
+) : PositionalDataSource<I>(), CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.IO) {
     abstract val fetcher: suspend (Int, Int) -> SuperItem<I>
 
     final override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<I>) {
@@ -33,11 +31,17 @@ abstract class ItemsDataSource<I>(
     private fun loadRange(position: Int, size: Int): List<I> = runFetcher(position, size)?.results.orEmpty()
 
     private fun runFetcher(offset: Int, size: Int): SuperItem<I>? = runBlocking {
-        try {
-            return@runBlocking fetcher(offset, size)
-        } catch (e: Exception) {
-            failureHandler.onFailure(e)
-            return@runBlocking null
-        }
+        var success = false
+
+        do {
+            try {
+                return@runBlocking fetcher(offset, size).also { success = true }
+            } catch (e: Exception) {
+                failureHandler.onFailure(e)
+                delay(1000)
+            }
+        } while (!success)
+
+        return@runBlocking null // This line should be impossible to reach
     }
 }

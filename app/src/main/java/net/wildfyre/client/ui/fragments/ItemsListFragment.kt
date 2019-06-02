@@ -35,7 +35,6 @@ abstract class ItemsListFragment<I, VM : ItemsListViewModel<I>, A : ItemsAdapter
         itemsList.setHasFixedSize(true)
         itemsList.adapter = getItemsAdapter().apply {
             onItemClickedListener = this@ItemsListFragment
-            viewModel.loading.observe(viewLifecycleOwner, Observer { swipeRefresh.isRefreshing = it })
             viewModel.itemsPagedList.observe(
                 viewLifecycleOwner,
                 Observer {
@@ -49,6 +48,7 @@ abstract class ItemsListFragment<I, VM : ItemsListViewModel<I>, A : ItemsAdapter
 
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
         swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.background)
+        viewModel.loading.observe(viewLifecycleOwner, Observer { swipeRefresh.isRefreshing = it })
         viewModel.dataSource.observe(viewLifecycleOwner, Observer {
             onRefreshListener = SwipeRefreshLayout.OnRefreshListener(it::invalidate)
             swipeRefresh.setOnRefreshListener(onRefreshListener)
