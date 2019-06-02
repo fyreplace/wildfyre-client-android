@@ -24,6 +24,7 @@ abstract class ItemsListFragment<I, VM : ItemsListViewModel<I>, A : ItemsAdapter
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = FragmentItemsListBinding.inflate(inflater, container, false).run {
             lifecycleOwner = viewLifecycleOwner
+            loading = viewModel.loading
             hasData = viewModel.hasData
             return@run root
         }

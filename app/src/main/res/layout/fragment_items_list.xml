@@ -7,6 +7,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="loading"
+            type="androidx.lifecycle.LiveData&lt;Boolean&gt;" />
+
+        <variable
             name="hasData"
             type="androidx.lifecycle.LiveData&lt;Boolean&gt;" />
     </data>
@@ -40,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:visibility="@{safeUnbox(hasData) ? View.GONE : View.VISIBLE}" />
+                android:visibility="@{safeUnbox(loading) || safeUnbox(hasData) ? View.GONE : View.VISIBLE}" />
         </FrameLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>
