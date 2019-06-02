@@ -29,7 +29,6 @@ import java.text.SimpleDateFormat
 
 class CommentsAdapter(private val markdown: Markwon, private val onCommentActionSelected: OnCommentDeleted) :
     RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
-    private val dateFormat = SimpleDateFormat.getDateTimeInstance()
     private var data: MutableList<CommentWrapper> = mutableListOf()
     private val recyclers: MutableList<RecyclerView> = mutableListOf()
     var selfId: Long = -1
@@ -66,7 +65,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         val comment = wrapper.comment
         val context = holder.itemView.context
 
-        holder.date.text = dateFormat.format(comment.created)
+        holder.date.text = DATE_FORMAT.format(comment.created)
         comment.author?.let {
             val authorName = SpannableStringBuilder(it.name)
             authorName[0..it.name.length] = StyleSpan(Typeface.BOLD)
@@ -133,7 +132,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         }.toMutableList()
 
         if (scrollPosition > -1) {
-            recyclers.forEach { it.scrollToPosition(scrollPosition) }
+            recyclers.forEach { it.post { it.scrollToPosition(scrollPosition) } }
         }
     }
 
@@ -168,6 +167,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         onCommentActionSelected.onCommentDeleted(position, data[position].comment)
 
     private companion object {
+        val DATE_FORMAT = SimpleDateFormat.getDateTimeInstance()
         val AVATAR_TRANSITION = DrawableTransitionOptions.withCrossFade()
         val AVATAR_TRANSFORM = MultiTransformation(
             CenterCrop(),
