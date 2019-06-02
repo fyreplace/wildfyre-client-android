@@ -8,7 +8,7 @@
         android:id="@+id/action_area_selector"
         android:title=""
         app:actionViewClass="androidx.appcompat.widget.AppCompatSpinner"
-        app:showAsAction="always|collapseActionView" />
+        app:showAsAction="ifRoom|collapseActionView" />
     <item
         android:id="@+id/action_area_spread"
         android:title="@string/main_actions_area_spread"

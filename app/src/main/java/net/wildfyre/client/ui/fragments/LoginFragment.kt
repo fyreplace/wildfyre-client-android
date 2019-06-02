@@ -25,7 +25,6 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        setHasOptionsMenu(true)
         viewModel.authToken.observe(this, Observer {
             if (it.isNotEmpty()) {
                 findNavController().navigate(R.id.action_fragment_login_to_fragment_home)

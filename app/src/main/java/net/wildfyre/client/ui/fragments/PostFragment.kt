@@ -37,18 +37,21 @@ import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin
 import ru.noties.markwon.recycler.MarkwonAdapter
 import ru.noties.markwon.recycler.table.TableEntryPlugin
 
-class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAdapter.OnCommentDeleted {
+open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAdapter.OnCommentDeleted {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     private val viewModel by lazyViewModel<PostFragmentViewModel>()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
-    private val args by navArgs<PostFragmentArgs>()
+    private val fragmentArgs by navArgs<PostFragmentArgs>()
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() = toggleComments()
     }
     private lateinit var markdown: Markwon
     private val highlightedCommentIds by lazy {
-        args.newCommentsIds?.asList()
-            ?: (if (args.selectedCommentId >= 0) listOf(args.selectedCommentId) else null)
+        if (arguments != null)
+            fragmentArgs.newCommentsIds?.asList()
+                ?: (if (fragmentArgs.selectedCommentId >= 0) listOf(fragmentArgs.selectedCommentId) else null)
+        else
+            null
     }
 
     override fun onAttach(context: Context) {
@@ -90,7 +93,10 @@ class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAd
             )
         )
 
-        viewModel.setPostDataAsync(args.areaName, args.postId)
+        if (arguments != null) {
+            viewModel.setPostDataAsync(fragmentArgs.areaName, fragmentArgs.postId)
+        }
+
         viewModel.post.observe(viewLifecycleOwner, Observer { mainViewModel.setPost(it) })
         viewModel.selfId.observe(viewLifecycleOwner, Observer { commentsAdapter.selfId = it })
         viewModel.authorId.observe(viewLifecycleOwner, Observer { commentsAdapter.authorId = it })

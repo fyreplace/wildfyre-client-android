@@ -1,7 +1,7 @@
 package net.wildfyre.client.ui.fragments
 
 import android.view.Menu
-import android.view.MenuItem
+import android.view.MenuInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -22,9 +22,8 @@ import net.wildfyre.client.viewmodels.MainActivityViewModel
 interface AreaSelectingFragment {
     val areaSelectingViewModel: AreaSelectingFragmentViewModel
 
-    fun onAttach(fragment: Fragment) = fragment.setHasOptionsMenu(true)
-
-    fun onCreateOptionsMenu(fragment: Fragment, menu: Menu) {
+    fun onCreateOptionsMenu(fragment: Fragment, menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fragment_area_selecting_actions, menu)
         ActionsAreaSpreadBinding.bind(menu.findItem(R.id.action_area_spread).actionView).run {
             lifecycleOwner = fragment.viewLifecycleOwner
             model = areaSelectingViewModel

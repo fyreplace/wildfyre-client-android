@@ -1,5 +1,6 @@
 package net.wildfyre.client.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.CallSuper
@@ -22,6 +23,11 @@ abstract class FailureHandlingFragment(contentLayoutId: Int) : Fragment(contentL
      * [onAttach] to it can then be used in [onCreate].
      */
     protected abstract val viewModels: List<FailureHandlingViewModel>
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_items_list.*
 import net.wildfyre.client.NavigationMainDirections
-import net.wildfyre.client.R
 import net.wildfyre.client.data.Post
 import net.wildfyre.client.ui.adapters.PostsAdapter
 import net.wildfyre.client.viewmodels.AreaSelectingFragmentViewModel
@@ -25,8 +24,7 @@ abstract class PostsFragment<VM : ItemsListViewModel<Post>> : ItemsListFragment<
     private var settingUp = true
 
     override fun onAttach(context: Context) {
-        super<ItemsListFragment>.onAttach(context)
-        onAttach(this)
+        super.onAttach(context)
         areaSelectingViewModel.preferredAreaName.observe(this, Observer {
             if (settingUp) {
                 settingUp = false
@@ -39,8 +37,7 @@ abstract class PostsFragment<VM : ItemsListViewModel<Post>> : ItemsListFragment<
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_posts_actions, menu)
-        onCreateOptionsMenu(this, menu)
+        onCreateOptionsMenu(this, menu, inflater)
     }
 
     override fun onItemClicked(item: Post) =
