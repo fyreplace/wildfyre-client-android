@@ -39,30 +39,27 @@ interface AreaSelectingFragment {
         val areaSpinner = areaSelectorMenuItem?.actionView as Spinner
 
         /*
-         Every time the area selector is expanded ot collapsed, different menu items should be shown.
+         Every time the area selector is expanded or collapsed, different menu items should be shown.
          When the selector is collapsed, regular actions such as the subscribe button are available; when it is expanded
          however, the user's spread and reputation for the selected area should be shown instead.
          */
-        areaSelectorMenuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+        areaSpinner.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
             private val areaStuff = listOf(R.id.action_area_spread, R.id.action_area_reputation)
+            private val mainActivityViewModel =
+                ViewModelProviders.of(fragment.requireActivity()).get(MainActivityViewModel::class.java)
 
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+            override fun onViewAttachedToWindow(v: View?) {
                 switchItems(true)
-                ViewModelProviders.of(fragment.requireActivity()).get(MainActivityViewModel::class.java)
-                    .setNotificationBadgeVisible(false)
-                return true
+                mainActivityViewModel.setNotificationBadgeVisible(false)
             }
 
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+            override fun onViewDetachedFromWindow(v: View?) {
                 switchItems(false)
-                ViewModelProviders.of(fragment.requireActivity()).get(MainActivityViewModel::class.java)
-                    .setNotificationBadgeVisible(true)
-                return true
+                mainActivityViewModel.setNotificationBadgeVisible(true)
             }
 
-            private fun switchItems(showAreaStuff: Boolean) {
+            private fun switchItems(showAreaStuff: Boolean) =
                 menu.forEach { it.isVisible = areaStuff.contains(it.itemId) == showAreaStuff }
-            }
         })
 
         areaSelectingViewModel.preferredArea.observe(fragment.viewLifecycleOwner, Observer { area ->
