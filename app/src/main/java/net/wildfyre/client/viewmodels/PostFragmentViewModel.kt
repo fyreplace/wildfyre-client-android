@@ -54,7 +54,6 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
 
     fun sendNewCommentAsync() = launchCatching {
         if (newCommentData.value != null && _postId != null) {
-            newCommentData.postValue("")
             _commentAddedEvent.postValue(
                 CommentRepository.sendComment(
                     _postAreaName,
@@ -62,6 +61,7 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
                     newCommentData.value!!
                 )
             )
+            newCommentData.postValue("")
         }
     }
 
