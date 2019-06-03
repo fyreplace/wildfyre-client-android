@@ -21,14 +21,14 @@
     <string name="main_nav_terms">Terms and conditions</string>
     <string name="main_nav_privacy">Privacy policy</string>
     <string name="main_nav_logout">Logout</string>
-    <string name="main_actions_area_selector">Area: %1$s</string>
-    <string name="main_actions_area_spread">Spread</string>
-    <string name="main_actions_area_reputation">Reputation</string>
     <string name="main_actions_posts_new">Create</string>
     <string name="main_profile_editor_avatar_change">Change avatar</string>
     <string name="main_profile_editor_avatar_chooser">Select an avatar</string>
     <string name="main_profile_editor_bio">Your bio</string>
     <string name="main_author_anonymous">Anonymous</string>
+    <string name="area_selecting_actions_area_selector">Area: %1$s</string>
+    <string name="area_selecting_actions_area_spread">Spread</string>
+    <string name="area_selecting_actions_area_reputation">Reputation</string>
     <string name="notifications_actions_clear">Clear</string>
     <string name="notifications_dialog_title">Clear all notifications ?</string>
     <string name="notifications_empty">No notifications</string>

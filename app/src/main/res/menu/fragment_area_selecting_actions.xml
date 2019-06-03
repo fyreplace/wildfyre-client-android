@@ -11,13 +11,13 @@
         app:showAsAction="ifRoom|collapseActionView" />
     <item
         android:id="@+id/action_area_spread"
-        android:title="@string/main_actions_area_spread"
+        android:title="@string/area_selecting_actions_area_spread"
         android:visible="false"
         app:actionLayout="@layout/actions_area_spread"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_area_reputation"
-        android:title="@string/main_actions_area_reputation"
+        android:title="@string/area_selecting_actions_area_reputation"
         android:visible="false"
         app:actionLayout="@layout/actions_area_reputation"
         app:showAsAction="always" />

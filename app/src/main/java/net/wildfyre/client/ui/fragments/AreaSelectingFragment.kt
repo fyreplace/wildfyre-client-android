@@ -66,7 +66,8 @@ interface AreaSelectingFragment {
                 return@Observer
             }
 
-            areaSelectorMenuItem.title = fragment.getString(R.string.main_actions_area_selector, area.displayname)
+            areaSelectorMenuItem.title =
+                fragment.getString(R.string.area_selecting_actions_area_selector, area.displayname)
             areaSelectingViewModel.areas.value
                 ?.indexOfFirst { it.name == area.name }
                 ?.run { areaSpinner.setSelection(this) }

@@ -101,15 +101,15 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Comme
         viewModel.selfId.observe(viewLifecycleOwner, Observer { commentsAdapter.selfId = it })
         viewModel.authorId.observe(viewLifecycleOwner, Observer { commentsAdapter.authorId = it })
         viewModel.markdownContent.observe(viewLifecycleOwner, Observer {
-            launch(Dispatchers.Default) {
-                markdownAdapter.setMarkdown(markdown, it)
-                withContext(Dispatchers.Main) { markdownAdapter.notifyDataSetChanged() }
+            launch {
+                withContext(Dispatchers.Default) { markdownAdapter.setMarkdown(markdown, it) }
+                markdownAdapter.notifyDataSetChanged()
             }
         })
         viewModel.comments.observe(viewLifecycleOwner, Observer { commentList ->
-            launch(Dispatchers.Default) {
-                commentsAdapter.setComments(commentList, highlightedCommentIds)
-                withContext(Dispatchers.Main) { commentsAdapter.notifyDataSetChanged() }
+            launch {
+                withContext(Dispatchers.Default) { commentsAdapter.setComments(commentList, highlightedCommentIds) }
+                commentsAdapter.notifyDataSetChanged()
             }
         })
         viewModel.commentAddedEvent.observe(viewLifecycleOwner, Observer {
