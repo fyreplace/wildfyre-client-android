@@ -20,7 +20,6 @@ import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.Author
 import net.wildfyre.client.ui.PostPlugin
-import net.wildfyre.client.ui.prepareForMarkdown
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
 import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
@@ -95,7 +94,7 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
                 .transition(IMAGE_TRANSITION)
                 .into(holder.image)
         } else {
-            holder.text.text = markdown.toMarkdown(itemData.text.orEmpty().prepareForMarkdown(null))
+            holder.text.text = markdown.toMarkdown(itemData.text.orEmpty())
         }
     }
 

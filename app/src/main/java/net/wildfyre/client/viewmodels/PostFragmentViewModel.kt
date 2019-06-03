@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import kotlinx.coroutines.Dispatchers
 import net.wildfyre.client.data.Comment
 import net.wildfyre.client.data.Post
 import net.wildfyre.client.data.SingleLiveEvent
@@ -17,6 +18,7 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     private var _postAreaName: String? = null
     private var _postId: Long? = null
     private val _post = MutableLiveData<Post>()
+    private val _markdownContent = MediatorLiveData<String>()
     private val _commentAddedEvent = SingleLiveEvent<Comment>()
     private val _commentRemovedEvent = SingleLiveEvent<Int>()
     private val _commentCount = MediatorLiveData<Int>()
@@ -25,12 +27,7 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     val contentLoaded: LiveData<Boolean> = Transformations.map(post) { it != null }
     val selfId: LiveData<Long> = Transformations.map(AuthorRepository.self) { it.user }
     val authorId: LiveData<Long> = Transformations.map(post) { it.author?.user ?: -1 }
-    val markdownContent: LiveData<String> = Transformations.map(post) {
-        val markdownContent = StringBuilder()
-        it.image?.run { markdownContent.append("![]($this)\n\n") }
-        it.text?.run { markdownContent.append(prepareForMarkdown(it.additionalImages)) }
-        return@map markdownContent.toString()
-    }
+    val markdownContent: LiveData<String> = _markdownContent
     val comments: LiveData<List<Comment>> = Transformations.map(post) { it.comments }
     val commentAddedEvent: LiveData<Comment> = _commentAddedEvent
     val commentRemovedEvent: LiveData<Int> = _commentRemovedEvent
@@ -38,6 +35,18 @@ class PostFragmentViewModel(application: Application) : FailureHandlingViewModel
     val newCommentData = MutableLiveData<String>()
 
     init {
+        _markdownContent.addSource(post) {
+            launchCatching(Dispatchers.Default) {
+                val markdownContent = StringBuilder()
+                it.image?.run { markdownContent.append("![]($this)\n\n") }
+                it.text?.run {
+                    markdownContent.append(it.additionalImages
+                        ?.let { images -> prepareForMarkdown(images) } ?: this)
+                }
+                _markdownContent.postValue(markdownContent.toString())
+            }
+        }
+
         _commentCount.addSource(comments) { _commentCount.postValue(it.size) }
         _commentCount.addSource(commentAddedEvent) { _commentCount.postValue(_commentCount.value!! + 1) }
         _commentCount.addSource(commentRemovedEvent) { _commentCount.postValue(_commentCount.value!! - 1) }
