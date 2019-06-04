@@ -1,6 +1,8 @@
 package net.wildfyre.client.viewmodels
 
 import android.app.Application
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import net.wildfyre.client.data.Notification
 import net.wildfyre.client.data.repositories.NotificationRepository
 import net.wildfyre.client.data.sources.ItemsDataSourceFactory
@@ -10,7 +12,7 @@ class NotificationsFragmentViewModel(application: Application) : ItemsListViewMo
     override val factory: ItemsDataSourceFactory<Notification> = NotificationsDataSourceFactory(this, this)
 
     fun clearNotificationsAsync() = launchCatching {
-        NotificationRepository.clearNotifications()
+        withContext(Dispatchers.IO) { NotificationRepository.clearNotifications() }
         dataSource.value?.invalidate()
     }
 }

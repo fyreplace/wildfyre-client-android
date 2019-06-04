@@ -19,7 +19,7 @@ import net.wildfyre.client.viewmodels.ItemsListViewModel
 abstract class ItemsListFragment<I, VM : ItemsListViewModel<I>, A : ItemsAdapter<I>> :
     FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemClickedListener<I> {
     protected var onRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
-    abstract val viewModel: VM
+    abstract override val viewModel: VM
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = FragmentItemsListBinding.inflate(inflater, container, false).run {

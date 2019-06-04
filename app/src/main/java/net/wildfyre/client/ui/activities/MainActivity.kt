@@ -122,7 +122,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
         viewModel.postInfo.observe(this, Observer { info ->
             if (hostFragment.navController.currentDestination?.id in NO_TITLE_DESTINATIONS) {
-                info?.let { setTitleInfo(it) }
+                setTitleInfo(info)
             }
         })
 
@@ -268,7 +268,14 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
     override fun onDrawerStateChanged(newState: Int) = Unit
 
-    private fun setTitleInfo(info: MainActivityViewModel.PostInfo) {
+    private fun setTitleInfo(info: MainActivityViewModel.PostInfo?) {
+        if (info == null) {
+            toolbar.title = ""
+            toolbar.subtitle = ""
+            toolbar.logo = null
+            return
+        }
+
         toolbar.title = " " + (info.authorName ?: getString(R.string.main_author_anonymous))
         toolbar.subtitle = " " + info.date
         toolbar.contentInsetStartWithNavigation = 0

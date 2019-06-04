@@ -12,11 +12,11 @@ import net.wildfyre.client.data.await
 
 object AreaRepository {
     private val mutableAreas = MutableLiveData<List<Area>>()
-    private val mutablePreferredAreaName = MutableLiveData<String>()
+    private val mutablePreferredAreaName = MutableLiveData<String?>()
     private val mutablePreferredAreaReputation = MutableLiveData<Reputation>()
 
     val areas: LiveData<List<Area>> = mutableAreas
-    val preferredAreaName: LiveData<String> = mutablePreferredAreaName
+    val preferredAreaName: LiveData<String?> = mutablePreferredAreaName
     val preferredAreaReputation: LiveData<Reputation> = mutablePreferredAreaReputation
 
     init {

@@ -23,6 +23,7 @@ abstract class FailureHandlingFragment(contentLayoutId: Int) : Fragment(contentL
      * [onAttach] to it can then be used in [onCreate].
      */
     protected abstract val viewModels: List<FailureHandlingViewModel>
+    protected abstract val viewModel: FailureHandlingViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

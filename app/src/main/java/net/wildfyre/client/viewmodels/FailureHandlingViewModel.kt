@@ -28,7 +28,7 @@ abstract class FailureHandlingViewModel(application: Application) : AndroidViewM
         _lastFailure.postValue(failure)
     }
 
-    fun launchCatching(context: CoroutineContext = Dispatchers.IO, block: suspend CoroutineScope.() -> Unit) =
+    fun launchCatching(context: CoroutineContext = Dispatchers.Main, block: suspend CoroutineScope.() -> Unit) =
         viewModelScope.launch(context) {
             try {
                 block()

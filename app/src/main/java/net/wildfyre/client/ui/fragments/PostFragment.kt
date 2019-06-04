@@ -39,7 +39,7 @@ import ru.noties.markwon.recycler.table.TableEntryPlugin
 
 open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAdapter.OnCommentDeleted {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
-    private val viewModel by lazyViewModel<PostFragmentViewModel>()
+    override val viewModel by lazyViewModel<PostFragmentViewModel>()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {

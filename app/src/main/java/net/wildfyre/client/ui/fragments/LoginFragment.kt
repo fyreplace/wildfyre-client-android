@@ -21,7 +21,7 @@ import net.wildfyre.client.viewmodels.lazyViewModel
  */
 class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override val viewModels by lazy { listOf(viewModel) }
-    private val viewModel by lazyViewModel<LoginFragmentViewModel>()
+    override val viewModel by lazyViewModel<LoginFragmentViewModel>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import kotlinx.coroutines.Dispatchers
 import net.wildfyre.client.data.repositories.AuthRepository
 
 class LoginFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
@@ -21,7 +22,7 @@ class LoginFragmentViewModel(application: Application) : FailureHandlingViewMode
     }
 
     fun attemptLoginAsync(username: String, password: String) =
-        launchCatching { AuthRepository.fetchAuthToken(username, password) }
+        launchCatching(Dispatchers.IO) { AuthRepository.fetchAuthToken(username, password) }
 
     fun setLoginAllowed(allowed: Boolean) = _loginAllowed.postValue(allowed)
 }

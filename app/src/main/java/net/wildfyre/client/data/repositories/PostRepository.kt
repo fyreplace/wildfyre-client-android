@@ -4,13 +4,6 @@ import net.wildfyre.client.data.Services
 import net.wildfyre.client.data.await
 
 object PostRepository {
-    suspend fun getPost(areaName: String?, id: Long) =
-        Services.webService.getPost(
-            AuthRepository.authToken.value!!,
-            areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
-            id
-        ).await()
-
     suspend fun getArchive(offset: Int, size: Int) =
         Services.webService.getPosts(
             AuthRepository.authToken.value!!,
@@ -25,5 +18,19 @@ object PostRepository {
             AreaRepository.preferredAreaName.value.orEmpty(),
             size,
             offset
+        ).await()
+
+    suspend fun getNextPosts(limit: Int) =
+        Services.webService.getNextPosts(
+            AuthRepository.authToken.value!!,
+            AreaRepository.preferredAreaName.value.orEmpty(),
+            limit
+        ).await()
+
+    suspend fun getPost(areaName: String?, id: Long) =
+        Services.webService.getPost(
+            AuthRepository.authToken.value!!,
+            areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
+            id
         ).await()
 }
