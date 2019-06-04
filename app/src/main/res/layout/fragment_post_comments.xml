@@ -33,7 +33,7 @@
             android:id="@+id/comment_count"
             android:layout_width="match_parent"
             android:layout_height="@dimen/comments_header_height"
-            android:background="@drawable/background_highlight_neutral_selectable"
+            android:background="?attr/selectableItemBackground"
             android:drawablePadding="@dimen/margin_horizontal_medium"
             android:gravity="center_vertical|start"
             android:paddingLeft="@dimen/margin_horizontal_medium"
@@ -48,6 +48,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/dividerHorizontal"
+            app:layout_constraintBottom_toTopOf="@id/comment_count" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/dividerHorizontal"
+            app:layout_constraintTop_toBottomOf="@id/comment_count" />
 
         <ImageView
             android:id="@+id/arrow"
