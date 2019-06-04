@@ -3,7 +3,13 @@ package net.wildfyre.client.ui.fragments
 import android.content.Context
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.View
+import androidx.core.view.forEach
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import net.wildfyre.client.R
+import net.wildfyre.client.databinding.ActionsAreaReputationBinding
+import net.wildfyre.client.databinding.ActionsAreaSpreadBinding
 import net.wildfyre.client.viewmodels.*
 
 /**
@@ -26,7 +32,35 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fragment_home_actions, menu)
         onCreateOptionsMenu(this, menu, inflater)
+
+        ActionsAreaSpreadBinding.bind(menu.findItem(R.id.action_area_spread).actionView).run {
+            lifecycleOwner = viewLifecycleOwner
+            model = areaSelectingViewModel
+        }
+
+        ActionsAreaReputationBinding.bind(menu.findItem(R.id.action_area_reputation).actionView).run {
+            lifecycleOwner = viewLifecycleOwner
+            model = areaSelectingViewModel
+        }
+
+        menu.findItem(R.id.action_area_selector)?.actionView
+            ?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+                private val areaStuff = listOf(R.id.action_area_spread, R.id.action_area_reputation)
+                private val mainActivityViewModel =
+                    ViewModelProviders.of(requireActivity()).get(MainActivityViewModel::class.java)
+
+                override fun onViewAttachedToWindow(v: View?) = switchItems(true)
+
+                override fun onViewDetachedFromWindow(v: View?) = switchItems(false)
+
+                private fun switchItems(showAreaStuff: Boolean) {
+                    menu.forEach { it.isVisible = areaStuff.contains(it.itemId) == showAreaStuff }
+                    mainActivityViewModel.setNotificationBadgeVisible(!showAreaStuff)
+                }
+            })
+
         super<PostFragment>.onCreateOptionsMenu(menu, inflater)
     }
 }
