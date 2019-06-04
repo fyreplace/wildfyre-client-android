@@ -5,6 +5,12 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'org.jetbrains.dokka-android'
 
+ext {
+    versionMajor = 0
+    versionMinor = 0
+    versionBuild = 1
+}
+
 android {
     compileSdkVersion 28
     compileOptions {
@@ -16,14 +22,14 @@ android {
         minSdkVersion 16
         targetSdkVersion 28
         multiDexEnabled true
-        versionCode 1
-        versionName "1.0.0"
+        versionCode versionMajor * 1_000_000 + versionMinor * 1000 + versionBuild
+        versionName String.valueOf(versionMajor) + "." + String.valueOf(versionMinor) + "." + String.valueOf(versionBuild)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
