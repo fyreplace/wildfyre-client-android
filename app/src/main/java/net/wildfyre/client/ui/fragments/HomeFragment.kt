@@ -27,7 +27,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         super.onAttach(context)
         areaSelectingViewModel.preferredAreaName.observe(this, Observer {
             if (!it.isNullOrEmpty()) {
-                viewModel.nextPostAsync()
+                viewModel.nextPostAsync(true)
             }
         })
     }

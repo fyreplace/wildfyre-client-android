@@ -12,7 +12,11 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
     private var postReserveJob: Job? = null
     private var endOfPosts = false
 
-    fun nextPostAsync() = launchCatching {
+    fun nextPostAsync(forceRefresh: Boolean) = launchCatching {
+        if (forceRefresh) {
+            postReserve.clear()
+        }
+
         if (postReserve.isEmpty()) {
             _post.postValue(null)
             fillReserve()
