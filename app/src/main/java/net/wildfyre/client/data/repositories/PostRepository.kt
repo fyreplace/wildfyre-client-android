@@ -1,6 +1,7 @@
 package net.wildfyre.client.data.repositories
 
 import net.wildfyre.client.data.Services
+import net.wildfyre.client.data.Subscription
 import net.wildfyre.client.data.await
 
 object PostRepository {
@@ -32,5 +33,13 @@ object PostRepository {
             AuthRepository.authToken.value!!,
             areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
             id
+        ).await()
+
+    suspend fun setSubscription(areaName: String?, id: Long, sub: Boolean) =
+        Services.webService.putSubscription(
+            AuthRepository.authToken.value!!,
+            areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
+            id,
+            Subscription(sub)
         ).await()
 }

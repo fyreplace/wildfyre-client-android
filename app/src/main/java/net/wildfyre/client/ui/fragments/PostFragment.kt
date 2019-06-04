@@ -202,8 +202,25 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Comme
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_post_actions, menu)
+        viewModel.subscribed.observe(viewLifecycleOwner, Observer {
+            menu.findItem(R.id.action_subscribe).setIcon(
+                if (it)
+                    R.drawable.ic_notifications_white_24dp
+                else
+                    R.drawable.ic_notifications_none_white_24dp
+            )
+        })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_subscribe -> viewModel.changeSubscriptionAsync()
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onCommentDeleted(position: Int, comment: Comment) {
         viewModel.deleteCommentAsync(position, comment)

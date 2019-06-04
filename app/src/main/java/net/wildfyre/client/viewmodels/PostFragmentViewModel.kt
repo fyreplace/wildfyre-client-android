@@ -16,15 +16,17 @@ import net.wildfyre.client.data.repositories.PostRepository
 import net.wildfyre.client.ui.prepareForMarkdown
 
 open class PostFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
-    protected val _post = MutableLiveData<Post>()
     private var _postAreaName: String? = null
     private var _postId: Long = -1
+    private val _post = MutableLiveData<Post>()
+    private val _subscribed = MediatorLiveData<Boolean>()
     private val _markdownContent = MediatorLiveData<String>()
     private val _commentAddedEvent = SingleLiveEvent<Comment>()
     private val _commentRemovedEvent = SingleLiveEvent<Int>()
     private val _commentCount = MediatorLiveData<Int>()
 
     val post: LiveData<Post?> = _post
+    val subscribed: LiveData<Boolean> = _subscribed
     val contentLoaded: LiveData<Boolean> = Transformations.map(post) { it != null }
     val selfId: LiveData<Long> = Transformations.map(AuthorRepository.self) { it.user }
     val authorId: LiveData<Long> = Transformations.map(post) { it?.author?.user ?: -1 }
@@ -36,6 +38,8 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
     val newCommentData = MutableLiveData<String>()
 
     init {
+        _subscribed.addSource(post) { _subscribed.postValue(it?.subscribed ?: false) }
+
         _markdownContent.addSource(post) {
             launchCatching(Dispatchers.Default) {
                 val markdownContent = StringBuilder()
@@ -55,9 +59,25 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
     }
 
     fun setPostDataAsync(areaName: String?, id: Long) = launchCatching {
+        val newPost = if (id == -1L) null else withContext(Dispatchers.IO) { PostRepository.getPost(areaName, id) }
+        setPostAsync(newPost).join()
         _postAreaName = areaName
-        _postId = id
-        _post.postValue(if (id == -1L) null else withContext(Dispatchers.IO) { PostRepository.getPost(areaName, id) })
+    }
+
+    fun setPostAsync(post: Post?) = launchCatching {
+        _postAreaName = null
+        _postId = post?.id ?: -1
+        _post.postValue(post)
+    }
+
+    fun changeSubscriptionAsync() = launchCatching(Dispatchers.IO) {
+        _subscribed.postValue(
+            PostRepository.setSubscription(
+                _postAreaName,
+                _postId,
+                !(subscribed.value ?: false)
+            ).subscribed
+        )
     }
 
     fun sendNewCommentAsync() = launchCatching {

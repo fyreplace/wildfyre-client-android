@@ -232,7 +232,7 @@ interface WebService {
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body subscription: Subscription
-    ): Call<Unit>
+    ): Call<Subscription>
 
     @DELETE("/areas/{areaName}/{postId}/")
     fun deletePost(

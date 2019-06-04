@@ -18,7 +18,7 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
         }
 
         if (postReserve.isEmpty()) {
-            _post.postValue(null)
+            setPostAsync(null)
             fillReserve()
         }
 
@@ -26,7 +26,7 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
             return@launchCatching
         }
 
-        _post.postValue(postReserve.first())
+        setPostAsync(postReserve.first())
 
         if (postReserve.size < RESERVE_SIZE / 2) {
             queueJob()
