@@ -1,7 +1,6 @@
 package net.wildfyre.client.ui.fragments
 
 import android.content.Context
-import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
@@ -28,10 +27,6 @@ abstract class FailureHandlingFragment(contentLayoutId: Int) : Fragment(contentL
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setHasOptionsMenu(true)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         viewModels.forEach { vm -> vm.lastFailure.observe(this, Observer { onFailure(it) }) }
     }
 
