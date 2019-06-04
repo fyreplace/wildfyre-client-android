@@ -114,7 +114,9 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Comme
         })
         viewModel.commentAddedEvent.observe(viewLifecycleOwner, Observer {
             commentsAdapter.addComment(it)
-            commentsAdapter.notifyItemInserted(commentsAdapter.itemCount - 1)
+            val commentPosition = commentsAdapter.itemCount - 1
+            commentsAdapter.notifyItemInserted(commentPosition)
+            comments_list.smoothScrollToPosition(commentPosition)
         })
         viewModel.commentRemovedEvent.observe(viewLifecycleOwner, Observer {
             commentsAdapter.removeComment(it)
