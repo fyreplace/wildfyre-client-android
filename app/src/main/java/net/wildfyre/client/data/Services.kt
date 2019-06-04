@@ -176,11 +176,11 @@ interface WebService {
     // Posts
 
     @GET("/areas/{areaName}/")
-    fun getPosts(
+    fun getNextPosts(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Query("limit") limit: Int
-    ): Call<List<Post>>
+    ): Call<SuperPost>
 
     @GET("/areas/{areaName}/own/")
     fun getOwnPosts(
