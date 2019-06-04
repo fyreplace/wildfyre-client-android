@@ -8,7 +8,7 @@
     <color name="colorSecondaryVariant">#D32F2F</color>
     <color name="colorOnSecondary">@android:color/white</color>
     <color name="colorAccent">#FF6E40</color>
-    <color name="colorControlNormalNeutral">#7F7F7F</color>
+    <color name="colorControlActivatedNeutral">#3F3F3F</color>
     <color name="colorSwitchThumbNormalNeutral">#DFDFDF</color>
     <color name="foreground">@android:color/black</color>
     <color name="background">@android:color/background_light</color>
