@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <bool name="home_show_menu">true</bool>
     <integer name="post_preview_span_count">3</integer>
     <integer name="post_preview_load_page_size">18</integer>
 </resources>

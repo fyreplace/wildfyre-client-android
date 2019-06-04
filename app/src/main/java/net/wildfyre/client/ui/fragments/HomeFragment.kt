@@ -3,6 +3,7 @@ package net.wildfyre.client.ui.fragments
 import android.content.Context
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
@@ -62,5 +63,14 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
             })
 
         super<PostFragment>.onCreateOptionsMenu(menu, inflater)
+        val showAsAction =
+            if (resources.getBoolean(R.bool.home_show_menu))
+                MenuItem.SHOW_AS_ACTION_IF_ROOM
+            else
+                MenuItem.SHOW_AS_ACTION_NEVER
+
+        for (id in setOf(R.id.action_area_selector, R.id.action_share, R.id.action_subscribe)) {
+            menu.findItem(id).setShowAsAction(showAsAction or MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+        }
     }
 }

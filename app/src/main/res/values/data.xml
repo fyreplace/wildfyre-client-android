@@ -5,6 +5,7 @@
         <item>@string/theme_light</item>
         <item>@string/theme_dark</item>
     </string-array>
+    <bool name="home_show_menu">false</bool>
     <integer name="post_preview_span_count">2</integer>
     <integer name="post_preview_load_page_size">16</integer>
 </resources>
