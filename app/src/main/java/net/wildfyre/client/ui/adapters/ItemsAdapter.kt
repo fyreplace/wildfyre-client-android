@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Space
 import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -70,13 +70,23 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
 
         holder.text.isVisible = itemData.image == null
         holder.image.isVisible = !holder.text.isVisible
-        holder.space.isVisible = holder.text.isVisible && !holder.authorContainer.isVisible
+        holder.authorName.isVisible = showAuthors && itemData.author != null
+        holder.authorPicture.isVisible = holder.authorName.isVisible
         holder.subtitle.text = itemData.subtitle
-        holder.authorContainer.isVisible = showAuthors && itemData.author != null
         holder.clickable.setOnClickListener { onItemClickedListener?.onItemClicked(item) }
         holder.loader.isVisible = false
 
-        if (holder.authorContainer.isVisible) {
+        if (itemData.image != null) {
+            holder.image.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                bottomMargin =
+                    if (holder.authorName.isVisible)
+                        WildFyreApplication.context.resources.getDimensionPixelOffset(R.dimen.margin_vertical_small)
+                    else
+                        0
+            }
+        }
+
+        if (holder.authorName.isVisible) {
             holder.authorName.text = itemData.author!!.name
             AppGlide.with(holder.itemView.context)
                 .load(itemData.author.avatar ?: R.drawable.ic_launcher)
@@ -112,10 +122,8 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         private val container: View = itemView.findViewById(R.id.container)
         val text: TextView = itemView.findViewById(R.id.text)
         val image: ImageView = itemView.findViewById(R.id.image)
-        val authorContainer: ViewGroup = itemView.findViewById(R.id.author_container)
         val authorName: TextView = itemView.findViewById(R.id.author_name)
         val authorPicture: ImageView = itemView.findViewById(R.id.author_picture)
-        val space: Space = itemView.findViewById(R.id.space)
         val subtitle: TextView = itemView.findViewById(R.id.subtitle)
         val clickable: View = itemView.findViewById(R.id.clickable)
         val loader: View = itemView.findViewById(R.id.loader)
@@ -127,8 +135,8 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         fun hide() {
             text.isVisible = false
             image.isVisible = false
-            authorContainer.isVisible = false
-            space.isVisible = false
+            authorName.isVisible = false
+            authorPicture.isVisible = false
             subtitle.text = ""
             loader.isVisible = true
         }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/margin_horizontal_tiny"
@@ -22,12 +21,13 @@
             android:layout_marginLeft="@dimen/margin_horizontal_small"
             android:layout_marginTop="@dimen/margin_vertical_small"
             android:layout_marginRight="@dimen/margin_horizontal_small"
+            android:layout_marginBottom="@dimen/margin_vertical_small"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="8"
-            android:textAppearance="?attr/textAppearanceBody2"
+            android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="@color/foreground"
-            app:layout_constraintBottom_toTopOf="@id/author_container"
+            app:layout_constraintBottom_toTopOf="@id/author_picture"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -36,42 +36,31 @@
             android:layout_height="0dp"
             android:contentDescription="@string/image_desc_post_picture"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@id/author_container"
+            app:layout_constraintBottom_toTopOf="@id/author_picture"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/author_container"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/author_picture"
+            android:layout_width="@dimen/list_item_author_picture_size"
+            android:layout_height="@dimen/list_item_author_picture_size"
+            android:layout_marginStart="@dimen/margin_horizontal_small"
+            android:layout_marginLeft="@dimen/margin_horizontal_small"
+            android:layout_marginBottom="@dimen/margin_vertical_small"
+            android:contentDescription="@string/image_desc_author_picture"
+            app:layout_constraintBottom_toTopOf="@id/subtitle"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/author_name"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/margin_horizontal_small"
-            android:paddingTop="@dimen/margin_vertical_small"
-            android:paddingRight="@dimen/margin_horizontal_small"
-            android:paddingBottom="@dimen/margin_vertical_small"
-            app:layout_constraintBottom_toTopOf="@id/space"
-            tools:ignore="UseCompoundDrawables">
-
-            <ImageView
-                android:id="@+id/author_picture"
-                android:layout_width="@dimen/list_item_author_picture_size"
-                android:layout_height="@dimen/list_item_author_picture_size"
-                android:layout_marginEnd="@dimen/margin_horizontal_small"
-                android:layout_marginRight="@dimen/margin_horizontal_small"
-                android:contentDescription="@string/image_desc_author_picture" />
-
-            <TextView
-                android:id="@+id/author_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBody2" />
-        </LinearLayout>
-
-        <Space
-            android:id="@+id/space"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/margin_vertical_small"
-            app:layout_constraintBottom_toTopOf="@id/subtitle" />
+            android:layout_marginLeft="@dimen/margin_horizontal_small"
+            android:layout_marginRight="@dimen/margin_horizontal_small"
+            android:textAppearance="?attr/textAppearanceListItemSecondary"
+            app:layout_constraintBottom_toBottomOf="@id/author_picture"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/author_picture"
+            app:layout_constraintTop_toTopOf="@id/author_picture" />
 
         <TextView
             android:id="@+id/subtitle"
@@ -83,7 +72,7 @@
             android:paddingTop="@dimen/margin_vertical_tiny"
             android:paddingRight="@dimen/margin_horizontal_small"
             android:paddingBottom="@dimen/margin_vertical_tiny"
-            android:textAppearance="?attr/textAppearanceBody2"
+            android:textAppearance="?attr/textAppearanceSubtitle2"
             android:textColor="@color/foreground"
             app:layout_constraintBottom_toBottomOf="parent" />
 
