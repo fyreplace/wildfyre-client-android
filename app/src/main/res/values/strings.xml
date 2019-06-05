@@ -42,6 +42,7 @@
     <string name="posts_empty">No posts in this area</string>
     <string name="post_actions_share">Share</string>
     <string name="post_actions_subscribe">Subscribe</string>
+    <string name="post_actions_unsubscribe">Unsubscribe</string>
     <plurals name="post_comment_count">
         <item quantity="zero">No comments</item>
         <item quantity="one">%1$d comment</item>

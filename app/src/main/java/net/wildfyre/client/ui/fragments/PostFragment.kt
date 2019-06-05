@@ -208,12 +208,20 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_post_actions, menu)
         viewModel.subscribed.observe(viewLifecycleOwner, Observer {
-            menu.findItem(R.id.action_subscribe).setIcon(
-                if (it)
-                    R.drawable.ic_notifications_white_24dp
-                else
-                    R.drawable.ic_notifications_none_white_24dp
-            )
+            menu.findItem(R.id.action_subscribe).run {
+                setTitle(
+                    if (it)
+                        R.string.post_actions_unsubscribe
+                    else
+                        R.string.post_actions_subscribe
+                )
+                setIcon(
+                    if (it)
+                        R.drawable.ic_notifications_white_24dp
+                    else
+                        R.drawable.ic_notifications_none_white_24dp
+                )
+            }
         })
     }
 
