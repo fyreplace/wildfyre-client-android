@@ -3,7 +3,9 @@ package net.wildfyre.client.ui
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
 import net.wildfyre.client.Constants
+import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication.Companion.context
 import net.wildfyre.client.data.Image
 
@@ -19,3 +21,11 @@ fun String.prepareForMarkdown(imageUrls: List<Image>): String =
         val image = imageUrls.first { img -> img.num == imageNum }
         return@replace "![${image.comment}](${image.image})"
     }
+
+fun ohNo(context: Context) {
+    AlertDialog.Builder(context)
+        .setTitle(R.string.alert_unimplemented_title)
+        .setMessage(R.string.alert_unimplemented_message)
+        .setPositiveButton(android.R.string.ok, null)
+        .show()
+}

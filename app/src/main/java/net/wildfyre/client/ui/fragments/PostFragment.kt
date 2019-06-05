@@ -28,6 +28,7 @@ import net.wildfyre.client.ui.PostPlugin
 import net.wildfyre.client.ui.adapters.CommentsAdapter
 import net.wildfyre.client.ui.drawables.BottomSheetArrowDrawableWrapper
 import net.wildfyre.client.ui.hideSoftKeyboard
+import net.wildfyre.client.ui.ohNo
 import net.wildfyre.client.viewmodels.*
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
@@ -218,6 +219,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.action_share -> ohNo(requireContext())
             R.id.action_subscribe -> viewModel.changeSubscriptionAsync()
         }
 
@@ -261,13 +263,9 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         }
     }
 
-    private fun copyComment(position: Int, comment: Comment) {
-        // TODO
-    }
+    private fun copyComment(position: Int, comment: Comment) = ohNo(requireContext())
 
-    private fun shareComment(position: Int, comment: Comment) {
-        // TODO
-    }
+    private fun shareComment(position: Int, comment: Comment) = ohNo(requireContext())
 
     private fun deleteComment(position: Int, comment: Comment) {
         viewModel.deleteCommentAsync(position, comment)

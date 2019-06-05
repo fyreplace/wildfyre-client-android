@@ -42,6 +42,7 @@ import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.databinding.*
+import net.wildfyre.client.ui.ohNo
 import net.wildfyre.client.viewmodels.MainActivityViewModel
 import net.wildfyre.client.viewmodels.lazyViewModel
 import java.io.ByteArrayInputStream
@@ -83,6 +84,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
         MainAppBarBinding.bind(content)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
+
+        navigation_view.menu.findItem(R.id.fragment_own_posts).actionView?.setOnClickListener { ohNo(this) }
 
         viewModel.authToken.observe(this, Observer {
             if (it.isNotEmpty()) {
