@@ -37,7 +37,7 @@
         <net.wildfyre.client.ui.widgets.MarkdownRecyclerView
             android:id="@+id/content"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:clipChildren="false"
             android:clipToPadding="false"
             android:orientation="vertical"
@@ -46,8 +46,10 @@
             android:paddingRight="@dimen/margin_horizontal_large"
             android:paddingBottom="@dimen/margin_vertical_medium"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/vertical_center"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <include
             layout="@layout/fragment_post_comments"
