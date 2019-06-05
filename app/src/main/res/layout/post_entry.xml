@@ -5,5 +5,6 @@
     android:autoLink="web"
     android:paddingTop="@dimen/margin_vertical_small"
     android:paddingBottom="@dimen/margin_vertical_small"
-    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-    android:textIsSelectable="true" />
+    android:textAppearance="?attr/textAppearanceBody1"
+    android:textIsSelectable="true"
+    android:textSize="@dimen/post_entry_text_size" />

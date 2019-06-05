@@ -39,7 +39,7 @@
             android:paddingLeft="@dimen/margin_horizontal_medium"
             android:paddingRight="@dimen/margin_horizontal_medium"
             android:text="@{@plurals/post_comment_count(safeUnbox(model.commentCount), safeUnbox(model.commentCount))}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="@color/foreground"
             android:theme="@style/AppTheme.Button.HighlightButtonOverlay"
             app:drawableLeftCompat="@drawable/ic_comment_black_24dp"

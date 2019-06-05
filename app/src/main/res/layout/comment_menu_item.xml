@@ -3,9 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:drawablePadding="@dimen/margin_horizontal_large"
+    android:gravity="center_vertical"
     android:paddingLeft="@dimen/margin_horizontal_large"
     android:paddingTop="@dimen/margin_vertical_medium"
     android:paddingRight="@dimen/margin_horizontal_large"
     android:paddingBottom="@dimen/margin_vertical_medium"
-    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-    android:textColor="@color/foreground" />
+    android:textAppearance="?attr/textAppearanceBody1"
+    android:textColor="@color/foreground"
+    android:textSize="@dimen/comment_menu_item_text_size" />

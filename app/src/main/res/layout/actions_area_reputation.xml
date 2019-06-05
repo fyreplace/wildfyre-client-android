@@ -19,8 +19,9 @@
         android:paddingEnd="@dimen/margin_horizontal_small"
         android:paddingRight="@dimen/margin_horizontal_small"
         android:text="@{Integer.toString(safeUnbox(model.currentAreaReputation))}"
-        android:textAppearance="@style/TextAppearance.AppCompat.Menu"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="@color/foreground"
         app:drawableLeftCompat="@drawable/ic_stars_white_24dp"
         app:drawableStartCompat="@drawable/ic_stars_white_24dp"
-        tools:ignore="HardcodedText,RtlSymmetry" />
+        tools:ignore="RtlSymmetry" />
 </layout>

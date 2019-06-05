@@ -24,7 +24,7 @@
         android:layout_marginLeft="@dimen/margin_horizontal_small"
         android:layout_marginEnd="@dimen/margin_horizontal_small"
         android:layout_marginRight="@dimen/margin_horizontal_small"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textAppearance="?attr/textAppearanceBody2"
         app:layout_constraintEnd_toStartOf="@id/date"
         app:layout_constraintStart_toEndOf="@id/author_picture"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,9 +33,9 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textAppearance="?attr/textAppearanceCaption"
+        app:layout_constraintBaseline_toBaselineOf="@id/author_name"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/text"
@@ -43,8 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_vertical_small"
         android:autoLink="web"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/foreground"
+        android:textAppearance="?attr/textAppearanceBody2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/author_name"
         app:layout_constraintTop_toBottomOf="@id/author_name" />

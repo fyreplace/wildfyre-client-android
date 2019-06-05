@@ -25,6 +25,7 @@ import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.Comment
 import ru.noties.markwon.Markwon
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 class CommentsAdapter(private val markdown: Markwon, private val onCommentActionSelected: OnCommentDeleted) :
@@ -144,7 +145,8 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         data.removeAt(position)
     }
 
-    private fun getMenuAdapter(context: Context, id: Long): CommentMenuAdapter = CommentMenuAdapter(context,
+    private fun getMenuAdapter(context: Context, id: Long) = CommentMenuAdapter(
+        context,
         mutableListOf(
             R.drawable.ic_content_copy_daynight_24dp to R.string.post_comment_menu_copy,
             R.drawable.ic_share_daynight_24dp to R.string.post_comment_menu_share
@@ -167,7 +169,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         onCommentActionSelected.onCommentDeleted(position, data[position].comment)
 
     private companion object {
-        val DATE_FORMAT = SimpleDateFormat.getDateTimeInstance()
+        val DATE_FORMAT: DateFormat = SimpleDateFormat.getDateTimeInstance()
         val AVATAR_TRANSITION = DrawableTransitionOptions.withCrossFade()
         val AVATAR_TRANSFORM = MultiTransformation(
             CenterCrop(),

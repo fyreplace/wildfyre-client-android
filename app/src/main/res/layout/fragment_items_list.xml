@@ -43,7 +43,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:gravity="center"
+                android:paddingLeft="@dimen/margin_horizontal_large"
+                android:paddingRight="@dimen/margin_horizontal_large"
+                android:textAppearance="?attr/textAppearanceHeadline4"
                 android:visibility="@{safeUnbox(loading) || safeUnbox(hasData) ? View.GONE : View.VISIBLE}" />
         </FrameLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
