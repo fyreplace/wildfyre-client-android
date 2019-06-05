@@ -1,6 +1,5 @@
 package net.wildfyre.client.ui.adapters
 
-import android.content.Context
 import android.graphics.Typeface
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
@@ -8,13 +7,12 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.text.set
 import androidx.core.text.toSpanned
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -28,7 +26,10 @@ import ru.noties.markwon.Markwon
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
-class CommentsAdapter(private val markdown: Markwon, private val onCommentActionSelected: OnCommentDeleted) :
+class CommentsAdapter(
+    private val fragment: Fragment,
+    private val markdown: Markwon
+) :
     RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     private var data: MutableList<CommentWrapper> = mutableListOf()
     private val recyclers: MutableList<RecyclerView> = mutableListOf()
@@ -53,13 +54,11 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
 
     override fun getItemId(position: Int): Long = data[position].comment.id
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.comment, parent, false)
-        )
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
+        LayoutInflater
+            .from(parent.context)
+            .inflate(R.layout.comment, parent, false)
+    ).also { fragment.registerForContextMenu(it.text) }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val wrapper = data[position]
@@ -92,21 +91,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         comment.image?.let { markdownContent.append("![]($it)") }
         comment.text?.let { markdownContent.append(it) }
         markdown.setMarkdown(holder.text, markdownContent.toString())
-
-        holder.text.setOnLongClickListener {
-            AlertDialog.Builder(context)
-                .setAdapter(getMenuAdapter(context, comment.author?.user ?: -1)) { _, i ->
-                    when (i) {
-                        0 -> copyComment(position)
-                        1 -> shareComment(position)
-                        2 -> deleteComment(position)
-                    }
-                }
-                .show()
-
-            return@setOnLongClickListener true
-        }
-
+        holder.text.tag = position
         holder.itemView.setBackgroundResource(
             if (wrapper.isHighlighted)
                 R.color.backgroundHighlight
@@ -145,28 +130,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         data.removeAt(position)
     }
 
-    private fun getMenuAdapter(context: Context, id: Long) = CommentMenuAdapter(
-        context,
-        mutableListOf(
-            R.drawable.ic_content_copy_daynight_24dp to R.string.post_comment_menu_copy,
-            R.drawable.ic_share_daynight_24dp to R.string.post_comment_menu_share
-        ).apply {
-            if (id == selfId) {
-                add(R.drawable.ic_delete_daynight_24dp to R.string.post_comment_menu_delete)
-            }
-        }
-    )
-
-    private fun copyComment(position: Int) {
-        // TODO
-    }
-
-    private fun shareComment(position: Int) {
-        // TODO
-    }
-
-    private fun deleteComment(position: Int) =
-        onCommentActionSelected.onCommentDeleted(position, data[position].comment)
+    fun getComment(position: Int) = data[position].comment
 
     private companion object {
         val DATE_FORMAT: DateFormat = SimpleDateFormat.getDateTimeInstance()
@@ -184,22 +148,7 @@ class CommentsAdapter(private val markdown: Markwon, private val onCommentAction
         val text: TextView = itemView.findViewById(R.id.text)
     }
 
-    private data class CommentWrapper(val comment: Comment) {
+    private class CommentWrapper(val comment: Comment) {
         var isHighlighted: Boolean = false
-    }
-
-    private class CommentMenuAdapter(context: Context, private val items: List<Pair<Int, Int>>) :
-        ArrayAdapter<Pair<Int, Int>>(context, R.layout.comment_menu_item, items) {
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View =
-            super.getView(position, convertView, parent).apply {
-                (this as? TextView)?.run {
-                    setText(items[position].second)
-                    setCompoundDrawablesWithIntrinsicBounds(items[position].first, 0, 0, 0)
-                }
-            }
-    }
-
-    interface OnCommentDeleted {
-        fun onCommentDeleted(position: Int, comment: Comment)
     }
 }

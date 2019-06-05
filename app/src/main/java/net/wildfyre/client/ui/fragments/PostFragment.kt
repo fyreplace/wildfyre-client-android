@@ -37,7 +37,7 @@ import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin
 import ru.noties.markwon.recycler.MarkwonAdapter
 import ru.noties.markwon.recycler.table.TableEntryPlugin
 
-open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), CommentsAdapter.OnCommentDeleted {
+open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<PostFragmentViewModel>()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
@@ -83,7 +83,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Comme
         super.onViewCreated(view, savedInstanceState)
         val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
         content.adapter = markdownAdapter
-        val commentsAdapter = CommentsAdapter(markdown, this)
+        val commentsAdapter = CommentsAdapter(this, markdown)
         comments_list.setHasFixedSize(true)
         comments_list.adapter = commentsAdapter
         comments_list.addItemDecoration(
@@ -224,8 +224,19 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Comme
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onCommentDeleted(position: Int, comment: Comment) {
-        viewModel.deleteCommentAsync(position, comment)
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        requireActivity().menuInflater.inflate(R.menu.fragment_post_comment_context, menu)
+
+        val position = v.tag as Int
+        val comment = (comments_list.adapter as CommentsAdapter).getComment(position)
+
+        menu.findItem(R.id.action_copy).setOnMenuItemClickListener { copyComment(position, comment); true }
+        menu.findItem(R.id.action_share).setOnMenuItemClickListener { shareComment(position, comment); true }
+        menu.findItem(R.id.action_delete).run {
+            isVisible = comment.author?.user == viewModel.selfId.value
+            setOnMenuItemClickListener { deleteComment(position, comment); true }
+        }
     }
 
     private fun toggleComments() {
@@ -248,6 +259,18 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Comme
             hideSoftKeyboard(it)
             it.clearFocus()
         }
+    }
+
+    private fun copyComment(position: Int, comment: Comment) {
+        // TODO
+    }
+
+    private fun shareComment(position: Int, comment: Comment) {
+        // TODO
+    }
+
+    private fun deleteComment(position: Int, comment: Comment) {
+        viewModel.deleteCommentAsync(position, comment)
     }
 
     private companion object {
