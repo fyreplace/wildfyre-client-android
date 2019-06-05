@@ -13,7 +13,6 @@
     </style>
 
     <style name="AppTheme.Neutral" parent="AppTheme">
-        <item name="colorControlHighlight">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorControlActivatedNeutral</item>
         <item name="colorSwitchThumbNormal">@color/colorSwitchThumbNormalNeutral</item>
     </style>
@@ -28,11 +27,11 @@
         <item name="android:windowBackground">@drawable/ic_splash_screen</item>
     </style>
 
-    <style name="AppTheme.TextAppearance.ActionBar.Title" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+    <style name="AppTheme.TextAppearance.ActionBar.Title" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="AppTheme.TextAppearance.ActionBar.Title.Condensed" parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+    <style name="AppTheme.TextAppearance.ActionBar.Title.Condensed" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textColor">@android:color/white</item>
     </style>
 

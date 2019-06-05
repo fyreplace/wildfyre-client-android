@@ -20,7 +20,7 @@
         android:paddingRight="@dimen/margin_horizontal_small"
         android:text="@{Integer.toString(safeUnbox(model.currentAreaReputation))}"
         android:textAppearance="?attr/textAppearanceBody1"
-        android:textColor="@color/foreground"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
         app:drawableLeftCompat="@drawable/ic_stars_white_24dp"
         app:drawableStartCompat="@drawable/ic_stars_white_24dp"
         tools:ignore="RtlSymmetry" />
