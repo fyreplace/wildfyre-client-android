@@ -77,7 +77,7 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
             holder.image.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 bottomMargin =
                     if (holder.authorName.isVisible)
-                        WildFyreApplication.context.resources.getDimensionPixelOffset(R.dimen.margin_vertical_small)
+                        WildFyreApplication.context.resources.getDimensionPixelOffset(R.dimen.margin_small)
                     else
                         0
             }

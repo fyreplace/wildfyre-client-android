@@ -16,6 +16,6 @@ interface FailureHandler {
      */
     @CallSuper
     fun onFailure(failure: Throwable) {
-        Log.e(WildFyreApplication.context.getString(R.string.app_name), failure.message)
+        Log.e(WildFyreApplication.context.getString(R.string.app_name), failure.message.orEmpty())
     }
 }

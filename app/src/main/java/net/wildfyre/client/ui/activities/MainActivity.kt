@@ -159,7 +159,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             val layoutParams = badge.layoutParams as ViewGroup.MarginLayoutParams?
             layoutParams?.setMargins(
                 it.height / 2,
-                it.height / 2 - resources.getDimensionPixelOffset(R.dimen.margin_vertical_medium),
+                it.height / 2 - resources.getDimensionPixelOffset(R.dimen.margin_medium),
                 0,
                 0
             )

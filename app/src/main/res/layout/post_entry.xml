@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:autoLink="web"
-    android:paddingTop="@dimen/margin_vertical_small"
-    android:paddingBottom="@dimen/margin_vertical_small"
+    android:padding="@dimen/margin_small"
     android:textAppearance="?attr/textAppearanceBody1"
     android:textIsSelectable="true"
     android:textSize="@dimen/post_entry_text_size" />

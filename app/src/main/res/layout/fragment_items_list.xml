@@ -31,10 +31,7 @@
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/margin_horizontal_tiny"
-                android:paddingTop="@dimen/margin_vertical_tiny"
-                android:paddingRight="@dimen/margin_horizontal_tiny"
-                android:paddingBottom="@dimen/margin_vertical_tiny"
+                android:padding="@dimen/margin_tiny"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="@integer/post_preview_span_count" />
 
@@ -44,8 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:paddingLeft="@dimen/margin_horizontal_large"
-                android:paddingRight="@dimen/margin_horizontal_large"
+                android:paddingLeft="@dimen/margin_large"
+                android:paddingRight="@dimen/margin_large"
                 android:textAppearance="?attr/textAppearanceHeadline4"
                 android:visibility="@{safeUnbox(loading) || safeUnbox(hasData) ? View.GONE : View.VISIBLE}" />
         </FrameLayout>

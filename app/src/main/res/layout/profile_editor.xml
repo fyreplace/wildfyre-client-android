@@ -5,10 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/margin_horizontal_medium"
-    android:paddingTop="@dimen/margin_vertical_medium"
-    android:paddingRight="@dimen/margin_horizontal_medium"
-    android:paddingBottom="@dimen/margin_vertical_medium">
+    android:padding="@dimen/margin_medium">
 
     <ImageView
         android:id="@+id/user_picture"
@@ -21,7 +18,7 @@
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_vertical_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
         android:text="@string/main_profile_editor_avatar_change" />
 
     <EditText

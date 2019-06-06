@@ -13,8 +13,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/margin_horizontal_small"
-        android:layout_marginRight="@dimen/margin_horizontal_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
         android:gravity="center"
         android:text="@{Long.toString(safeUnbox(model.notificationCount))}"
         android:textAppearance="?attr/textAppearanceBody1"

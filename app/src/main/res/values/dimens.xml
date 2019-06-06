@@ -1,12 +1,8 @@
 <resources>
-    <dimen name="margin_horizontal_tiny">4dp</dimen>
-    <dimen name="margin_vertical_tiny">4dp</dimen>
-    <dimen name="margin_horizontal_small">8dp</dimen>
-    <dimen name="margin_vertical_small">8dp</dimen>
-    <dimen name="margin_horizontal_medium">16dp</dimen>
-    <dimen name="margin_vertical_medium">16dp</dimen>
-    <dimen name="margin_horizontal_large">24dp</dimen>
-    <dimen name="margin_vertical_large">24dp</dimen>
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
     <dimen name="margin_nav_header_top">0dp</dimen>
     <dimen name="login_form_width">-1px</dimen>
     <dimen name="nav_header_height">176dp</dimen>
