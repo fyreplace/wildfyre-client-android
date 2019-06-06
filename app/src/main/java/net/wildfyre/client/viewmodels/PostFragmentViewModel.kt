@@ -39,7 +39,6 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
 
     init {
         _subscribed.addSource(post) { _subscribed.postValue(it?.subscribed ?: false) }
-
         _markdownContent.addSource(post) {
             launchCatching(Dispatchers.Default) {
                 val markdownContent = StringBuilder()

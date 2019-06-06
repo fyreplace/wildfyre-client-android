@@ -3,11 +3,11 @@ package net.wildfyre.client
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.security.ProviderInstaller
+import net.wildfyre.client.data.repositories.SettingsRepository
 import java.lang.ref.WeakReference
 
 class WildFyreApplication : MultiDexApplication() {
@@ -37,7 +37,6 @@ class WildFyreApplication : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        MultiDex.install(this)
         instance = WeakReference(this)
 
         // This is needed to solve an issue with okhttp and SSL on Android < 21
@@ -49,11 +48,6 @@ class WildFyreApplication : MultiDexApplication() {
         The default night mode needs to be set right when the application is created, before any activity is started.
         If this was done on activity startup, the activity would be recreated as soon as it starts.
          */
-        AppCompatDelegate.setDefaultNightMode(
-            preferences.getInt(
-                Constants.Preferences.UI_THEME,
-                Constants.Themes.AUTOMATIC
-            )
-        )
+        AppCompatDelegate.setDefaultNightMode(SettingsRepository.theme)
     }
 }

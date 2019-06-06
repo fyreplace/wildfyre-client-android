@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.CallSuper
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.paging.PagedListAdapter
@@ -34,8 +33,7 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
     var onItemClickedListener: OnItemClickedListener<I>? = null
     var data: List<I> = emptyList()
 
-    @CallSuper
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+    final override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         markdown = Markwon.builder(recyclerView.context)
             .usePlugin(CorePlugin.create())
@@ -57,8 +55,7 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         )
     }
 
-    @CallSuper
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    final override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
 
         if (item == null) {
