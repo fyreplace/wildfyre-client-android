@@ -146,11 +146,11 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         listOf(go_up.parent as ViewGroup, go_down.parent as ViewGroup).forEach {
             it.layoutTransition.setAnimator(
                 LayoutTransition.APPEARING,
-                ANIMATOR_SCALE_UP
+                ANIMATOR_APPEARING
             )
             it.layoutTransition.setAnimator(
                 LayoutTransition.DISAPPEARING,
-                ANIMATOR_SCALE_DOWN
+                ANIMATOR_DISAPPEARING
             )
         }
 
@@ -282,12 +282,12 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     private companion object {
         const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
         val TRANSLATION_BUTTON = WildFyreApplication.context.resources.getDimension(R.dimen.comments_button_translation)
-        val ANIMATOR_SCALE_DOWN: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
+        val ANIMATOR_DISAPPEARING: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
             Unit,
             PropertyValuesHolder.ofFloat(View.TRANSLATION_X, 0f, TRANSLATION_BUTTON),
             PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0f)
         )
-        val ANIMATOR_SCALE_UP: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
+        val ANIMATOR_APPEARING: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
             Unit,
             PropertyValuesHolder.ofFloat(View.TRANSLATION_X, TRANSLATION_BUTTON, 0f),
             PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f)
