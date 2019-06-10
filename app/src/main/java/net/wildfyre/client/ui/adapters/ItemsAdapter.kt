@@ -70,8 +70,8 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         holder.authorName.isVisible = showAuthors && itemData.author != null
         holder.authorPicture.isVisible = holder.authorName.isVisible
         holder.subtitle.text = itemData.subtitle
-        holder.clickable.setOnClickListener { onItemClickedListener?.onItemClicked(item) }
         holder.loader.isVisible = false
+        holder.itemView.setOnClickListener { onItemClickedListener?.onItemClicked(item) }
 
         if (itemData.image != null) {
             holder.image.updateLayoutParams<ViewGroup.MarginLayoutParams> {
@@ -122,7 +122,6 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         val authorName: TextView = itemView.findViewById(R.id.author_name)
         val authorPicture: ImageView = itemView.findViewById(R.id.author_picture)
         val subtitle: TextView = itemView.findViewById(R.id.subtitle)
-        val clickable: View = itemView.findViewById(R.id.clickable)
         val loader: View = itemView.findViewById(R.id.loader)
 
         init {
