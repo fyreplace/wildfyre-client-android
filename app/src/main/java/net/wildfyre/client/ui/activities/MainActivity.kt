@@ -22,6 +22,7 @@ import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.updateLayoutParams
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -156,13 +157,10 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
 
         toolbar.doOnLayout {
-            val layoutParams = badge.layoutParams as ViewGroup.MarginLayoutParams?
-            layoutParams?.setMargins(
-                it.height / 2,
-                it.height / 2 - resources.getDimensionPixelOffset(R.dimen.margin_medium),
-                0,
-                0
-            )
+            badge.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                leftMargin = toolbar.height / 2
+                topMargin = toolbar.height / 2 - resources.getDimensionPixelOffset(R.dimen.margin_medium)
+            }
         }
     }
 
