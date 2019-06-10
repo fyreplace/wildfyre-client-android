@@ -57,7 +57,6 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        setHasOptionsMenu(true)
         markdown = Markwon.builder(context)
             .usePlugin(CorePlugin.create())
             .usePlugin(StrikethroughPlugin.create())
