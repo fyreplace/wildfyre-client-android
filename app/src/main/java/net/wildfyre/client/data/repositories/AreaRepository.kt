@@ -11,11 +11,11 @@ object AreaRepository {
         get() = WildFyreApplication.preferences.getString(Constants.Preferences.AREA_PREFERRED, "").orEmpty()
         set(value) = WildFyreApplication.preferences.edit { putString(Constants.Preferences.AREA_PREFERRED, value) }
 
-    suspend fun getAreas() = Services.webService.getAreas(AuthRepository.authToken.value!!).await()
+    suspend fun getAreas() = Services.webService.getAreas(AuthRepository.authToken).await()
 
     suspend fun getAreaReputation() =
         Services.webService.getAreaRep(
-            AuthRepository.authToken.value!!,
+            AuthRepository.authToken,
             preferredAreaName
         ).await()
 }

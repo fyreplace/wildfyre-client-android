@@ -14,6 +14,8 @@ import net.wildfyre.client.R
 import net.wildfyre.client.databinding.FragmentLoginBinding
 import net.wildfyre.client.ui.hideSoftKeyboard
 import net.wildfyre.client.viewmodels.LoginFragmentViewModel
+import net.wildfyre.client.viewmodels.MainActivityViewModel
+import net.wildfyre.client.viewmodels.lazyActivityViewModel
 import net.wildfyre.client.viewmodels.lazyViewModel
 
 /**
@@ -22,11 +24,13 @@ import net.wildfyre.client.viewmodels.lazyViewModel
 class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override val viewModels by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<LoginFragmentViewModel>()
+    private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         viewModel.authToken.observe(this, Observer {
             if (it.isNotEmpty()) {
+                mainViewModel.login()
                 findNavController().navigate(R.id.action_fragment_login_to_fragment_home)
             }
         })

@@ -8,7 +8,7 @@ import net.wildfyre.client.data.await
 object PostRepository {
     suspend fun getArchive(offset: Int, size: Int) =
         Services.webService.getPosts(
-            AuthRepository.authToken.value!!,
+            AuthRepository.authToken,
             AreaRepository.preferredAreaName,
             size,
             offset
@@ -16,7 +16,7 @@ object PostRepository {
 
     suspend fun getOwnPosts(offset: Int, size: Int) =
         Services.webService.getOwnPosts(
-            AuthRepository.authToken.value!!,
+            AuthRepository.authToken,
             AreaRepository.preferredAreaName,
             size,
             offset
@@ -24,21 +24,21 @@ object PostRepository {
 
     suspend fun getNextPosts(limit: Int) =
         Services.webService.getNextPosts(
-            AuthRepository.authToken.value!!,
+            AuthRepository.authToken,
             AreaRepository.preferredAreaName,
             limit
         ).await()
 
     suspend fun getPost(areaName: String?, id: Long) =
         Services.webService.getPost(
-            AuthRepository.authToken.value!!,
+            AuthRepository.authToken,
             areaName ?: AreaRepository.preferredAreaName,
             id
         ).await()
 
     suspend fun setSubscription(areaName: String?, id: Long, sub: Boolean) =
         Services.webService.putSubscription(
-            AuthRepository.authToken.value!!,
+            AuthRepository.authToken,
             areaName ?: AreaRepository.preferredAreaName,
             id,
             Subscription(sub)
@@ -46,7 +46,7 @@ object PostRepository {
 
     suspend fun spread(areaName: String?, id: Long, spread: Boolean) =
         Services.webService.postSpread(
-            AuthRepository.authToken.value!!,
+            AuthRepository.authToken,
             areaName ?: AreaRepository.preferredAreaName,
             id,
             Spread(spread)

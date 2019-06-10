@@ -6,7 +6,6 @@ import android.view.*
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.post_buttons.*
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.ActionsAreaReputationBinding
@@ -57,8 +56,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         menu.findItem(R.id.action_area_selector)?.actionView
             ?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                 private val areaStuff = listOf(R.id.action_area_spread, R.id.action_area_reputation)
-                private val mainActivityViewModel =
-                    ViewModelProviders.of(requireActivity()).get(MainActivityViewModel::class.java)
+                private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
 
                 override fun onViewAttachedToWindow(v: View?) = switchItems(true)
 
@@ -66,7 +64,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
 
                 private fun switchItems(showAreaStuff: Boolean) {
                     menu.forEach { it.isVisible = areaStuff.contains(it.itemId) == showAreaStuff }
-                    mainActivityViewModel.setNotificationBadgeVisible(!showAreaStuff)
+                    mainViewModel.setNotificationBadgeVisible(!showAreaStuff)
                 }
             })
 

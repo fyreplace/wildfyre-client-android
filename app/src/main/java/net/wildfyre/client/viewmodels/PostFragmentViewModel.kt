@@ -10,7 +10,6 @@ import kotlinx.coroutines.withContext
 import net.wildfyre.client.data.Comment
 import net.wildfyre.client.data.Post
 import net.wildfyre.client.data.SingleLiveEvent
-import net.wildfyre.client.data.repositories.AuthorRepository
 import net.wildfyre.client.data.repositories.CommentRepository
 import net.wildfyre.client.data.repositories.PostRepository
 import net.wildfyre.client.ui.prepareForMarkdown
@@ -28,7 +27,6 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
     val post: LiveData<Post?> = _post
     val subscribed: LiveData<Boolean> = _subscribed
     val contentLoaded: LiveData<Boolean> = Transformations.map(post) { it != null }
-    val selfId: LiveData<Long> = Transformations.map(AuthorRepository.self) { it.user }
     val authorId: LiveData<Long> = Transformations.map(post) { it?.author?.user ?: -1 }
     val markdownContent: LiveData<String> = _markdownContent
     val comments: LiveData<List<Comment>> = Transformations.map(post) { it?.comments ?: emptyList() }

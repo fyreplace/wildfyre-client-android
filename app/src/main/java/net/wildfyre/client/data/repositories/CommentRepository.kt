@@ -7,7 +7,7 @@ import net.wildfyre.client.data.await
 object CommentRepository {
     suspend fun sendComment(areaName: String?, postId: Long, comment: String) =
         Services.webService.postComment(
-            AuthRepository.authToken.value!!,
+            AuthRepository.authToken,
             areaName ?: AreaRepository.preferredAreaName,
             postId,
             CommentText(comment)
@@ -15,7 +15,7 @@ object CommentRepository {
 
     suspend fun deleteComment(areaName: String?, postId: Long, commentId: Long) =
         Services.webService.deleteComment(
-            AuthRepository.authToken.value!!,
+            AuthRepository.authToken,
             areaName ?: AreaRepository.preferredAreaName,
             postId,
             commentId

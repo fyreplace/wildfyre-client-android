@@ -13,21 +13,21 @@ object NotificationRepository {
 
     suspend fun getNotifications(offset: Int, size: Int) =
         Services.webService.getNotifications(
-            AuthRepository.authToken.value!!,
+            AuthRepository.authToken,
             size,
             offset
         ).await().also { mutableSuperNotification.postValue(it) }
 
     suspend fun fetchSuperNotification() = mutableSuperNotification.postValue(
         Services.webService.getNotifications(
-            AuthRepository.authToken.value!!,
+            AuthRepository.authToken,
             1,
             0
         ).await()
     )
 
     suspend fun clearNotifications() = mutableSuperNotification.postValue(
-        Services.webService.deleteNotifications(AuthRepository.authToken.value!!).await().let {
+        Services.webService.deleteNotifications(AuthRepository.authToken).await().let {
             SuperNotification(
                 count = 0,
                 results = emptyList()

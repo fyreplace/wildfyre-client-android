@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
+import net.wildfyre.client.data.Author
 import net.wildfyre.client.data.Post
 import net.wildfyre.client.data.repositories.AuthRepository
 import net.wildfyre.client.data.repositories.AuthorRepository
@@ -16,6 +17,8 @@ import net.wildfyre.client.data.repositories.SettingsRepository
 import java.text.SimpleDateFormat
 
 class MainActivityViewModel(application: Application) : FailureHandlingViewModel(application) {
+    private val _isLogged = MutableLiveData<Boolean>()
+    private val _self = MutableLiveData<Author?>()
     private var _userAvatarFileName: String? = null
     private var _userAvatarMimeType: String? = null
     private val _userAvatarNewData = MutableLiveData<ByteArray>()
@@ -24,10 +27,11 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     var startupLogin = true
         private set
-    val authToken: LiveData<String> = AuthRepository.authToken
-    val userName: LiveData<String> = Transformations.map(AuthorRepository.self) { it.name }
-    val userBio: LiveData<String> = Transformations.map(AuthorRepository.self) { it.bio }
-    val userAvatar: LiveData<String> = Transformations.map(AuthorRepository.self) { it.avatar }
+    val isLogged: LiveData<Boolean> = _isLogged
+    val userId: LiveData<Long> = Transformations.map(_self) { it?.user ?: -1 }
+    val userName: LiveData<String> = Transformations.map(_self) { it?.name.orEmpty() }
+    val userBio: LiveData<String> = Transformations.map(_self) { it?.bio.orEmpty() }
+    val userAvatar: LiveData<String> = Transformations.map(_self) { it?.avatar.orEmpty() }
     val userAvatarNewData: LiveData<ByteArray> = _userAvatarNewData
     val notificationCount: LiveData<Int> = Transformations.map(NotificationRepository.superNotification) { it.count }
     val notificationCountText: LiveData<String> =
@@ -38,18 +42,30 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     val shouldShowNotificationBadge = MutableLiveData<Boolean>()
 
     init {
+        if (AuthRepository.authToken.isNotEmpty()) {
+            _isLogged.value = true
+            updateProfileInfoAsync()
+        } else {
+            _isLogged.value = false
+        }
+
         selectedThemeIndex.value = THEMES.indexOfFirst { it == SettingsRepository.theme }
         selectedThemeIndex.observeForever { SettingsRepository.theme = THEMES[it] }
         shouldShowNotificationBadge.value = SettingsRepository.showBadge
         shouldShowNotificationBadge.observeForever { SettingsRepository.showBadge = it }
     }
 
-    fun logout() {
-        startupLogin = false
-        AuthRepository.clearAuthToken()
+    fun login() {
+        _isLogged.postValue(true)
+        updateProfileInfoAsync()
     }
 
-    fun updateProfileAsync() = launchCatching(Dispatchers.IO) { AuthorRepository.fetchSelf() }
+    fun logout() {
+        startupLogin = false
+        _isLogged.postValue(false)
+        _self.postValue(null)
+        AuthRepository.clearAuthToken()
+    }
 
     fun updateNotificationCountAsync() = launchCatching(Dispatchers.IO) {
         NotificationRepository.fetchSuperNotification()
@@ -57,15 +73,17 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     fun setProfileAsync(bio: String) = launchCatching {
         if (bio != userBio.value) {
-            withContext(Dispatchers.IO) { AuthorRepository.updateSelfBio(bio) }
+            _self.postValue(withContext(Dispatchers.IO) { AuthorRepository.updateSelfBio(bio) })
         }
 
         if (userAvatarNewData.value != null && _userAvatarFileName != null && _userAvatarMimeType != null) {
             withContext(Dispatchers.IO) {
-                AuthorRepository.updateSelfAvatar(
-                    _userAvatarFileName!!,
-                    _userAvatarMimeType!!,
-                    userAvatarNewData.value!!
+                _self.postValue(
+                    AuthorRepository.updateSelfAvatar(
+                        _userAvatarFileName!!,
+                        _userAvatarMimeType!!,
+                        userAvatarNewData.value!!
+                    )
                 )
             }
         }
@@ -94,6 +112,11 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
             )
         }
     )
+
+    private fun updateProfileInfoAsync() = launchCatching {
+        updateNotificationCountAsync()
+        _self.postValue(AuthorRepository.getSelf())
+    }
 
     companion object {
         private val DATE_FORMAT = SimpleDateFormat.getDateInstance()

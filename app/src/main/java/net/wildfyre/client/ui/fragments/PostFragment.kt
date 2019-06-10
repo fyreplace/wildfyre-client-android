@@ -98,7 +98,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         }
 
         viewModel.post.observe(viewLifecycleOwner, Observer { mainViewModel.setPost(it) })
-        viewModel.selfId.observe(viewLifecycleOwner, Observer { commentsAdapter.selfId = it })
+        mainViewModel.userId.observe(viewLifecycleOwner, Observer { commentsAdapter.selfId = it })
         viewModel.authorId.observe(viewLifecycleOwner, Observer { commentsAdapter.authorId = it })
         viewModel.markdownContent.observe(viewLifecycleOwner, Observer {
             launch {
@@ -243,7 +243,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         menu.findItem(R.id.action_copy).setOnMenuItemClickListener { copyComment(position, comment); true }
         menu.findItem(R.id.action_share).setOnMenuItemClickListener { shareComment(position, comment); true }
         menu.findItem(R.id.action_delete).run {
-            isVisible = comment.author?.user == viewModel.selfId.value
+            isVisible = comment.author?.user == mainViewModel.userId.value
             setOnMenuItemClickListener { deleteComment(position, comment); true }
         }
     }

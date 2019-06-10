@@ -88,11 +88,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
         navigation_view.menu.findItem(R.id.fragment_own_posts).actionView?.setOnClickListener { ohNo(this) }
 
-        viewModel.authToken.observe(this, Observer {
-            if (it.isNotEmpty()) {
-                viewModel.updateProfileAsync()
-                viewModel.updateNotificationCountAsync()
-            } else {
+        viewModel.isLogged.observe(this, Observer {
+            if (!it) {
                 val navController = findNavController(R.id.navigation_host)
 
                 if (navController.currentDestination?.id != R.id.fragment_login) {
