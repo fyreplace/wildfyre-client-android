@@ -17,9 +17,7 @@ import net.wildfyre.client.viewmodels.*
  * [androidx.fragment.app.Fragment] for showing new posts to the user.
  */
 class HomeFragment : PostFragment(), AreaSelectingFragment {
-    override val viewModels: List<FailureHandlingViewModel> by lazy {
-        super.viewModels + listOf(viewModel, areaSelectingViewModel)
-    }
+    override val viewModels: List<FailureHandlingViewModel> by lazy { super.viewModels + areaSelectingViewModel }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
     override val viewModel by lazyViewModel<HomeFragmentViewModel>()
 
