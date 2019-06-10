@@ -11,13 +11,15 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
     private val postReserve: MutableList<Post> = mutableListOf()
     private var postReserveJob: Job? = null
     private var endOfPosts = false
+    private var lastAreaName: String? = null
 
     fun nextPostAsync(areaName: String? = null) = launchCatching {
-        if (areaName != null) {
-            if (areaName == postAreaName) {
-                return@launchCatching
-            }
+        if (areaName == lastAreaName) {
+            return@launchCatching
+        }
 
+        if (areaName != null) {
+            lastAreaName = areaName
             postReserve.clear()
         }
 
