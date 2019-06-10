@@ -8,7 +8,7 @@ apply plugin: 'org.jetbrains.dokka-android'
 ext {
     versionMajor = 0
     versionMinor = 0
-    versionBuild = 1
+    versionPatch = 1
 }
 
 android {
@@ -22,8 +22,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 29
         multiDexEnabled true
-        versionCode versionMajor * 1_000_000 + versionMinor * 1000 + versionBuild
-        versionName String.valueOf(versionMajor) + "." + String.valueOf(versionMinor) + "." + String.valueOf(versionBuild)
+        versionCode versionMajor * 1_000_000 + versionMinor * 1000 + versionPatch
+        versionName String.valueOf(versionMajor) + "." + String.valueOf(versionMinor) + "." + String.valueOf(versionPatch)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
