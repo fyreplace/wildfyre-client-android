@@ -8,7 +8,7 @@ object CommentRepository {
     suspend fun sendComment(areaName: String?, postId: Long, comment: String) =
         Services.webService.postComment(
             AuthRepository.authToken.value!!,
-            areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
+            areaName ?: AreaRepository.preferredAreaName,
             postId,
             CommentText(comment)
         ).await()
@@ -16,7 +16,7 @@ object CommentRepository {
     suspend fun deleteComment(areaName: String?, postId: Long, commentId: Long) =
         Services.webService.deleteComment(
             AuthRepository.authToken.value!!,
-            areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
+            areaName ?: AreaRepository.preferredAreaName,
             postId,
             commentId
         ).await()
