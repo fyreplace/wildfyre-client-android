@@ -45,10 +45,8 @@ interface AreaSelectingFragment {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                areaSelectingViewModel.areas.value?.get(position)?.name?.let {
-                    areaSelectingViewModel.setPreferredAreaNameAsync(it)
-                    areaSelectingViewModel.updatePreferredAreaAsync()
-                }
+                areaSelectingViewModel.areas.value?.get(position)
+                    ?.name?.let { areaSelectingViewModel.setPreferredAreaNameAsync(it) }
             }
         }
 

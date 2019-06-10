@@ -29,12 +29,10 @@ class AreaSelectingFragmentViewModel(application: Application) : FailureHandling
         }
     }
 
-    fun updateAreasAsync() =
-        launchCatching(Dispatchers.IO) { AreaRepository.fetchAreas() }
+    fun updateAreasAsync() = launchCatching(Dispatchers.IO) { AreaRepository.fetchAreas() }
 
-    fun updatePreferredAreaAsync() =
-        launchCatching(Dispatchers.IO) { AreaRepository.fetchAreaReputation(preferredAreaName.value!!) }
-
-    fun setPreferredAreaNameAsync(areaName: String) =
-        launchCatching(Dispatchers.IO) { AreaRepository.setPreferredAreaName(areaName) }
+    fun setPreferredAreaNameAsync(areaName: String) = launchCatching(Dispatchers.IO) {
+        AreaRepository.setPreferredAreaName(areaName)
+        AreaRepository.fetchAreaReputation(areaName)
+    }
 }
