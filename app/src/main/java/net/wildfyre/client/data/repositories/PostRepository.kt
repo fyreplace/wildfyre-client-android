@@ -1,6 +1,7 @@
 package net.wildfyre.client.data.repositories
 
 import net.wildfyre.client.data.Services
+import net.wildfyre.client.data.Spread
 import net.wildfyre.client.data.Subscription
 import net.wildfyre.client.data.await
 
@@ -41,5 +42,13 @@ object PostRepository {
             areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
             id,
             Subscription(sub)
+        ).await()
+
+    suspend fun spread(areaName: String?, id: Long, spread: Boolean) =
+        Services.webService.postSpread(
+            AuthRepository.authToken.value!!,
+            areaName ?: AreaRepository.preferredAreaName.value.orEmpty(),
+            id,
+            Spread(spread)
         ).await()
 }

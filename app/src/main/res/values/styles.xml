@@ -57,4 +57,14 @@
         <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
 
+    <style name="AppTheme.ExtinguishButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="android:textColor">@color/extinguish</item>
+        <item name="colorControlHighlight">@color/extinguish</item>
+    </style>
+
+    <style name="AppTheme.IgniteButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="android:textColor">@color/ignite</item>
+        <item name="colorControlHighlight">@color/ignite</item>
+    </style>
+
 </resources>

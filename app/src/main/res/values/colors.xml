@@ -17,4 +17,6 @@
     <color name="navigation">@android:color/background_dark</color>
     <color name="loginLogo">@color/colorAccent</color>
     <color name="badgeBackground">#FFFF00</color>
+    <color name="extinguish">#0091EA</color>
+    <color name="ignite">#FF6D00</color>
 </resources>

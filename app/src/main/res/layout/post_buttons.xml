@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <View
+        android:id="@+id/top_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/dividerHorizontal"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/vertical_center"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="?android:attr/dividerVertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/extinguish"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/post_button_size"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/post_extinguish"
+        android:textAppearance="?attr/textAppearanceButton"
+        android:textSize="@dimen/post_button_text_size"
+        android:theme="@style/AppTheme.ExtinguishButtonOverlay"
+        app:layout_constraintEnd_toStartOf="@id/vertical_center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_separator" />
+
+    <TextView
+        android:id="@+id/ignite"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/post_button_size"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/post_ignite"
+        android:textAppearance="?attr/textAppearanceButton"
+        android:textSize="@dimen/post_button_text_size"
+        android:theme="@style/AppTheme.IgniteButtonOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/vertical_center"
+        app:layout_constraintTop_toBottomOf="@id/top_separator" />
+</androidx.constraintlayout.widget.ConstraintLayout>

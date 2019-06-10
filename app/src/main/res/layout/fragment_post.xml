@@ -22,23 +22,43 @@
             android:layout_gravity="center"
             android:visibility="@{safeUnbox(model.contentLoaded) ? View.GONE : View.VISIBLE}" />
 
-        <net.wildfyre.client.ui.widgets.MarkdownRecyclerView
-            android:id="@+id/content"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/comments_header_height"
-            android:layout_marginBottom="@dimen/comments_header_height"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:overScrollMode="never"
-            android:padding="@dimen/margin_medium"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_marginBottom="@dimen/comments_header_height">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/buttons"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <net.wildfyre.client.ui.widgets.MarkdownRecyclerView
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    android:padding="@dimen/margin_medium"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </FrameLayout>
+
+            <include
+                android:id="@+id/buttons"
+                layout="@layout/post_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
             android:id="@+id/collapsible_comments"
-            layout="@layout/fragment_post_comments"
+            layout="@layout/post_comments"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"

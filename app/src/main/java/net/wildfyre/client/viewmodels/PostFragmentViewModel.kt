@@ -16,8 +16,8 @@ import net.wildfyre.client.data.repositories.PostRepository
 import net.wildfyre.client.ui.prepareForMarkdown
 
 open class PostFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
-    private var _postAreaName: String? = null
-    private var _postId: Long = -1
+    protected var postAreaName: String? = null
+    protected var postId: Long = -1
     private val _post = MutableLiveData<Post>()
     private val _subscribed = MediatorLiveData<Boolean>()
     private val _markdownContent = MediatorLiveData<String>()
@@ -60,32 +60,32 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
     fun setPostDataAsync(areaName: String?, id: Long) = launchCatching {
         val newPost = if (id == -1L) null else withContext(Dispatchers.IO) { PostRepository.getPost(areaName, id) }
         setPostAsync(newPost).join()
-        _postAreaName = areaName
+        postAreaName = areaName
     }
 
     fun setPostAsync(post: Post?) = launchCatching {
-        _postAreaName = null
-        _postId = post?.id ?: -1
+        postAreaName = null
+        postId = post?.id ?: -1
         _post.postValue(post)
     }
 
     fun changeSubscriptionAsync() = launchCatching(Dispatchers.IO) {
         _subscribed.postValue(
             PostRepository.setSubscription(
-                _postAreaName,
-                _postId,
+                postAreaName,
+                postId,
                 !(subscribed.value ?: false)
             ).subscribed
         )
     }
 
     fun sendNewCommentAsync() = launchCatching {
-        if (newCommentData.value != null && _postId != -1L) {
+        if (newCommentData.value != null && postId != -1L) {
             _commentAddedEvent.postValue(
                 withContext(Dispatchers.IO) {
                     CommentRepository.sendComment(
-                        _postAreaName,
-                        _postId,
+                        postAreaName,
+                        postId,
                         newCommentData.value!!
                     )
                 }
@@ -95,8 +95,8 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
     }
 
     fun deleteCommentAsync(position: Int, comment: Comment) = launchCatching {
-        if (_postId != -1L) {
-            withContext(Dispatchers.IO) { CommentRepository.deleteComment(_postAreaName, _postId, comment.id) }
+        if (postId != -1L) {
+            withContext(Dispatchers.IO) { CommentRepository.deleteComment(postAreaName, postId, comment.id) }
             _commentRemovedEvent.postValue(position)
         }
     }

@@ -1,13 +1,13 @@
 package net.wildfyre.client.ui.fragments
 
 import android.content.Context
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.os.Bundle
+import android.view.*
 import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import kotlinx.android.synthetic.main.post_buttons.*
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.ActionsAreaReputationBinding
 import net.wildfyre.client.databinding.ActionsAreaSpreadBinding
@@ -27,9 +27,19 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         super.onAttach(context)
         areaSelectingViewModel.preferredAreaName.observe(this, Observer {
             if (!it.isNullOrEmpty()) {
-                viewModel.nextPostAsync(true)
+                viewModel.nextPostAsync(it)
             }
         })
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        super.onCreateView(inflater, container, savedInstanceState)
+            .apply { findViewById<View>(R.id.buttons).isVisible = true }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        extinguish.setOnClickListener { viewModel.spreadAsync(false) }
+        ignite.setOnClickListener { viewModel.spreadAsync(true) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

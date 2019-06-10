@@ -12,8 +12,12 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
     private var postReserveJob: Job? = null
     private var endOfPosts = false
 
-    fun nextPostAsync(forceRefresh: Boolean) = launchCatching {
-        if (forceRefresh) {
+    fun nextPostAsync(areaName: String? = null) = launchCatching {
+        if (areaName != null) {
+            if (areaName == postAreaName) {
+                return@launchCatching
+            }
+
             postReserve.clear()
         }
 
@@ -26,11 +30,16 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
             return@launchCatching
         }
 
-        setPostAsync(postReserve.first())
+        setPostAsync(postReserve.removeAt(0))
 
-        if (postReserve.size < RESERVE_SIZE / 2) {
+        if (postReserve.size <= RESERVE_SIZE / 2) {
             queueJob()
         }
+    }
+
+    fun spreadAsync(spread: Boolean) = launchCatching(Dispatchers.IO) {
+        PostRepository.spread(postAreaName, postId, spread)
+        nextPostAsync().join()
     }
 
     private suspend fun fillReserve() {
