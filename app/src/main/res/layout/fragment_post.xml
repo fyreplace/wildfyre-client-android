@@ -20,7 +20,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{safeUnbox(model.contentLoaded) ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{safeUnbox(model.contentLoaded) || !safeUnbox(model.hasContent) ? View.GONE : View.VISIBLE}" />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:paddingLeft="@dimen/margin_large"
+            android:paddingRight="@dimen/margin_large"
+            android:textAppearance="?attr/textAppearanceHeadline4"
+            android:visibility="@{safeUnbox(model.hasContent) ? View.GONE : View.VISIBLE}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

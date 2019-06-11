@@ -55,6 +55,7 @@
     <string name="post_comment_menu_copy">Copy comment</string>
     <string name="post_comment_menu_share">Share comment</string>
     <string name="post_comment_menu_delete">Delete comment</string>
+    <string name="home_empty">No more posts in this area</string>
     <string name="image_desc_user_picture">Profile picture</string>
     <string name="image_desc_author_picture">Author picture</string>
     <string name="image_desc_post_picture">Post picture</string>

@@ -6,6 +6,7 @@ import android.view.*
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.post_buttons.*
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.ActionsAreaReputationBinding
@@ -35,6 +36,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        text.setText(R.string.home_empty)
         extinguish.setOnClickListener { viewModel.spreadAsync(false) }
         ignite.setOnClickListener { viewModel.spreadAsync(true) }
     }

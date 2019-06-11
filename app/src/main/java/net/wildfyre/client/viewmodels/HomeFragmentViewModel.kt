@@ -24,7 +24,7 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
         }
 
         if (postReserve.isEmpty()) {
-            setPostAsync(null)
+            setPost(null)
             fillReserve()
         }
 
@@ -32,7 +32,11 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
             return@launchCatching
         }
 
-        setPostAsync(postReserve.removeAt(0))
+        if (hasContent.value != true) {
+            _hasContent.postValue(true)
+        }
+
+        setPost(postReserve.removeAt(0))
 
         if (postReserve.size <= RESERVE_SIZE / 2) {
             queueJob()
@@ -45,6 +49,7 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
     }
 
     private suspend fun fillReserve() {
+        endOfPosts = false
         postReserveJob?.join()
 
         while (!endOfPosts && postReserve.isEmpty()) {
@@ -58,9 +63,10 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
             val superPost = withContext(Dispatchers.IO) { PostRepository.getNextPosts(RESERVE_SIZE) }
 
             if (superPost.count == 0) {
+                _hasContent.postValue(false)
                 endOfPosts = true
             } else {
-                postReserve.addAll(superPost.results)
+                postReserve.addAll(superPost.results.filter { p -> postReserve.find { it.id == p.id } == null })
             }
 
             postReserveJob = null

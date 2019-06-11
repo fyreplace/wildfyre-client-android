@@ -17,6 +17,7 @@ import net.wildfyre.client.ui.prepareForMarkdown
 open class PostFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
     protected var postAreaName: String? = null
     protected var postId: Long = -1
+    protected val _hasContent = MutableLiveData<Boolean>()
     private val _post = MutableLiveData<Post>()
     private val _subscribed = MediatorLiveData<Boolean>()
     private val _markdownContent = MediatorLiveData<String>()
@@ -24,18 +25,20 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
     private val _commentRemovedEvent = SingleLiveEvent<Int>()
     private val _commentCount = MediatorLiveData<Int>()
 
+    val hasContent: LiveData<Boolean> = _hasContent
     val post: LiveData<Post?> = _post
-    val subscribed: LiveData<Boolean> = _subscribed
     val contentLoaded: LiveData<Boolean> = Transformations.map(post) { it != null }
     val authorId: LiveData<Long> = Transformations.map(post) { it?.author?.user ?: -1 }
-    val markdownContent: LiveData<String> = _markdownContent
     val comments: LiveData<List<Comment>> = Transformations.map(post) { it?.comments ?: emptyList() }
+    val subscribed: LiveData<Boolean> = _subscribed
+    val markdownContent: LiveData<String> = _markdownContent
     val commentAddedEvent: LiveData<Comment> = _commentAddedEvent
     val commentRemovedEvent: LiveData<Int> = _commentRemovedEvent
     val commentCount: LiveData<Int> = _commentCount
     val newCommentData = MutableLiveData<String>()
 
     init {
+        _hasContent.value = true
         _subscribed.addSource(post) { _subscribed.postValue(it?.subscribed ?: false) }
         _markdownContent.addSource(post) {
             launchCatching(Dispatchers.Default) {
@@ -57,11 +60,11 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
 
     fun setPostDataAsync(areaName: String?, id: Long) = launchCatching {
         val newPost = if (id == -1L) null else withContext(Dispatchers.IO) { PostRepository.getPost(areaName, id) }
-        setPostAsync(newPost).join()
+        setPost(newPost)
         postAreaName = areaName
     }
 
-    fun setPostAsync(post: Post?) = launchCatching {
+    fun setPost(post: Post?) {
         postAreaName = null
         postId = post?.id ?: -1
         _post.postValue(post)
