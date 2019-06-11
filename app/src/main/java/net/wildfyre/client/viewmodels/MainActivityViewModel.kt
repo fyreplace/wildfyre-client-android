@@ -22,6 +22,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     private var _userAvatarFileName: String? = null
     private var _userAvatarMimeType: String? = null
     private val _userAvatarNewData = MutableLiveData<ByteArray>()
+    private val _notificationCount = MutableLiveData<Int>()
     private val _notificationBadgeVisible = MutableLiveData<Boolean>()
     private var _titleInfo = MutableLiveData<PostInfo?>()
 
@@ -33,7 +34,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     val userBio: LiveData<String> = Transformations.map(_self) { it?.bio.orEmpty() }
     val userAvatar: LiveData<String> = Transformations.map(_self) { it?.avatar.orEmpty() }
     val userAvatarNewData: LiveData<ByteArray> = _userAvatarNewData
-    val notificationCount: LiveData<Int> = Transformations.map(NotificationRepository.superNotification) { it.count }
+    val notificationCount: LiveData<Int> = _notificationCount
     val notificationCountText: LiveData<String> =
         Transformations.map(notificationCount) { if (it < 100) it.toString() else "99" }
     val notificationBadgeVisible: LiveData<Boolean> = _notificationBadgeVisible
@@ -68,7 +69,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     }
 
     fun updateNotificationCountAsync() = launchCatching(Dispatchers.IO) {
-        NotificationRepository.fetchSuperNotification()
+        _notificationCount.postValue(NotificationRepository.getNotificationCount())
     }
 
     fun setProfileAsync(bio: String) = launchCatching {
