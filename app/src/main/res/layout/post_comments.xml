@@ -23,7 +23,18 @@
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{safeUnbox(model.contentLoaded) ? View.GONE : View.VISIBLE}"
+            android:visibility="@{safeUnbox(model.contentLoaded) || !safeUnbox(model.hasContent) ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_comments_empty"
+            android:textAppearance="?attr/textAppearanceHeadline4"
+            android:visibility="@{safeUnbox(model.hasContent) &amp;&amp; (!safeUnbox(model.contentLoaded) || safeUnbox(model.commentCount) &gt; 0) ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +51,6 @@
             android:paddingRight="@dimen/margin_medium"
             android:text="@{@plurals/post_comment_count(safeUnbox(model.commentCount), safeUnbox(model.commentCount))}"
             android:textAppearance="?attr/textAppearanceBody1"
-            android:textColor="@color/foreground"
             android:theme="@style/AppTheme.Button.HighlightButtonOverlay"
             app:drawableLeftCompat="@drawable/ic_comment_black_24dp"
             app:drawableStartCompat="@drawable/ic_comment_black_24dp"

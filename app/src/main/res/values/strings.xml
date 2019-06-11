@@ -45,6 +45,7 @@
     <string name="post_actions_unsubscribe">Unsubscribe</string>
     <string name="post_extinguish">Extinguish</string>
     <string name="post_ignite">Ignite</string>
+    <string name="post_comments_empty">No comments</string>
     <plurals name="post_comment_count">
         <item quantity="zero">No comments</item>
         <item quantity="one">%1$d comment</item>
