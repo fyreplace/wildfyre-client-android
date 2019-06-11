@@ -11,12 +11,12 @@ import kotlinx.android.synthetic.main.fragment_items_list.*
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.FragmentItemsListBinding
 import net.wildfyre.client.ui.adapters.ItemsAdapter
-import net.wildfyre.client.viewmodels.ItemsListViewModel
+import net.wildfyre.client.viewmodels.ItemsListFragmentViewModel
 
 /**
  * Base class for fragments displaying a list of items.
  */
-abstract class ItemsListFragment<I, VM : ItemsListViewModel<I>, A : ItemsAdapter<I>> :
+abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : ItemsAdapter<I>> :
     FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemClickedListener<I> {
     protected var onRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     abstract override val viewModel: VM

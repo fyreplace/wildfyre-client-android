@@ -15,7 +15,7 @@ import net.wildfyre.client.data.sources.ItemsDataSourceFactory
 /**
  * Interface for ViewModels containing a list of items.
  */
-abstract class ItemsListViewModel<I>(application: Application) : FailureHandlingViewModel(application),
+abstract class ItemsListFragmentViewModel<I>(application: Application) : FailureHandlingViewModel(application),
     DataLoadingListener {
     private var firstLoading = true
     private val _loading = MutableLiveData<Boolean>()

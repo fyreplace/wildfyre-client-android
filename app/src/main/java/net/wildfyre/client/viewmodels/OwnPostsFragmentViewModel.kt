@@ -5,6 +5,6 @@ import net.wildfyre.client.data.Post
 import net.wildfyre.client.data.sources.ItemsDataSourceFactory
 import net.wildfyre.client.data.sources.OwnPostsDataSourceFactory
 
-class OwnPostsFragmentViewModel(application: Application) : ItemsListViewModel<Post>(application) {
+class OwnPostsFragmentViewModel(application: Application) : ItemsListFragmentViewModel<Post>(application) {
     override val factory: ItemsDataSourceFactory<Post> = OwnPostsDataSourceFactory(this, this)
 }

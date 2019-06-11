@@ -12,13 +12,13 @@ import net.wildfyre.client.data.Post
 import net.wildfyre.client.ui.adapters.PostsAdapter
 import net.wildfyre.client.viewmodels.AreaSelectingFragmentViewModel
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
-import net.wildfyre.client.viewmodels.ItemsListViewModel
+import net.wildfyre.client.viewmodels.ItemsListFragmentViewModel
 import net.wildfyre.client.viewmodels.lazyActivityViewModel
 
 /**
  * [androidx.fragment.app.Fragment] listing posts.
  */
-abstract class PostsFragment<VM : ItemsListViewModel<Post>> : ItemsListFragment<Post, VM, PostsAdapter>(),
+abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListFragment<Post, VM, PostsAdapter>(),
     AreaSelectingFragment {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
