@@ -6,7 +6,7 @@ import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.Notification
 
 /**
- * Adapter for displaying notifications in [net.wildfyre.client.ui.NotificationsFragment].
+ * Adapter for displaying notifications in [net.wildfyre.client.ui.fragments.NotificationsFragment].
  */
 class NotificationsAdapter : ItemsAdapter<Notification>(NotificationCallback(), true) {
     override fun getItemData(item: Notification): ItemDataHolder = ItemDataHolder(
@@ -26,7 +26,7 @@ class NotificationsAdapter : ItemsAdapter<Notification>(NotificationCallback(), 
                 oldItem.post.id == newItem.post.id
 
             override fun areContentsTheSame(oldItem: Notification, newItem: Notification): Boolean =
-                oldItem == newItem
+                areItemsTheSame(oldItem, newItem) && oldItem.comments.size == newItem.comments.size
         }
     }
 }

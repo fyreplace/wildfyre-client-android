@@ -5,7 +5,7 @@ import net.wildfyre.client.data.Post
 import java.text.SimpleDateFormat
 
 /**
- * Adapter for displaying posts with [net.wildfyre.client.ui.PostsFragment] implementations.
+ * Adapter for displaying posts with [net.wildfyre.client.ui.fragments.PostsFragment] implementations.
  */
 open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(), showAuthors) {
     override fun getItemData(item: Post): ItemDataHolder = ItemDataHolder(
@@ -23,7 +23,10 @@ open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(
                 oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
-                oldItem == newItem
+                areItemsTheSame(oldItem, newItem) &&
+                    oldItem.text == newItem.text &&
+                    oldItem.image == newItem.image &&
+                    oldItem.author == newItem.author
         }
     }
 }
