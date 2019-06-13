@@ -170,14 +170,13 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             return
         }
 
-        POST_REGEX.matchEntire(intent.data?.path.orEmpty())?.let { result ->
-            findNavController(R.id.navigation_host).navigate(
-                NavigationMainDirections.actionGlobalFragmentPost(
-                    areaName = result.groupValues[1],
-                    postId = result.groupValues[2].toLong(),
-                    selectedCommentId = result.groupValues[3].takeIf { it.isNotEmpty() }?.toLong() ?: -1
-                )
-            )
+        val uri = intent.data?.path.orEmpty()
+
+        for (pair in REGEX_TO_DIRECTIONS) {
+            pair.key.matchEntire(uri)?.let {
+                findNavController(R.id.navigation_host).navigate(pair.value(it))
+                return
+            }
         }
     }
 
@@ -386,6 +385,21 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         )
 
         val POST_REGEX = Regex("/areas/(\\w+)/(\\d+)(?:/(\\d+))?")
+        val USER_REGEX = Regex("/user/(\\d+)")
+        val REGEX_TO_DIRECTIONS = mapOf(
+            POST_REGEX to { result: MatchResult ->
+                NavigationMainDirections.actionGlobalFragmentPost(
+                    areaName = result.groupValues[1],
+                    postId = result.groupValues[2].toLong(),
+                    selectedCommentId = result.groupValues[3].takeIf { it.isNotEmpty() }?.toLong() ?: -1
+                )
+            },
+            USER_REGEX to { result: MatchResult ->
+                NavigationMainDirections.actionGlobalFragmentUser(
+                    userId = result.groupValues[1].toLong()
+                )
+            }
+        )
 
         val IMAGE_TRANSITION = DrawableTransitionOptions.withCrossFade()
         val AVATAR_TRANSFORM = MultiTransformation(

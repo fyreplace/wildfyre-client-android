@@ -78,6 +78,7 @@
             android:name="userId"
             android:defaultValue="-1L"
             app:argType="long" />
+        <deepLink app:uri="client.wildfyre.net/user/{userId}" />
     </fragment>
     <action
         android:id="@+id/action_global_fragment_login"
