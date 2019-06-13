@@ -104,15 +104,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     fun setNotificationBadgeVisible(visible: Boolean) = _notificationBadgeVisible.postValue(visible)
 
-    fun setPost(post: Post?) = _titleInfo.postValue(
-        post?.let {
-            PostInfo(
-                it.author?.name,
-                it.author?.avatar,
-                DATE_FORMAT.format(it.created)
-            )
-        }
-    )
+    fun setPost(post: Post?) = _titleInfo.postValue(post?.let { PostInfo(it.author, DATE_FORMAT.format(it.created)) })
 
     private fun updateProfileInfoAsync() = launchCatching {
         updateNotificationCountAsync()
@@ -138,8 +130,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     }
 
     data class PostInfo(
-        val authorName: String?,
-        val authorPicture: String?,
+        val author: Author?,
         val date: String
     )
 }

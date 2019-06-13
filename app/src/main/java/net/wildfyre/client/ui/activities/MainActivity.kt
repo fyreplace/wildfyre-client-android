@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import androidx.drawerlayout.widget.DrawerLayout
@@ -43,6 +44,7 @@ import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.databinding.*
+import net.wildfyre.client.ui.fragments.UserFragmentDirections
 import net.wildfyre.client.ui.ohNo
 import net.wildfyre.client.viewmodels.MainActivityViewModel
 import net.wildfyre.client.viewmodels.lazyViewModel
@@ -171,9 +173,9 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         POST_REGEX.matchEntire(intent.data?.path.orEmpty())?.let { result ->
             findNavController(R.id.navigation_host).navigate(
                 NavigationMainDirections.actionGlobalFragmentPost(
-                    result.groupValues[1],
-                    result.groupValues[2].toLong(),
-                    result.groupValues[3].takeIf { it.isNotEmpty() }?.toLong() ?: -1
+                    areaName = result.groupValues[1],
+                    postId = result.groupValues[2].toLong(),
+                    selectedCommentId = result.groupValues[3].takeIf { it.isNotEmpty() }?.toLong() ?: -1
                 )
             )
         }
@@ -274,16 +276,16 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             return
         }
 
-        toolbar.title = " " + (info.authorName ?: getString(R.string.main_author_anonymous))
+        toolbar.title = " " + (info.author?.name ?: getString(R.string.main_author_anonymous))
         toolbar.subtitle = " " + info.date
         toolbar.contentInsetStartWithNavigation = 0
         toolbar.setTitleTextAppearance(this, R.style.AppTheme_TextAppearance_ActionBar_Title_Condensed)
 
         val size = resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_size)
 
-        if (info.authorName != null) {
+        if (info.author != null) {
             AppGlide.with(ImageView(this))
-                .load(info.authorPicture ?: R.drawable.ic_launcher)
+                .load(info.author.avatar ?: R.drawable.ic_launcher)
                 .placeholder(android.R.color.transparent)
                 .transition(IMAGE_TRANSITION)
                 .transform(LOGO_TRANSFORM)
@@ -292,6 +294,14 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
                     override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                         toolbar.logo = resource
+                        toolbar.children
+                            .filter { it is ImageView }
+                            .map { it as ImageView }
+                            .find { it.drawable != toolbar.navigationIcon }
+                            ?.setOnClickListener {
+                                findNavController(R.id.navigation_host)
+                                    .navigate(UserFragmentDirections.actionGlobalFragmentUser(author = info.author))
+                            }
                     }
                 })
         }
@@ -371,7 +381,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         )
         val NO_TITLE_DESTINATIONS = setOf(
             R.id.fragment_home,
-            R.id.fragment_post
+            R.id.fragment_post,
+            R.id.fragment_user
         )
 
         val POST_REGEX = Regex("/areas/(\\w+)/(\\d+)(?:/(\\d+))?")

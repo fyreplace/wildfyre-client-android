@@ -11,6 +11,8 @@ import okhttp3.RequestBody
 object AuthorRepository {
     suspend fun getSelf() = Services.webService.getSelf(AuthRepository.authToken).await()
 
+    suspend fun getUser(userId: Long) = Services.webService.getUser(AuthRepository.authToken, userId).await()
+
     suspend fun updateSelfBio(bio: String) =
         Services.webService.patchBio(AuthRepository.authToken, AuthorPatch(bio)).await()
 

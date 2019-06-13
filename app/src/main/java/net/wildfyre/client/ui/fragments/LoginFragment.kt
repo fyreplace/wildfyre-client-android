@@ -13,16 +13,13 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import net.wildfyre.client.R
 import net.wildfyre.client.databinding.FragmentLoginBinding
 import net.wildfyre.client.ui.hideSoftKeyboard
-import net.wildfyre.client.viewmodels.LoginFragmentViewModel
-import net.wildfyre.client.viewmodels.MainActivityViewModel
-import net.wildfyre.client.viewmodels.lazyActivityViewModel
-import net.wildfyre.client.viewmodels.lazyViewModel
+import net.wildfyre.client.viewmodels.*
 
 /**
  * [androidx.fragment.app.Fragment] showing a login screen to the user.
  */
 class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
-    override val viewModels by lazy { listOf(viewModel) }
+    override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<LoginFragmentViewModel>()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
 
