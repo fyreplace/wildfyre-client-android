@@ -60,8 +60,11 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         _isLogged.value = true
         _notificationCountUpdater = viewModelScope.launch {
             while (true) {
-                delay(10_000)
-                updateNotificationCountAsync().join()
+                delay(Constants.Api.NOTIFICATIONS_POLLING_MILLIS)
+
+                if (isActive) {
+                    updateNotificationCountAsync().join()
+                }
             }
         }
         updateProfileInfoAsync()
