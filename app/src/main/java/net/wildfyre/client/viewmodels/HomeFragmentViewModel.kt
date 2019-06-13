@@ -68,7 +68,7 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
                 _hasContent.postValue(false)
                 endOfPosts = true
             } else {
-                postReserve.addAll(superPost.results.filter { p -> postReserve.find { it.id == p.id } == null })
+                postReserve.addAll(superPost.results.filter { p -> p.id != postId && postReserve.find { it.id == p.id } == null })
             }
 
             postReserveJob = null
@@ -76,6 +76,6 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
     }
 
     private companion object {
-        const val RESERVE_SIZE = 6
+        const val RESERVE_SIZE = 10
     }
 }
