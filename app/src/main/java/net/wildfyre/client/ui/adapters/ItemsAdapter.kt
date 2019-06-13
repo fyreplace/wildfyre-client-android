@@ -22,7 +22,6 @@ import net.wildfyre.client.ui.PostPlugin
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
 import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
-import ru.noties.markwon.ext.tables.TablePlugin
 
 /**
  * Standard adapter using a list of items as a data source.
@@ -39,7 +38,6 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
             .usePlugin(CorePlugin.create())
             .usePlugin(StrikethroughPlugin.create())
             .usePlugin(PostPlugin.create(recyclerView.context))
-            .usePlugin(TablePlugin.create(recyclerView.context))
             .build()
     }
 

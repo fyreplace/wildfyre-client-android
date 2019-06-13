@@ -4,10 +4,16 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication.Companion.context
 import net.wildfyre.client.data.models.Image
+import ru.noties.markwon.Markwon
+import ru.noties.markwon.core.CorePlugin
+import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
+import ru.noties.markwon.image.ImagesPlugin
+import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin
 
 fun hideSoftKeyboard(view: View) {
     context.getSystemService(Context.INPUT_METHOD_SERVICE)?.let {
@@ -28,4 +34,15 @@ fun ohNo(context: Context) {
         .setMessage(R.string.alert_unimplemented_message)
         .setPositiveButton(android.R.string.ok, null)
         .show()
+}
+
+fun Fragment.lazyMarkdown() = lazy {
+    val context = requireContext()
+    return@lazy Markwon.builder(context)
+        .usePlugin(CorePlugin.create())
+        .usePlugin(StrikethroughPlugin.create())
+        .usePlugin(PostPlugin.create(context))
+        .usePlugin(ImagesPlugin.create(context))
+        .usePlugin(OkHttpImagesPlugin.create())
+        .build()
 }

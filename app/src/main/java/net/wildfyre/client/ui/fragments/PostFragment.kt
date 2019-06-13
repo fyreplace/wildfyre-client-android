@@ -4,7 +4,6 @@ import android.animation.LayoutTransition
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.activity.OnBackPressedCallback
@@ -24,19 +23,13 @@ import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.models.Comment
 import net.wildfyre.client.databinding.FragmentPostBinding
-import net.wildfyre.client.ui.PostPlugin
 import net.wildfyre.client.ui.adapters.CommentsAdapter
 import net.wildfyre.client.ui.drawables.BottomSheetArrowDrawableWrapper
 import net.wildfyre.client.ui.hideSoftKeyboard
+import net.wildfyre.client.ui.lazyMarkdown
 import net.wildfyre.client.ui.ohNo
 import net.wildfyre.client.viewmodels.*
-import ru.noties.markwon.Markwon
-import ru.noties.markwon.core.CorePlugin
-import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
-import ru.noties.markwon.image.ImagesPlugin
-import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin
 import ru.noties.markwon.recycler.MarkwonAdapter
-import ru.noties.markwon.recycler.table.TableEntryPlugin
 
 open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
@@ -46,25 +39,13 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() = toggleComments()
     }
-    private lateinit var markdown: Markwon
+    private val markdown by lazyMarkdown()
     private val highlightedCommentIds by lazy {
         if (arguments != null)
             fragmentArgs.newCommentsIds?.asList()
                 ?: (if (fragmentArgs.selectedCommentId >= 0) listOf(fragmentArgs.selectedCommentId) else null)
         else
             null
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        markdown = Markwon.builder(context)
-            .usePlugin(CorePlugin.create())
-            .usePlugin(StrikethroughPlugin.create())
-            .usePlugin(PostPlugin.create(context))
-            .usePlugin(ImagesPlugin.create(context))
-            .usePlugin(OkHttpImagesPlugin.create())
-            .usePlugin(TableEntryPlugin.create(context))
-            .build()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
