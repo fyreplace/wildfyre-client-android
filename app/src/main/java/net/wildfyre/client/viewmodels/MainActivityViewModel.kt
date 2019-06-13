@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
@@ -25,6 +27,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     private val _notificationCount = MutableLiveData<Int>()
     private val _notificationBadgeVisible = MutableLiveData<Boolean>()
     private var _titleInfo = MutableLiveData<PostInfo?>()
+    private var _notificationCountUpdater: Job? = null
 
     var startupLogin = true
         private set
@@ -44,8 +47,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     init {
         if (AuthRepository.authToken.isNotEmpty()) {
-            _isLogged.value = true
-            updateProfileInfoAsync()
+            login()
         } else {
             _isLogged.value = false
         }
@@ -57,14 +59,21 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     }
 
     fun login() {
-        _isLogged.postValue(true)
+        _isLogged.value = true
         updateProfileInfoAsync()
+        _notificationCountUpdater = launchCatching {
+            while (true) {
+                delay(10_000)
+                updateNotificationCountAsync().join()
+            }
+        }
     }
 
     fun logout() {
         startupLogin = false
-        _isLogged.postValue(false)
-        _self.postValue(null)
+        _isLogged.value = false
+        _self.value = null
+        _notificationCountUpdater?.cancel()
         AuthRepository.clearAuthToken()
     }
 
