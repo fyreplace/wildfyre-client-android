@@ -14,6 +14,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.android.synthetic.main.fragment_user.*
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.R
+import net.wildfyre.client.ui.lazyMarkdown
 import net.wildfyre.client.ui.ohNo
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
 import net.wildfyre.client.viewmodels.UserFragmentViewModel
@@ -23,6 +24,7 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<UserFragmentViewModel>()
     private val fragmentArgs by navArgs<UserFragmentArgs>()
+    private val markdown by lazyMarkdown()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +41,8 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
             user_name.text = it.name
 
             it.bio?.run {
+                markdown.setMarkdown(user_bio, this)
                 user_bio.isVisible = isNotBlank()
-                user_bio.text = this
             }
 
             AppGlide.with(view)
