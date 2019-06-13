@@ -17,7 +17,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
-import net.wildfyre.client.data.Author
+import net.wildfyre.client.data.models.Author
 import net.wildfyre.client.ui.PostPlugin
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin

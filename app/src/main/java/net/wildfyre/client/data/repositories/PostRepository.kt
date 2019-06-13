@@ -1,9 +1,9 @@
 package net.wildfyre.client.data.repositories
 
 import net.wildfyre.client.data.Services
-import net.wildfyre.client.data.Spread
-import net.wildfyre.client.data.Subscription
 import net.wildfyre.client.data.await
+import net.wildfyre.client.data.models.Spread
+import net.wildfyre.client.data.models.Subscription
 
 object PostRepository {
     suspend fun getArchive(offset: Int, size: Int) =

@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import net.wildfyre.client.data.Comment
-import net.wildfyre.client.data.Post
 import net.wildfyre.client.data.SingleLiveEvent
+import net.wildfyre.client.data.models.Comment
+import net.wildfyre.client.data.models.Post
 import net.wildfyre.client.data.repositories.CommentRepository
 import net.wildfyre.client.data.repositories.PostRepository
 import net.wildfyre.client.ui.prepareForMarkdown

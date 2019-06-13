@@ -21,7 +21,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import net.wildfyre.client.AppGlide
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
-import net.wildfyre.client.data.Comment
+import net.wildfyre.client.data.models.Comment
 import ru.noties.markwon.Markwon
 import java.text.DateFormat
 import java.text.SimpleDateFormat

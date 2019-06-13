@@ -1,9 +1,9 @@
 package net.wildfyre.client.data.repositories
 
-import net.wildfyre.client.data.Author
-import net.wildfyre.client.data.AuthorPatch
 import net.wildfyre.client.data.Services
 import net.wildfyre.client.data.await
+import net.wildfyre.client.data.models.Author
+import net.wildfyre.client.data.models.AuthorPatch
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

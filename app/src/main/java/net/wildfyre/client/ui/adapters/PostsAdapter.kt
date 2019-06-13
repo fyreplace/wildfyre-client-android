@@ -1,7 +1,7 @@
 package net.wildfyre.client.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import net.wildfyre.client.data.Post
+import net.wildfyre.client.data.models.Post
 import java.text.SimpleDateFormat
 
 /**

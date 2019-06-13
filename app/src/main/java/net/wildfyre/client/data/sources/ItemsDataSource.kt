@@ -3,7 +3,7 @@ package net.wildfyre.client.data.sources
 import androidx.paging.PositionalDataSource
 import kotlinx.coroutines.*
 import net.wildfyre.client.data.FailureHandler
-import net.wildfyre.client.data.SuperItem
+import net.wildfyre.client.data.models.SuperItem
 
 abstract class ItemsDataSource<I>(
     private val failureHandler: FailureHandler,

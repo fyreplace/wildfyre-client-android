@@ -3,7 +3,7 @@ package net.wildfyre.client.ui.adapters
 import androidx.recyclerview.widget.DiffUtil
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
-import net.wildfyre.client.data.Notification
+import net.wildfyre.client.data.models.Notification
 
 /**
  * Adapter for displaying notifications in [net.wildfyre.client.ui.fragments.NotificationsFragment].

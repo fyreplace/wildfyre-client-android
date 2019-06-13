@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication.Companion.context
-import net.wildfyre.client.data.Image
+import net.wildfyre.client.data.models.Image
 
 fun hideSoftKeyboard(view: View) {
     context.getSystemService(Context.INPUT_METHOD_SERVICE)?.let {

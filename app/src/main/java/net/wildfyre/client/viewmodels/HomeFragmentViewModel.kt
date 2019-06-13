@@ -4,7 +4,7 @@ import android.app.Application
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
-import net.wildfyre.client.data.Post
+import net.wildfyre.client.data.models.Post
 import net.wildfyre.client.data.repositories.PostRepository
 
 class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(application) {

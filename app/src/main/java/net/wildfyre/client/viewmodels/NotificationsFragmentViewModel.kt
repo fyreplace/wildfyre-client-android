@@ -3,7 +3,7 @@ package net.wildfyre.client.viewmodels
 import android.app.Application
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import net.wildfyre.client.data.Notification
+import net.wildfyre.client.data.models.Notification
 import net.wildfyre.client.data.repositories.NotificationRepository
 import net.wildfyre.client.data.sources.ItemsDataSourceFactory
 import net.wildfyre.client.data.sources.NotificationsDataSourceFactory

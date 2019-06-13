@@ -1,6 +1,7 @@
 package net.wildfyre.client.data
 
 import net.wildfyre.client.Constants
+import net.wildfyre.client.data.models.*
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Retrofit

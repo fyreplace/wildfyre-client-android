@@ -8,8 +8,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
-import net.wildfyre.client.data.Author
-import net.wildfyre.client.data.Post
+import net.wildfyre.client.data.models.Author
+import net.wildfyre.client.data.models.Post
 import net.wildfyre.client.data.repositories.AuthRepository
 import net.wildfyre.client.data.repositories.AuthorRepository
 import net.wildfyre.client.data.repositories.NotificationRepository

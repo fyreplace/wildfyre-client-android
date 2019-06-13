@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
-import net.wildfyre.client.data.Author
+import net.wildfyre.client.data.models.Author
 import net.wildfyre.client.data.repositories.AuthorRepository
 
 class UserFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {

@@ -1,7 +1,7 @@
 package net.wildfyre.client.viewmodels
 
 import android.app.Application
-import net.wildfyre.client.data.Post
+import net.wildfyre.client.data.models.Post
 import net.wildfyre.client.data.sources.ItemsDataSourceFactory
 import net.wildfyre.client.data.sources.OwnPostsDataSourceFactory
 

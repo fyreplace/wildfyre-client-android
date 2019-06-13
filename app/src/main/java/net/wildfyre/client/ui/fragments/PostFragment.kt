@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
-import net.wildfyre.client.data.Comment
+import net.wildfyre.client.data.models.Comment
 import net.wildfyre.client.databinding.FragmentPostBinding
 import net.wildfyre.client.ui.PostPlugin
 import net.wildfyre.client.ui.adapters.CommentsAdapter

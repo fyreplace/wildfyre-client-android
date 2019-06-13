@@ -3,9 +3,9 @@ package net.wildfyre.client.data.repositories
 import androidx.core.content.edit
 import net.wildfyre.client.Constants
 import net.wildfyre.client.WildFyreApplication
-import net.wildfyre.client.data.Auth
 import net.wildfyre.client.data.Services
 import net.wildfyre.client.data.await
+import net.wildfyre.client.data.models.Auth
 
 object AuthRepository {
     var authToken: String

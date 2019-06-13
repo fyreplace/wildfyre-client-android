@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
-import net.wildfyre.client.data.Notification
+import net.wildfyre.client.data.models.Notification
 import net.wildfyre.client.databinding.NotificationsActionsClearBinding
 import net.wildfyre.client.ui.adapters.NotificationsAdapter
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel

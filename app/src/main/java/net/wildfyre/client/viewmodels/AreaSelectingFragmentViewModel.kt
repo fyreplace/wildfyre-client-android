@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import net.wildfyre.client.data.Area
-import net.wildfyre.client.data.Reputation
+import net.wildfyre.client.data.models.Area
+import net.wildfyre.client.data.models.Reputation
 import net.wildfyre.client.data.repositories.AreaRepository
 
 class AreaSelectingFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {

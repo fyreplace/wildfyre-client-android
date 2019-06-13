@@ -1,8 +1,8 @@
 package net.wildfyre.client.data.repositories
 
-import net.wildfyre.client.data.CommentText
 import net.wildfyre.client.data.Services
 import net.wildfyre.client.data.await
+import net.wildfyre.client.data.models.CommentText
 
 object CommentRepository {
     suspend fun sendComment(areaName: String?, postId: Long, comment: String) =

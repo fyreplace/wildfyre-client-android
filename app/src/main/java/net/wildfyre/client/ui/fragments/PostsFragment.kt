@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_items_list.*
 import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
-import net.wildfyre.client.data.Post
+import net.wildfyre.client.data.models.Post
 import net.wildfyre.client.ui.adapters.PostsAdapter
 import net.wildfyre.client.viewmodels.AreaSelectingFragmentViewModel
 import net.wildfyre.client.viewmodels.FailureHandlingViewModel
