@@ -5,15 +5,14 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.data.models.Notification
 import net.wildfyre.client.databinding.NotificationsActionsClearBinding
 import net.wildfyre.client.ui.adapters.NotificationsAdapter
-import net.wildfyre.client.viewmodels.FailureHandlingViewModel
-import net.wildfyre.client.viewmodels.NotificationsFragmentViewModel
-import net.wildfyre.client.viewmodels.lazyViewModel
+import net.wildfyre.client.viewmodels.*
 
 /**
  * [androidx.fragment.app.Fragment] listing the user's notifications.
@@ -21,11 +20,17 @@ import net.wildfyre.client.viewmodels.lazyViewModel
 class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>() {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<NotificationsFragmentViewModel>()
+    private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
     private var shouldRefresh = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         super.onCreateView(inflater, container, savedInstanceState)
             .apply { findViewById<TextView>(R.id.text).setText(R.string.notifications_empty) }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewModel.itemsPagedList.observe(
+        viewLifecycleOwner,
+        Observer { mainViewModel.forceNotificationCount(it?.size ?: 0) }
+    )
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
@@ -33,7 +38,7 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
 
         if (shouldRefresh) {
             shouldRefresh = false
-            onRefreshListener?.onRefresh()
+            onRefreshListener.onRefresh()
         }
     }
 
@@ -66,10 +71,10 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
         shouldRefresh = true
         findNavController().navigate(
             NavigationMainDirections.actionGlobalFragmentPost(
-                item.area,
-                item.post.id,
-                -1,
-                item.comments.toLongArray()
+                areaName = item.area,
+                postId = item.post.id,
+                selectedCommentId = -1,
+                newCommentsIds = item.comments.toLongArray()
             )
         )
     }

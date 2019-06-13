@@ -72,6 +72,8 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         _notificationCount.postValue(NotificationRepository.getNotificationCount())
     }
 
+    fun forceNotificationCount(count: Int) = _notificationCount.postValue(count)
+
     fun setProfileAsync(bio: String) = launchCatching {
         if (bio != userBio.value) {
             _self.postValue(withContext(Dispatchers.IO) { AuthorRepository.updateSelfBio(bio) })

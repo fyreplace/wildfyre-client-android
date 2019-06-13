@@ -18,7 +18,7 @@ import net.wildfyre.client.viewmodels.ItemsListFragmentViewModel
  */
 abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : ItemsAdapter<I>> :
     FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemClickedListener<I> {
-    protected var onRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
+    protected lateinit var onRefreshListener: SwipeRefreshLayout.OnRefreshListener
     abstract override val viewModel: VM
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -39,8 +39,8 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
                 viewLifecycleOwner,
                 Observer {
                     it?.run {
-                        submitList(it)
-                        viewModel.setHasData(it.size > 0)
+                        submitList(this)
+                        viewModel.setHasData(size > 0)
                     }
                 }
             )
