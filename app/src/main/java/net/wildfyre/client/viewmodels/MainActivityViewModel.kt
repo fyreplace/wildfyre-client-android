@@ -17,6 +17,8 @@ import net.wildfyre.client.data.repositories.SettingsRepository
 import java.text.SimpleDateFormat
 
 class MainActivityViewModel(application: Application) : FailureHandlingViewModel(application) {
+    private val _uiRefreshTick = MutableLiveData<Unit>()
+    private var _uiRefreshTickerJob: Job? = null
     private val _isLogged = MutableLiveData<Boolean>()
     private val _self = MutableLiveData<Author?>()
     private var _userAvatarFileName: String? = null
@@ -24,9 +26,9 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     private val _userAvatarNewData = MutableLiveData<ByteArray>()
     private val _notificationCount = MutableLiveData<Int>()
     private val _notificationBadgeVisible = MutableLiveData<Boolean>()
-    private var _titleInfo = MutableLiveData<PostInfo?>()
-    private var _notificationCountUpdater: Job? = null
+    private val _titleInfo = MutableLiveData<PostInfo?>()
 
+    val uiRefreshTick: LiveData<Unit> = _uiRefreshTick
     var startupLogin = true
         private set
     val isLogged: LiveData<Boolean> = _isLogged
@@ -58,13 +60,10 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     fun login() {
         _isLogged.value = true
-        _notificationCountUpdater = viewModelScope.launch {
+        _uiRefreshTickerJob = viewModelScope.launch {
             while (true) {
-                delay(Constants.Api.NOTIFICATIONS_POLLING_MILLIS)
-
-                if (isActive) {
-                    updateNotificationCountAsync().join()
-                }
+                delay(UI_UPDATE_MILLIS)
+                _uiRefreshTick.postValue(Unit)
             }
         }
         updateProfileInfoAsync()
@@ -74,7 +73,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         startupLogin = false
         _isLogged.value = false
         _self.value = null
-        _notificationCountUpdater?.cancel()
+        _uiRefreshTickerJob?.cancel()
         AuthRepository.clearAuthToken()
     }
 
@@ -124,6 +123,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     }
 
     companion object {
+        private const val UI_UPDATE_MILLIS = 10_000L
         private val DATE_FORMAT = SimpleDateFormat.getDateInstance()
 
         val THEMES = arrayOf(

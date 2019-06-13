@@ -90,6 +90,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
         navigation_view.menu.findItem(R.id.fragment_own_posts).actionView?.setOnClickListener { ohNo(this) }
 
+        viewModel.uiRefreshTick.observe(this, Observer { viewModel.updateNotificationCountAsync() })
+
         viewModel.isLogged.observe(this, Observer {
             if (!it) {
                 val navController = findNavController(R.id.navigation_host)
