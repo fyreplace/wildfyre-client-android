@@ -142,13 +142,13 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         MainActivityViewModel.NAVIGATION_LINKS.forEach { pair ->
             navigation_view.menu.findItem(pair.key).setOnMenuItemClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(pair.value)))
-                true
+                return@setOnMenuItemClickListener true
             }
         }
 
         navigation_view.menu.findItem(R.id.logout).setOnMenuItemClickListener {
             viewModel.logout()
-            true
+            return@setOnMenuItemClickListener true
         }
 
         navigation_view.doOnLayout {
