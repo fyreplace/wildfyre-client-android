@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.set
 import androidx.core.text.toSpanned
+import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.MultiTransformation
@@ -23,6 +24,7 @@ import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.models.Comment
 import ru.noties.markwon.Markwon
+import ru.noties.markwon.image.AsyncDrawableScheduler
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -91,6 +93,7 @@ class CommentsAdapter(
         comment.image?.let { markdownContent.append("![]($it)") }
         comment.text?.let { markdownContent.append(it) }
         markdown.setMarkdown(holder.text, markdownContent.toString())
+        holder.text.postDelayed(100) { AsyncDrawableScheduler.schedule(holder.text) }
         holder.text.tag = position
         holder.itemView.setBackgroundResource(
             if (wrapper.isHighlighted)
