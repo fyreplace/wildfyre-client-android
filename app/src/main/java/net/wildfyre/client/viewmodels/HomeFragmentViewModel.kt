@@ -1,8 +1,10 @@
 package net.wildfyre.client.viewmodels
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.wildfyre.client.data.models.Post
 import net.wildfyre.client.data.repositories.PostRepository
@@ -13,9 +15,9 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
     private var endOfPosts = false
     private var lastAreaName: String? = null
 
-    fun nextPostAsync(areaName: String? = null) = launchCatching {
+    fun nextPostAsync(areaName: String? = null) = viewModelScope.launch {
         if (areaName == lastAreaName) {
-            return@launchCatching
+            return@launch
         }
 
         if (areaName != null) {
@@ -29,7 +31,7 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
         }
 
         if (endOfPosts) {
-            return@launchCatching
+            return@launch
         }
 
         if (hasContent.value != true) {

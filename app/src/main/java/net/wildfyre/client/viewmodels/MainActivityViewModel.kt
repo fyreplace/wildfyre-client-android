@@ -4,10 +4,8 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.*
 import net.wildfyre.client.Constants
 import net.wildfyre.client.R
 import net.wildfyre.client.data.models.Author
@@ -60,13 +58,13 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     fun login() {
         _isLogged.value = true
-        updateProfileInfoAsync()
-        _notificationCountUpdater = launchCatching {
+        _notificationCountUpdater = viewModelScope.launch {
             while (true) {
                 delay(10_000)
                 updateNotificationCountAsync().join()
             }
         }
+        updateProfileInfoAsync()
     }
 
     fun logout() {
@@ -117,7 +115,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     fun setPost(post: Post?) = _titleInfo.postValue(post?.let { PostInfo(it.author, DATE_FORMAT.format(it.created)) })
 
-    private fun updateProfileInfoAsync() = launchCatching {
+    private fun updateProfileInfoAsync() = viewModelScope.launch {
         updateNotificationCountAsync()
         _self.postValue(AuthorRepository.getSelf())
     }
