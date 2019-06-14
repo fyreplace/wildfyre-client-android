@@ -7,6 +7,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -256,7 +257,11 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     private fun shareComment(position: Int, comment: Comment) = ohNo(requireContext())
 
     private fun deleteComment(position: Int, comment: Comment) {
-        viewModel.deleteCommentAsync(position, comment)
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.post_comment_menu_delete_dialog_title)
+            .setNegativeButton(R.string.no, null)
+            .setPositiveButton(R.string.yes) { _, _ -> viewModel.deleteCommentAsync(position, comment) }
+            .show()
     }
 
     private companion object {
