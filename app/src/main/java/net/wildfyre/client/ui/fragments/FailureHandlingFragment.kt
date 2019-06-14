@@ -27,7 +27,7 @@ abstract class FailureHandlingFragment(contentLayoutId: Int) : Fragment(contentL
     override fun onAttach(context: Context) {
         super.onAttach(context)
         setHasOptionsMenu(true)
-        viewModels.forEach { vm -> vm.lastFailure.observe(this, Observer { onFailure(it) }) }
+        viewModels.forEach { vm -> vm.failureEvent.observe(this, Observer { onFailure(it) }) }
     }
 
     override fun onDestroy() {

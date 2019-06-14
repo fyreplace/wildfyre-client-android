@@ -35,7 +35,7 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
         }
 
         if (hasContent.value != true) {
-            _hasContent.postValue(true)
+            mHasContent.postValue(true)
         }
 
         setPost(postReserve.removeAt(0))
@@ -65,7 +65,7 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
             val superPost = withContext(Dispatchers.IO) { PostRepository.getNextPosts(RESERVE_SIZE) }
 
             if (superPost.count == 0) {
-                _hasContent.postValue(false)
+                mHasContent.postValue(false)
                 endOfPosts = true
             } else {
                 postReserve.addAll(superPost.results.filter { p -> p.id != postId && postReserve.find { it.id == p.id } == null })

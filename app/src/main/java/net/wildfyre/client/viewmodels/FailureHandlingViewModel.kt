@@ -17,15 +17,15 @@ import kotlin.coroutines.CoroutineContext
  * [net.wildfyre.client.ui.fragments.FailureHandlingFragment] that implements basic error propagation.
  */
 abstract class FailureHandlingViewModel(application: Application) : AndroidViewModel(application), FailureHandler {
-    private var _lastFailure = SingleLiveEvent<Throwable>()
+    private var mFailureEvent = SingleLiveEvent<Throwable>()
 
-    val lastFailure: LiveData<Throwable>
-        get() = _lastFailure
+    val failureEvent: LiveData<Throwable>
+        get() = mFailureEvent
 
     @CallSuper
     override fun onFailure(failure: Throwable) {
         super.onFailure(failure)
-        _lastFailure.postValue(failure)
+        mFailureEvent.postValue(failure)
     }
 
     fun launchCatching(context: CoroutineContext = Dispatchers.Main, block: suspend CoroutineScope.() -> Unit) =

@@ -21,9 +21,7 @@ class BottomSheetArrowDrawableWrapper(private val image: ImageView, private var 
         pointingUp = up
         drawable.start()
         drawable.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
-            override fun onAnimationEnd(d: Drawable?) {
-                image.setImageDrawable(generateDrawable())
-            }
+            override fun onAnimationEnd(d: Drawable?) = image.setImageDrawable(generateDrawable())
         })
     }
 

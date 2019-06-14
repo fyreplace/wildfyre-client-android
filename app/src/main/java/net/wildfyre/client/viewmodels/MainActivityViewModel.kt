@@ -17,31 +17,31 @@ import net.wildfyre.client.data.repositories.SettingsRepository
 import java.text.SimpleDateFormat
 
 class MainActivityViewModel(application: Application) : FailureHandlingViewModel(application) {
-    private val _uiRefreshTick = MutableLiveData<Unit>()
-    private var _uiRefreshTickerJob: Job? = null
-    private val _isLogged = MutableLiveData<Boolean>()
-    private val _self = MutableLiveData<Author?>()
-    private var _userAvatarFileName: String? = null
-    private var _userAvatarMimeType: String? = null
-    private val _userAvatarNewData = MutableLiveData<ByteArray>()
-    private val _notificationCount = MutableLiveData<Int>()
-    private val _notificationBadgeVisible = MutableLiveData<Boolean>()
-    private val _titleInfo = MutableLiveData<PostInfo?>()
+    private var uiRefreshTickerJob: Job? = null
+    private val mUiRefreshTick = MutableLiveData<Unit>()
+    private val mIsLogged = MutableLiveData<Boolean>()
+    private val mSelf = MutableLiveData<Author?>()
+    private val mUserAvatarNewData = MutableLiveData<ByteArray>()
+    private val mNotificationCount = MutableLiveData<Int>()
+    private val mNotificationBadgeVisible = MutableLiveData<Boolean>()
+    private val mPostInfo = MutableLiveData<PostInfo?>()
+    private var userAvatarFileName: String? = null
+    private var userAvatarMimeType: String? = null
 
-    val uiRefreshTick: LiveData<Unit> = _uiRefreshTick
+    val uiRefreshTick: LiveData<Unit> = mUiRefreshTick
     var startupLogin = true
         private set
-    val isLogged: LiveData<Boolean> = _isLogged
-    val userId: LiveData<Long> = Transformations.map(_self) { it?.user ?: -1 }
-    val userName: LiveData<String> = Transformations.map(_self) { it?.name.orEmpty() }
-    val userBio: LiveData<String> = Transformations.map(_self) { it?.bio.orEmpty() }
-    val userAvatar: LiveData<String> = Transformations.map(_self) { it?.avatar.orEmpty() }
-    val userAvatarNewData: LiveData<ByteArray> = _userAvatarNewData
-    val notificationCount: LiveData<Int> = _notificationCount
+    val isLogged: LiveData<Boolean> = mIsLogged
+    val userId: LiveData<Long> = Transformations.map(mSelf) { it?.user ?: -1 }
+    val userName: LiveData<String> = Transformations.map(mSelf) { it?.name.orEmpty() }
+    val userBio: LiveData<String> = Transformations.map(mSelf) { it?.bio.orEmpty() }
+    val userAvatar: LiveData<String> = Transformations.map(mSelf) { it?.avatar.orEmpty() }
+    val userAvatarNewData: LiveData<ByteArray> = mUserAvatarNewData
+    val notificationCount: LiveData<Int> = mNotificationCount
     val notificationCountText: LiveData<String> =
         Transformations.map(notificationCount) { if (it < 100) it.toString() else "99" }
-    val notificationBadgeVisible: LiveData<Boolean> = _notificationBadgeVisible
-    val postInfo: LiveData<PostInfo?> = _titleInfo
+    val notificationBadgeVisible: LiveData<Boolean> = mNotificationBadgeVisible
+    val postInfo: LiveData<PostInfo?> = mPostInfo
     val selectedThemeIndex = MutableLiveData<Int>()
     val shouldShowNotificationBadge = MutableLiveData<Boolean>()
 
@@ -49,7 +49,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         if (AuthRepository.authToken.isNotEmpty()) {
             login()
         } else {
-            _isLogged.value = false
+            mIsLogged.value = false
         }
 
         selectedThemeIndex.value = THEMES.indexOfFirst { it == SettingsRepository.theme }
@@ -59,41 +59,41 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     }
 
     fun login() {
-        _isLogged.value = true
-        _uiRefreshTickerJob = viewModelScope.launch {
+        uiRefreshTickerJob = viewModelScope.launch {
             while (true) {
                 delay(UI_UPDATE_MILLIS)
-                _uiRefreshTick.postValue(Unit)
+                mUiRefreshTick.postValue(Unit)
             }
         }
+        mIsLogged.value = true
         updateProfileInfoAsync()
     }
 
     fun logout() {
         startupLogin = false
-        _isLogged.value = false
-        _self.value = null
-        _uiRefreshTickerJob?.cancel()
+        mIsLogged.value = false
+        mSelf.value = null
+        uiRefreshTickerJob?.cancel()
         AuthRepository.clearAuthToken()
     }
 
     fun updateNotificationCountAsync() = launchCatching(Dispatchers.IO) {
-        _notificationCount.postValue(NotificationRepository.getNotificationCount())
+        mNotificationCount.postValue(NotificationRepository.getNotificationCount())
     }
 
-    fun forceNotificationCount(count: Int) = _notificationCount.postValue(count)
+    fun forceNotificationCount(count: Int) = mNotificationCount.postValue(count)
 
     fun setProfileAsync(bio: String) = launchCatching {
         if (bio != userBio.value) {
-            _self.postValue(withContext(Dispatchers.IO) { AuthorRepository.updateSelfBio(bio) })
+            mSelf.postValue(withContext(Dispatchers.IO) { AuthorRepository.updateSelfBio(bio) })
         }
 
-        if (userAvatarNewData.value != null && _userAvatarFileName != null && _userAvatarMimeType != null) {
+        if (userAvatarNewData.value != null && userAvatarFileName != null && userAvatarMimeType != null) {
             withContext(Dispatchers.IO) {
-                _self.postValue(
+                mSelf.postValue(
                     AuthorRepository.updateSelfAvatar(
-                        _userAvatarFileName!!,
-                        _userAvatarMimeType!!,
+                        userAvatarFileName!!,
+                        userAvatarMimeType!!,
                         userAvatarNewData.value!!
                     )
                 )
@@ -102,24 +102,24 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
     }
 
     fun setPendingProfileAvatar(fileName: String, mimeType: String, avatar: ByteArray) {
-        _userAvatarFileName = fileName
-        _userAvatarMimeType = mimeType
-        _userAvatarNewData.postValue(avatar)
+        userAvatarFileName = fileName
+        userAvatarMimeType = mimeType
+        mUserAvatarNewData.postValue(avatar)
     }
 
     fun resetPendingProfileAvatar() {
-        _userAvatarFileName = null
-        _userAvatarMimeType = null
-        _userAvatarNewData.postValue(null)
+        userAvatarFileName = null
+        userAvatarMimeType = null
+        mUserAvatarNewData.postValue(null)
     }
 
-    fun setNotificationBadgeVisible(visible: Boolean) = _notificationBadgeVisible.postValue(visible)
+    fun setNotificationBadgeVisible(visible: Boolean) = mNotificationBadgeVisible.postValue(visible)
 
-    fun setPost(post: Post?) = _titleInfo.postValue(post?.let { PostInfo(it.author, DATE_FORMAT.format(it.created)) })
+    fun setPost(post: Post?) = mPostInfo.postValue(post?.let { PostInfo(it.author, DATE_FORMAT.format(it.created)) })
 
     private fun updateProfileInfoAsync() = viewModelScope.launch {
         updateNotificationCountAsync()
-        _self.postValue(AuthorRepository.getSelf())
+        mSelf.postValue(AuthorRepository.getSelf())
     }
 
     companion object {

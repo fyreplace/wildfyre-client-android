@@ -8,11 +8,11 @@ import net.wildfyre.client.data.models.Author
 import net.wildfyre.client.data.repositories.AuthorRepository
 
 class UserFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
-    private val _author = MutableLiveData<Author>()
+    private val mAuthor = MutableLiveData<Author>()
 
-    val author: LiveData<Author> = _author
+    val author: LiveData<Author> = mAuthor
 
-    fun setAuthor(a: Author) = _author.postValue(a)
+    fun setAuthor(a: Author) = mAuthor.postValue(a)
 
-    fun setUserIdAsync(id: Long) = launchCatching(Dispatchers.IO) { _author.postValue(AuthorRepository.getUser(id)) }
+    fun setUserIdAsync(id: Long) = launchCatching(Dispatchers.IO) { mAuthor.postValue(AuthorRepository.getUser(id)) }
 }

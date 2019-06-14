@@ -312,16 +312,15 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
      */
     private fun editProfile() {
         lateinit var dialog: AlertDialog
-        lateinit var avatarDataObserver: Observer<ByteArray>
 
         dialog = AlertDialog.Builder(this)
             .setView(R.layout.profile_editor)
             .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
-                viewModel.userAvatarNewData.removeObserver(avatarDataObserver)
+                viewModel.userAvatarNewData.removeObservers(this)
                 viewModel.resetPendingProfileAvatar()
             }
             .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
-                viewModel.userAvatarNewData.removeObserver(avatarDataObserver)
+                viewModel.userAvatarNewData.removeObservers(this)
                 viewModel.setProfileAsync(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString())
                 viewModel.resetPendingProfileAvatar()
             }
@@ -336,7 +335,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             .transform(AVATAR_TRANSFORM)
             .into(avatar)
 
-        avatarDataObserver = Observer {
+        viewModel.userAvatarNewData.observe(this, Observer {
             it?.run {
                 val input = ByteArrayInputStream(this)
                 AppGlide.with(this@MainActivity)
@@ -345,9 +344,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                     .transform(AVATAR_TRANSFORM)
                     .into(avatar)
             }
-        }
-
-        viewModel.userAvatarNewData.observe(this, avatarDataObserver)
+        })
 
         dialog.findViewById<View>(R.id.user_picture_change)!!.setOnClickListener {
             startActivityForResult(

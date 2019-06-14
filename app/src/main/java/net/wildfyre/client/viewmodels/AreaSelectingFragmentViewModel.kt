@@ -12,32 +12,32 @@ import net.wildfyre.client.data.models.Reputation
 import net.wildfyre.client.data.repositories.AreaRepository
 
 class AreaSelectingFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
-    private val _areas = MutableLiveData<List<Area>>()
-    private val _preferredAreaName = MutableLiveData<String>()
-    private val _preferredArea = MediatorLiveData<Area?>()
-    private val _preferredAreaIndex = MediatorLiveData<Int>()
-    private val _preferredAreaReputationInfo = MutableLiveData<Reputation>()
+    private val mAreas = MutableLiveData<List<Area>>()
+    private val mPreferredAreaName = MutableLiveData<String>()
+    private val mPreferredArea = MediatorLiveData<Area?>()
+    private val mPreferredAreaIndex = MediatorLiveData<Int>()
+    private val mPreferredAreaReputationInfo = MutableLiveData<Reputation>()
 
-    val areas: LiveData<List<Area>> = _areas
+    val areas: LiveData<List<Area>> = mAreas
     val areasDisplayNames: LiveData<List<String>> = Transformations.map(areas) { it.map { a -> a.displayname } }
-    val preferredAreaName: LiveData<String> = _preferredAreaName
-    val preferredArea: LiveData<Area?> = _preferredArea
-    val preferredAreaIndex: LiveData<Int> = _preferredAreaIndex
+    val preferredAreaName: LiveData<String> = mPreferredAreaName
+    val preferredArea: LiveData<Area?> = mPreferredArea
+    val preferredAreaIndex: LiveData<Int> = mPreferredAreaIndex
     val currentAreaSpread: LiveData<Int> =
-        Transformations.map(_preferredAreaReputationInfo) { it.spread }
+        Transformations.map(mPreferredAreaReputationInfo) { it.spread }
     val currentAreaReputation: LiveData<Int> =
-        Transformations.map(_preferredAreaReputationInfo) { it.reputation }
+        Transformations.map(mPreferredAreaReputationInfo) { it.reputation }
 
     init {
-        _preferredArea.addSource(areas) { updatePreferredArea(it, preferredAreaName.value) }
-        _preferredArea.addSource(preferredAreaName) { updatePreferredArea(areas.value, it) }
-        _preferredAreaIndex.addSource(areas) { updatePreferredAreaIndex(it, preferredAreaName.value) }
-        _preferredAreaIndex.addSource(preferredAreaName) { updatePreferredAreaIndex(areas.value, it) }
+        mPreferredArea.addSource(areas) { updatePreferredArea(it, preferredAreaName.value) }
+        mPreferredArea.addSource(preferredAreaName) { updatePreferredArea(areas.value, it) }
+        mPreferredAreaIndex.addSource(areas) { updatePreferredAreaIndex(it, preferredAreaName.value) }
+        mPreferredAreaIndex.addSource(preferredAreaName) { updatePreferredAreaIndex(areas.value, it) }
     }
 
     fun updateAreasAsync() = launchCatching {
         val fetchedAreas = withContext(Dispatchers.IO) { AreaRepository.getAreas() }
-        _areas.postValue(fetchedAreas)
+        mAreas.postValue(fetchedAreas)
         val current = preferredAreaName.value
 
         if (current == null || current.isEmpty()) {
@@ -54,16 +54,16 @@ class AreaSelectingFragmentViewModel(application: Application) : FailureHandling
 
     private suspend fun updatePreferredAreaInfo(areaName: String) {
         AreaRepository.preferredAreaName = areaName
-        _preferredAreaName.postValue(areaName)
-        _preferredAreaReputationInfo.postValue(withContext(Dispatchers.IO) { AreaRepository.getAreaReputation() })
+        mPreferredAreaName.postValue(areaName)
+        mPreferredAreaReputationInfo.postValue(withContext(Dispatchers.IO) { AreaRepository.getAreaReputation() })
     }
 
     private fun updatePreferredArea(areas: List<Area>?, areaName: String?) {
         if (preferredArea.value?.name != areaName) {
-            areas?.firstOrNull { it.name == areaName }?.let { _preferredArea.postValue(it) }
+            areas?.firstOrNull { it.name == areaName }?.let { mPreferredArea.postValue(it) }
         }
     }
 
     private fun updatePreferredAreaIndex(areas: List<Area>?, areaName: String?) =
-        _preferredAreaIndex.postValue(areas?.indexOfFirst { it.name == areaName } ?: -1)
+        mPreferredAreaIndex.postValue(areas?.indexOfFirst { it.name == areaName } ?: -1)
 }

@@ -8,22 +8,22 @@ import kotlinx.coroutines.Dispatchers
 import net.wildfyre.client.data.repositories.AuthRepository
 
 class LoginFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
-    private val _authToken = MutableLiveData<String>()
-    private val _loginAllowed = MutableLiveData<Boolean>()
+    private val mAuthToken = MutableLiveData<String>()
+    private val mLoginAllowed = MutableLiveData<Boolean>()
 
-    val authToken: LiveData<String> = _authToken
+    val authToken: LiveData<String> = mAuthToken
+    val loginAllowed: LiveData<Boolean> = mLoginAllowed
     val username = MutableLiveData<String>()
     val password = MutableLiveData<String>()
     val usernameValid: LiveData<Boolean> = Transformations.map(username) { it.isNotEmpty() }
     val passwordValid: LiveData<Boolean> = Transformations.map(password) { it.isNotEmpty() }
-    val loginAllowed: LiveData<Boolean> = _loginAllowed
 
     init {
-        _loginAllowed.value = true
+        mLoginAllowed.value = true
     }
 
     fun attemptLoginAsync(username: String, password: String) =
-        launchCatching(Dispatchers.IO) { _authToken.postValue(AuthRepository.getAuthToken(username, password)) }
+        launchCatching(Dispatchers.IO) { mAuthToken.postValue(AuthRepository.getAuthToken(username, password)) }
 
-    fun setLoginAllowed(allowed: Boolean) = _loginAllowed.postValue(allowed)
+    fun setLoginAllowed(allowed: Boolean) = mLoginAllowed.postValue(allowed)
 }

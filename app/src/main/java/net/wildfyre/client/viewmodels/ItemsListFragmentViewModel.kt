@@ -18,8 +18,8 @@ import net.wildfyre.client.data.sources.ItemsDataSourceFactory
 abstract class ItemsListFragmentViewModel<I>(application: Application) : FailureHandlingViewModel(application),
     DataLoadingListener {
     private var firstLoading = true
-    private val _loading = MutableLiveData<Boolean>()
-    private val _hasData = MutableLiveData<Boolean>()
+    private val mLoading = MutableLiveData<Boolean>()
+    private val mHasData = MutableLiveData<Boolean>()
 
     abstract val factory: ItemsDataSourceFactory<I>
     val dataSource: LiveData<DataSource<Int, I>> by lazy { factory.dataSource }
@@ -33,19 +33,19 @@ abstract class ItemsListFragmentViewModel<I>(application: Application) : Failure
             )
         )
     }
-    val loading: LiveData<Boolean> = _loading
-    val hasData: LiveData<Boolean> = _hasData
+    val loading: LiveData<Boolean> = mLoading
+    val hasData: LiveData<Boolean> = mHasData
 
     override fun onLoadingStart() {
         if (firstLoading) {
             firstLoading = false
-            _loading.postValue(true)
+            mLoading.postValue(true)
         }
     }
 
     override fun onLoadingStop() {
-        _loading.postValue(false)
+        mLoading.postValue(false)
     }
 
-    fun setHasData(hasSome: Boolean) = _hasData.postValue(hasSome)
+    fun setHasData(hasSome: Boolean) = mHasData.postValue(hasSome)
 }

@@ -20,30 +20,30 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
         protected set
     var postId: Long = -1
         protected set
-    protected val _hasContent = MutableLiveData<Boolean>()
-    private val _post = MutableLiveData<Post>()
-    private val _subscribed = MediatorLiveData<Boolean>()
-    private val _markdownContent = MediatorLiveData<String>()
-    private val _commentAddedEvent = SingleLiveEvent<Comment>()
-    private val _commentRemovedEvent = SingleLiveEvent<Int>()
-    private val _commentCount = MediatorLiveData<Int>()
+    protected val mHasContent = MutableLiveData<Boolean>()
+    private val mPost = MutableLiveData<Post>()
+    private val mSubscribed = MediatorLiveData<Boolean>()
+    private val mMarkdownContent = MediatorLiveData<String>()
+    private val mCommentAddedEvent = SingleLiveEvent<Comment>()
+    private val mCommentRemovedEvent = SingleLiveEvent<Int>()
+    private val mCommentCount = MediatorLiveData<Int>()
 
-    val hasContent: LiveData<Boolean> = _hasContent
-    val post: LiveData<Post?> = _post
+    val hasContent: LiveData<Boolean> = mHasContent
+    val post: LiveData<Post?> = mPost
     val contentLoaded: LiveData<Boolean> = Transformations.map(post) { it != null }
     val authorId: LiveData<Long> = Transformations.map(post) { it?.author?.user ?: -1 }
     val comments: LiveData<List<Comment>> = Transformations.map(post) { it?.comments ?: emptyList() }
-    val subscribed: LiveData<Boolean> = _subscribed
-    val markdownContent: LiveData<String> = _markdownContent
-    val commentAddedEvent: LiveData<Comment> = _commentAddedEvent
-    val commentRemovedEvent: LiveData<Int> = _commentRemovedEvent
-    val commentCount: LiveData<Int> = _commentCount
+    val subscribed: LiveData<Boolean> = mSubscribed
+    val markdownContent: LiveData<String> = mMarkdownContent
+    val commentAddedEvent: LiveData<Comment> = mCommentAddedEvent
+    val commentRemovedEvent: LiveData<Int> = mCommentRemovedEvent
+    val commentCount: LiveData<Int> = mCommentCount
     val newCommentData = MutableLiveData<String>()
 
     init {
-        _hasContent.value = true
-        _subscribed.addSource(post) { _subscribed.postValue(it?.subscribed ?: false) }
-        _markdownContent.addSource(post) {
+        mHasContent.value = true
+        mSubscribed.addSource(post) { mSubscribed.postValue(it?.subscribed ?: false) }
+        mMarkdownContent.addSource(post) {
             launchCatching(Dispatchers.Default) {
                 val markdownContent = StringBuilder()
                 it?.image?.run { markdownContent.append("![]($this)\n\n") }
@@ -51,13 +51,13 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
                     markdownContent.append(it.additionalImages
                         ?.let { images -> prepareForMarkdown(images) } ?: this)
                 }
-                _markdownContent.postValue(markdownContent.toString())
+                mMarkdownContent.postValue(markdownContent.toString())
             }
         }
 
-        _commentCount.addSource(comments) { _commentCount.postValue(it.size) }
-        _commentCount.addSource(commentAddedEvent) { _commentCount.postValue(_commentCount.value!! + 1) }
-        _commentCount.addSource(commentRemovedEvent) { _commentCount.postValue(_commentCount.value!! - 1) }
+        mCommentCount.addSource(comments) { mCommentCount.postValue(it.size) }
+        mCommentCount.addSource(commentAddedEvent) { mCommentCount.postValue(mCommentCount.value!! + 1) }
+        mCommentCount.addSource(commentRemovedEvent) { mCommentCount.postValue(mCommentCount.value!! - 1) }
         newCommentData.value = ""
     }
 
@@ -70,11 +70,11 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
     fun setPost(post: Post?) {
         postAreaName = AreaRepository.preferredAreaName
         postId = post?.id ?: -1
-        _post.postValue(post)
+        mPost.postValue(post)
     }
 
     fun changeSubscriptionAsync() = launchCatching(Dispatchers.IO) {
-        _subscribed.postValue(
+        mSubscribed.postValue(
             PostRepository.setSubscription(
                 postAreaName,
                 postId,
@@ -85,7 +85,7 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
 
     fun sendNewCommentAsync() = launchCatching {
         if (newCommentData.value != null && postId != -1L) {
-            _commentAddedEvent.postValue(
+            mCommentAddedEvent.postValue(
                 withContext(Dispatchers.IO) {
                     CommentRepository.sendComment(
                         postAreaName,
@@ -101,7 +101,7 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
     fun deleteCommentAsync(position: Int, comment: Comment) = launchCatching {
         if (postId != -1L) {
             withContext(Dispatchers.IO) { CommentRepository.deleteComment(postAreaName, postId, comment.id) }
-            _commentRemovedEvent.postValue(position)
+            mCommentRemovedEvent.postValue(position)
         }
     }
 }

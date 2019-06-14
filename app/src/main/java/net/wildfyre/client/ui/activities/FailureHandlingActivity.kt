@@ -16,7 +16,7 @@ abstract class FailureHandlingActivity : AppCompatActivity(), FailureHandler {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.lastFailure.observe(this, Observer { onFailure(it) })
+        viewModel.failureEvent.observe(this, Observer { onFailure(it) })
     }
 
     @CallSuper
