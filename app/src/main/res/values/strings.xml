@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">WildFyre</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <string name="theme_automatic">Auto</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
@@ -33,7 +37,7 @@
     <string name="area_selecting_actions_area_reputation">Reputation</string>
     <string name="posts_empty">No posts in this area</string>
     <string name="notifications_actions_clear">Clear</string>
-    <string name="notifications_dialog_title">Clear all notifications ?</string>
+    <string name="notifications_actions_clear_dialog_title">Clear all notifications ?</string>
     <string name="notifications_empty">No notifications</string>
     <plurals name="notifications_item_comment_count">
         <item quantity="one">%1$d new comment</item>

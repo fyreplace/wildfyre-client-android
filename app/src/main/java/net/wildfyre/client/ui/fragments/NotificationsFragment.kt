@@ -58,9 +58,9 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
 
         clear.findViewById<View>(R.id.button).setOnClickListener {
             AlertDialog.Builder(context!!)
-                .setTitle(getString(R.string.notifications_dialog_title))
-                .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int -> viewModel.clearNotificationsAsync() }
+                .setTitle(getString(R.string.notifications_actions_clear_dialog_title))
+                .setNegativeButton(R.string.no, null)
+                .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int -> viewModel.clearNotificationsAsync() }
                 .show()
         }
     }

@@ -32,7 +32,7 @@ fun ohNo(context: Context) {
     AlertDialog.Builder(context)
         .setTitle(R.string.alert_unimplemented_title)
         .setMessage(R.string.alert_unimplemented_message)
-        .setPositiveButton(android.R.string.ok, null)
+        .setPositiveButton(R.string.ok, null)
         .show()
 }
 

@@ -317,11 +317,11 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
         dialog = AlertDialog.Builder(this)
             .setView(R.layout.profile_editor)
-            .setNegativeButton(android.R.string.cancel) { _: DialogInterface, _: Int ->
+            .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
                 viewModel.userAvatarNewData.removeObserver(avatarDataObserver)
                 viewModel.resetPendingProfileAvatar()
             }
-            .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
+            .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
                 viewModel.userAvatarNewData.removeObserver(avatarDataObserver)
                 viewModel.setProfileAsync(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString())
                 viewModel.resetPendingProfileAvatar()
