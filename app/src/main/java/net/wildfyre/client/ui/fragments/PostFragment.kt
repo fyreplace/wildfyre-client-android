@@ -4,10 +4,13 @@ import android.animation.LayoutTransition
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
 import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -29,7 +32,6 @@ import net.wildfyre.client.ui.adapters.CommentsAdapter
 import net.wildfyre.client.ui.drawables.BottomSheetArrowDrawableWrapper
 import net.wildfyre.client.ui.hideSoftKeyboard
 import net.wildfyre.client.ui.lazyMarkdown
-import net.wildfyre.client.ui.ohNo
 import net.wildfyre.client.viewmodels.*
 import ru.noties.markwon.recycler.MarkwonAdapter
 
@@ -252,23 +254,24 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
         }
     }
 
-    private fun clearCommentInput() {
-        comment_new?.let {
-            hideSoftKeyboard(it)
-            it.clearFocus()
-        }
+    private fun clearCommentInput() = comment_new?.let {
+        hideSoftKeyboard(it)
+        it.clearFocus()
     }
 
-    private fun copyComment(comment: Comment) = ohNo(requireContext())
+    private fun copyComment(comment: Comment) = getSystemService(
+        requireContext(),
+        ClipboardManager::class.java
+    )?.setPrimaryClip(ClipData.newPlainText(getString(R.string.post_comment_copy_label), comment.text))
 
     private fun shareComment(comment: Comment) = shareText(
         Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId, comment.id),
-        getString(R.string.post_comment_menu_share_title)
+        getString(R.string.post_comment_share_title)
     )
 
     private fun deleteComment(position: Int, comment: Comment) {
         AlertDialog.Builder(requireContext())
-            .setTitle(R.string.post_comment_menu_delete_dialog_title)
+            .setTitle(R.string.post_comment_delete_dialog_title)
             .setNegativeButton(R.string.no, null)
             .setPositiveButton(R.string.yes) { _, _ -> viewModel.deleteCommentAsync(position, comment) }
             .show()

@@ -60,9 +60,10 @@
     <string name="post_comment_new_comment">New comment</string>
     <string name="post_comment_menu_copy">Copy comment</string>
     <string name="post_comment_menu_share">Share comment</string>
-    <string name="post_comment_menu_share_title">Share selected comment</string>
     <string name="post_comment_menu_delete">Delete comment</string>
-    <string name="post_comment_menu_delete_dialog_title">Delete this comment ? This action cannot be undone</string>
+    <string name="post_comment_copy_label">Comment</string>
+    <string name="post_comment_share_title">Share selected comment</string>
+    <string name="post_comment_delete_dialog_title">Delete this comment ? This action cannot be undone</string>
     <string name="home_empty">No more posts in this area</string>
     <string name="user_share_title">Share user profile</string>
     <string name="image_desc_user_picture">Profile picture</string>
