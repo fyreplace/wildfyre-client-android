@@ -14,12 +14,14 @@ import androidx.core.text.set
 import androidx.core.text.toSpanned
 import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import net.wildfyre.client.AppGlide
+import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.models.Comment
@@ -68,25 +70,30 @@ class CommentsAdapter(
         val context = holder.itemView.context
 
         holder.date.text = DATE_FORMAT.format(comment.created)
-        comment.author?.let {
-            val authorName = SpannableStringBuilder(it.name)
-            authorName[0..it.name.length] = StyleSpan(Typeface.BOLD)
-            authorName[0..it.name.length] =
+        comment.author?.let { author ->
+            val authorName = SpannableStringBuilder(author.name)
+            authorName[0..author.name.length] = StyleSpan(Typeface.BOLD)
+            authorName[0..author.name.length] =
                 ForegroundColorSpan(ContextCompat.getColor(context, R.color.foreground))
 
-            if (authorId != -1L && authorId == it.user) {
+            if (authorId != -1L && authorId == author.user) {
                 val authorBadge = context.getString(R.string.post_comment_author)
                 authorName.append(" ", authorBadge)
-                authorName[it.name.length + 1..authorName.length] = StyleSpan(Typeface.ITALIC)
+                authorName[author.name.length + 1..authorName.length] = StyleSpan(Typeface.ITALIC)
             }
 
             holder.authorName.text = authorName.toSpanned()
             AppGlide.with(context)
-                .load(it.avatar ?: R.drawable.ic_launcher)
+                .load(author.avatar ?: R.drawable.ic_launcher)
                 .placeholder(android.R.color.transparent)
                 .transition(AVATAR_TRANSITION)
                 .transform(AVATAR_TRANSFORM)
                 .into(holder.authorPicture)
+
+            holder.authorPicture.setOnClickListener {
+                fragment.findNavController()
+                    .navigate(NavigationMainDirections.actionGlobalFragmentUser(author = author))
+            }
         }
 
         val markdownContent = StringBuilder()
