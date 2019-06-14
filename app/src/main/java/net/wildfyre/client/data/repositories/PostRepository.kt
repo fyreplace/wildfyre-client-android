@@ -29,25 +29,25 @@ object PostRepository {
             limit
         ).await()
 
-    suspend fun getPost(areaName: String?, id: Long) =
+    suspend fun getPost(areaName: String, id: Long) =
         Services.webService.getPost(
             AuthRepository.authToken,
-            areaName ?: AreaRepository.preferredAreaName,
+            areaName,
             id
         ).await()
 
-    suspend fun setSubscription(areaName: String?, id: Long, sub: Boolean) =
+    suspend fun setSubscription(areaName: String, id: Long, sub: Boolean) =
         Services.webService.putSubscription(
             AuthRepository.authToken,
-            areaName ?: AreaRepository.preferredAreaName,
+            areaName,
             id,
             Subscription(sub)
         ).await()
 
-    suspend fun spread(areaName: String?, id: Long, spread: Boolean) =
+    suspend fun spread(areaName: String, id: Long, spread: Boolean) =
         Services.webService.postSpread(
             AuthRepository.authToken,
-            areaName ?: AreaRepository.preferredAreaName,
+            areaName,
             id,
             Spread(spread)
         ).await()
