@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.post_comments.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.wildfyre.client.Constants
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.data.models.Comment
@@ -32,9 +33,11 @@ import net.wildfyre.client.ui.ohNo
 import net.wildfyre.client.viewmodels.*
 import ru.noties.markwon.recycler.MarkwonAdapter
 
-open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
+open class PostFragment : SharingFragment(R.layout.fragment_post) {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<PostFragmentViewModel>()
+    override var menuShareContent = ""
+    override val menuShareTitle by lazy { getString(R.string.post_share_title) }
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
@@ -79,7 +82,11 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
             viewModel.setPostDataAsync(fragmentArgs.areaName, fragmentArgs.postId)
         }
 
-        viewModel.post.observe(viewLifecycleOwner, Observer { mainViewModel.setPost(it) })
+        viewModel.post.observe(viewLifecycleOwner, Observer {
+            it?.run { menuShareContent = Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId) }
+            mainViewModel.setPost(it)
+        })
+
         mainViewModel.userId.observe(viewLifecycleOwner, Observer { commentsAdapter.selfId = it })
         viewModel.authorId.observe(viewLifecycleOwner, Observer { commentsAdapter.authorId = it })
         viewModel.markdownContent.observe(viewLifecycleOwner, Observer {
@@ -187,6 +194,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_post_actions, menu)
         viewModel.subscribed.observe(viewLifecycleOwner, Observer {
             menu.findItem(R.id.action_subscribe).run {
@@ -207,9 +215,8 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_share -> ohNo(requireContext())
-            R.id.action_subscribe -> viewModel.changeSubscriptionAsync()
+        if (item.itemId == R.id.action_subscribe) {
+            viewModel.changeSubscriptionAsync()
         }
 
         return super.onOptionsItemSelected(item)
@@ -222,8 +229,8 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         val position = v.tag as Int
         val comment = (comments_list.adapter as CommentsAdapter).getComment(position)
 
-        menu.findItem(R.id.action_copy).setOnMenuItemClickListener { copyComment(position, comment); true }
-        menu.findItem(R.id.action_share).setOnMenuItemClickListener { shareComment(position, comment); true }
+        menu.findItem(R.id.action_copy).setOnMenuItemClickListener { copyComment(comment); true }
+        menu.findItem(R.id.action_share).setOnMenuItemClickListener { shareComment(comment); true }
         menu.findItem(R.id.action_delete).run {
             isVisible = comment.author?.user == mainViewModel.userId.value
             setOnMenuItemClickListener { deleteComment(position, comment); true }
@@ -252,9 +259,12 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post) {
         }
     }
 
-    private fun copyComment(position: Int, comment: Comment) = ohNo(requireContext())
+    private fun copyComment(comment: Comment) = ohNo(requireContext())
 
-    private fun shareComment(position: Int, comment: Comment) = ohNo(requireContext())
+    private fun shareComment(comment: Comment) = shareText(
+        Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId, comment.id),
+        getString(R.string.post_comment_menu_share_title)
+    )
 
     private fun deleteComment(position: Int, comment: Comment) {
         AlertDialog.Builder(requireContext())

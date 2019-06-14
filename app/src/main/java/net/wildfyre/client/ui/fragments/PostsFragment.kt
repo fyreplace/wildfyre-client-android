@@ -33,7 +33,7 @@ abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListF
             }
 
             refresher?.isRefreshing = true
-            onRefreshListener?.onRefresh()
+            onRefreshListener.onRefresh()
         })
     }
 
@@ -43,5 +43,10 @@ abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListF
     }
 
     override fun onItemClicked(item: Post) =
-        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(postId = item.id))
+        findNavController().navigate(
+            NavigationMainDirections.actionGlobalFragmentPost(
+                areaName = areaSelectingViewModel.preferredAreaName.value.orEmpty(),
+                postId = item.id
+            )
+        )
 }

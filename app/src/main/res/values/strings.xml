@@ -35,6 +35,7 @@
     <string name="area_selecting_actions_area_selector">Area: %1$s</string>
     <string name="area_selecting_actions_area_spread">Spread</string>
     <string name="area_selecting_actions_area_reputation">Reputation</string>
+    <string name="sharing_actions_share">Share</string>
     <string name="posts_empty">No posts in this area</string>
     <string name="notifications_actions_clear">Clear</string>
     <string name="notifications_actions_clear_dialog_title">Clear all notifications ?</string>
@@ -44,9 +45,9 @@
         <item quantity="other">%1$d new comments</item>
     </plurals>
     <string name="archive_empty">No archived posts from this area</string>
-    <string name="post_actions_share">Share</string>
     <string name="post_actions_subscribe">Subscribe</string>
     <string name="post_actions_unsubscribe">Unsubscribe</string>
+    <string name="post_share_title">Share post</string>
     <string name="post_extinguish">Extinguish</string>
     <string name="post_ignite">Ignite</string>
     <string name="post_comments_empty">No comments</string>
@@ -59,9 +60,11 @@
     <string name="post_comment_new_comment">New comment</string>
     <string name="post_comment_menu_copy">Copy comment</string>
     <string name="post_comment_menu_share">Share comment</string>
+    <string name="post_comment_menu_share_title">Share selected comment</string>
     <string name="post_comment_menu_delete">Delete comment</string>
     <string name="post_comment_menu_delete_dialog_title">Delete this comment ? This action cannot be undone</string>
     <string name="home_empty">No more posts in this area</string>
+    <string name="user_share_title">Share user profile</string>
     <string name="image_desc_user_picture">Profile picture</string>
     <string name="image_desc_author_picture">Author picture</string>
     <string name="image_desc_post_picture">Post picture</string>

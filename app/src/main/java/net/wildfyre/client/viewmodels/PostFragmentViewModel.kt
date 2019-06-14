@@ -10,13 +10,16 @@ import kotlinx.coroutines.withContext
 import net.wildfyre.client.data.SingleLiveEvent
 import net.wildfyre.client.data.models.Comment
 import net.wildfyre.client.data.models.Post
+import net.wildfyre.client.data.repositories.AreaRepository
 import net.wildfyre.client.data.repositories.CommentRepository
 import net.wildfyre.client.data.repositories.PostRepository
 import net.wildfyre.client.ui.prepareForMarkdown
 
 open class PostFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
-    protected var postAreaName: String? = null
-    protected var postId: Long = -1
+    var postAreaName: String = AreaRepository.preferredAreaName
+        protected set
+    var postId: Long = -1
+        protected set
     protected val _hasContent = MutableLiveData<Boolean>()
     private val _post = MutableLiveData<Post>()
     private val _subscribed = MediatorLiveData<Boolean>()
@@ -58,14 +61,14 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
         newCommentData.value = ""
     }
 
-    fun setPostDataAsync(areaName: String?, id: Long) = launchCatching {
+    fun setPostDataAsync(areaName: String, id: Long) = launchCatching {
         val newPost = if (id == -1L) null else withContext(Dispatchers.IO) { PostRepository.getPost(areaName, id) }
         setPost(newPost)
         postAreaName = areaName
     }
 
     fun setPost(post: Post?) {
-        postAreaName = null
+        postAreaName = AreaRepository.preferredAreaName
         postId = post?.id ?: -1
         _post.postValue(post)
     }
