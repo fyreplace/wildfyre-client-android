@@ -44,7 +44,6 @@ import net.wildfyre.client.NavigationMainDirections
 import net.wildfyre.client.R
 import net.wildfyre.client.WildFyreApplication
 import net.wildfyre.client.databinding.*
-import net.wildfyre.client.ui.fragments.UserFragmentDirections
 import net.wildfyre.client.ui.ohNo
 import net.wildfyre.client.viewmodels.MainActivityViewModel
 import net.wildfyre.client.viewmodels.lazyViewModel
@@ -301,7 +300,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                             .find { it.drawable != toolbar.navigationIcon }
                             ?.setOnClickListener {
                                 findNavController(R.id.navigation_host)
-                                    .navigate(UserFragmentDirections.actionGlobalFragmentUser(author = info.author))
+                                    .navigate(NavigationMainDirections.actionGlobalFragmentUser(author = info.author))
                             }
                     }
                 })

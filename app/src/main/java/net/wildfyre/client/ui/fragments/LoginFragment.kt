@@ -28,7 +28,7 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         viewModel.authToken.observe(this, Observer {
             if (it.isNotEmpty()) {
                 mainViewModel.login()
-                findNavController().navigate(R.id.action_fragment_login_to_fragment_home)
+                findNavController().navigate(LoginFragmentDirections.actionFragmentLoginToFragmentHome())
             }
         })
     }
