@@ -46,9 +46,12 @@
         tools:layout="@layout/fragment_post">
         <argument
             android:name="areaName"
-            app:argType="string" />
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
         <argument
             android:name="postId"
+            android:defaultValue="-1L"
             app:argType="long" />
         <argument
             android:name="selectedCommentId"

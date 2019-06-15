@@ -61,10 +61,11 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
         newCommentData.value = ""
     }
 
-    fun setPostDataAsync(areaName: String, id: Long) = launchCatching {
-        val newPost = if (id == -1L) null else withContext(Dispatchers.IO) { PostRepository.getPost(areaName, id) }
-        setPost(newPost)
-        postAreaName = areaName
+    fun setPostDataAsync(areaName: String?, id: Long) = launchCatching {
+        areaName?.let {
+            setPost(withContext(Dispatchers.IO) { PostRepository.getPost(it, id) })
+            postAreaName = it
+        }
     }
 
     fun setPost(post: Post?) {
