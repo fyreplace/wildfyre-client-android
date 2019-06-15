@@ -9,7 +9,7 @@
 
         <variable
             name="model"
-            type="net.wildfyre.client.viewmodels.PostFragmentViewModel" />
+            type="app.fyreplace.client.viewmodels.PostFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,7 +56,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <net.wildfyre.client.ui.widgets.MarkdownRecyclerView
+            <app.fyreplace.client.ui.widgets.MarkdownRecyclerView
                 android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

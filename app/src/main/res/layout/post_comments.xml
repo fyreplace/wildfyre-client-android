@@ -9,7 +9,7 @@
 
         <variable
             name="model"
-            type="net.wildfyre.client.viewmodels.PostFragmentViewModel" />
+            type="app.fyreplace.client.viewmodels.PostFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

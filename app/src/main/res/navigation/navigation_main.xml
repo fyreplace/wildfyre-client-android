@@ -6,7 +6,7 @@
     app:startDestination="@id/fragment_home">
     <fragment
         android:id="@+id/fragment_login"
-        android:name="net.wildfyre.client.ui.fragments.LoginFragment"
+        android:name="app.fyreplace.client.ui.fragments.LoginFragment"
         android:label="@string/main_nav_fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -21,27 +21,27 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_home"
-        android:name="net.wildfyre.client.ui.fragments.HomeFragment"
+        android:name="app.fyreplace.client.ui.fragments.HomeFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_post" />
     <fragment
         android:id="@+id/fragment_notifications"
-        android:name="net.wildfyre.client.ui.fragments.NotificationsFragment"
+        android:name="app.fyreplace.client.ui.fragments.NotificationsFragment"
         android:label="@string/main_nav_fragment_notifications"
         tools:layout="@layout/fragment_items_list" />
     <fragment
         android:id="@+id/fragment_archive"
-        android:name="net.wildfyre.client.ui.fragments.ArchiveFragment"
+        android:name="app.fyreplace.client.ui.fragments.ArchiveFragment"
         android:label="@string/main_nav_fragment_archive"
         tools:layout="@layout/fragment_items_list" />
     <fragment
         android:id="@+id/fragment_own_posts"
-        android:name="net.wildfyre.client.ui.fragments.OwnPostsFragment"
+        android:name="app.fyreplace.client.ui.fragments.OwnPostsFragment"
         android:label="@string/main_nav_fragment_own_posts"
         tools:layout="@layout/fragment_items_list" />
     <fragment
         android:id="@+id/fragment_post"
-        android:name="net.wildfyre.client.ui.fragments.PostFragment"
+        android:name="app.fyreplace.client.ui.fragments.PostFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_post">
         <argument
@@ -64,12 +64,12 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_user"
-        android:name="net.wildfyre.client.ui.fragments.UserFragment"
+        android:name="app.fyreplace.client.ui.fragments.UserFragment"
         android:label="@string/app_name">
         <argument
             android:name="author"
             android:defaultValue="@null"
-            app:argType="net.wildfyre.client.data.models.Author"
+            app:argType="app.fyreplace.client.data.models.Author"
             app:nullable="true" />
         <argument
             android:name="userId"

@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="net.wildfyre.client.viewmodels.LoginFragmentViewModel" />
+            type="app.fyreplace.client.viewmodels.LoginFragmentViewModel" />
     </data>
 
     <ScrollView

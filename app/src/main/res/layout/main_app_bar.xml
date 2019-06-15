@@ -9,7 +9,7 @@
 
         <variable
             name="model"
-            type="net.wildfyre.client.viewmodels.MainActivityViewModel" />
+            type="app.fyreplace.client.viewmodels.MainActivityViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

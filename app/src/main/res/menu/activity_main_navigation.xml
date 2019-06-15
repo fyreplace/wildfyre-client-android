@@ -29,45 +29,45 @@
     <item android:title="@string/main_nav_settings">
         <menu>
             <item
-                android:id="@+id/theme_selector"
+                android:id="@+id/settings_theme_selector"
                 android:icon="@drawable/ic_brightness_medium_black_24dp"
                 android:title="@string/main_nav_settings_theme"
                 app:actionLayout="@layout/main_nav_actions_theme"
                 app:showAsAction="always" />
             <item
-                android:id="@+id/badge_toggle"
+                android:id="@+id/settings_badge_toggle"
                 android:icon="@drawable/ic_menu_badge_black_24dp"
                 android:title="@string/main_nav_settings_badge_toggle"
                 app:actionLayout="@layout/main_nav_actions_badge"
                 app:showAsAction="always" />
         </menu>
     </item>
-    <item android:title="@string/app_name">
+    <item android:title="@string/app_name_original">
         <menu>
             <item
-                android:id="@+id/about_us"
+                android:id="@+id/wildfyre_website"
                 android:icon="@drawable/ic_group_black_24dp"
-                android:title="@string/main_nav_about" />
+                android:title="@string/main_nav_wildfyre_website" />
             <item
-                android:id="@+id/open_source"
+                android:id="@+id/wildfyre_open_source"
                 android:icon="@drawable/ic_code_black_24dp"
-                android:title="@string/main_nav_open_source" />
+                android:title="@string/main_nav_open_wildfyre_source" />
             <item
-                android:id="@+id/faq"
+                android:id="@+id/wildfyre_faq"
                 android:icon="@drawable/ic_help_black_24dp"
-                android:title="@string/main_nav_faq" />
+                android:title="@string/main_nav_wildfyre_faq" />
             <item
-                android:id="@+id/terms_and_conditions"
+                android:id="@+id/wildfyre_terms_and_conditions"
                 android:icon="@drawable/ic_assignment_black_24dp"
-                android:title="@string/main_nav_terms" />
+                android:title="@string/main_nav_wildfyre_terms" />
             <item
-                android:id="@+id/privacy_policy"
+                android:id="@+id/wildfyre_privacy_policy"
                 android:icon="@drawable/ic_security_black_24dp"
-                android:title="@string/main_nav_privacy" />
+                android:title="@string/main_nav_wildfyre_privacy" />
             <item
-                android:id="@+id/logout"
+                android:id="@+id/wildfyre_logout"
                 android:icon="@drawable/ic_exit_to_app_black_24dp"
-                android:title="@string/main_nav_logout" />
+                android:title="@string/main_nav_wildfyre_logout" />
         </menu>
     </item>
 </menu>
