@@ -28,7 +28,6 @@
     <string name="main_nav_wildfyre_terms">Terms and conditions</string>
     <string name="main_nav_wildfyre_privacy">Privacy policy</string>
     <string name="main_nav_wildfyre_logout">Logout</string>
-    <string name="main_actions_posts_new">Create</string>
     <string name="main_profile_editor_avatar_change">Change avatar</string>
     <string name="main_profile_editor_avatar_chooser">Select an avatar</string>
     <string name="main_profile_editor_bio">Your bio</string>

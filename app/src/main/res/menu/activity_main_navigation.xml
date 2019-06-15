@@ -23,8 +23,7 @@
         <item
             android:id="@+id/fragment_own_posts"
             android:icon="@drawable/ic_content_copy_black_24dp"
-            android:title="@string/main_nav_fragment_own_posts"
-            app:actionLayout="@layout/main_nav_actions_posts" />
+            android:title="@string/main_nav_fragment_own_posts" />
     </group>
     <item android:title="@string/main_nav_settings">
         <menu>

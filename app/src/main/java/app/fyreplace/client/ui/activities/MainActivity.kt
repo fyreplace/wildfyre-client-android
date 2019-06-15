@@ -36,7 +36,6 @@ import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.*
-import app.fyreplace.client.ui.ohNo
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import app.fyreplace.client.viewmodels.lazyViewModel
 import com.bumptech.glide.load.MultiTransformation
@@ -86,8 +85,6 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
         MainAppBarBinding.bind(content)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
-
-        navigation_view.menu.findItem(R.id.fragment_own_posts).actionView?.setOnClickListener { ohNo(this) }
 
         viewModel.uiRefreshTick.observe(this, Observer { viewModel.updateNotificationCountAsync() })
 
