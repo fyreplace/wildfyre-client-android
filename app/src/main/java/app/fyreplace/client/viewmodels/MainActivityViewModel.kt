@@ -133,11 +133,13 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         )
 
         val NAVIGATION_LINKS = mapOf(
-            R.id.wildfyre_website to Constants.Links.ABOUT,
-            R.id.wildfyre_open_source to Constants.Links.OPEN_SOURCE,
-            R.id.wildfyre_faq to Constants.Links.FAQ,
-            R.id.wildfyre_terms_and_conditions to Constants.Links.TERMS_AND_CONDITIONS,
-            R.id.wildfyre_privacy_policy to Constants.Links.PRIVACY_POLICY
+            R.id.fyreplace_website to Constants.Links.Fyreplace.WEBSITE,
+            R.id.fyreplace_open_source to Constants.Links.Fyreplace.OPEN_SOURCE,
+            R.id.wildfyre_website to Constants.Links.WildFyre.WEBSITE,
+            R.id.wildfyre_open_source to Constants.Links.WildFyre.OPEN_SOURCE,
+            R.id.wildfyre_faq to Constants.Links.WildFyre.FAQ,
+            R.id.wildfyre_terms_and_conditions to Constants.Links.WildFyre.TERMS_AND_CONDITIONS,
+            R.id.wildfyre_privacy_policy to Constants.Links.WildFyre.PRIVACY_POLICY
         )
     }
 

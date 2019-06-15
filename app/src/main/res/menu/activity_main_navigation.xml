@@ -41,16 +41,32 @@
                 app:showAsAction="always" />
         </menu>
     </item>
+    <item android:title="@string/app_name">
+        <menu>
+            <item
+                android:id="@+id/fyreplace_website"
+                android:icon="@drawable/ic_web_black_24dp"
+                android:title="@string/main_nav_fyreplace_website" />
+            <item
+                android:id="@+id/fyreplace_open_source"
+                android:icon="@drawable/ic_code_black_24dp"
+                android:title="@string/main_nav_fyreplace_open_source" />
+            <item
+                android:id="@+id/fyreplace_logout"
+                android:icon="@drawable/ic_exit_to_app_black_24dp"
+                android:title="@string/main_nav_fyreplace_logout" />
+        </menu>
+    </item>
     <item android:title="@string/app_name_original">
         <menu>
             <item
                 android:id="@+id/wildfyre_website"
-                android:icon="@drawable/ic_group_black_24dp"
+                android:icon="@drawable/ic_web_black_24dp"
                 android:title="@string/main_nav_wildfyre_website" />
             <item
                 android:id="@+id/wildfyre_open_source"
                 android:icon="@drawable/ic_code_black_24dp"
-                android:title="@string/main_nav_open_wildfyre_source" />
+                android:title="@string/main_nav_wildfyre_open_source" />
             <item
                 android:id="@+id/wildfyre_faq"
                 android:icon="@drawable/ic_help_black_24dp"
@@ -63,10 +79,6 @@
                 android:id="@+id/wildfyre_privacy_policy"
                 android:icon="@drawable/ic_security_black_24dp"
                 android:title="@string/main_nav_wildfyre_privacy" />
-            <item
-                android:id="@+id/wildfyre_logout"
-                android:icon="@drawable/ic_exit_to_app_black_24dp"
-                android:title="@string/main_nav_wildfyre_logout" />
         </menu>
     </item>
 </menu>

@@ -144,7 +144,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             }
         }
 
-        navigation_view.menu.findItem(R.id.wildfyre_logout).setOnMenuItemClickListener {
+        navigation_view.menu.findItem(R.id.fyreplace_logout).setOnMenuItemClickListener {
             viewModel.logout()
             return@setOnMenuItemClickListener true
         }

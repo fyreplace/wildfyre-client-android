@@ -49,11 +49,19 @@ object Constants {
      * Links used in the navigation panel.
      */
     object Links {
-        private const val MAIN_ADDRESS = "https://wildfyre.net"
-        const val ABOUT = MAIN_ADDRESS
-        const val OPEN_SOURCE = "$MAIN_ADDRESS/open-source"
-        const val FAQ = "$MAIN_ADDRESS/frequently-asked-questions"
-        const val TERMS_AND_CONDITIONS = "$MAIN_ADDRESS/terms-and-conditions"
-        const val PRIVACY_POLICY = "$MAIN_ADDRESS/privacy-policy"
+        object Fyreplace {
+            private const val MAIN_ADDRESS = "https://github.com/fyreplace"
+            const val WEBSITE = MAIN_ADDRESS
+            const val OPEN_SOURCE = "$MAIN_ADDRESS/fyreplace-client-android"
+        }
+
+        object WildFyre {
+            private const val MAIN_ADDRESS = "https://wildfyre.net"
+            const val WEBSITE = MAIN_ADDRESS
+            const val OPEN_SOURCE = "$MAIN_ADDRESS/open-source"
+            const val FAQ = "$MAIN_ADDRESS/frequently-asked-questions"
+            const val TERMS_AND_CONDITIONS = "$MAIN_ADDRESS/terms-and-conditions"
+            const val PRIVACY_POLICY = "$MAIN_ADDRESS/privacy-policy"
+        }
     }
 }
