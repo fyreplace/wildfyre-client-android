@@ -84,7 +84,7 @@ class CommentsAdapter(
 
             holder.authorName.text = authorName.toSpanned()
             AppGlide.with(context)
-                .load(author.avatar ?: R.drawable.ic_launcher)
+                .load(author.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
                 .transition(AVATAR_TRANSITION)
                 .transform(AVATAR_TRANSFORM)

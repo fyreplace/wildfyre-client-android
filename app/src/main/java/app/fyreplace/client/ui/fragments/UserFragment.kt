@@ -46,7 +46,7 @@ class UserFragment : SharingFragment(R.layout.fragment_user) {
             }
 
             AppGlide.with(view)
-                .load(it.avatar ?: R.drawable.ic_launcher)
+                .load(it.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
                 .transform(
                     CenterCrop(),

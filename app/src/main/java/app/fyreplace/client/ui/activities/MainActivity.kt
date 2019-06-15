@@ -285,7 +285,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
         if (info.author != null) {
             AppGlide.with(ImageView(this))
-                .load(info.author.avatar ?: R.drawable.ic_launcher)
+                .load(info.author.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
                 .transition(IMAGE_TRANSITION)
                 .transform(LOGO_TRANSFORM)
