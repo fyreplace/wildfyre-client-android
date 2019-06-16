@@ -8,8 +8,6 @@
     <string name="theme_automatic">Auto</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
-    <string name="alert_unimplemented_title">Oh no!</string>
-    <string name="alert_unimplemented_message">You just clicked on something, but that feature has not yet been implemented…</string>
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_login">Login</string>
