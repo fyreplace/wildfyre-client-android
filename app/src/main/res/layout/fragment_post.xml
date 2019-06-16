@@ -54,7 +54,10 @@
                     android:clipToPadding="false"
                     android:orientation="vertical"
                     android:overScrollMode="never"
-                    android:padding="@dimen/margin_medium"
+                    android:paddingLeft="@dimen/margin_large"
+                    android:paddingTop="@dimen/margin_medium"
+                    android:paddingRight="@dimen/margin_large"
+                    android:paddingBottom="@dimen/margin_medium"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </FrameLayout>
 
