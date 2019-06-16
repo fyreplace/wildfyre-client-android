@@ -127,8 +127,8 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy != 0) {
-                    go_up.isVisible = recyclerView.canScrollVertically(-1) && dy < 0
-                    go_down.isVisible = recyclerView.canScrollVertically(1) && dy > 0
+                    go_up?.isVisible = recyclerView.canScrollVertically(-1) && dy < 0
+                    go_down?.isVisible = recyclerView.canScrollVertically(1) && dy > 0
                 }
             }
         })
