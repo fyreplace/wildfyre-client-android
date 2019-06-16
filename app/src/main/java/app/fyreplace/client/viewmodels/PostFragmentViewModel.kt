@@ -96,6 +96,7 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
                 }
             )
             newCommentData.postValue("")
+            mSubscribed.postValue(true)
         }
     }
 
