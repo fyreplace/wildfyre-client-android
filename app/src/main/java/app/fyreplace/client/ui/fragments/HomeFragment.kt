@@ -12,6 +12,8 @@ import app.fyreplace.client.databinding.ActionsAreaSpreadBinding
 import app.fyreplace.client.viewmodels.*
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.post_buttons.*
+import kotlinx.android.synthetic.main.post_comments.*
+import kotlinx.coroutines.launch
 
 /**
  * [androidx.fragment.app.Fragment] for showing new posts to the user.
@@ -37,8 +39,18 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         text.setText(R.string.home_empty)
-        extinguish.setOnClickListener { viewModel.spreadAsync(false) }
-        ignite.setOnClickListener { viewModel.spreadAsync(true) }
+        extinguish.setOnClickListener {
+            launch {
+                viewModel.spreadAsync(false).join()
+                comments_list.scrollToPosition(0)
+            }
+        }
+        ignite.setOnClickListener {
+            launch {
+                viewModel.spreadAsync(true).join()
+                comments_list.scrollToPosition(0)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
