@@ -11,6 +11,7 @@
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_login">Login</string>
+    <string name="login_register">Register</string>
     <string name="login_error_field_required">This field is required</string>
     <string name="main_nav_fragment_login">Login</string>
     <string name="main_nav_fragment_home">Home</string>

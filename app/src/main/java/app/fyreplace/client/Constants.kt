@@ -62,6 +62,7 @@ object Constants {
             const val FAQ = "$MAIN_ADDRESS/frequently-asked-questions"
             const val TERMS_AND_CONDITIONS = "$MAIN_ADDRESS/terms-and-conditions"
             const val PRIVACY_POLICY = "$MAIN_ADDRESS/privacy-policy"
+            const val REGISTER = "https://client.wildfyre.net/register"
         }
     }
 }

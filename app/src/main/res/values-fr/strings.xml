@@ -12,6 +12,7 @@
     <string name="login_username">Nom d\'utilisateur</string>
     <string name="login_password">Mot de passe</string>
     <string name="login_login">Connexion</string>
+    <string name="login_register">S\'enregistrer</string>
     <string name="login_error_field_required">Ce champ est obligatoire</string>
     <string name="main_nav_fragment_login">Connexion</string>
     <string name="main_nav_fragment_home">Accueil</string>

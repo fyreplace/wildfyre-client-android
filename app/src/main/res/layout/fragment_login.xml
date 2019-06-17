@@ -81,6 +81,15 @@
                 android:enabled="@{safeUnbox(model.usernameValid) &amp;&amp; safeUnbox(model.passwordValid) &amp;&amp; safeUnbox(model.loginAllowed)}"
                 android:text="@string/login_login"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/register"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_register"
+                app:icon="@drawable/ic_open_in_new_black_24dp"
+                app:iconGravity="textEnd" />
         </LinearLayout>
     </ScrollView>
 </layout>

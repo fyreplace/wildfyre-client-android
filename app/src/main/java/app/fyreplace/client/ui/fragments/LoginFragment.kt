@@ -1,15 +1,17 @@
 package app.fyreplace.client.ui.fragments
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
+import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.FragmentLoginBinding
 import app.fyreplace.client.ui.hideSoftKeyboard
@@ -37,31 +39,30 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         })
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return FragmentLoginBinding.inflate(inflater, container, false).run {
-            // For both the username and the password fields, require the input to not be empty
-            mapOf(
-                viewModel.username to username,
-                viewModel.password to password
-            ).forEach {
-                it.key.observe(viewLifecycleOwner, Observer { content ->
-                    it.value.error = if (content.isEmpty()) getString(R.string.login_error_field_required) else null
-                })
-            }
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        FragmentLoginBinding.inflate(inflater, container, false).run {
             model = viewModel
             lifecycleOwner = viewLifecycleOwner
-            password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
-                // Allow the user to use the keyboard "done" button to trigger a login attempt
-                if (id == EditorInfo.IME_ACTION_DONE) {
-                    login.callOnClick()
-                    return@OnEditorActionListener true
-                }
-
-                return@OnEditorActionListener false
-            })
-            login.setOnClickListener { attemptLogin() }
             return@run root
+        }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // For both the username and the password fields, require the input to not be empty
+        mapOf(viewModel.username to username, viewModel.password to password).forEach {
+            it.key.observe(viewLifecycleOwner, Observer { content ->
+                it.value.error = if (content.isEmpty()) getString(R.string.login_error_field_required) else null
+            })
+        }
+
+        password.setOnEditorActionListener { _, id, _ ->
+            // Allow the user to use the keyboard "done" button to trigger a login attempt
+            if (id == EditorInfo.IME_ACTION_DONE) true.also { login.callOnClick() } else false
+        }
+
+        login.setOnClickListener { attemptLogin() }
+        register.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.Links.WildFyre.REGISTER)))
         }
     }
 
