@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +27,10 @@ import app.fyreplace.client.ui.adapters.CommentsAdapter
 import app.fyreplace.client.ui.drawables.BottomSheetArrowDrawableWrapper
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.ui.lazyMarkdown
-import app.fyreplace.client.viewmodels.*
+import app.fyreplace.client.viewmodels.MainActivityViewModel
+import app.fyreplace.client.viewmodels.PostFragmentViewModel
+import app.fyreplace.client.viewmodels.lazyActivityViewModel
+import app.fyreplace.client.viewmodels.lazyViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.post_comments.*
@@ -36,7 +40,7 @@ import kotlinx.coroutines.withContext
 import ru.noties.markwon.recycler.MarkwonAdapter
 
 open class PostFragment : SharingFragment(R.layout.fragment_post) {
-    override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
+    override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<PostFragmentViewModel>()
     override var menuShareContent = ""
     override val menuShareTitle by lazy { getString(R.string.post_share_title) }
@@ -80,8 +84,8 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
             )
         )
 
-        if (arguments != null) {
-            viewModel.setPostDataAsync(fragmentArgs.areaName, fragmentArgs.postId)
+        if (arguments != null) launchCatching {
+            viewModel.setPostData(fragmentArgs.areaName, fragmentArgs.postId)
         }
 
         viewModel.post.observe(viewLifecycleOwner, Observer {
@@ -146,7 +150,10 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
 
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(Math.max(commentsAdapter.itemCount - 1, 0)) }
-        comment_new.setEndIconOnClickListener { clearCommentInput(); viewModel.sendNewCommentAsync() }
+        comment_new.setEndIconOnClickListener {
+            clearCommentInput()
+            launchCatching { viewModel.sendNewComment() }
+        }
 
         collapsible_comments?.let {
             comment_count.setOnClickListener { toggleComments() }
@@ -217,8 +224,8 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_subscribe) {
-            viewModel.changeSubscriptionAsync()
+        if (item.itemId == R.id.action_subscribe) launchCatching {
+            viewModel.changeSubscription()
         }
 
         return super.onOptionsItemSelected(item)
@@ -273,7 +280,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.post_comment_delete_dialog_title)
             .setNegativeButton(R.string.no, null)
-            .setPositiveButton(R.string.yes) { _, _ -> viewModel.deleteCommentAsync(position, comment) }
+            .setPositiveButton(R.string.yes) { _, _ -> launchCatching { viewModel.deleteComment(position, comment) } }
             .show()
     }
 

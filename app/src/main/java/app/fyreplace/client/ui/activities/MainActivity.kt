@@ -46,6 +46,8 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import java.io.ByteArrayInputStream
 
 /**
@@ -53,6 +55,7 @@ import java.io.ByteArrayInputStream
  */
 class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChangedListener,
     DrawerLayout.DrawerListener {
+    override val coroutineContext by lazy { SupervisorJob() + Dispatchers.Main }
     override val viewModel by lazyViewModel<MainActivityViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var toolbarInset: Int = 0
@@ -86,7 +89,9 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         MainAppBarBinding.bind(content)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
 
-        viewModel.uiRefreshTick.observe(this, Observer { viewModel.updateNotificationCountAsync() })
+        viewModel.uiRefreshTick.observe(this, Observer {
+            launchCatching { viewModel.updateNotificationCount() }
+        })
 
         viewModel.isLogged.observe(this, Observer {
             if (!it) {
@@ -258,7 +263,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
 
     override fun onDrawerOpened(drawerView: View) {
-        viewModel.updateNotificationCountAsync()
+        launchCatching { viewModel.updateNotificationCount() }
     }
 
     override fun onDrawerClosed(drawerView: View) = Unit
@@ -318,7 +323,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             }
             .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
                 viewModel.userAvatarNewData.removeObservers(this)
-                viewModel.setProfileAsync(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString())
+                launchCatching { viewModel.setProfile(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString()) }
                 viewModel.resetPendingProfileAvatar()
             }
             .create()

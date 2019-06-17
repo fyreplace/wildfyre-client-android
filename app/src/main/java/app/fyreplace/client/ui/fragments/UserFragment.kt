@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.navArgs
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.ui.lazyMarkdown
-import app.fyreplace.client.viewmodels.FailureHandlingViewModel
 import app.fyreplace.client.viewmodels.UserFragmentViewModel
 import app.fyreplace.client.viewmodels.lazyViewModel
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -18,7 +18,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.android.synthetic.main.fragment_user.*
 
 class UserFragment : SharingFragment(R.layout.fragment_user) {
-    override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
+    override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<UserFragmentViewModel>()
     override var menuShareContent = ""
     override val menuShareTitle by lazy { getString(R.string.user_share_title) }
@@ -30,7 +30,7 @@ class UserFragment : SharingFragment(R.layout.fragment_user) {
 
         when {
             fragmentArgs.author != null -> viewModel.setAuthor(fragmentArgs.author!!)
-            fragmentArgs.userId != -1L -> viewModel.setUserIdAsync(fragmentArgs.userId)
+            fragmentArgs.userId != -1L -> launchCatching { viewModel.setUserId(fragmentArgs.userId) }
             else -> throw IllegalStateException("Cannot start UserFragment without a user to show")
         }
     }

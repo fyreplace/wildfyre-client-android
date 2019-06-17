@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
-import app.fyreplace.client.viewmodels.FailureHandlingViewModel
 import app.fyreplace.client.viewmodels.ItemsListFragmentViewModel
 import app.fyreplace.client.viewmodels.lazyActivityViewModel
 import kotlinx.android.synthetic.main.fragment_items_list.*
@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_items_list.*
  */
 abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListFragment<Post, VM, PostsAdapter>(),
     AreaSelectingFragment {
-    override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
+    override val viewModels: List<ViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
     private var settingUp = true
 

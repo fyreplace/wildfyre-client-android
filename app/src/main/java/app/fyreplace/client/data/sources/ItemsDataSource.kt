@@ -1,14 +1,11 @@
 package app.fyreplace.client.data.sources
 
 import androidx.paging.PositionalDataSource
-import app.fyreplace.client.data.FailureHandler
 import app.fyreplace.client.data.models.SuperItem
 import kotlinx.coroutines.*
 
-abstract class ItemsDataSource<I>(
-    private val failureHandler: FailureHandler,
-    private val listener: DataLoadingListener
-) : PositionalDataSource<I>(), CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.IO) {
+abstract class ItemsDataSource<I>(private val listener: DataLoadingListener) : PositionalDataSource<I>(),
+    CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.IO) {
     abstract val fetcher: suspend (Int, Int) -> SuperItem<I>
 
     final override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<I>) {
@@ -37,7 +34,6 @@ abstract class ItemsDataSource<I>(
             try {
                 return@runBlocking fetcher(offset, size).also { success = true }
             } catch (e: Exception) {
-                failureHandler.onFailure(e)
                 delay(1000)
             }
         } while (!success)

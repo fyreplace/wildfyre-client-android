@@ -8,18 +8,22 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.FragmentLoginBinding
 import app.fyreplace.client.ui.hideSoftKeyboard
-import app.fyreplace.client.viewmodels.*
+import app.fyreplace.client.viewmodels.LoginFragmentViewModel
+import app.fyreplace.client.viewmodels.MainActivityViewModel
+import app.fyreplace.client.viewmodels.lazyActivityViewModel
+import app.fyreplace.client.viewmodels.lazyViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 
 /**
  * [androidx.fragment.app.Fragment] showing a login screen to the user.
  */
 class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
-    override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
+    override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<LoginFragmentViewModel>()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
 
@@ -84,10 +88,10 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
 
         if (cancel) {
             focusView?.requestFocus()
-        } else {
+        } else launchCatching {
             hideSoftKeyboard(login)
             viewModel.setLoginAllowed(false)
-            viewModel.attemptLoginAsync(usernameStr, passwordStr)
+            viewModel.attemptLogin(usernameStr, passwordStr)
         }
     }
 }

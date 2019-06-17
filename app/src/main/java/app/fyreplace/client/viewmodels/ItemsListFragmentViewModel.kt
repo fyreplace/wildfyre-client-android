@@ -1,8 +1,8 @@
 package app.fyreplace.client.viewmodels
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.paging.Config
 import androidx.paging.DataSource
 import androidx.paging.PagedList
@@ -15,7 +15,7 @@ import app.fyreplace.client.data.sources.ItemsDataSourceFactory
 /**
  * Interface for ViewModels containing a list of items.
  */
-abstract class ItemsListFragmentViewModel<I>(application: Application) : FailureHandlingViewModel(application),
+abstract class ItemsListFragmentViewModel<I> : ViewModel(),
     DataLoadingListener {
     private var firstLoading = true
     private val mLoading = MutableLiveData<Boolean>()

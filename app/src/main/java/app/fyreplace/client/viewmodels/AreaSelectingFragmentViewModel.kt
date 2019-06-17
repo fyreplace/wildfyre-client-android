@@ -1,17 +1,13 @@
 package app.fyreplace.client.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import app.fyreplace.client.data.models.Area
 import app.fyreplace.client.data.models.Reputation
 import app.fyreplace.client.data.repositories.AreaRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class AreaSelectingFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
+class AreaSelectingFragmentViewModel : ViewModel() {
     private val mAreas = MutableLiveData<List<Area>>()
     private val mPreferredAreaName = MutableLiveData<String>()
     private val mPreferredArea = MediatorLiveData<Area?>()
@@ -35,7 +31,7 @@ class AreaSelectingFragmentViewModel(application: Application) : FailureHandling
         mPreferredAreaIndex.addSource(preferredAreaName) { updatePreferredAreaIndex(areas.value, it) }
     }
 
-    fun updateAreasAsync() = launchCatching {
+    suspend fun updateAreas() {
         val fetchedAreas = withContext(Dispatchers.IO) { AreaRepository.getAreas() }
         mAreas.postValue(fetchedAreas)
         val current = preferredAreaName.value
@@ -46,7 +42,7 @@ class AreaSelectingFragmentViewModel(application: Application) : FailureHandling
         }
     }
 
-    fun setPreferredAreaNameAsync(areaName: String) = launchCatching {
+    suspend fun setPreferredAreaName(areaName: String) {
         if (areaName != AreaRepository.preferredAreaName) {
             updatePreferredAreaInfo(areaName)
         }

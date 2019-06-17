@@ -1,6 +1,5 @@
 package app.fyreplace.client.viewmodels
 
-import android.app.Application
 import androidx.lifecycle.viewModelScope
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.PostRepository
@@ -9,15 +8,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(application) {
+class HomeFragmentViewModel : PostFragmentViewModel() {
     private val postReserve: MutableList<Post> = mutableListOf()
     private var postReserveJob: Job? = null
     private var endOfPosts = false
     private var lastAreaName: String? = null
 
-    fun nextPostAsync(areaName: String? = null) = viewModelScope.launch {
+    suspend fun nextPost(areaName: String? = null) {
         if (areaName == lastAreaName) {
-            return@launch
+            return
         }
 
         if (areaName != null) {
@@ -31,7 +30,7 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
         }
 
         if (endOfPosts) {
-            return@launch
+            return
         }
 
         if (hasContent.value != true) {
@@ -45,9 +44,9 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
         }
     }
 
-    fun spreadAsync(spread: Boolean) = launchCatching(Dispatchers.IO) {
+    suspend fun spread(spread: Boolean) = withContext(Dispatchers.IO) {
         PostRepository.spread(postAreaName, postId, spread)
-        nextPostAsync().join()
+        nextPost()
     }
 
     private suspend fun fillReserve() {
@@ -61,7 +60,7 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
     }
 
     private fun queueJob() {
-        postReserveJob = launchCatching {
+        postReserveJob = viewModelScope.launch {
             val superPost = withContext(Dispatchers.IO) { PostRepository.getNextPosts(RESERVE_SIZE) }
 
             if (superPost.count == 0) {

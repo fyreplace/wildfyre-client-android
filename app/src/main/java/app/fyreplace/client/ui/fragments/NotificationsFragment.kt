@@ -6,19 +6,23 @@ import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Notification
 import app.fyreplace.client.databinding.NotificationsActionsClearBinding
 import app.fyreplace.client.ui.adapters.NotificationsAdapter
-import app.fyreplace.client.viewmodels.*
+import app.fyreplace.client.viewmodels.MainActivityViewModel
+import app.fyreplace.client.viewmodels.NotificationsFragmentViewModel
+import app.fyreplace.client.viewmodels.lazyActivityViewModel
+import app.fyreplace.client.viewmodels.lazyViewModel
 
 /**
  * [androidx.fragment.app.Fragment] listing the user's notifications.
  */
 class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>() {
-    override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
+    override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<NotificationsFragmentViewModel>()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
     private var shouldRefresh = false
@@ -60,7 +64,7 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
             AlertDialog.Builder(context!!)
                 .setTitle(getString(R.string.notifications_actions_clear_dialog_title))
                 .setNegativeButton(R.string.no, null)
-                .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int -> viewModel.clearNotificationsAsync() }
+                .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int -> launchCatching { viewModel.clearNotifications() } }
                 .show()
         }
     }

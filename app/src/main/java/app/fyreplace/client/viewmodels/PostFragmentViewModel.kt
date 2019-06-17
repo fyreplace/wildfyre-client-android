@@ -1,10 +1,6 @@
 package app.fyreplace.client.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import app.fyreplace.client.data.SingleLiveEvent
 import app.fyreplace.client.data.models.Comment
 import app.fyreplace.client.data.models.Post
@@ -13,9 +9,10 @@ import app.fyreplace.client.data.repositories.CommentRepository
 import app.fyreplace.client.data.repositories.PostRepository
 import app.fyreplace.client.ui.prepareForMarkdown
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-open class PostFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
+open class PostFragmentViewModel : ViewModel() {
     var postAreaName: String = AreaRepository.preferredAreaName
         protected set
     var postId: Long = -1
@@ -44,7 +41,7 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
         mHasContent.value = true
         mSubscribed.addSource(post) { mSubscribed.postValue(it?.subscribed ?: false) }
         mMarkdownContent.addSource(post) {
-            launchCatching(Dispatchers.Default) {
+            viewModelScope.launch(Dispatchers.Default) {
                 val markdownContent = StringBuilder()
                 it?.image?.run { markdownContent.append("![]($this)\n\n") }
                 it?.text?.run {
@@ -61,7 +58,7 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
         newCommentData.value = ""
     }
 
-    fun setPostDataAsync(areaName: String?, id: Long) = launchCatching {
+    suspend fun setPostData(areaName: String?, id: Long) {
         areaName?.let {
             setPost(withContext(Dispatchers.IO) { PostRepository.getPost(it, id) })
             postAreaName = it
@@ -74,7 +71,7 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
         mPost.postValue(post)
     }
 
-    fun changeSubscriptionAsync() = launchCatching(Dispatchers.IO) {
+    suspend fun changeSubscription() = withContext(Dispatchers.IO) {
         mSubscribed.postValue(
             PostRepository.setSubscription(
                 postAreaName,
@@ -84,7 +81,7 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
         )
     }
 
-    fun sendNewCommentAsync() = launchCatching {
+    suspend fun sendNewComment() {
         if (newCommentData.value != null && postId != -1L) {
             mCommentAddedEvent.postValue(
                 withContext(Dispatchers.IO) {
@@ -99,7 +96,7 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
         }
     }
 
-    fun deleteCommentAsync(position: Int, comment: Comment) = launchCatching {
+    suspend fun deleteComment(position: Int, comment: Comment) {
         if (postId != -1L) {
             withContext(Dispatchers.IO) { CommentRepository.deleteComment(postAreaName, postId, comment.id) }
             mCommentRemovedEvent.postValue(position)

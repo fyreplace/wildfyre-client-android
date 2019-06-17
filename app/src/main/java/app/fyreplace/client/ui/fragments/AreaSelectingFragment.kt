@@ -8,13 +8,14 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import app.fyreplace.client.R
+import app.fyreplace.client.data.FailureHandler
 import app.fyreplace.client.databinding.AreaSelectingSpinnerBinding
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 
 /**
  * Interface for fragments displaying an area selector in their menu.
  */
-interface AreaSelectingFragment {
+interface AreaSelectingFragment : FailureHandler {
     val areaSelectingViewModel: AreaSelectingFragmentViewModel
 
     fun onCreateOptionsMenu(fragment: Fragment, menu: Menu, inflater: MenuInflater) {
@@ -39,11 +40,12 @@ interface AreaSelectingFragment {
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                areaSelectingViewModel.areas.value?.get(position)?.name
-                    ?.let { areaSelectingViewModel.setPreferredAreaNameAsync(it) }
+                areaSelectingViewModel.areas.value?.get(position)?.name?.let {
+                    launchCatching { areaSelectingViewModel.setPreferredAreaName(it) }
+                }
             }
         }
 
-        areaSelectingViewModel.updateAreasAsync()
+        launchCatching { areaSelectingViewModel.updateAreas() }
     }
 }

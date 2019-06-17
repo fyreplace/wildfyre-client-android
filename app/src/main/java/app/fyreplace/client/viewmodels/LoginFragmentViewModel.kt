@@ -1,13 +1,14 @@
 package app.fyreplace.client.viewmodels
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import app.fyreplace.client.data.repositories.AuthRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class LoginFragmentViewModel(application: Application) : FailureHandlingViewModel(application) {
+class LoginFragmentViewModel : ViewModel() {
     private val mAuthToken = MutableLiveData<String>()
     private val mLoginAllowed = MutableLiveData<Boolean>()
 
@@ -22,8 +23,8 @@ class LoginFragmentViewModel(application: Application) : FailureHandlingViewMode
         mLoginAllowed.value = true
     }
 
-    fun attemptLoginAsync(username: String, password: String) =
-        launchCatching(Dispatchers.IO) { mAuthToken.postValue(AuthRepository.getAuthToken(username, password)) }
+    suspend fun attemptLogin(username: String, password: String) =
+        withContext(Dispatchers.IO) { mAuthToken.postValue(AuthRepository.getAuthToken(username, password)) }
 
     fun setLoginAllowed(allowed: Boolean) = mLoginAllowed.postValue(allowed)
 }

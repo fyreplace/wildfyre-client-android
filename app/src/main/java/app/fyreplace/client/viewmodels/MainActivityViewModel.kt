@@ -1,10 +1,6 @@
 package app.fyreplace.client.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Author
@@ -16,7 +12,7 @@ import app.fyreplace.client.data.repositories.SettingsRepository
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 
-class MainActivityViewModel(application: Application) : FailureHandlingViewModel(application) {
+class MainActivityViewModel : ViewModel() {
     private var uiRefreshTickerJob: Job? = null
     private val mUiRefreshTick = MutableLiveData<Unit>()
     private val mIsLogged = MutableLiveData<Boolean>()
@@ -66,7 +62,7 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
             }
         }
         mIsLogged.value = true
-        updateProfileInfoAsync()
+        viewModelScope.launch { updateProfileInfo() }
     }
 
     fun logout() {
@@ -77,13 +73,13 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
         AuthRepository.clearAuthToken()
     }
 
-    fun updateNotificationCountAsync() = launchCatching(Dispatchers.IO) {
+    suspend fun updateNotificationCount() = withContext(Dispatchers.IO) {
         mNotificationCount.postValue(NotificationRepository.getNotificationCount())
     }
 
     fun forceNotificationCount(count: Int) = mNotificationCount.postValue(count)
 
-    fun setProfileAsync(bio: String) = launchCatching {
+    suspend fun setProfile(bio: String) {
         if (bio != userBio.value) {
             mSelf.postValue(withContext(Dispatchers.IO) { AuthorRepository.updateSelfBio(bio) })
         }
@@ -117,8 +113,8 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
 
     fun setPost(post: Post?) = mPostInfo.postValue(post?.let { PostInfo(it.author, DATE_FORMAT.format(it.created)) })
 
-    private fun updateProfileInfoAsync() = viewModelScope.launch {
-        updateNotificationCountAsync()
+    private suspend fun updateProfileInfo() {
+        updateNotificationCount()
         mSelf.postValue(AuthorRepository.getSelf())
     }
 

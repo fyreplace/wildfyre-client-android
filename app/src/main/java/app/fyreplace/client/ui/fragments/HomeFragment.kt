@@ -6,6 +6,7 @@ import android.view.*
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.ActionsAreaReputationBinding
 import app.fyreplace.client.databinding.ActionsAreaSpreadBinding
@@ -17,15 +18,15 @@ import kotlinx.android.synthetic.main.post_buttons.*
  * [androidx.fragment.app.Fragment] for showing new posts to the user.
  */
 class HomeFragment : PostFragment(), AreaSelectingFragment {
-    override val viewModels: List<FailureHandlingViewModel> by lazy { super.viewModels + areaSelectingViewModel }
+    override val viewModels: List<ViewModel> by lazy { super.viewModels + areaSelectingViewModel }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
     override val viewModel by lazyViewModel<HomeFragmentViewModel>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         areaSelectingViewModel.preferredAreaName.observe(this, Observer {
-            if (!it.isNullOrEmpty()) {
-                viewModel.nextPostAsync(it)
+            if (!it.isNullOrEmpty()) launchCatching {
+                viewModel.nextPost(it)
             }
         })
     }
@@ -37,8 +38,8 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         text.setText(R.string.home_empty)
-        extinguish.setOnClickListener { viewModel.spreadAsync(false) }
-        ignite.setOnClickListener { viewModel.spreadAsync(true) }
+        extinguish.setOnClickListener { launchCatching { viewModel.spread(false) } }
+        ignite.setOnClickListener { launchCatching { viewModel.spread(true) } }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
