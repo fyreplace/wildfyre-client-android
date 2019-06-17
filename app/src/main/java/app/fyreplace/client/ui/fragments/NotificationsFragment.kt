@@ -31,10 +31,13 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
         super.onCreateView(inflater, container, savedInstanceState)
             .apply { findViewById<TextView>(R.id.text).setText(R.string.notifications_empty) }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) = viewModel.itemsPagedList.observe(
-        viewLifecycleOwner,
-        Observer { mainViewModel.forceNotificationCount(it?.size ?: 0) }
-    )
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.itemsPagedList.observe(
+            viewLifecycleOwner,
+            Observer { mainViewModel.forceNotificationCount(it?.size ?: 0) }
+        )
+    }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)

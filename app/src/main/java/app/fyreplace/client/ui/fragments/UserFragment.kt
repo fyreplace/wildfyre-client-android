@@ -36,6 +36,7 @@ class UserFragment : SharingFragment(R.layout.fragment_user) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.author.observe(viewLifecycleOwner, Observer {
             menuShareContent = Constants.Api.userShareUrl(it.user)
             user_name.text = it.name
