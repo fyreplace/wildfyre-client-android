@@ -299,7 +299,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                         toolbar.children
                             .filter { it is ImageView }
                             .map { it as ImageView }
-                            .find { it.drawable != toolbar.navigationIcon }
+                            .find { it.drawable == toolbar.logo }
                             ?.setOnClickListener {
                                 findNavController(R.id.navigation_host)
                                     .navigate(NavigationMainDirections.actionGlobalFragmentUser(author = info.author))

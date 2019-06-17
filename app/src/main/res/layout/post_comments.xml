@@ -100,6 +100,7 @@
                 android:imeOptions="actionSend"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine"
+                android:maxLines="6"
                 android:text="@={model.newCommentData}"
                 tools:ignore="UnusedAttribute" />
         </com.google.android.material.textfield.TextInputLayout>

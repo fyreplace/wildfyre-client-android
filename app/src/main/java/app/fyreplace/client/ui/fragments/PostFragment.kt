@@ -107,16 +107,6 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
                 withContext(Dispatchers.Main) { commentsAdapter.notifyDataSetChanged() }
             }
         })
-        viewModel.commentAddedEvent.observe(viewLifecycleOwner, Observer {
-            commentsAdapter.addComment(it)
-            val commentPosition = commentsAdapter.itemCount - 1
-            commentsAdapter.notifyItemInserted(commentPosition)
-            comments_list.smoothScrollToPosition(commentPosition)
-        })
-        viewModel.commentRemovedEvent.observe(viewLifecycleOwner, Observer {
-            commentsAdapter.removeComment(it)
-            commentsAdapter.notifyItemRemoved(it)
-        })
         viewModel.newCommentData.observe(
             viewLifecycleOwner,
             Observer { comment_new.isEndIconVisible = it.isNotBlank() }
@@ -131,8 +121,8 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy != 0) {
-                    go_up.isVisible = recyclerView.canScrollVertically(-1) && dy < 0
-                    go_down.isVisible = recyclerView.canScrollVertically(1) && dy > 0
+                    go_up?.isVisible = recyclerView.canScrollVertically(-1) && dy < 0
+                    go_down?.isVisible = recyclerView.canScrollVertically(1) && dy > 0
                 }
             }
         })
