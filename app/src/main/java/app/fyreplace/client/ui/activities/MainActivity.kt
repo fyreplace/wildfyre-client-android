@@ -46,8 +46,6 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import java.io.ByteArrayInputStream
 
 /**
@@ -55,7 +53,6 @@ import java.io.ByteArrayInputStream
  */
 class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChangedListener,
     DrawerLayout.DrawerListener {
-    override val coroutineContext by lazy { SupervisorJob() + Dispatchers.Main }
     override val viewModel by lazyViewModel<MainActivityViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var toolbarInset: Int = 0
