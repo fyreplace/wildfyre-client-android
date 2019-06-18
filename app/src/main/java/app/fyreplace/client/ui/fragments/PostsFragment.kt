@@ -3,8 +3,8 @@ package app.fyreplace.client.ui.fragments
 import android.content.Context
 import android.view.Menu
 import android.view.MenuInflater
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
@@ -26,15 +26,14 @@ abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListF
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        areaSelectingViewModel.preferredAreaName.observe(this, Observer {
+        areaSelectingViewModel.preferredAreaName.observe(this) {
             if (settingUp) {
                 settingUp = false
-                return@Observer
+            } else {
+                refresher?.isRefreshing = true
+                onRefreshListener.onRefresh()
             }
-
-            refresher?.isRefreshing = true
-            onRefreshListener.onRefresh()
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

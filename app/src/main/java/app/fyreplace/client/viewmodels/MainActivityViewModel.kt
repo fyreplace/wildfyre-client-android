@@ -28,14 +28,13 @@ class MainActivityViewModel : ViewModel() {
     var startupLogin = true
         private set
     val isLogged: LiveData<Boolean> = mIsLogged
-    val userId: LiveData<Long> = Transformations.map(mSelf) { it?.user ?: -1 }
-    val userName: LiveData<String> = Transformations.map(mSelf) { it?.name.orEmpty() }
-    val userBio: LiveData<String> = Transformations.map(mSelf) { it?.bio.orEmpty() }
-    val userAvatar: LiveData<String> = Transformations.map(mSelf) { it?.avatar.orEmpty() }
+    val userId: LiveData<Long> = mSelf.map { it?.user ?: -1 }
+    val userName: LiveData<String> = mSelf.map { it?.name.orEmpty() }
+    val userBio: LiveData<String> = mSelf.map { it?.bio.orEmpty() }
+    val userAvatar: LiveData<String> = mSelf.map { it?.avatar.orEmpty() }
     val userAvatarNewData: LiveData<ByteArray> = mUserAvatarNewData
     val notificationCount: LiveData<Int> = mNotificationCount
-    val notificationCountText: LiveData<String> =
-        Transformations.map(notificationCount) { if (it < 100) it.toString() else "99" }
+    val notificationCountText: LiveData<String> = notificationCount.map { if (it < 100) it.toString() else "99" }
     val notificationBadgeVisible: LiveData<Boolean> = mNotificationBadgeVisible
     val postInfo: LiveData<PostInfo?> = mPostInfo
     val selectedThemeIndex = MutableLiveData<Int>()

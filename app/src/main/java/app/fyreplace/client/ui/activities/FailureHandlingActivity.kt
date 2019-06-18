@@ -4,18 +4,15 @@ import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import app.fyreplace.client.data.FailureHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 
-abstract class FailureHandlingActivity : AppCompatActivity(), FailureHandler,
-    CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.Main) {
+abstract class FailureHandlingActivity : AppCompatActivity(), FailureHandler {
     protected abstract val viewModel: ViewModel
 
     override fun onDestroy() {
-        cancel()
+        lifecycleScope.cancel()
         super.onDestroy()
     }
 

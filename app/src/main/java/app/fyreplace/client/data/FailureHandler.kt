@@ -2,6 +2,8 @@ package app.fyreplace.client.data
 
 import android.util.Log
 import androidx.annotation.CallSuper
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.R
 import kotlinx.coroutines.CoroutineScope
@@ -12,7 +14,7 @@ import kotlin.coroutines.CoroutineContext
 /**
  * Interface implemented by classes that can receive a [Throwable] and propagate it.
  */
-interface FailureHandler : CoroutineScope {
+interface FailureHandler : LifecycleOwner {
     /**
      * Called whenever an operation failed.
      *
@@ -24,7 +26,7 @@ interface FailureHandler : CoroutineScope {
     }
 
     fun launchCatching(context: CoroutineContext = Dispatchers.Main, block: suspend CoroutineScope.() -> Unit) =
-        launch(context) {
+        lifecycleScope.launch(context) {
             try {
                 block()
             } catch (e: Exception) {

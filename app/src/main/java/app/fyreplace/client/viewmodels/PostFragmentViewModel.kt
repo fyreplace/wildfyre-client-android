@@ -25,12 +25,12 @@ open class PostFragmentViewModel : ViewModel() {
 
     val hasContent: LiveData<Boolean> = mHasContent
     val post: LiveData<Post?> = mPost
-    val contentLoaded: LiveData<Boolean> = Transformations.map(post) { it != null }
-    val authorId: LiveData<Long> = Transformations.map(post) { it?.author?.user ?: -1 }
+    val contentLoaded: LiveData<Boolean> = post.map { it != null }
+    val authorId: LiveData<Long> = post.map { it?.author?.user ?: -1 }
     val subscribed: LiveData<Boolean> = mSubscribed
     val markdownContent: LiveData<String> = mMarkdownContent
     val comments: LiveData<List<Comment>> = mComments
-    val commentCount: LiveData<Int> = Transformations.map(comments) { it?.size ?: 0 }
+    val commentCount: LiveData<Int> = comments.map { it.size }
     val newCommentData = MutableLiveData<String>()
 
     init {

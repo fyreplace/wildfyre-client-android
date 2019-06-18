@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.Constants
 import app.fyreplace.client.R
@@ -31,12 +31,12 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        viewModel.authToken.observe(this, Observer {
+        viewModel.authToken.observe(this) {
             if (it.isNotEmpty()) {
                 mainViewModel.login()
                 findNavController().navigate(LoginFragmentDirections.actionFragmentLoginToFragmentHome())
             }
-        })
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
@@ -50,9 +50,9 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
         // For both the username and the password fields, require the input to not be empty
         mapOf(viewModel.username to username, viewModel.password to password).forEach {
-            it.key.observe(viewLifecycleOwner, Observer { content ->
+            it.key.observe(viewLifecycleOwner) { content ->
                 it.value.error = if (content.isEmpty()) getString(R.string.login_error_field_required) else null
-            })
+            }
         }
 
         password.setOnEditorActionListener { _, id, _ ->

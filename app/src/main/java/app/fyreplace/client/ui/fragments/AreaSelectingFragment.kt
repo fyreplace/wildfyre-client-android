@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import app.fyreplace.client.R
 import app.fyreplace.client.data.FailureHandler
 import app.fyreplace.client.databinding.AreaSelectingSpinnerBinding
@@ -27,14 +27,14 @@ interface AreaSelectingFragment : FailureHandler {
             model = areaSelectingViewModel
         }
 
-        areaSelectingViewModel.preferredArea.observe(fragment.viewLifecycleOwner, Observer {
+        areaSelectingViewModel.preferredArea.observe(fragment.viewLifecycleOwner) {
             if (it != null) {
                 areaSelectorMenuItem.title = fragment.getString(
                     R.string.area_selecting_actions_area_selector,
                     it.displayname
                 )
             }
-        })
+        }
 
         areaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit

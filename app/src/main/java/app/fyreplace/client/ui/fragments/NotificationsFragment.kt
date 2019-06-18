@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
@@ -33,10 +33,7 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.itemsPagedList.observe(
-            viewLifecycleOwner,
-            Observer { mainViewModel.forceNotificationCount(it?.size ?: 0) }
-        )
+        viewModel.itemsPagedList.observe(viewLifecycleOwner) { mainViewModel.forceNotificationCount(it.size) }
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

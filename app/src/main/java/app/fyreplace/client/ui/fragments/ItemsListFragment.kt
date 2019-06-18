@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.fyreplace.client.R
@@ -35,24 +35,19 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
         itemsList.setHasFixedSize(true)
         itemsList.adapter = getItemsAdapter().apply {
             onItemClickedListener = this@ItemsListFragment
-            viewModel.itemsPagedList.observe(
-                viewLifecycleOwner,
-                Observer {
-                    it?.run {
-                        submitList(this)
-                        viewModel.setHasData(size > 0)
-                    }
-                }
-            )
+            viewModel.itemsPagedList.observe(viewLifecycleOwner) {
+                submitList(it)
+                viewModel.setHasData(it.size > 0)
+            }
         }
 
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
         swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.background)
-        viewModel.loading.observe(viewLifecycleOwner, Observer { swipeRefresh.isRefreshing = it })
-        viewModel.dataSource.observe(viewLifecycleOwner, Observer {
+        viewModel.loading.observe(viewLifecycleOwner) { swipeRefresh.isRefreshing = it }
+        viewModel.dataSource.observe(viewLifecycleOwner) {
             onRefreshListener = SwipeRefreshLayout.OnRefreshListener(it::invalidate)
             swipeRefresh.setOnRefreshListener(onRefreshListener)
-        })
+        }
 
         return root
     }

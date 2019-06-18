@@ -5,14 +5,11 @@ import android.widget.Toast
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import app.fyreplace.client.data.FailureHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 
-abstract class FailureHandlingFragment(contentLayoutId: Int) : Fragment(contentLayoutId), FailureHandler,
-    CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.Main) {
+abstract class FailureHandlingFragment(contentLayoutId: Int) : Fragment(contentLayoutId), FailureHandler {
     protected abstract val viewModels: List<ViewModel>
     protected abstract val viewModel: ViewModel
 
@@ -22,7 +19,7 @@ abstract class FailureHandlingFragment(contentLayoutId: Int) : Fragment(contentL
     }
 
     override fun onDestroy() {
-        cancel()
+        lifecycleScope.cancel()
         super.onDestroy()
     }
 

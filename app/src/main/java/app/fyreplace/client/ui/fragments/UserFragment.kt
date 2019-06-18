@@ -3,8 +3,8 @@ package app.fyreplace.client.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.Constants
@@ -37,7 +37,7 @@ class UserFragment : SharingFragment(R.layout.fragment_user) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.author.observe(viewLifecycleOwner, Observer {
+        viewModel.author.observe(viewLifecycleOwner) {
             menuShareContent = Constants.Api.userShareUrl(it.user)
             user_name.text = it.name
 
@@ -55,6 +55,6 @@ class UserFragment : SharingFragment(R.layout.fragment_user) {
                 )
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(user_picture)
-        })
+        }
     }
 }

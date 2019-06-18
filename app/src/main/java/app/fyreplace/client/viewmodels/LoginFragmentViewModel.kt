@@ -2,8 +2,8 @@ package app.fyreplace.client.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import app.fyreplace.client.data.repositories.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,8 +16,8 @@ class LoginFragmentViewModel : ViewModel() {
     val loginAllowed: LiveData<Boolean> = mLoginAllowed
     val username = MutableLiveData<String>()
     val password = MutableLiveData<String>()
-    val usernameValid: LiveData<Boolean> = Transformations.map(username) { it.isNotEmpty() }
-    val passwordValid: LiveData<Boolean> = Transformations.map(password) { it.isNotEmpty() }
+    val usernameValid: LiveData<Boolean> = username.map { it.isNotEmpty() }
+    val passwordValid: LiveData<Boolean> = password.map { it.isNotEmpty() }
 
     init {
         mLoginAllowed.value = true

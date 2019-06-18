@@ -25,7 +25,7 @@ import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import androidx.core.view.updateLayoutParams
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -86,11 +86,9 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         MainAppBarBinding.bind(content)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
 
-        viewModel.uiRefreshTick.observe(this, Observer {
-            launchCatching { viewModel.updateNotificationCount() }
-        })
+        viewModel.uiRefreshTick.observe(this) { launchCatching { viewModel.updateNotificationCount() } }
 
-        viewModel.isLogged.observe(this, Observer {
+        viewModel.isLogged.observe(this) {
             if (!it) {
                 val navController = findNavController(R.id.navigation_host)
 
@@ -103,14 +101,14 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                     )
                 }
             }
-        })
+        }
 
-        viewModel.selectedThemeIndex.observe(this, Observer {
+        viewModel.selectedThemeIndex.observe(this) {
             AppCompatDelegate.setDefaultNightMode(MainActivityViewModel.THEMES[it])
             delegate.applyDayNight()
-        })
+        }
 
-        viewModel.userAvatar.observe(this, Observer {
+        viewModel.userAvatar.observe(this) {
             AppGlide.with(this)
                 .load(it)
                 .transform(
@@ -119,15 +117,15 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 )
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(navHeaderBinding.userPicture)
-        })
+        }
 
         val hostFragment = supportFragmentManager.findFragmentById(R.id.navigation_host) as NavHostFragment
 
-        viewModel.postInfo.observe(this, Observer { info ->
+        viewModel.postInfo.observe(this) { info ->
             if (hostFragment.navController.currentDestination?.id in NO_TITLE_DESTINATIONS) {
                 setTitleInfo(info)
             }
-        })
+        }
 
         setSupportActionBar(toolbar)
         drawer_layout.addDrawerListener(this)
@@ -334,8 +332,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             .transform(AVATAR_TRANSFORM)
             .into(avatar)
 
-        viewModel.userAvatarNewData.observe(this, Observer {
-            it?.run {
+        viewModel.userAvatarNewData.observe(this) {
+            it.run {
                 val input = ByteArrayInputStream(this)
                 AppGlide.with(this@MainActivity)
                     .load(Drawable.createFromStream(input, "avatar"))
@@ -343,7 +341,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                     .transform(AVATAR_TRANSFORM)
                     .into(avatar)
             }
-        })
+        }
 
         dialog.findViewById<View>(R.id.user_picture_change)!!.setOnClickListener {
             startActivityForResult(

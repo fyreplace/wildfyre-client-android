@@ -12,8 +12,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -88,29 +89,26 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
             viewModel.setPostData(fragmentArgs.areaName, fragmentArgs.postId)
         }
 
-        viewModel.post.observe(viewLifecycleOwner, Observer {
+        viewModel.post.observe(viewLifecycleOwner) {
             it?.run { menuShareContent = Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId) }
             mainViewModel.setPost(it)
-        })
+        }
 
-        mainViewModel.userId.observe(viewLifecycleOwner, Observer { commentsAdapter.selfId = it })
-        viewModel.authorId.observe(viewLifecycleOwner, Observer { commentsAdapter.authorId = it })
-        viewModel.markdownContent.observe(viewLifecycleOwner, Observer {
-            launch(Dispatchers.Default) {
+        mainViewModel.userId.observe(viewLifecycleOwner) { commentsAdapter.selfId = it }
+        viewModel.authorId.observe(viewLifecycleOwner) { commentsAdapter.authorId = it }
+        viewModel.markdownContent.observe(viewLifecycleOwner) {
+            lifecycleScope.launch(Dispatchers.Default) {
                 markdownAdapter.setMarkdown(markdown, it)
                 withContext(Dispatchers.Main) { markdownAdapter.notifyDataSetChanged() }
             }
-        })
-        viewModel.comments.observe(viewLifecycleOwner, Observer { commentList ->
-            launch(Dispatchers.Default) {
-                commentsAdapter.setComments(commentList, highlightedCommentIds)
+        }
+        viewModel.comments.observe(viewLifecycleOwner) {
+            lifecycleScope.launch(Dispatchers.Default) {
+                commentsAdapter.setComments(it, highlightedCommentIds)
                 withContext(Dispatchers.Main) { commentsAdapter.notifyDataSetChanged() }
             }
-        })
-        viewModel.newCommentData.observe(
-            viewLifecycleOwner,
-            Observer { comment_new.isEndIconVisible = it.isNotBlank() }
-        )
+        }
+        viewModel.newCommentData.observe(viewLifecycleOwner) { comment_new.isEndIconVisible = it.isNotBlank() }
 
         comments_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -195,7 +193,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_post_actions, menu)
-        viewModel.subscribed.observe(viewLifecycleOwner, Observer {
+        viewModel.subscribed.observe(viewLifecycleOwner) {
             menu.findItem(R.id.action_subscribe).run {
                 setTitle(
                     if (it)
@@ -210,7 +208,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
                         R.drawable.ic_notifications_none_white_24dp
                 )
             }
-        })
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

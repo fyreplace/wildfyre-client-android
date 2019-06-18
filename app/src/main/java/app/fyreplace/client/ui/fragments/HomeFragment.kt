@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.observe
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.ActionsAreaReputationBinding
 import app.fyreplace.client.databinding.ActionsAreaSpreadBinding
@@ -14,7 +14,6 @@ import app.fyreplace.client.viewmodels.*
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.post_buttons.*
 import kotlinx.android.synthetic.main.post_comments.*
-import kotlinx.coroutines.launch
 
 /**
  * [androidx.fragment.app.Fragment] for showing new posts to the user.
@@ -26,11 +25,9 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        areaSelectingViewModel.preferredAreaName.observe(this, Observer {
-            if (!it.isNullOrEmpty()) launchCatching {
-                viewModel.nextPost(it)
-            }
-        })
+        areaSelectingViewModel.preferredAreaName.observe(this) {
+            if (it.isNotEmpty()) launchCatching { viewModel.nextPost(it) }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
