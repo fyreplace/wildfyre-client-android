@@ -23,10 +23,10 @@ class NotificationsAdapter : ItemsAdapter<Notification>(NotificationCallback(), 
     companion object {
         class NotificationCallback : DiffUtil.ItemCallback<Notification>() {
             override fun areItemsTheSame(oldItem: Notification, newItem: Notification): Boolean =
-                oldItem.post.id == newItem.post.id
+                oldItem.area == newItem.area && oldItem.post.id == newItem.post.id
 
             override fun areContentsTheSame(oldItem: Notification, newItem: Notification): Boolean =
-                areItemsTheSame(oldItem, newItem) && oldItem.comments.size == newItem.comments.size
+                areItemsTheSame(oldItem, newItem) && oldItem.comments == newItem.comments
         }
     }
 }
