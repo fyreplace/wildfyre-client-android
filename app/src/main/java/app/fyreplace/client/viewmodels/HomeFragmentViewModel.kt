@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 
 class HomeFragmentViewModel : PostFragmentViewModel() {
     private val postReserve: MutableList<Post> = mutableListOf()
-    private var postReserveJob: Job? = null
+    private var fetchJob: Job? = null
     private var endOfPosts = false
     private var lastAreaName: String? = null
 
@@ -40,7 +40,7 @@ class HomeFragmentViewModel : PostFragmentViewModel() {
         setPost(postReserve.removeAt(0))
 
         if (postReserve.size <= RESERVE_SIZE / 2) {
-            queueJob()
+            fetchJob = viewModelScope.launch { fetchPosts() }
         }
     }
 
@@ -51,26 +51,21 @@ class HomeFragmentViewModel : PostFragmentViewModel() {
 
     private suspend fun fillReserve() {
         endOfPosts = false
-        postReserveJob?.join()
+        fetchJob?.join()
 
         while (!endOfPosts && postReserve.isEmpty()) {
-            queueJob()
-            postReserveJob?.join()
+            fetchPosts()
         }
     }
 
-    private fun queueJob() {
-        postReserveJob = viewModelScope.launch {
-            val superPost = withContext(Dispatchers.IO) { PostRepository.getNextPosts(RESERVE_SIZE) }
+    private suspend fun fetchPosts() {
+        val superPost = withContext(Dispatchers.IO) { PostRepository.getNextPosts(RESERVE_SIZE) }
 
-            if (superPost.count == 0) {
-                mHasContent.postValue(false)
-                endOfPosts = true
-            } else {
-                postReserve.addAll(superPost.results.filter { p -> p.id != postId && postReserve.find { it.id == p.id } == null })
-            }
-
-            postReserveJob = null
+        if (superPost.count == 0) {
+            mHasContent.postValue(false)
+            endOfPosts = true
+        } else {
+            postReserve.addAll(superPost.results.filter { p -> p.id != postId && postReserve.find { it.id == p.id } == null })
         }
     }
 
