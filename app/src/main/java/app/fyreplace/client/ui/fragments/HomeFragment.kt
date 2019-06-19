@@ -40,13 +40,13 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         extinguish.setOnClickListener {
             launchCatching {
                 viewModel.spread(false)
-                comments_list.scrollToPosition(0)
+                resetHomeView()
             }
         }
         ignite.setOnClickListener {
             launchCatching {
                 viewModel.spread(true)
-                comments_list.scrollToPosition(0)
+                resetHomeView()
             }
         }
     }
@@ -90,5 +90,12 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         for (id in setOf(R.id.action_area_selector, R.id.action_share, R.id.action_subscribe)) {
             menu.findItem(id).setShowAsAction(showAsAction or MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
         }
+    }
+
+    private fun resetHomeView() {
+        content.scrollToPosition(0)
+        comments_list.scrollToPosition(0)
+        go_up.isVisible = false
+        go_down.isVisible = false
     }
 }

@@ -31,5 +31,5 @@ fun Fragment.lazyMarkdown() = lazy {
 fun String.prepareForMarkdown(imageUrls: List<Image>): String = replace(Constants.Api.IMAGE_REGEX) {
     val imageNum = it.groups[1]?.value?.toInt() ?: 0
     val image = imageUrls.first { img -> img.num == imageNum }
-    return@replace "![${image.comment}](${image.image})"
+    return@replace "\n![${image.comment}](${image.image})\n"
 }
