@@ -80,7 +80,7 @@
             app:behavior_hideable="false"
             app:behavior_peekHeight="@dimen/comments_header_height"
             app:behavior_skipCollapsed="false"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            app:layout_behavior=".ui.widgets.CommentSheetBehavior"
             app:model="@{model}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

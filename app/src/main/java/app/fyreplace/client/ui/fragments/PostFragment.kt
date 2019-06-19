@@ -26,6 +26,7 @@ import app.fyreplace.client.ui.adapters.CommentsAdapter
 import app.fyreplace.client.ui.drawables.BottomSheetArrowDrawableWrapper
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.ui.lazyMarkdown
+import app.fyreplace.client.ui.widgets.CommentSheetBehavior
 import app.fyreplace.client.viewmodels.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_post.*
@@ -144,12 +145,14 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
             val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED)
                 ?: (highlightedCommentIds != null) || onBackPressedCallback.isEnabled
             val arrowWrapper = BottomSheetArrowDrawableWrapper(arrow, !commentsExpanded)
+            val behavior = CommentSheetBehavior.from(it)
 
-            BottomSheetBehavior.from(it).setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
                 @SuppressLint("SwitchIntDef")
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     onBackPressedCallback.isEnabled = newState == BottomSheetBehavior.STATE_EXPANDED
                     content?.isVisible = newState != BottomSheetBehavior.STATE_EXPANDED
+                    behavior.canDrag = newState != BottomSheetBehavior.STATE_EXPANDED
 
                     when (newState) {
                         BottomSheetBehavior.STATE_COLLAPSED -> {
