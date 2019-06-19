@@ -9,7 +9,7 @@ object Constants {
      */
     object Api {
         const val BASE_URL = "https://api.wildfyre.net"
-        val IMAGE_REGEX = Regex("\\[img:\\s*(\\d+)]")
+        val IMAGE_REGEX = Regex("\n*\\[img:\\s*(\\d+)]\n*")
 
         fun postShareUrl(areaName: String, postId: Long) =
             "https://client.wildfyre.net/areas/$areaName/$postId"
