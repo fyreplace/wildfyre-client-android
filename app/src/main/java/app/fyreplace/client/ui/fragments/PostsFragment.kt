@@ -33,7 +33,7 @@ abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListF
             }
 
             refresher?.isRefreshing = true
-            onRefreshListener.onRefresh()
+            onRefreshListener?.onRefresh()
         })
     }
 
