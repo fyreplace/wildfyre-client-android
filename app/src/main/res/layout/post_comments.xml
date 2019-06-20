@@ -96,6 +96,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="@{model.contentLoaded}"
                 android:hint="@string/post_comment_new_comment"
                 android:imeOptions="actionSend"
                 android:importantForAutofill="no"
