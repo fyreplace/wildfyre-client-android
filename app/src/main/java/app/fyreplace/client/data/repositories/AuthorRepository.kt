@@ -1,24 +1,34 @@
 package app.fyreplace.client.data.repositories
 
 import app.fyreplace.client.data.Services
-import app.fyreplace.client.data.await
-import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.AuthorPatch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 object AuthorRepository {
-    suspend fun getSelf() = Services.webService.getSelf(AuthRepository.authToken).await()
+    suspend fun getSelf() = withContext(Dispatchers.IO) {
+        Services.webService.getSelf(AuthRepository.authToken)
+    }
 
-    suspend fun getUser(userId: Long) = Services.webService.getUser(AuthRepository.authToken, userId).await()
+    suspend fun getUser(userId: Long) = withContext(Dispatchers.IO) {
+        Services.webService.getUser(AuthRepository.authToken, userId)
+    }
 
-    suspend fun updateSelfBio(bio: String) =
-        Services.webService.patchBio(AuthRepository.authToken, AuthorPatch(bio)).await()
+    suspend fun updateSelfBio(bio: String) = withContext(Dispatchers.IO) {
+        Services.webService.patchBio(AuthRepository.authToken, AuthorPatch(bio))
+    }
 
-    suspend fun updateSelfAvatar(fileName: String, mimeType: String, avatar: ByteArray): Author {
-        val avatarBody = RequestBody.create(MediaType.parse(mimeType), avatar)
-        val avatarPart = MultipartBody.Part.createFormData("avatar", fileName, avatarBody)
-        return Services.webService.putAvatar(AuthRepository.authToken, avatarPart).await()
+    suspend fun updateSelfAvatar(fileName: String, mimeType: String, avatar: ByteArray) = withContext(Dispatchers.IO) {
+        Services.webService.putAvatar(
+            AuthRepository.authToken,
+            MultipartBody.Part.createFormData(
+                "avatar",
+                fileName,
+                RequestBody.create(MediaType.parse(mimeType), avatar)
+            )
+        )
     }
 }

@@ -4,8 +4,9 @@ import androidx.core.content.edit
 import app.fyreplace.client.Constants
 import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.data.Services
-import app.fyreplace.client.data.await
 import app.fyreplace.client.data.models.Auth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 object AuthRepository {
     var authToken: String
@@ -21,7 +22,7 @@ object AuthRepository {
         authToken = ""
     }
 
-    suspend fun getAuthToken(username: String, password: String) =
-        ("token " + Services.webService.postAuth(Auth(username, password)).await().token)
-            .also { authToken = it }
+    suspend fun getAuthToken(username: String, password: String) = withContext(Dispatchers.IO) {
+        ("token " + Services.webService.postAuth(Auth(username, password)).token).also { authToken = it }
+    }
 }

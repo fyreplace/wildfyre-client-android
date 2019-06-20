@@ -1,22 +1,27 @@
 package app.fyreplace.client.data.repositories
 
 import app.fyreplace.client.data.Services
-import app.fyreplace.client.data.await
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 object NotificationRepository {
-    suspend fun getNotifications(offset: Int, size: Int) =
+    suspend fun getNotifications(offset: Int, size: Int) = withContext(Dispatchers.IO) {
         Services.webService.getNotifications(
             AuthRepository.authToken,
             size,
             offset
-        ).await()
+        )
+    }
 
-    suspend fun getNotificationCount() =
+    suspend fun getNotificationCount() = withContext(Dispatchers.IO) {
         Services.webService.getNotifications(
             AuthRepository.authToken,
             1,
             0
-        ).await().count
+        ).count
+    }
 
-    suspend fun clearNotifications() = Services.webService.deleteNotifications(AuthRepository.authToken).await()
+    suspend fun clearNotifications() = withContext(Dispatchers.IO) {
+        Services.webService.deleteNotifications(AuthRepository.authToken)
+    }
 }

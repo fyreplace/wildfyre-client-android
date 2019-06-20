@@ -9,7 +9,9 @@ import app.fyreplace.client.data.repositories.AuthRepository
 import app.fyreplace.client.data.repositories.AuthorRepository
 import app.fyreplace.client.data.repositories.NotificationRepository
 import app.fyreplace.client.data.repositories.SettingsRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class MainActivityViewModel : ViewModel() {
@@ -72,27 +74,23 @@ class MainActivityViewModel : ViewModel() {
         AuthRepository.clearAuthToken()
     }
 
-    suspend fun updateNotificationCount() = withContext(Dispatchers.IO) {
-        mNotificationCount.postValue(NotificationRepository.getNotificationCount())
-    }
+    suspend fun updateNotificationCount() = mNotificationCount.postValue(NotificationRepository.getNotificationCount())
 
     fun forceNotificationCount(count: Int) = mNotificationCount.postValue(count)
 
     suspend fun setProfile(bio: String) {
         if (bio != userBio.value) {
-            mSelf.postValue(withContext(Dispatchers.IO) { AuthorRepository.updateSelfBio(bio) })
+            mSelf.postValue(AuthorRepository.updateSelfBio(bio))
         }
 
         if (userAvatarNewData.value != null && userAvatarFileName != null && userAvatarMimeType != null) {
-            withContext(Dispatchers.IO) {
-                mSelf.postValue(
-                    AuthorRepository.updateSelfAvatar(
-                        userAvatarFileName!!,
-                        userAvatarMimeType!!,
-                        userAvatarNewData.value!!
-                    )
+            mSelf.postValue(
+                AuthorRepository.updateSelfAvatar(
+                    userAvatarFileName!!,
+                    userAvatarMimeType!!,
+                    userAvatarNewData.value!!
                 )
-            }
+            )
         }
     }
 

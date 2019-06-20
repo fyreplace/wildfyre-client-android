@@ -11,7 +11,7 @@ class NotificationsFragmentViewModel : ItemsListFragmentViewModel<Notification>(
     override val factory: ItemsDataSourceFactory<Notification> = NotificationsDataSourceFactory(this)
 
     suspend fun clearNotifications() {
-        withContext(Dispatchers.IO) { NotificationRepository.clearNotifications() }
+        NotificationRepository.clearNotifications()
         withContext(Dispatchers.Main) { dataSource.value?.invalidate() }
     }
 }

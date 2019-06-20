@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.repositories.AuthorRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class UserFragmentViewModel : ViewModel() {
     private val mAuthor = MutableLiveData<Author>()
@@ -15,5 +13,5 @@ class UserFragmentViewModel : ViewModel() {
 
     fun setAuthor(a: Author) = mAuthor.postValue(a)
 
-    suspend fun setUserId(id: Long) = withContext(Dispatchers.IO) { mAuthor.postValue(AuthorRepository.getUser(id)) }
+    suspend fun setUserId(id: Long) = mAuthor.postValue(AuthorRepository.getUser(id))
 }

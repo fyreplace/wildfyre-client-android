@@ -9,7 +9,6 @@ import app.fyreplace.client.data.repositories.PostRepository
 import app.fyreplace.client.ui.prepareForMarkdown
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 open class PostFragmentViewModel : ViewModel() {
     var postAreaName: String = AreaRepository.preferredAreaName
@@ -57,7 +56,7 @@ open class PostFragmentViewModel : ViewModel() {
 
     suspend fun setPostData(areaName: String?, id: Long) {
         areaName?.let {
-            setPost(withContext(Dispatchers.IO) { PostRepository.getPost(it, id) })
+            setPost(PostRepository.getPost(it, id))
             postAreaName = it
         }
     }
@@ -71,26 +70,22 @@ open class PostFragmentViewModel : ViewModel() {
         }
     }
 
-    suspend fun changeSubscription() = withContext(Dispatchers.IO) {
-        mSubscribed.postValue(
-            PostRepository.setSubscription(
-                postAreaName,
-                postId,
-                !(subscribed.value ?: false)
-            ).subscribed
-        )
-    }
+    suspend fun changeSubscription() = mSubscribed.postValue(
+        PostRepository.setSubscription(
+            postAreaName,
+            postId,
+            !(subscribed.value ?: false)
+        ).subscribed
+    )
 
     suspend fun sendNewComment() {
         if (newCommentData.value != null && postId != -1L) {
             commentsData.add(
-                withContext(Dispatchers.IO) {
-                    CommentRepository.sendComment(
-                        postAreaName,
-                        postId,
-                        newCommentData.value!!
-                    )
-                }
+                CommentRepository.sendComment(
+                    postAreaName,
+                    postId,
+                    newCommentData.value!!
+                )
             )
             mComments.postValue(commentsData)
             newCommentData.postValue("")
@@ -100,7 +95,7 @@ open class PostFragmentViewModel : ViewModel() {
 
     suspend fun deleteComment(position: Int, comment: Comment) {
         if (postId != -1L) {
-            withContext(Dispatchers.IO) { CommentRepository.deleteComment(postAreaName, postId, comment.id) }
+            CommentRepository.deleteComment(postAreaName, postId, comment.id)
             commentsData.removeAt(position)
             mComments.postValue(commentsData)
         }

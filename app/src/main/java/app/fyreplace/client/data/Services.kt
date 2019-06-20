@@ -3,7 +3,6 @@ package app.fyreplace.client.data
 import app.fyreplace.client.Constants
 import app.fyreplace.client.data.models.*
 import okhttp3.MultipartBody
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -31,332 +30,332 @@ interface WebService {
 
     @POST("/account/auth/")
     @Headers("Content-Type: application/json")
-    fun postAuth(
+    suspend fun postAuth(
         @Body auth: Auth
-    ): Call<AuthToken>
+    ): AuthToken
 
 
     // Account
 
     @GET("/account/")
-    fun getAccount(
+    suspend fun getAccount(
         @Header("Authorization") authorization: String
-    ): Call<Account>
+    ): Account
 
     @GET("/bans/")
-    fun getBans(
+    suspend fun getBans(
         @Header("Authorization/") authorization: String,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
-    ): Call<SuperBan>
+    ): SuperBan
 
     @GET("/users/")
-    fun getSelf(
+    suspend fun getSelf(
         @Header("Authorization") authorization: String
-    ): Call<Author>
+    ): Author
 
     @GET("/users/{userId}/")
-    fun getUser(
+    suspend fun getUser(
         @Header("Authorization") authorization: String,
         @Path("userId") userId: Long
-    ): Call<Author>
+    ): Author
 
     @PUT("/users/")
     @Multipart
-    fun putAvatar(
+    suspend fun putAvatar(
         @Header("Authorization") authorization: String,
         @Part avatar: MultipartBody.Part // name = "avatar"
-    ): Call<Author>
+    ): Author
 
     @PATCH("/users/")
     @Headers("Content-Type: application/json")
-    fun patchBio(
+    suspend fun patchBio(
         @Header("Authorization") authorization: String,
         @Body bio: AuthorPatch
-    ): Call<Author>
+    ): Author
 
     @PATCH("/account/")
     @Headers("Content-Type: application/json")
-    fun patchAccount(
+    suspend fun patchAccount(
         @Header("Authorization") authorization: String,
         @Body accountPatch: AccountPatch
-    ): Call<Unit>
+    )
 
 
     // Registration
 
     @POST("/account/register/")
     @Headers("Content-Type: application/json")
-    fun postRegistration(
+    suspend fun postRegistration(
         @Body recover: Registration
-    ): Call<RegistrationResult>
+    ): RegistrationResult
 
     @POST("/account/recover/")
     @Headers("Content-Type: application/json")
-    fun postRecovery(
+    suspend fun postRecovery(
         @Body recovery: PasswordRecoveryStep1
-    ): Call<RecoverTransaction>
+    ): RecoverTransaction
 
     @POST("/account/recover/reset/")
     @Headers("Content-Type: application/json")
-    fun postRecovery(
+    suspend fun postRecovery(
         @Body recovery: PasswordRecoveryStep2
-    ): Call<Reset>
+    ): Reset
 
     @POST("/account/recover/reset/")
     @Headers("Content-Type: application/json")
-    fun postRecovery(
+    suspend fun postRecovery(
         @Body recovery: UsernameRecovery
-    ): Call<RecoverTransaction>
+    ): RecoverTransaction
 
 
     // Flags
 
     @GET("/choices/flag/reasons/")
-    fun getFlagReasons(
+    suspend fun getFlagReasons(
         @Header("Authorization") authorization: String
-    ): Call<List<Choice>>
+    ): List<Choice>
 
     @POST("/areas/{areaName}/{postId}/flag/")
     @Headers("Content-Type: application/json")
-    fun postFlag(
+    suspend fun postFlag(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body flag: Flag
-    ): Call<Unit>
+    )
 
     @POST("/areas/{areaName}/{postId}/{commentId}/flag/")
     @Headers("Content-Type: application/json")
-    fun postFlag(
+    suspend fun postFlag(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Path("commentId") commentId: Long,
         @Body flag: Flag
-    ): Call<Unit>
+    )
 
 
     // Notifications
 
     @GET("/areas/{areaName}/subscribed/")
-    fun getPosts(
+    suspend fun getPosts(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
-    ): Call<SuperPost>
+    ): SuperPost
 
     @GET("/areas/notification/")
-    fun getNotifications(
+    suspend fun getNotifications(
         @Header("Authorization") authorization: String,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
-    ): Call<SuperNotification>
+    ): SuperNotification
 
     @DELETE("/areas/notification/")
-    fun deleteNotifications(
+    suspend fun deleteNotifications(
         @Header("Authorization") authorization: String
-    ): Call<Unit>
+    )
 
 
     // Areas
 
     @GET("/areas/{areaName}/rep/")
-    fun getAreaRep(
+    suspend fun getAreaRep(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String
-    ): Call<Reputation>
+    ): Reputation
 
     @GET("/areas/")
-    fun getAreas(
+    suspend fun getAreas(
         @Header("Authorization") authorization: String
-    ): Call<List<Area>>
+    ): List<Area>
 
 
     // Posts
 
     @GET("/areas/{areaName}/")
-    fun getNextPosts(
+    suspend fun getNextPosts(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Query("limit") limit: Int
-    ): Call<SuperPost>
+    ): SuperPost
 
     @GET("/areas/{areaName}/own/")
-    fun getOwnPosts(
+    suspend fun getOwnPosts(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
-    ): Call<SuperPost>
+    ): SuperPost
 
     @GET("/areas/{areaName}/{postId}/")
-    fun getPost(
+    suspend fun getPost(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long
-    ): Call<Post>
+    ): Post
 
     @POST("/areas/{areaName}/")
     @Headers("Content-Type: application/json")
-    fun postPost(
+    suspend fun postPost(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Body post: Post
-    ): Call<Unit>
+    )
 
     @POST("/areas/{areaName}/{postId}/")
     @Headers("Content-Type: application/json")
     @Multipart
-    fun postPicture(
+    suspend fun postPicture(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Part image: MultipartBody.Part, // name = "image"
         @Part commentText: MultipartBody.Part // name = "text"
-    ): Call<Comment>
+    ): Comment
 
     @POST("/areas/{areaName}/{postId}/spread/")
     @Headers("Content-Type: application/json")
-    fun postSpread(
+    suspend fun postSpread(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body spread: Spread
-    ): Call<Unit>
+    )
 
     @PUT("/areas/{areaName}/{postId}/subscribe/")
     @Headers("Content-Type: application/json")
-    fun putSubscription(
+    suspend fun putSubscription(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body subscription: Subscription
-    ): Call<Subscription>
+    ): Subscription
 
     @DELETE("/areas/{areaName}/{postId}/")
-    fun deletePost(
+    suspend fun deletePost(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long
-    ): Call<Unit>
+    )
 
 
     // Drafts
 
     @GET("/areas/{areaName}/drafts/")
-    fun getDrafts(
+    suspend fun getDrafts(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
-    ): Call<SuperPost>
+    ): SuperPost
 
     @GET("/areas/{areaName}/drafts/{postId}/")
-    fun getDraft(
+    suspend fun getDraft(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Query("postId") postId: Long
-    ): Call<Post>
+    ): Post
 
     @POST("/areas/{areaName}/drafts/")
     @Headers("Content-Type: application/json")
-    fun postDraft(
+    suspend fun postDraft(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Body post: Post
-    ): Call<Unit>
+    )
 
     @POST("/areas/{areaName}/drafts/{postId}/publish/")
     @Headers("Content-Type: application/json")
-    fun postDraftPublication(
+    suspend fun postDraftPublication(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Query("postId") postId: Long
-    ): Call<Unit>
+    )
 
     @PUT("/areas/{areaName}/drafts/{postId}/")
     @Headers("Content-Type: application/json")
     @Multipart
-    fun putPicture(
+    suspend fun putPicture(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Part image: MultipartBody.Part, // name = "image"
         @Part postText: MultipartBody.Part // name = "text"
-    ): Call<Post>
+    ): Post
 
     @PUT("/areas/{areaName}/drafts/{postId}/")
-    fun putPicture(
+    suspend fun putPicture(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body post: Post
-    ): Call<Unit>
+    )
 
     @PUT("/areas/{areaName}/drafts/{postId}/img/{slot}/")
     @Multipart
-    fun putImage(
+    suspend fun putImage(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Path("postId") slot: Int,
         @Part image: MultipartBody.Part, // name = "image"
         @Part comment: MultipartBody.Part // name = "comment"
-    ): Call<Image>
+    ): Image
 
     @PATCH("/areas/{areaName}/drafts/{postId}/")
     @Headers("Content-Type: application/json")
-    fun patchDraft(
+    suspend fun patchDraft(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body post: Post
-    ): Call<Unit>
+    )
 
     @DELETE("/areas/{areaName}/drafts/{postId}/")
-    fun deleteDraft(
+    suspend fun deleteDraft(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long
-    ): Call<Unit>
+    )
 
     @DELETE("/areas/{areaName}/drafts/{postId}/img/{slot}/")
-    fun deleteImage(
+    suspend fun deleteImage(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Path("postId") slot: Int
-    ): Call<Unit>
+    )
 
 
     // Comments
 
     @POST("/areas/{areaName}/{postId}/")
     @Headers("Content-Type: application/json")
-    fun postComment(
+    suspend fun postComment(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body comment: CommentText
-    ): Call<Comment>
+    ): Comment
 
     @POST("/areas/{areaName}/{postId}/")
     @Headers("Content-Type: application/json")
-    fun postImage(
+    suspend fun postImage(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Part image: MultipartBody.Part, // name = "image"
         @Part commentText: MultipartBody.Part // name = "text"
-    ): Call<Comment>
+    ): Comment
 
     @DELETE("/areas/{areaName}/{postId}/{commentId}/")
-    fun deleteComment(
+    suspend fun deleteComment(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Path("commentId") commentId: Long
-    ): Call<Unit>
+    )
 }

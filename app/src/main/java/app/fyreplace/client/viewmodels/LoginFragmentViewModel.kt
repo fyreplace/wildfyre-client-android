@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import app.fyreplace.client.data.repositories.AuthRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class LoginFragmentViewModel : ViewModel() {
     private val mAuthToken = MutableLiveData<String>()
@@ -24,7 +22,7 @@ class LoginFragmentViewModel : ViewModel() {
     }
 
     suspend fun attemptLogin(username: String, password: String) =
-        withContext(Dispatchers.IO) { mAuthToken.postValue(AuthRepository.getAuthToken(username, password)) }
+        mAuthToken.postValue(AuthRepository.getAuthToken(username, password))
 
     fun setLoginAllowed(allowed: Boolean) = mLoginAllowed.postValue(allowed)
 }
