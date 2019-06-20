@@ -70,6 +70,7 @@ open class PostFragmentViewModel(application: Application) : FailureHandlingView
             postAreaName = AreaRepository.preferredAreaName
             postId = post?.id ?: -1
             mPost.postValue(post)
+            newCommentData.postValue("")
         }
     }
 
