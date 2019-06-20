@@ -281,7 +281,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         val size = resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_size)
 
         if (info.author != null) {
-            AppGlide.with(ImageView(this))
+            AppGlide.with(this)
                 .load(info.author.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
                 .transition(IMAGE_TRANSITION)
@@ -294,13 +294,15 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                         toolbar.children
                             .filter { it is ImageView }
                             .map { it as ImageView }
-                            .find { it.drawable == toolbar.logo }
+                            .find { it.drawable == resource }
                             ?.setOnClickListener {
                                 findNavController(R.id.navigation_host)
                                     .navigate(NavigationMainDirections.actionGlobalFragmentUser(author = info.author))
                             }
                     }
                 })
+        } else {
+            toolbar.logo = null
         }
     }
 
