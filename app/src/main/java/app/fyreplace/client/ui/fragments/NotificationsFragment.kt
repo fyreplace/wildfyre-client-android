@@ -42,7 +42,7 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
 
         if (shouldRefresh) {
             shouldRefresh = false
-            onRefreshListener.onRefresh()
+            onRefreshListener?.onRefresh()
         }
     }
 

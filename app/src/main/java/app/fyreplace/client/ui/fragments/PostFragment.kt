@@ -40,6 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.noties.markwon.recycler.MarkwonAdapter
+import kotlin.math.max
 
 open class PostFragment : SharingFragment(R.layout.fragment_post) {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
@@ -113,7 +114,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
 
         comments_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING && comment_new.hasFocus()) {
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     clearCommentInput()
                 }
             }
@@ -138,7 +139,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
         }
 
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
-        go_down.setOnClickListener { comments_list.smoothScrollToPosition(Math.max(commentsAdapter.itemCount - 1, 0)) }
+        go_down.setOnClickListener { comments_list.smoothScrollToPosition(max(commentsAdapter.itemCount - 1, 0)) }
         comment_new.setEndIconOnClickListener {
             clearCommentInput()
             launchCatching { viewModel.sendNewComment() }

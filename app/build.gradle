@@ -8,7 +8,7 @@ apply plugin: 'org.jetbrains.dokka-android'
 ext {
     versionMajor = 0
     versionMinor = 1
-    versionPatch = 3
+    versionPatch = 4
 }
 
 android {
@@ -58,16 +58,16 @@ dependencies {
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0-beta02'
-    implementation 'com.google.android.gms:play-services-base:16.1.0'
+    implementation 'com.google.android.gms:play-services-base:17.0.0'
     implementation 'com.google.android.material:material:1.1.0-alpha07'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.9.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    implementation 'ru.noties.markwon:core:3.0.1'
-    implementation 'ru.noties.markwon:ext-strikethrough:3.0.1'
-    implementation 'ru.noties.markwon:image-okhttp:3.0.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'ru.noties.markwon:core:3.0.2'
+    implementation 'ru.noties.markwon:ext-strikethrough:3.0.2'
+    implementation 'ru.noties.markwon:image-okhttp:3.0.2'
     implementation 'ru.noties.markwon:recycler:3.0.1'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'

@@ -67,6 +67,7 @@ open class PostFragmentViewModel : ViewModel() {
             postAreaName = AreaRepository.preferredAreaName
             postId = post?.id ?: -1
             mPost.postValue(post)
+            newCommentData.postValue("")
         }
     }
 
