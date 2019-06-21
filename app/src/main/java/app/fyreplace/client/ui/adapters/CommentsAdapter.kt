@@ -35,7 +35,7 @@ class CommentsAdapter(
     private val markdown: Markwon
 ) :
     RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
-    private var data: MutableList<CommentWrapper> = mutableListOf()
+    private var data: List<CommentWrapper> = listOf()
     private val recyclers: MutableList<RecyclerView> = mutableListOf()
     var selfId: Long = -1
     var authorId: Long = -1
@@ -125,19 +125,11 @@ class CommentsAdapter(
                     wrapper.isHighlighted = true
                 }
             }
-        }.toMutableList()
+        }
 
         if (scrollPosition > -1) {
             recyclers.forEach { it.post { it.scrollToPosition(scrollPosition) } }
         }
-    }
-
-    fun addComment(comment: Comment) {
-        data.add(CommentWrapper(comment))
-    }
-
-    fun removeComment(position: Int) {
-        data.removeAt(position)
     }
 
     fun getComment(position: Int) = data[position].comment
