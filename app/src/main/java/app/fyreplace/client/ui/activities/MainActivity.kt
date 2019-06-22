@@ -273,6 +273,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             return
         }
 
+        toolbar.collapseActionView()
         toolbar.title = " " + (info.author?.name ?: getString(R.string.main_author_anonymous))
         toolbar.subtitle = " " + info.date
         toolbar.contentInsetStartWithNavigation = 0
