@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.set
 import androidx.core.text.toSpanned
-import androidx.core.view.postDelayed
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -103,7 +103,7 @@ class CommentsAdapter(
         comment.image?.let { markdownContent.append("![]($it)") }
         comment.text?.let { markdownContent.append(it) }
         markdown.setMarkdown(holder.text, markdownContent.toString())
-        holder.text.postDelayed(100) { AsyncDrawableScheduler.schedule(holder.text) }
+        holder.text.doOnLayout { it.post { AsyncDrawableScheduler.schedule(holder.text) } }
         holder.text.tag = position
         holder.itemView.setBackgroundResource(
             if (wrapper.isHighlighted)

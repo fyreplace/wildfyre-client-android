@@ -7,9 +7,7 @@ import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.*
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.getSystemService
@@ -39,7 +37,7 @@ import kotlinx.coroutines.withContext
 import ru.noties.markwon.recycler.MarkwonAdapter
 import kotlin.math.max
 
-open class PostFragment : SharingFragment(R.layout.fragment_post), RecyclerView.OnChildAttachStateChangeListener {
+open class PostFragment : SharingFragment(R.layout.fragment_post) {
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<PostFragmentViewModel>()
     override var menuShareContent = ""
@@ -73,7 +71,6 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), RecyclerView.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
-        content.addOnChildAttachStateChangeListener(this)
         content.adapter = markdownAdapter
         val commentsAdapter = CommentsAdapter(this, markdown)
         comments_list.adapter = commentsAdapter
@@ -240,12 +237,6 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), RecyclerView.
             setOnMenuItemClickListener { deleteComment(position, comment); true }
         }
     }
-
-    override fun onChildViewAttachedToWindow(view: View) {
-        (view as? TextView)?.movementMethod = LinkMovementMethod.getInstance()
-    }
-
-    override fun onChildViewDetachedFromWindow(view: View) = Unit
 
     private fun toggleComments() {
         if (collapsible_comments == null) {
