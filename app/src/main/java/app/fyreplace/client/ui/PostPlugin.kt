@@ -3,9 +3,13 @@ package app.fyreplace.client.ui
 import android.content.Context
 import android.graphics.Rect
 import android.os.Build
+import android.text.SpannableString
+import android.text.util.Linkify
 import androidx.core.content.ContextCompat
+import androidx.core.text.util.LinkifyCompat
 import app.fyreplace.client.R
 import org.commonmark.node.SoftLineBreak
+import org.commonmark.node.Text
 import ru.noties.markwon.AbstractMarkwonPlugin
 import ru.noties.markwon.MarkwonConfiguration
 import ru.noties.markwon.MarkwonVisitor
@@ -18,6 +22,12 @@ import ru.noties.markwon.priority.Priority
 class PostPlugin private constructor(private val context: Context) : AbstractMarkwonPlugin() {
     override fun configureVisitor(builder: MarkwonVisitor.Builder) {
         builder.on(SoftLineBreak::class.java) { visitor, _ -> visitor.forceNewLine() }
+        builder.on(Text::class.java) { visitor, text ->
+            visitor.builder().append(
+                SpannableString(text.literal)
+                    .apply { LinkifyCompat.addLinks(this, Linkify.WEB_URLS) })
+            visitor.visitChildren(text)
+        }
     }
 
     override fun configureImages(builder: AsyncDrawableLoader.Builder) {
