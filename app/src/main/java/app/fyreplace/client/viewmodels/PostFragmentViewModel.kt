@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 
 open class PostFragmentViewModel : ViewModel() {
     var postAreaName: String = AreaRepository.preferredAreaName
-        protected set
+        private set
     var postId: Long = -1
-        protected set
+        private set
     protected val mHasContent = MutableLiveData<Boolean>()
     private val mPost = MutableLiveData<Post>()
     private val mSubscribed = MediatorLiveData<Boolean>()
