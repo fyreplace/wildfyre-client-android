@@ -23,5 +23,6 @@ object NotificationRepository {
 
     suspend fun clearNotifications() = withContext(Dispatchers.IO) {
         Services.webService.deleteNotifications(AuthRepository.authToken)
+        return@withContext
     }
 }
