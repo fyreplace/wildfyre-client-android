@@ -11,6 +11,7 @@ import ru.noties.markwon.core.CorePlugin
 import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import ru.noties.markwon.image.ImagesPlugin
 import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin
+import ru.noties.markwon.movement.MovementMethodPlugin
 
 fun hideSoftKeyboard(view: View) {
     ContextCompat.getSystemService(view.context, InputMethodManager::class.java)
@@ -21,8 +22,9 @@ fun Fragment.lazyMarkdown() = lazy {
     val context = requireContext()
     return@lazy Markwon.builder(context)
         .usePlugin(CorePlugin.create())
-        .usePlugin(StrikethroughPlugin.create())
+        .usePlugin(MovementMethodPlugin.create())
         .usePlugin(PostPlugin.create(context))
+        .usePlugin(StrikethroughPlugin.create())
         .usePlugin(ImagesPlugin.create(context))
         .usePlugin(OkHttpImagesPlugin.create())
         .build()

@@ -1,7 +1,6 @@
 package app.fyreplace.client.ui.widgets
 
 import android.content.Context
-import android.text.method.LinkMovementMethod
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
@@ -19,10 +18,7 @@ class MarkdownRecyclerView @JvmOverloads constructor(
     }
 
     override fun onChildViewAttachedToWindow(view: View) {
-        (view as? TextView)?.run {
-            movementMethod = LinkMovementMethod.getInstance()
-            doOnLayout { it.post { AsyncDrawableScheduler.schedule(this) } }
-        }
+        (view as? TextView)?.run { doOnLayout { it.post { AsyncDrawableScheduler.schedule(this) } } }
     }
 
     override fun onChildViewDetachedFromWindow(view: View) = Unit
