@@ -25,6 +25,8 @@ import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.image.AsyncDrawableScheduler
 import java.text.DateFormat
@@ -110,7 +112,7 @@ class CommentsAdapter(
         )
     }
 
-    fun setComments(comments: List<Comment>, highlightedIds: List<Long>?) {
+    suspend fun setComments(comments: List<Comment>, highlightedIds: List<Long>?) {
         val highlightedOnes = highlightedIds?.toMutableList()
         var scrollPosition = -1
 
@@ -128,7 +130,7 @@ class CommentsAdapter(
         }.toMutableList()
 
         if (scrollPosition > -1) {
-            recyclers.forEach { it.post { it.scrollToPosition(scrollPosition) } }
+            recyclers.forEach { withContext(Dispatchers.Main) { it.scrollToPosition(scrollPosition) } }
         }
     }
 
