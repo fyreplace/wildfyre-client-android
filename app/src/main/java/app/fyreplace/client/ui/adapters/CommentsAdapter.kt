@@ -25,6 +25,8 @@ import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.image.AsyncDrawableScheduler
 import java.text.DateFormat
@@ -37,6 +39,7 @@ class CommentsAdapter(
     RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     private var data: List<CommentWrapper> = listOf()
     private val recyclers: MutableList<RecyclerView> = mutableListOf()
+    private var onCommentsChangedAction: (suspend () -> Unit)? = null
     var selfId: Long = -1
     var authorId: Long = -1
 
@@ -110,7 +113,7 @@ class CommentsAdapter(
         )
     }
 
-    fun setComments(comments: List<Comment>, highlightedIds: List<Long>?) {
+    suspend fun setComments(comments: List<Comment>, highlightedIds: List<Long>?) {
         val highlightedOnes = highlightedIds?.toMutableList()
         var scrollPosition = -1
 
@@ -130,9 +133,18 @@ class CommentsAdapter(
         if (scrollPosition > -1) {
             recyclers.forEach { it.post { it.scrollToPosition(scrollPosition) } }
         }
+
+        if (onCommentsChangedAction != null) {
+            withContext(Dispatchers.Main) { onCommentsChangedAction!!.invoke() }
+            onCommentsChangedAction = null
+        }
     }
 
     fun getComment(position: Int) = data[position].comment
+
+    fun doOnCommentsChanged(action: suspend () -> Unit) {
+        onCommentsChangedAction = action
+    }
 
     private companion object {
         val DATE_FORMAT: DateFormat = SimpleDateFormat.getDateTimeInstance()

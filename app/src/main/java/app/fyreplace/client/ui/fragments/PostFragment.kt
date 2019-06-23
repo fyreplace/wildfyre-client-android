@@ -144,7 +144,12 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), RecyclerView.
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(max(commentsAdapter.itemCount - 1, 0)) }
         comment_new.setEndIconOnClickListener {
             clearCommentInput()
-            launchCatching { viewModel.sendNewComment() }
+            launchCatching {
+                viewModel.sendNewComment()
+                commentsAdapter.doOnCommentsChanged {
+                    comments_list.smoothScrollToPosition(commentsAdapter.itemCount - 1)
+                }
+            }
         }
 
         collapsible_comments?.let {
