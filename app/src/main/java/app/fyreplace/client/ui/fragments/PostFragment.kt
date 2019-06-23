@@ -192,8 +192,8 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), RecyclerView.
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_post_actions, menu)
         super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_post_actions, menu)
 
         viewModel.subscribed.observe(viewLifecycleOwner, Observer {
             menu.findItem(R.id.action_subscribe).run {
