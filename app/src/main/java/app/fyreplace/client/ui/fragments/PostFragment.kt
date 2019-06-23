@@ -211,7 +211,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
 
         val postMenuItems = listOf(R.id.action_subscribe, R.id.action_share).map { menu.findItem(it) }
         viewModel.contentLoaded.observe(viewLifecycleOwner, Observer {
-            postMenuItems.forEach { action -> action.isVisible = it }
+            postMenuItems.forEach { action -> action.isEnabled = it }
         })
     }
 
