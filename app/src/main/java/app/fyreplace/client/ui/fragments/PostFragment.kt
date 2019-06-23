@@ -246,8 +246,10 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
         val commentsBehavior = BottomSheetBehavior.from(collapsible_comments)
 
         when {
-            commentsBehavior.state in setOf(BottomSheetBehavior.STATE_HIDDEN, BottomSheetBehavior.STATE_COLLAPSED) ->
+            commentsBehavior.state in setOf(BottomSheetBehavior.STATE_HIDDEN, BottomSheetBehavior.STATE_COLLAPSED) -> {
                 commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                (comments_list.adapter as? CommentsAdapter)?.refreshImages()
+            }
             commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED ->
                 commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }

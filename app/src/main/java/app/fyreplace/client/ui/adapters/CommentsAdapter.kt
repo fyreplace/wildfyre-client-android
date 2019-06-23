@@ -148,6 +148,15 @@ class CommentsAdapter(
 
     fun getComment(position: Int) = data[position].comment
 
+    fun refreshImages() = recyclers.forEach { recycler ->
+        (recycler.layoutManager as? LinearLayoutManager)?.run {
+            for (i in findFirstVisibleItemPosition()..findLastVisibleItemPosition()) {
+                (recycler.findViewHolderForAdapterPosition(i) as? ViewHolder)?.text
+                    ?.let { AsyncDrawableScheduler.schedule(it) }
+            }
+        }
+    }
+
     private companion object {
         val DATE_FORMAT: DateFormat = SimpleDateFormat.getDateTimeInstance()
         val AVATAR_TRANSITION = DrawableTransitionOptions.withCrossFade()
