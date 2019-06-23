@@ -12,9 +12,10 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.set
 import androidx.core.text.toSpanned
-import androidx.core.view.postDelayed
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.FyreplaceApplication
@@ -103,7 +104,7 @@ class CommentsAdapter(
         comment.image?.let { markdownContent.append("![]($it)") }
         comment.text?.let { markdownContent.append(it) }
         markdown.setMarkdown(holder.text, markdownContent.toString())
-        holder.text.postDelayed(100) { AsyncDrawableScheduler.schedule(holder.text) }
+        holder.text.doOnLayout { it.post { AsyncDrawableScheduler.schedule(holder.text) } }
         holder.text.tag = position
         holder.itemView.setBackgroundResource(
             if (wrapper.isHighlighted)
@@ -130,8 +131,11 @@ class CommentsAdapter(
             }
         }
 
-        if (scrollPosition > -1) {
-            recyclers.forEach { it.post { it.scrollToPosition(scrollPosition) } }
+        if (scrollPosition > -1) withContext(Dispatchers.Main) {
+            recyclers.forEach {
+                (it.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(scrollPosition, 0)
+                    ?: it.scrollToPosition(scrollPosition)
+            }
         }
 
         if (onCommentsChangedAction != null) {
@@ -141,6 +145,15 @@ class CommentsAdapter(
     }
 
     fun getComment(position: Int) = data[position].comment
+
+    fun refreshImages() = recyclers.forEach { recycler ->
+        (recycler.layoutManager as? LinearLayoutManager)?.run {
+            for (i in findFirstVisibleItemPosition()..findLastVisibleItemPosition()) {
+                (recycler.findViewHolderForAdapterPosition(i) as? ViewHolder)?.text
+                    ?.let { AsyncDrawableScheduler.schedule(it) }
+            }
+        }
+    }
 
     fun doOnCommentsChanged(action: suspend () -> Unit) {
         onCommentsChangedAction = action
