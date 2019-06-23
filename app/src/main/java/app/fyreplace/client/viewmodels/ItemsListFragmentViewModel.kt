@@ -3,6 +3,7 @@ package app.fyreplace.client.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.distinctUntilChanged
 import androidx.paging.Config
 import androidx.paging.DataSource
 import androidx.paging.PagedList
@@ -15,8 +16,7 @@ import app.fyreplace.client.data.sources.ItemsDataSourceFactory
 /**
  * Interface for ViewModels containing a list of items.
  */
-abstract class ItemsListFragmentViewModel<I> : ViewModel(),
-    DataLoadingListener {
+abstract class ItemsListFragmentViewModel<I> : ViewModel(), DataLoadingListener {
     private var firstLoading = true
     private val mLoading = MutableLiveData<Boolean>()
     private val mHasData = MutableLiveData<Boolean>()
@@ -33,8 +33,8 @@ abstract class ItemsListFragmentViewModel<I> : ViewModel(),
             )
         )
     }
-    val loading: LiveData<Boolean> = mLoading
-    val hasData: LiveData<Boolean> = mHasData
+    val loading: LiveData<Boolean> = mLoading.distinctUntilChanged()
+    val hasData: LiveData<Boolean> = mHasData.distinctUntilChanged()
 
     override fun onLoadingStart() {
         if (firstLoading) {
@@ -43,9 +43,7 @@ abstract class ItemsListFragmentViewModel<I> : ViewModel(),
         }
     }
 
-    override fun onLoadingStop() {
-        mLoading.postValue(false)
-    }
+    override fun onLoadingStop() = mLoading.postValue(false)
 
     fun setHasData(hasSome: Boolean) = mHasData.postValue(hasSome)
 }

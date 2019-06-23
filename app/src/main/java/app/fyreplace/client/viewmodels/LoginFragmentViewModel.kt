@@ -1,9 +1,6 @@
 package app.fyreplace.client.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
+import androidx.lifecycle.*
 import app.fyreplace.client.data.repositories.AuthRepository
 
 class LoginFragmentViewModel : ViewModel() {
@@ -11,7 +8,7 @@ class LoginFragmentViewModel : ViewModel() {
     private val mLoginAllowed = MutableLiveData<Boolean>()
 
     val authToken: LiveData<String> = mAuthToken
-    val loginAllowed: LiveData<Boolean> = mLoginAllowed
+    val loginAllowed: LiveData<Boolean> = mLoginAllowed.distinctUntilChanged()
     val username = MutableLiveData<String>()
     val password = MutableLiveData<String>()
     val usernameValid: LiveData<Boolean> = username.map { it.isNotEmpty() }

@@ -26,7 +26,7 @@ open class PostFragmentViewModel : ViewModel() {
     val post: LiveData<Post?> = mPost
     val contentLoaded: LiveData<Boolean> = post.map { it != null }
     val authorId: LiveData<Long> = post.map { it?.author?.user ?: -1 }
-    val subscribed: LiveData<Boolean> = mSubscribed
+    val subscribed: LiveData<Boolean> = mSubscribed.distinctUntilChanged()
     val markdownContent: LiveData<String> = mMarkdownContent
     val comments: LiveData<List<Comment>> = mComments
     val commentCount: LiveData<Int> = comments.map { it.size }
