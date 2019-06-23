@@ -15,6 +15,7 @@ import androidx.core.text.toSpanned
 import androidx.core.view.postDelayed
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.FyreplaceApplication
@@ -129,8 +130,11 @@ class CommentsAdapter(
             }
         }.toMutableList()
 
-        if (scrollPosition > -1) {
-            recyclers.forEach { withContext(Dispatchers.Main) { it.scrollToPosition(scrollPosition) } }
+        if (scrollPosition > -1) withContext(Dispatchers.Main) {
+            recyclers.forEach {
+                (it.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(scrollPosition, 0)
+                    ?: it.scrollToPosition(scrollPosition)
+            }
         }
     }
 
