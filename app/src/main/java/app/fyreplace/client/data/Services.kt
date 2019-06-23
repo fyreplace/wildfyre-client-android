@@ -206,17 +206,6 @@ interface WebService {
         @Body post: Post
     ): Response<Unit>
 
-    @POST("/areas/{areaName}/{postId}/")
-    @Headers("Content-Type: application/json")
-    @Multipart
-    suspend fun postPicture(
-        @Header("Authorization") authorization: String,
-        @Path("areaName") areaName: String,
-        @Path("postId") postId: Long,
-        @Part image: MultipartBody.Part, // name = "image"
-        @Part commentText: MultipartBody.Part // name = "text"
-    ): Comment
-
     @POST("/areas/{areaName}/{postId}/spread/")
     @Headers("Content-Type: application/json")
     suspend fun postSpread(
@@ -279,7 +268,7 @@ interface WebService {
     @PUT("/areas/{areaName}/drafts/{postId}/")
     @Headers("Content-Type: application/json")
     @Multipart
-    suspend fun putPicture(
+    suspend fun putImage(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
@@ -287,21 +276,13 @@ interface WebService {
         @Part postText: MultipartBody.Part // name = "text"
     ): Post
 
-    @PUT("/areas/{areaName}/drafts/{postId}/")
-    suspend fun putPicture(
-        @Header("Authorization") authorization: String,
-        @Path("areaName") areaName: String,
-        @Path("postId") postId: Long,
-        @Body post: Post
-    ): Response<Unit>
-
     @PUT("/areas/{areaName}/drafts/{postId}/img/{slot}/")
     @Multipart
     suspend fun putImage(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Path("postId") slot: Int,
+        @Path("slot") slot: Int,
         @Part image: MultipartBody.Part, // name = "image"
         @Part comment: MultipartBody.Part // name = "comment"
     ): Image
