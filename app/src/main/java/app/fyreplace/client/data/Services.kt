@@ -3,6 +3,7 @@ package app.fyreplace.client.data
 import app.fyreplace.client.Constants
 import app.fyreplace.client.data.models.*
 import okhttp3.MultipartBody
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -79,7 +80,7 @@ interface WebService {
     suspend fun patchAccount(
         @Header("Authorization") authorization: String,
         @Body accountPatch: AccountPatch
-    )
+    ): Response<Unit>
 
 
     // Registration
@@ -123,7 +124,7 @@ interface WebService {
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body flag: Flag
-    )
+    ): Response<Unit>
 
     @POST("/areas/{areaName}/{postId}/{commentId}/flag/")
     @Headers("Content-Type: application/json")
@@ -133,7 +134,7 @@ interface WebService {
         @Path("postId") postId: Long,
         @Path("commentId") commentId: Long,
         @Body flag: Flag
-    )
+    ): Response<Unit>
 
 
     // Notifications
@@ -156,7 +157,7 @@ interface WebService {
     @DELETE("/areas/notification/")
     suspend fun deleteNotifications(
         @Header("Authorization") authorization: String
-    )
+    ): Response<Unit>
 
 
     // Areas
@@ -203,7 +204,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Body post: Post
-    )
+    ): Response<Unit>
 
     @POST("/areas/{areaName}/{postId}/")
     @Headers("Content-Type: application/json")
@@ -223,7 +224,7 @@ interface WebService {
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body spread: Spread
-    )
+    ): Response<Unit>
 
     @PUT("/areas/{areaName}/{postId}/subscribe/")
     @Headers("Content-Type: application/json")
@@ -239,7 +240,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long
-    )
+    ): Response<Unit>
 
 
     // Drafts
@@ -265,7 +266,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Body post: Post
-    )
+    ): Response<Unit>
 
     @POST("/areas/{areaName}/drafts/{postId}/publish/")
     @Headers("Content-Type: application/json")
@@ -273,7 +274,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Query("postId") postId: Long
-    )
+    ): Response<Unit>
 
     @PUT("/areas/{areaName}/drafts/{postId}/")
     @Headers("Content-Type: application/json")
@@ -292,7 +293,7 @@ interface WebService {
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body post: Post
-    )
+    ): Response<Unit>
 
     @PUT("/areas/{areaName}/drafts/{postId}/img/{slot}/")
     @Multipart
@@ -312,14 +313,14 @@ interface WebService {
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body post: Post
-    )
+    ): Response<Unit>
 
     @DELETE("/areas/{areaName}/drafts/{postId}/")
     suspend fun deleteDraft(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long
-    )
+    ): Response<Unit>
 
     @DELETE("/areas/{areaName}/drafts/{postId}/img/{slot}/")
     suspend fun deleteImage(
@@ -327,7 +328,7 @@ interface WebService {
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Path("postId") slot: Int
-    )
+    ): Response<Unit>
 
 
     // Comments
@@ -357,5 +358,5 @@ interface WebService {
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Path("commentId") commentId: Long
-    )
+    ): Response<Unit>
 }
