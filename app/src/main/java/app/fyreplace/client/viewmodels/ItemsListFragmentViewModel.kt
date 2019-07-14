@@ -33,7 +33,7 @@ abstract class ItemsListFragmentViewModel<I> : ViewModel(), DataLoadingListener 
             )
         )
     }
-    val loading: LiveData<Boolean> = mLoading.distinctUntilChanged()
+    val loading: LiveData<Boolean> = mLoading
     val hasData: LiveData<Boolean> = mHasData.distinctUntilChanged()
 
     override fun onLoadingStart() {
