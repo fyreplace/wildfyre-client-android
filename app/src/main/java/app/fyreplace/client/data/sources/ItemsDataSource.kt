@@ -27,17 +27,22 @@ abstract class ItemsDataSource<I>(private val listener: DataLoadingListener) : P
 
     private fun loadRange(position: Int, size: Int): List<I> = runFetcher(position, size)?.results.orEmpty()
 
-    private fun runFetcher(offset: Int, size: Int): SuperItem<I>? = runBlocking {
-        var success = false
+    private fun runFetcher(offset: Int, size: Int): SuperItem<I>? =
+        runBlocking { return@runBlocking runFetchImpl(offset, size) }
 
-        do {
+    private suspend fun runFetchImpl(offset: Int, size: Int): SuperItem<I> {
+        while (true) {
             try {
-                return@runBlocking fetcher(offset, size).also { success = true }
+                return fetcher(offset, size)
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
-                delay(1000)
+                delay(FETCH_DELAY)
             }
-        } while (!success)
+        }
+    }
 
-        return@runBlocking null // This line should be impossible to reach
+    private companion object {
+        const val FETCH_DELAY = 1000L
     }
 }
