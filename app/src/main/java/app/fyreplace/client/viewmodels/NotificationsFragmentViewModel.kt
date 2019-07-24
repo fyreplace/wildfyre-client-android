@@ -10,9 +10,16 @@ import kotlinx.coroutines.withContext
 
 class NotificationsFragmentViewModel(application: Application) : ItemsListFragmentViewModel<Notification>(application) {
     override val factory: ItemsDataSourceFactory<Notification> = NotificationsDataSourceFactory(this, this)
+    private var mShouldRefresh: Boolean = false
 
     fun clearNotificationsAsync() = launchCatching {
         withContext(Dispatchers.IO) { NotificationRepository.clearNotifications() }
         dataSource.value?.invalidate()
+    }
+
+    fun checkRefresh() = mShouldRefresh.also { mShouldRefresh = false }
+
+    fun enableRefresh() {
+        mShouldRefresh = true
     }
 }

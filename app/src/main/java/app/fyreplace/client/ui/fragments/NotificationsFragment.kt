@@ -21,7 +21,6 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
     override val viewModels: List<FailureHandlingViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<NotificationsFragmentViewModel>()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
-    private var shouldRefresh = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         super.onCreateView(inflater, container, savedInstanceState)
@@ -34,17 +33,10 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        savedInstanceState?.let { shouldRefresh = it.getBoolean(SAVE_SHOULD_REFRESH, false) }
 
-        if (shouldRefresh) {
-            shouldRefresh = false
+        if (viewModel.checkRefresh()) {
             onRefreshListener?.onRefresh()
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean(SAVE_SHOULD_REFRESH, shouldRefresh)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -68,7 +60,7 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
     override fun getItemsAdapter(): NotificationsAdapter = NotificationsAdapter()
 
     override fun onItemClicked(item: Notification) {
-        shouldRefresh = true
+        viewModel.enableRefresh()
         findNavController().navigate(
             NavigationMainDirections.actionGlobalFragmentPost(
                 areaName = item.area,
@@ -77,9 +69,5 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
                 newCommentsIds = item.comments.toLongArray()
             )
         )
-    }
-
-    private companion object {
-        const val SAVE_SHOULD_REFRESH = "save.shouldRefresh"
     }
 }
