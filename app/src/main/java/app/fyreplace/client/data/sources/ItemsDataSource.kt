@@ -16,19 +16,18 @@ abstract class ItemsDataSource<I>(
         val count = runFetcher(0, 1)?.count ?: 0
         val initialPosition = computeInitialLoadPosition(params, count)
         val initialSize = computeInitialLoadSize(params, initialPosition, count)
-        callback.onResult(loadRange(initialPosition, initialSize), initialPosition, count)
+        val fetch = runFetcher(initialPosition, initialSize)
+        callback.onResult(fetch?.results.orEmpty(), initialPosition, fetch?.count ?: 0)
         listener.onLoadingStop()
     }
 
     final override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<I>) =
-        callback.onResult(loadRange(params.startPosition, params.loadSize))
+        callback.onResult(runFetcher(params.startPosition, params.loadSize)?.results.orEmpty())
 
     final override fun invalidate() {
         super.invalidate()
         cancel()
     }
-
-    private fun loadRange(position: Int, size: Int): List<I> = runFetcher(position, size)?.results.orEmpty()
 
     private fun runFetcher(offset: Int, size: Int): SuperItem<I>? = runBlocking {
         var success = false
