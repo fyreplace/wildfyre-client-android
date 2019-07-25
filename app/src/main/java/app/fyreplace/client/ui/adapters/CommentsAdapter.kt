@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.set
 import androidx.core.text.toSpanned
-import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,7 +28,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.noties.markwon.Markwon
-import ru.noties.markwon.image.AsyncDrawableScheduler
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -103,7 +101,6 @@ class CommentsAdapter(
         comment.image?.let { markdownContent.append("![]($it)") }
         comment.text?.let { markdownContent.append(it) }
         markdown.setMarkdown(holder.text, markdownContent.toString())
-        holder.text.doOnLayout { it.post { AsyncDrawableScheduler.schedule(holder.text) } }
         holder.text.tag = position
         holder.itemView.setBackgroundResource(
             if (wrapper.isHighlighted)
@@ -147,15 +144,6 @@ class CommentsAdapter(
     }
 
     fun getComment(position: Int) = data[position].comment
-
-    fun refreshImages() = recyclers.forEach { recycler ->
-        (recycler.layoutManager as? LinearLayoutManager)?.run {
-            for (i in findFirstVisibleItemPosition()..findLastVisibleItemPosition()) {
-                (recycler.findViewHolderForAdapterPosition(i) as? ViewHolder)?.text
-                    ?.let { AsyncDrawableScheduler.schedule(it) }
-            }
-        }
-    }
 
     private companion object {
         val DATE_FORMAT: DateFormat = SimpleDateFormat.getDateTimeInstance()

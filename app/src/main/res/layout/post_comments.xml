@@ -106,7 +106,7 @@
                 tools:ignore="UnusedAttribute" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <app.fyreplace.client.ui.widgets.MarkdownRecyclerView
             android:id="@+id/comments_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
