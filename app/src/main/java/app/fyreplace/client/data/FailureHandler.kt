@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.R
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,6 +30,8 @@ interface FailureHandler : LifecycleOwner {
         lifecycleScope.launch(context) {
             try {
                 block()
+            } catch (e: CancellationException) {
+                // Cancellation happens
             } catch (e: Exception) {
                 onFailure(e)
             }
