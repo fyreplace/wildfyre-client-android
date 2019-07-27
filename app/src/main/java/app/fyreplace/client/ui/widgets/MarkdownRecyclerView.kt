@@ -32,10 +32,7 @@ class MarkdownRecyclerView @JvmOverloads constructor(
         }
     }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        mCoroutineContext.cancel()
-    }
+    override fun onDetachedFromWindow() = mCoroutineContext.cancel().also { super.onDetachedFromWindow() }
 
     private fun extractText(view: View) = view as? TextView ?: view.findViewById(R.id.text) as? TextView
 
