@@ -13,16 +13,15 @@ abstract class ItemsDataSource<I>(private val listener: DataLoadingListener) : P
         val count = runFetcher(0, 1).count
         val initialPosition = computeInitialLoadPosition(params, count)
         val initialSize = computeInitialLoadSize(params, initialPosition, count)
-        callback.onResult(loadRange(initialPosition, initialSize), initialPosition, count)
+        val fetch = runFetcher(initialPosition, initialSize)
+        callback.onResult(fetch.results, initialPosition, fetch.count)
         listener.onLoadingStop()
     }
 
     final override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<I>) =
-        callback.onResult(loadRange(params.startPosition, params.loadSize))
+        callback.onResult(runFetcher(params.startPosition, params.loadSize).results)
 
     final override fun invalidate() = super.invalidate().also { cancel() }
-
-    private fun loadRange(position: Int, size: Int) = runFetcher(position, size).results
 
     private fun runFetcher(offset: Int, size: Int) = runBlocking { runFetchImpl(offset, size) }
 

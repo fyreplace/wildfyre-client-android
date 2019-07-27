@@ -8,7 +8,7 @@ apply plugin: 'org.jetbrains.dokka-android'
 ext {
     versionMajor = 0
     versionMinor = 1
-    versionPatch = 6
+    versionPatch = 7
 }
 
 android {
@@ -69,7 +69,7 @@ dependencies {
     implementation 'ru.noties.markwon:ext-strikethrough:3.1.0'
     implementation 'ru.noties.markwon:image-okhttp:3.1.0'
     implementation 'ru.noties.markwon:recycler:3.1.0'
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.2.0-alpha02'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

@@ -4,7 +4,9 @@ import androidx.lifecycle.viewModelScope
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.PostRepository
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.coroutines.coroutineContext
 
 class HomeFragmentViewModel : PostFragmentViewModel() {
     private val postReserve: MutableList<Post> = mutableListOf()
@@ -19,6 +21,7 @@ class HomeFragmentViewModel : PostFragmentViewModel() {
 
         if (areaName != null) {
             lastAreaName = areaName
+            fetchJob?.cancel()
             postReserve.clear()
         }
 
@@ -62,7 +65,7 @@ class HomeFragmentViewModel : PostFragmentViewModel() {
         if (superPost.count == 0) {
             mHasContent.postValue(false)
             endOfPosts = true
-        } else {
+        } else if (coroutineContext.isActive) {
             postReserve.addAll(superPost.results.filter { p -> p.id != postId && postReserve.find { it.id == p.id } == null })
         }
     }
