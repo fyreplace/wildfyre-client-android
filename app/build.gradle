@@ -8,7 +8,7 @@ apply plugin: 'org.jetbrains.dokka-android'
 ext {
     versionMajor = 0
     versionMinor = 1
-    versionPatch = 6
+    versionPatch = 7
 }
 
 android {
