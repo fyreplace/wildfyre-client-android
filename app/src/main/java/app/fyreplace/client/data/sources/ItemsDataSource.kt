@@ -21,7 +21,7 @@ abstract class ItemsDataSource<I>(private val listener: DataLoadingListener) : P
     final override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<I>) =
         callback.onResult(runFetcher(params.startPosition, params.loadSize).results)
 
-    final override fun invalidate() = super.invalidate().also { cancel() }
+    final override fun invalidate() = cancel().also { super.invalidate() }
 
     private fun runFetcher(offset: Int, size: Int) = runBlocking { runFetchImpl(offset, size) }
 
