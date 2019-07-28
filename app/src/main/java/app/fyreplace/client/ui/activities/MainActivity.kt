@@ -321,8 +321,10 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             }
             .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
                 viewModel.userAvatarNewData.removeObservers(this)
-                launchCatching { viewModel.setProfile(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString()) }
-                viewModel.resetPendingProfileAvatar()
+                launchCatching {
+                    viewModel.setProfile(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString())
+                    viewModel.resetPendingProfileAvatar()
+                }
             }
             .create()
             .apply { show() }
