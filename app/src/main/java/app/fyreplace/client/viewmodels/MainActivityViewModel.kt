@@ -98,6 +98,8 @@ class MainActivityViewModel(application: Application) : FailureHandlingViewModel
                     )
                 )
             }
+
+            resetPendingProfileAvatar()
         }
     }
 
