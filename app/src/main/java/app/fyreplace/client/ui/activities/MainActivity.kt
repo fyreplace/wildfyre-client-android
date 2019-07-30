@@ -3,6 +3,7 @@ package app.fyreplace.client.ui.activities
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
@@ -47,6 +48,7 @@ import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 /**
  * The central activity that hosts the different fragments.
@@ -196,32 +198,45 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             return
         }
 
-        if (requestCode == REQUEST_AVATAR) {
-            lateinit var mimeType: String
+        fun tryUseBytes(bytes: ByteArray, mimeType: String, extension: String) = when {
+            bytes.size < MAX_AVATAR_IMAGE_SIZE ->
+                viewModel.setPendingProfileAvatar("avatar.$extension", mimeType, bytes)
+            else -> Toast.makeText(this, R.string.failure_avatar_size, Toast.LENGTH_SHORT).show()
+        }
 
-            contentResolver.query(
-                data.data!!,
-                arrayOf(MediaStore.MediaColumns.MIME_TYPE),
-                null,
-                null,
-                null
-            ).use {
-                if (it!!.moveToFirst()) {
-                    mimeType = it.getString(it.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE))
-                } else {
-                    return
+        when (requestCode) {
+            REQUEST_IMAGE_FILE -> {
+                lateinit var mimeType: String
+
+                contentResolver.query(
+                    data.data!!,
+                    arrayOf(MediaStore.MediaColumns.MIME_TYPE),
+                    null,
+                    null,
+                    null
+                ).use {
+                    if (it!!.moveToFirst()) {
+                        mimeType = it.getString(it.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE))
+                    } else {
+                        return
+                    }
+                }
+
+                contentResolver.openInputStream(data.data!!).use {
+                    tryUseBytes(
+                        it!!.readBytes(),
+                        mimeType,
+                        MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)!!
+                    )
                 }
             }
-
-            contentResolver.openInputStream(data.data!!).use {
-                val bytes = it!!.readBytes()
-
-                if (bytes.size < MAX_AVATAR_IMAGE_SIZE) {
-                    val extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
-                    viewModel.setPendingProfileAvatar("avatar.$extension", mimeType, bytes)
-                } else {
-                    Toast.makeText(this, R.string.failure_avatar_size, Toast.LENGTH_SHORT).show()
-                }
+            REQUEST_IMAGE_PHOTO -> {
+                val bitmap = data.extras!!.get("data") as Bitmap
+                val extension = "png"
+                val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+                val buffer = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, buffer)
+                tryUseBytes(buffer.toByteArray(), mimeType!!, extension)
             }
         }
     }
@@ -348,16 +363,6 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             }
         }
 
-        dialog.findViewById<View>(R.id.user_picture_change)!!.setOnClickListener {
-            startActivityForResult(
-                Intent.createChooser(
-                    Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" },
-                    getString(R.string.main_profile_editor_avatar_chooser)
-                ),
-                REQUEST_AVATAR
-            )
-        }
-
         viewModel.userBio.value?.let {
             val bioEdit = dialog.findViewById<EditText>(R.id.user_bio)!!
             bioEdit.setText(it)
@@ -368,8 +373,25 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
     }
 
+    fun onSelectAvatarImageClicked(view: View) {
+        (view.tag as? String)?.toInt()?.let { request ->
+            startActivityForResult(
+                Intent.createChooser(
+                    when (request) {
+                        REQUEST_IMAGE_FILE -> Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+                        REQUEST_IMAGE_PHOTO -> Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                        else -> return
+                    },
+                    getString(R.string.main_profile_editor_avatar_chooser)
+                ),
+                request
+            )
+        }
+    }
+
     private companion object {
-        const val REQUEST_AVATAR = 0
+        val REQUEST_IMAGE_FILE = FyreplaceApplication.context.resources.getInteger(R.integer.request_image_file)
+        val REQUEST_IMAGE_PHOTO = FyreplaceApplication.context.resources.getInteger(R.integer.request_image_photo)
         const val MAX_AVATAR_IMAGE_SIZE = 512 * 1024
 
         val TOP_LEVEL_DESTINATIONS = setOf(

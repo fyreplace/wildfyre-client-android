@@ -29,7 +29,6 @@
     <string name="main_nav_wildfyre_faq">FAQ</string>
     <string name="main_nav_wildfyre_terms">Terms and conditions</string>
     <string name="main_nav_wildfyre_privacy">Privacy policy</string>
-    <string name="main_profile_editor_avatar_change">Change avatar</string>
     <string name="main_profile_editor_avatar_chooser">Select an avatar</string>
     <string name="main_profile_editor_bio">Your bio</string>
     <string name="main_author_anonymous">Anonymous</string>
@@ -67,6 +66,8 @@
     <string name="post_comment_delete_dialog_title">Delete this comment ? This action cannot be undone</string>
     <string name="home_empty">No more posts in this area</string>
     <string name="user_share_title">Share user profile</string>
+    <string name="image_desc_profile_editor_change_image">Select an image</string>
+    <string name="image_desc_profile_editor_change_photo">Take a picture</string>
     <string name="image_desc_user_picture">Profile picture</string>
     <string name="image_desc_author_picture">Author picture</string>
     <string name="image_desc_post_picture">Post picture</string>
