@@ -77,7 +77,7 @@
                 android:title="@string/main_nav_wildfyre_terms" />
             <item
                 android:id="@+id/wildfyre_privacy_policy"
-                android:icon="@drawable/ic_security_black_24dp"
+                android:icon="@drawable/ic_lock_black_24dp"
                 android:title="@string/main_nav_wildfyre_privacy" />
         </menu>
     </item>
