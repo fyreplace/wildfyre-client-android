@@ -11,6 +11,11 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
     private var postReserveJob: Job? = null
     private var endOfPosts = false
     private var lastAreaName: String? = null
+    private var doSpread = true
+
+    init {
+        post.observeForever { doSpread = it != null }
+    }
 
     fun nextPostAsync(areaName: String? = null) = viewModelScope.launch {
         if (areaName == lastAreaName) {
@@ -44,8 +49,11 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
     }
 
     fun spreadAsync(spread: Boolean) = launchCatching(Dispatchers.IO) {
-        PostRepository.spread(postAreaName, postId, spread)
-        nextPostAsync().join()
+        if (doSpread) {
+            doSpread = false
+            PostRepository.spread(postAreaName, postId, spread)
+            nextPostAsync().join()
+        }
     }
 
     private suspend fun fillReserve() {
