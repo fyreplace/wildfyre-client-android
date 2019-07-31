@@ -65,7 +65,7 @@ interface WebService {
     @Multipart
     suspend fun putAvatar(
         @Header("Authorization") authorization: String,
-        @Part avatar: MultipartBody.Part // name = "avatar"
+        @Part avatar: MultipartBody.Part
     ): Author
 
     @PATCH("/users/")
@@ -266,14 +266,13 @@ interface WebService {
     ): Response<Unit>
 
     @PUT("/areas/{areaName}/drafts/{postId}/")
-    @Headers("Content-Type: application/json")
     @Multipart
     suspend fun putImage(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Part image: MultipartBody.Part, // name = "image"
-        @Part postText: MultipartBody.Part // name = "text"
+        @Part image: MultipartBody.Part,
+        @Part text: MultipartBody.Part
     ): Post
 
     @PUT("/areas/{areaName}/drafts/{postId}/img/{slot}/")
@@ -283,8 +282,8 @@ interface WebService {
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Path("slot") slot: Int,
-        @Part image: MultipartBody.Part, // name = "image"
-        @Part comment: MultipartBody.Part // name = "comment"
+        @Part image: MultipartBody.Part,
+        @Part comment: MultipartBody.Part
     ): Image
 
     @PATCH("/areas/{areaName}/drafts/{postId}/")
@@ -324,13 +323,13 @@ interface WebService {
     ): Comment
 
     @POST("/areas/{areaName}/{postId}/")
-    @Headers("Content-Type: application/json")
+    @Multipart
     suspend fun postImage(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Part image: MultipartBody.Part, // name = "image"
-        @Part commentText: MultipartBody.Part // name = "text"
+        @Part image: MultipartBody.Part,
+        @Part text: MultipartBody.Part
     ): Comment
 
     @DELETE("/areas/{areaName}/{postId}/{commentId}/")
