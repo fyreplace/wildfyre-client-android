@@ -307,11 +307,13 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             .into(avatar)
 
         viewModel.newUserAvatar.observe(this) {
-            AppGlide.with(this@MainActivity)
-                .load(Drawable.createFromStream(ByteArrayInputStream(it?.bytes), "avatar"))
-                .transition(IMAGE_TRANSITION)
-                .transform(AVATAR_TRANSFORM)
-                .into(avatar)
+            it?.run {
+                AppGlide.with(this@MainActivity)
+                    .load(Drawable.createFromStream(ByteArrayInputStream(bytes), "avatar"))
+                    .transition(IMAGE_TRANSITION)
+                    .transform(AVATAR_TRANSFORM)
+                    .into(avatar)
+            }
         }
 
         viewModel.userBio.value?.let {
