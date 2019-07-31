@@ -91,7 +91,9 @@
             app:endIconContentDescription="@string/image_desc_comments_send_comment"
             app:endIconDrawable="@drawable/ic_send_black_24dp"
             app:endIconMode="custom"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:startIconContentDescription="@string/image_desc_comments_attach_file"
+            app:startIconDrawable="@drawable/ic_attach_file_black_24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

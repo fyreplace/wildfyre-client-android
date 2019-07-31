@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Author
+import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.AuthRepository
 import app.fyreplace.client.data.repositories.AuthorRepository
@@ -19,12 +20,10 @@ class MainActivityViewModel : ViewModel() {
     private val mUiRefreshTick = MutableLiveData<Unit>()
     private val mIsLogged = MutableLiveData<Boolean>()
     private val mSelf = MutableLiveData<Author?>()
-    private val mUserAvatarNewData = MutableLiveData<ByteArray>()
+    private val mNewUserAvatar = MutableLiveData<ImageData?>()
     private val mNotificationCount = MutableLiveData<Int>()
     private val mNotificationBadgeVisible = MutableLiveData<Boolean>()
     private val mPostInfo = MutableLiveData<PostInfo?>()
-    private var userAvatarFileName: String? = null
-    private var userAvatarMimeType: String? = null
 
     val uiRefreshTick: LiveData<Unit> = mUiRefreshTick
     var startupLogin = true
@@ -34,7 +33,7 @@ class MainActivityViewModel : ViewModel() {
     val userName: LiveData<String> = mSelf.map { it?.name.orEmpty() }
     val userBio: LiveData<String> = mSelf.map { it?.bio.orEmpty() }
     val userAvatar: LiveData<String> = mSelf.map { it?.avatar.orEmpty() }
-    val userAvatarNewData: LiveData<ByteArray> = mUserAvatarNewData
+    val newUserAvatar: LiveData<ImageData?> = mNewUserAvatar
     val notificationCount: LiveData<Int> = mNotificationCount
     val notificationCountText: LiveData<String> = notificationCount.map { if (it < 100) it.toString() else "99" }
     val notificationBadgeVisible: LiveData<Boolean> = mNotificationBadgeVisible
@@ -78,33 +77,18 @@ class MainActivityViewModel : ViewModel() {
 
     fun forceNotificationCount(count: Int) = mNotificationCount.postValue(count)
 
-    suspend fun setProfile(bio: String) {
+    suspend fun sendProfile(bio: String) {
         if (bio != userBio.value) {
             mSelf.postValue(AuthorRepository.updateSelfBio(bio))
         }
 
-        if (userAvatarNewData.value != null && userAvatarFileName != null && userAvatarMimeType != null) {
-            mSelf.postValue(
-                AuthorRepository.updateSelfAvatar(
-                    userAvatarFileName!!,
-                    userAvatarMimeType!!,
-                    userAvatarNewData.value!!
-                )
-            )
-        }
+        newUserAvatar.value?.let { mSelf.postValue(AuthorRepository.updateSelfAvatar(it)) }
+        resetPendingProfileAvatar()
     }
 
-    fun setPendingProfileAvatar(fileName: String, mimeType: String, avatar: ByteArray) {
-        userAvatarFileName = fileName
-        userAvatarMimeType = mimeType
-        mUserAvatarNewData.postValue(avatar)
-    }
+    fun setPendingProfileAvatar(avatar: ImageData) = mNewUserAvatar.postValue(avatar)
 
-    fun resetPendingProfileAvatar() {
-        userAvatarFileName = null
-        userAvatarMimeType = null
-        mUserAvatarNewData.postValue(null)
-    }
+    fun resetPendingProfileAvatar() = mNewUserAvatar.postValue(null)
 
     fun setNotificationBadgeVisible(visible: Boolean) = mNotificationBadgeVisible.postValue(visible)
 

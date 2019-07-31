@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Fyreplace</string>
-    <string name="app_name_original">WildFyre</string>
+    <string name="app_name" translatable="false">Fyreplace</string>
+    <string name="app_name_original" translatable="false">WildFyre</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok">OK</string>
@@ -58,6 +58,10 @@
     </plurals>
     <string name="post_comment_author">Author</string>
     <string name="post_comment_new_comment">New comment</string>
+    <string name="post_comment_attach_file_dialog_title">Attach…</string>
+    <string name="post_comment_attach_file_dialog_positive">File</string>
+    <string name="post_comment_attach_file_dialog_negative">Photo</string>
+    <string name="post_comment_attach_file_dialog_neutral">Nothing</string>
     <string name="post_comment_menu_copy">Copy comment</string>
     <string name="post_comment_menu_share">Share comment</string>
     <string name="post_comment_menu_delete">Delete comment</string>
@@ -73,5 +77,6 @@
     <string name="image_desc_post_picture">Post picture</string>
     <string name="image_desc_comments_toggle">Toggle comments</string>
     <string name="image_desc_comments_send_comment">Send comment</string>
+    <string name="image_desc_comments_attach_file">Attach a file</string>
     <string name="failure_avatar_size">Avatar size must be below 512k</string>
 </resources>

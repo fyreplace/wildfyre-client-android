@@ -6,11 +6,15 @@ import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.ContextWrapper
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
@@ -23,7 +27,9 @@ import app.fyreplace.client.Constants
 import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Comment
+import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.databinding.FragmentPostBinding
+import app.fyreplace.client.ui.ImageSelector
 import app.fyreplace.client.ui.adapters.CommentsAdapter
 import app.fyreplace.client.ui.drawables.BottomSheetArrowDrawableWrapper
 import app.fyreplace.client.ui.hideSoftKeyboard
@@ -42,11 +48,13 @@ import kotlinx.coroutines.withContext
 import ru.noties.markwon.recycler.MarkwonAdapter
 import kotlin.math.max
 
-open class PostFragment : SharingFragment(R.layout.fragment_post) {
+open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<PostFragmentViewModel>()
     override var menuShareContent = ""
     override val menuShareTitle by lazy { getString(R.string.post_share_title) }
+    override val contextWrapper: ContextWrapper
+        get() = requireActivity()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
@@ -109,7 +117,16 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
                 withContext(Dispatchers.Main) { commentsAdapter.notifyDataSetChanged() }
             }
         }
-        viewModel.newCommentData.observe(viewLifecycleOwner) { comment_new.isEndIconVisible = it.isNotBlank() }
+        viewModel.newCommentImage.observe(viewLifecycleOwner) { image ->
+            if (image != null) {
+                comment_new.startIconDrawable?.let {
+                    DrawableCompat.setTint(it, ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+                }
+            } else {
+                comment_new.setStartIconDrawable(R.drawable.ic_attach_file_black_24dp)
+            }
+        }
+        viewModel.canSendNewComment.observe(viewLifecycleOwner) { comment_new.isEndIconVisible = it }
 
         comments_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -139,6 +156,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
 
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(max(commentsAdapter.itemCount - 1, 0)) }
+
         comment_new.setEndIconOnClickListener {
             clearCommentInput()
             launchCatching {
@@ -147,6 +165,19 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
                     comments_list.smoothScrollToPosition(commentsAdapter.itemCount - 1)
                 }
             }
+        }
+
+        comment_new.setStartIconOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle(R.string.post_comment_attach_file_dialog_title)
+                .setPositiveButton(R.string.post_comment_attach_file_dialog_positive) { _, _ ->
+                    selectImage(ImageSelector.REQUEST_IMAGE_FILE)
+                }
+                .setNegativeButton(R.string.post_comment_attach_file_dialog_negative) { _, _ ->
+                    selectImage(ImageSelector.REQUEST_IMAGE_PHOTO)
+                }
+                .setNeutralButton(R.string.post_comment_attach_file_dialog_neutral) { _, _ -> viewModel.resetCommentImage() }
+                .show()
         }
 
         collapsible_comments?.let {
@@ -247,6 +278,13 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
             setOnMenuItemClickListener { deleteComment(position, comment); true }
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super<SharingFragment>.onActivityResult(requestCode, resultCode, data)
+        super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onImage(image: ImageData) = viewModel.setCommentImage(image)
 
     private fun toggleComments() {
         if (collapsible_comments == null) {

@@ -3,20 +3,16 @@ package app.fyreplace.client.ui.activities
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.MimeTypeMap
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
@@ -36,7 +32,9 @@ import app.fyreplace.client.AppGlide
 import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
+import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.databinding.*
+import app.fyreplace.client.ui.ImageSelector
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import app.fyreplace.client.viewmodels.lazyViewModel
 import com.bumptech.glide.load.MultiTransformation
@@ -48,14 +46,14 @@ import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
 import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 
 /**
  * The central activity that hosts the different fragments.
  */
 class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChangedListener,
-    DrawerLayout.DrawerListener {
+    DrawerLayout.DrawerListener, ImageSelector {
     override val viewModel by lazyViewModel<MainActivityViewModel>()
+    override val contextWrapper = this
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var toolbarInset: Int = 0
 
@@ -192,53 +190,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         findNavController(R.id.navigation_host).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode != RESULT_OK || data == null) {
-            return
-        }
-
-        fun tryUseBytes(bytes: ByteArray, mimeType: String, extension: String) = when {
-            bytes.size < MAX_AVATAR_IMAGE_SIZE ->
-                viewModel.setPendingProfileAvatar("avatar.$extension", mimeType, bytes)
-            else -> Toast.makeText(this, R.string.failure_avatar_size, Toast.LENGTH_SHORT).show()
-        }
-
-        when (requestCode) {
-            REQUEST_IMAGE_FILE -> {
-                lateinit var mimeType: String
-
-                contentResolver.query(
-                    data.data!!,
-                    arrayOf(MediaStore.MediaColumns.MIME_TYPE),
-                    null,
-                    null,
-                    null
-                ).use {
-                    if (it!!.moveToFirst()) {
-                        mimeType = it.getString(it.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE))
-                    } else {
-                        return
-                    }
-                }
-
-                contentResolver.openInputStream(data.data!!).use {
-                    tryUseBytes(
-                        it!!.readBytes(),
-                        mimeType,
-                        MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)!!
-                    )
-                }
-            }
-            REQUEST_IMAGE_PHOTO -> {
-                val bitmap = data.extras!!.get("data") as Bitmap
-                val extension = "png"
-                val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
-                val buffer = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, buffer)
-                tryUseBytes(buffer.toByteArray(), mimeType!!, extension)
-            }
-        }
+        super<FailureHandlingActivity>.onActivityResult(requestCode, resultCode, data)
+        super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
@@ -279,6 +232,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     override fun onDrawerClosed(drawerView: View) = Unit
 
     override fun onDrawerStateChanged(newState: Int) = Unit
+
+    override fun onImage(image: ImageData) = viewModel.setPendingProfileAvatar(image)
 
     private fun setTitleInfo(info: MainActivityViewModel.PostInfo?) {
         if (info == null) {
@@ -331,14 +286,13 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         dialog = AlertDialog.Builder(this)
             .setView(R.layout.profile_editor)
             .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
-                viewModel.userAvatarNewData.removeObservers(this)
+                viewModel.newUserAvatar.removeObservers(this)
                 viewModel.resetPendingProfileAvatar()
             }
             .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
-                viewModel.userAvatarNewData.removeObservers(this)
+                viewModel.newUserAvatar.removeObservers(this)
                 launchCatching {
-                    viewModel.setProfile(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString())
-                    viewModel.resetPendingProfileAvatar()
+                    viewModel.sendProfile(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString())
                 }
             }
             .create()
@@ -352,15 +306,12 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             .transform(AVATAR_TRANSFORM)
             .into(avatar)
 
-        viewModel.userAvatarNewData.observe(this) {
-            it.run {
-                val input = ByteArrayInputStream(this)
-                AppGlide.with(this@MainActivity)
-                    .load(Drawable.createFromStream(input, "avatar"))
-                    .transition(IMAGE_TRANSITION)
-                    .transform(AVATAR_TRANSFORM)
-                    .into(avatar)
-            }
+        viewModel.newUserAvatar.observe(this) {
+            AppGlide.with(this@MainActivity)
+                .load(Drawable.createFromStream(ByteArrayInputStream(it?.bytes), "avatar"))
+                .transition(IMAGE_TRANSITION)
+                .transform(AVATAR_TRANSFORM)
+                .into(avatar)
         }
 
         viewModel.userBio.value?.let {
@@ -374,26 +325,10 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     }
 
     fun onSelectAvatarImageClicked(view: View) {
-        (view.tag as? String)?.toInt()?.let { request ->
-            startActivityForResult(
-                Intent.createChooser(
-                    when (request) {
-                        REQUEST_IMAGE_FILE -> Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-                        REQUEST_IMAGE_PHOTO -> Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                        else -> return
-                    },
-                    getString(R.string.main_profile_editor_avatar_chooser)
-                ),
-                request
-            )
-        }
+        (view.tag as? String)?.toInt()?.let { selectImage(it) }
     }
 
     private companion object {
-        val REQUEST_IMAGE_FILE = FyreplaceApplication.context.resources.getInteger(R.integer.request_image_file)
-        val REQUEST_IMAGE_PHOTO = FyreplaceApplication.context.resources.getInteger(R.integer.request_image_photo)
-        const val MAX_AVATAR_IMAGE_SIZE = 512 * 1024
-
         val TOP_LEVEL_DESTINATIONS = setOf(
             R.id.fragment_home,
             R.id.fragment_notifications,

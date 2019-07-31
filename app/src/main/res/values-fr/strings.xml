@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Fyreplace</string>
-    <string name="app_name_original">WildFyre</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="ok">OK</string>
@@ -58,6 +56,10 @@
     </plurals>
     <string name="post_comment_author">Auteur</string>
     <string name="post_comment_new_comment">Nouveau commentaire</string>
+    <string name="post_comment_attach_file_dialog_title">Joindre…</string>
+    <string name="post_comment_attach_file_dialog_positive">Fichier</string>
+    <string name="post_comment_attach_file_dialog_negative">Photo</string>
+    <string name="post_comment_attach_file_dialog_neutral">Rien</string>
     <string name="post_comment_menu_copy">Copier ce commentaire</string>
     <string name="post_comment_menu_share">Partager ce commentaire</string>
     <string name="post_comment_menu_delete">Supprimer ce commentaire</string>
@@ -73,5 +75,6 @@
     <string name="image_desc_post_picture">Image du post</string>
     <string name="image_desc_comments_toggle">Afficher les commentaires</string>
     <string name="image_desc_comments_send_comment">Envoyer le commentaire</string>
+    <string name="image_desc_comments_attach_file">Joindre un fichier</string>
     <string name="failure_avatar_size">La taille de l\'avatar doit être en dessous de 512k</string>
 </resources>

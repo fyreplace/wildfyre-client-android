@@ -2,6 +2,7 @@ package app.fyreplace.client.data.repositories
 
 import app.fyreplace.client.data.Services
 import app.fyreplace.client.data.models.AuthorPatch
+import app.fyreplace.client.data.models.ImageData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType
@@ -21,13 +22,13 @@ object AuthorRepository {
         Services.webService.patchBio(AuthRepository.authToken, AuthorPatch(bio))
     }
 
-    suspend fun updateSelfAvatar(fileName: String, mimeType: String, avatar: ByteArray) = withContext(Dispatchers.IO) {
+    suspend fun updateSelfAvatar(image: ImageData) = withContext(Dispatchers.IO) {
         Services.webService.putAvatar(
             AuthRepository.authToken,
             MultipartBody.Part.createFormData(
                 "avatar",
-                fileName,
-                RequestBody.create(MediaType.parse(mimeType), avatar)
+                image.fileName,
+                RequestBody.create(MediaType.parse(image.mimeType), image.bytes)
             )
         )
     }
