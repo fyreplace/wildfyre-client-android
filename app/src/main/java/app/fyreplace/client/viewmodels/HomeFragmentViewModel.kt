@@ -51,6 +51,7 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
     fun spreadAsync(spread: Boolean) = launchCatching(Dispatchers.IO) {
         if (doSpread) {
             doSpread = false
+            delay(SPREAD_DELAY)
             PostRepository.spread(postAreaName, postId, spread)
             nextPostAsync().join()
         }
@@ -83,5 +84,6 @@ class HomeFragmentViewModel(application: Application) : PostFragmentViewModel(ap
 
     private companion object {
         const val RESERVE_SIZE = 10
+        const val SPREAD_DELAY = 500L
     }
 }
