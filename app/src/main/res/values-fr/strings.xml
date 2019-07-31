@@ -73,6 +73,7 @@
     <string name="image_desc_user_picture">Image de profile</string>
     <string name="image_desc_author_picture">Image de l\'auteur</string>
     <string name="image_desc_post_picture">Image du post</string>
+    <string name="image_desc_comment_picture">Image du commentaire</string>
     <string name="image_desc_comments_toggle">Afficher les commentaires</string>
     <string name="image_desc_comments_send_comment">Envoyer le commentaire</string>
     <string name="image_desc_comments_attach_file">Joindre un fichier</string>

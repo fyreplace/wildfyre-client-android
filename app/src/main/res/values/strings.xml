@@ -75,6 +75,7 @@
     <string name="image_desc_user_picture">Profile picture</string>
     <string name="image_desc_author_picture">Author picture</string>
     <string name="image_desc_post_picture">Post picture</string>
+    <string name="image_desc_comment_picture">Comment picture</string>
     <string name="image_desc_comments_toggle">Toggle comments</string>
     <string name="image_desc_comments_send_comment">Send comment</string>
     <string name="image_desc_comments_attach_file">Attach a file</string>

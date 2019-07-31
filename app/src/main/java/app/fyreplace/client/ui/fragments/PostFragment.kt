@@ -8,8 +8,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -166,19 +169,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
                 }
             }
         }
-
-        comment_new.setStartIconOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle(R.string.post_comment_attach_file_dialog_title)
-                .setPositiveButton(R.string.post_comment_attach_file_dialog_positive) { _, _ ->
-                    selectImage(ImageSelector.REQUEST_IMAGE_FILE)
-                }
-                .setNegativeButton(R.string.post_comment_attach_file_dialog_negative) { _, _ ->
-                    selectImage(ImageSelector.REQUEST_IMAGE_PHOTO)
-                }
-                .setNeutralButton(R.string.post_comment_attach_file_dialog_neutral) { _, _ -> viewModel.resetCommentImage() }
-                .show()
-        }
+        comment_new.setStartIconOnClickListener { requestImage() }
 
         collapsible_comments?.let {
             comment_count.setOnClickListener { toggleComments() }
@@ -304,6 +295,31 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
     private fun clearCommentInput() = comment_new?.let {
         hideSoftKeyboard(it)
         it.clearFocus()
+    }
+
+    private fun requestImage() {
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(R.layout.post_dialog_comment_image)
+            .setTitle(R.string.post_comment_attach_file_dialog_title)
+            .setPositiveButton(R.string.post_comment_attach_file_dialog_positive) { _, _ ->
+                selectImage(ImageSelector.REQUEST_IMAGE_FILE)
+            }
+            .setNegativeButton(R.string.post_comment_attach_file_dialog_negative) { _, _ ->
+                selectImage(ImageSelector.REQUEST_IMAGE_PHOTO)
+            }
+            .setNeutralButton(R.string.post_comment_attach_file_dialog_neutral) { _, _ -> viewModel.resetCommentImage() }
+            .show()
+
+        val image = dialog.findViewById<ImageView>(R.id.image)
+        image?.isVisible = viewModel.newCommentImage.value != null
+        viewModel.newCommentImage.value?.let {
+            image?.setImageDrawable(
+                BitmapDrawable(
+                    resources,
+                    BitmapFactory.decodeByteArray(it.bytes, 0, it.bytes.size)
+                )
+            )
+        }
     }
 
     private fun copyComment(comment: Comment) = getSystemService(
