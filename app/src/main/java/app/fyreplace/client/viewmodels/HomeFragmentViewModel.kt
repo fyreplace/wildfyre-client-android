@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.PostRepository
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
@@ -13,6 +14,11 @@ class HomeFragmentViewModel : PostFragmentViewModel() {
     private var fetchJob: Job? = null
     private var endOfPosts = false
     private var lastAreaName: String? = null
+    private var doSpread = true
+
+    init {
+        post.observeForever { doSpread = it != null }
+    }
 
     suspend fun nextPost(areaName: String? = null) {
         if (areaName == lastAreaName) {
@@ -46,8 +52,12 @@ class HomeFragmentViewModel : PostFragmentViewModel() {
     }
 
     suspend fun spread(spread: Boolean) {
-        PostRepository.spread(postAreaName, postId, spread)
-        nextPost()
+        if (doSpread) {
+            doSpread = false
+            delay(SPREAD_DELAY)
+            PostRepository.spread(postAreaName, postId, spread)
+            nextPost()
+        }
     }
 
     private suspend fun fillReserve() {
@@ -72,5 +82,6 @@ class HomeFragmentViewModel : PostFragmentViewModel() {
 
     private companion object {
         const val RESERVE_SIZE = 10
+        const val SPREAD_DELAY = 500L
     }
 }
