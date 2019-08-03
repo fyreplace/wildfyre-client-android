@@ -18,7 +18,7 @@ class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         super.onCreateView(inflater, container, savedInstanceState)
-            .apply { findViewById<TextView>(R.id.text).setText(R.string.posts_empty) }
+            .apply { findViewById<TextView>(R.id.text).setText(R.string.own_posts_empty) }
 
     override fun getItemsAdapter(): PostsAdapter = PostsAdapter(false)
 }

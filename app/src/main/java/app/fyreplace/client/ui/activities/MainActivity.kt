@@ -337,7 +337,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             R.id.fragment_home,
             R.id.fragment_notifications,
             R.id.fragment_archive,
-            R.id.fragment_own_posts
+            R.id.fragment_own_posts,
+            R.id.fragment_drafts
         )
         val NO_TITLE_DESTINATIONS = setOf(
             R.id.fragment_home,

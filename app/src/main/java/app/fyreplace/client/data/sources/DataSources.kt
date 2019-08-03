@@ -1,7 +1,12 @@
 package app.fyreplace.client.data.sources
 
 import androidx.paging.PositionalDataSource
+import app.fyreplace.client.data.models.Notification
+import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.models.SuperItem
+import app.fyreplace.client.data.repositories.DraftRepository
+import app.fyreplace.client.data.repositories.NotificationRepository
+import app.fyreplace.client.data.repositories.PostRepository
 import kotlinx.coroutines.*
 
 abstract class ItemsDataSource<I>(private val listener: DataLoadingListener) : PositionalDataSource<I>(),
@@ -40,4 +45,21 @@ abstract class ItemsDataSource<I>(private val listener: DataLoadingListener) : P
     private companion object {
         const val FETCH_DELAY = 1000L
     }
+}
+
+class NotificationsDataSource(listener: DataLoadingListener) :
+    ItemsDataSource<Notification>(listener) {
+    override val fetcher = NotificationRepository::getNotifications
+}
+
+class ArchiveDataSource(listener: DataLoadingListener) : ItemsDataSource<Post>(listener) {
+    override val fetcher = PostRepository::getArchive
+}
+
+class OwnPostsDataSource(listener: DataLoadingListener) : ItemsDataSource<Post>(listener) {
+    override val fetcher = PostRepository::getOwnPosts
+}
+
+class DraftsDataSource(listener: DataLoadingListener) : ItemsDataSource<Post>(listener) {
+    override val fetcher = DraftRepository::getDrafts
 }

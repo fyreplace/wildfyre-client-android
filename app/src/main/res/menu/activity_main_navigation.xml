@@ -24,6 +24,10 @@
             android:id="@+id/fragment_own_posts"
             android:icon="@drawable/ic_content_copy_black_24dp"
             android:title="@string/main_nav_fragment_own_posts" />
+        <item
+            android:id="@+id/fragment_drafts"
+            android:icon="@drawable/ic_wb_incandescent_flipped_black_24dp"
+            android:title="@string/main_nav_fragment_drafts" />
     </group>
     <item android:title="@string/main_nav_settings">
         <menu>

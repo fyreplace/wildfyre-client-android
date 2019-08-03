@@ -17,6 +17,7 @@
     <string name="main_nav_fragment_notifications">Notifications</string>
     <string name="main_nav_fragment_archive">Archive</string>
     <string name="main_nav_fragment_own_posts">Mes posts</string>
+    <string name="main_nav_fragment_drafts">Drafts</string>
     <string name="main_nav_settings">Paramètres</string>
     <string name="main_nav_settings_theme">Thème</string>
     <string name="main_nav_settings_badge_toggle">Badge de notifications</string>
@@ -35,7 +36,6 @@
     <string name="area_selecting_actions_area_spread">Propagation</string>
     <string name="area_selecting_actions_area_reputation">Réputation</string>
     <string name="sharing_actions_share">Partager</string>
-    <string name="posts_empty">Aucun post dans cette zone</string>
     <string name="notifications_actions_clear">Effacer</string>
     <string name="notifications_actions_clear_dialog_title">Effacer toutes les notifications ?</string>
     <string name="notifications_empty">Aucune notification</string>
@@ -44,6 +44,9 @@
         <item quantity="other">%1$d nouveaux commentaires</item>
     </plurals>
     <string name="archive_empty">Aucun post archivé dans cette zone</string>
+    <string name="own_posts_empty">Aucun post dans cette zone</string>
+    <string name="drafts_actions_new">Nouveau</string>
+    <string name="drafts_empty">Aucun brouillon dans cette zone</string>
     <string name="post_actions_subscribe">S\'inscrire</string>
     <string name="post_actions_unsubscribe">Se désinscrire</string>
     <string name="post_share_title">Partager ce post</string>
