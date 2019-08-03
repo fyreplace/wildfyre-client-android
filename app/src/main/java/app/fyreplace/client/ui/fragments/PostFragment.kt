@@ -82,7 +82,8 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
         )
 
         if (arguments != null) {
-            viewModel.setPostDataAsync(fragmentArgs.areaName, fragmentArgs.postId)
+            fragmentArgs.post?.let { viewModel.setPost(it) }
+                ?: viewModel.setPostDataAsync(fragmentArgs.areaName, fragmentArgs.postId)
         }
 
         viewModel.post.observe(viewLifecycleOwner, Observer {
