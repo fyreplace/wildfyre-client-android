@@ -57,18 +57,18 @@
         <item quantity="other">%1$d comments</item>
     </plurals>
     <string name="post_comment_author">Author</string>
-    <string name="post_comment_new_comment">New comment</string>
+    <string name="post_comment_new_comment">Add a comment</string>
     <string name="post_comment_attach_file_dialog_title">Attach…</string>
     <string name="post_comment_attach_file_dialog_positive">File</string>
     <string name="post_comment_attach_file_dialog_negative">Photo</string>
     <string name="post_comment_attach_file_dialog_neutral">Nothing</string>
-    <string name="post_comment_menu_copy">Copy comment</string>
-    <string name="post_comment_menu_share">Share comment</string>
-    <string name="post_comment_menu_delete">Delete comment</string>
+    <string name="post_comment_menu_copy">Copy</string>
+    <string name="post_comment_menu_share">Share</string>
+    <string name="post_comment_menu_delete">Delete</string>
     <string name="post_comment_copy_label">Comment</string>
-    <string name="post_comment_share_title">Share selected comment</string>
+    <string name="post_comment_share_title">Share this comment</string>
     <string name="post_comment_delete_dialog_title">Delete this comment ? This action cannot be undone</string>
-    <string name="home_empty">No more posts in this area</string>
+    <string name="home_empty">No posts left in this area</string>
     <string name="user_share_title">Share user profile</string>
     <string name="image_desc_profile_editor_change_image">Select an image</string>
     <string name="image_desc_profile_editor_change_photo">Take a picture</string>

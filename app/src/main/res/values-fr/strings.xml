@@ -55,16 +55,16 @@
         <item quantity="other">%1$d commentaires</item>
     </plurals>
     <string name="post_comment_author">Auteur</string>
-    <string name="post_comment_new_comment">Nouveau commentaire</string>
+    <string name="post_comment_new_comment">Ajouter un commentaire</string>
     <string name="post_comment_attach_file_dialog_title">Joindre…</string>
     <string name="post_comment_attach_file_dialog_positive">Fichier</string>
     <string name="post_comment_attach_file_dialog_negative">Photo</string>
     <string name="post_comment_attach_file_dialog_neutral">Rien</string>
-    <string name="post_comment_menu_copy">Copier ce commentaire</string>
-    <string name="post_comment_menu_share">Partager ce commentaire</string>
-    <string name="post_comment_menu_delete">Supprimer ce commentaire</string>
+    <string name="post_comment_menu_copy">Copier</string>
+    <string name="post_comment_menu_share">Partager</string>
+    <string name="post_comment_menu_delete">Supprimer</string>
     <string name="post_comment_copy_label">Commentaire</string>
-    <string name="post_comment_share_title">Share selected comment</string>
+    <string name="post_comment_share_title">Partager ce commentaire</string>
     <string name="post_comment_delete_dialog_title">Supprimer ce commentaire ? Cette action est irréversible</string>
     <string name="home_empty">Plus de posts dans cette zone</string>
     <string name="user_share_title">Partager ce profil</string>
