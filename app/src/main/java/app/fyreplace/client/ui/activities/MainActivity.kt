@@ -213,7 +213,9 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 && destination.id in TOP_LEVEL_DESTINATIONS
         )
 
-        if (destination.id in NO_TITLE_DESTINATIONS && toolbar.title.toString() == getString(R.string.app_name)) {
+        if ((destination.id in NO_TITLE_DESTINATIONS && toolbar.title.toString() == getString(R.string.app_name))
+            || toolbar.isTitleTruncated
+        ) {
             toolbar.title = ""
         }
 
@@ -263,9 +265,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                     override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                         toolbar.logo = resource
                         toolbar.children
-                            .filter { it is ImageView }
-                            .map { it as ImageView }
-                            .find { it.drawable == resource }
+                            .map { it as? ImageView }
+                            .find { it?.drawable == resource }
                             ?.setOnClickListener {
                                 findNavController(R.id.navigation_host)
                                     .navigate(NavigationMainDirections.actionGlobalFragmentUser(author = info.author))
