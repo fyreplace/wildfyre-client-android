@@ -49,7 +49,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
     }
     private val markdown by lazyMarkdown()
     private val highlightedCommentIds by lazy {
-        if (arguments != null)
+        if (canUseFragmentArgs())
             fragmentArgs.newCommentsIds?.asList()
                 ?: (if (fragmentArgs.selectedCommentId >= 0) listOf(fragmentArgs.selectedCommentId) else null)
         else
@@ -81,7 +81,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
             )
         )
 
-        if (arguments != null) {
+        if (canUseFragmentArgs()) {
             fragmentArgs.post?.let { viewModel.setPost(it) }
                 ?: viewModel.setPostDataAsync(fragmentArgs.areaName, fragmentArgs.postId)
         }
@@ -238,6 +238,8 @@ open class PostFragment : SharingFragment(R.layout.fragment_post) {
             setOnMenuItemClickListener { deleteComment(position, comment); true }
         }
     }
+
+    open fun canUseFragmentArgs() = arguments != null
 
     private fun toggleComments() {
         if (collapsible_comments == null) {

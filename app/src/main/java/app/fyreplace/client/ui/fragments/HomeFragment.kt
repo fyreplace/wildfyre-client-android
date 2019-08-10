@@ -94,6 +94,8 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         }
     }
 
+    override fun canUseFragmentArgs() = false
+
     private fun resetHomeView() {
         content.scrollToPosition(0)
         comments_list.scrollToPosition(0)
