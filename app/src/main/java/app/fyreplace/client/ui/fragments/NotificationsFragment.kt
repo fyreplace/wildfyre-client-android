@@ -45,7 +45,7 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_notifications_actions, menu)
-        val clear = menu.findItem(R.id.action_clear).actionView!!
+        val clear = menu.findItem(R.id.action_clear).actionView
 
         NotificationsActionsClearBinding.bind(clear).run {
             lifecycleOwner = viewLifecycleOwner
@@ -53,7 +53,7 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
         }
 
         clear.findViewById<View>(R.id.button).setOnClickListener {
-            AlertDialog.Builder(context!!)
+            AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.notifications_actions_clear_dialog_title))
                 .setNegativeButton(R.string.no, null)
                 .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int -> launchCatching { viewModel.clearNotifications() } }

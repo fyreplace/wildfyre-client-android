@@ -178,8 +178,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean =
-        item!!.onNavDestinationSelected(findNavController(R.id.navigation_host))
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        item.onNavDestinationSelected(findNavController(R.id.navigation_host))
 
     override fun onBackPressed() = when {
         drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
@@ -292,7 +292,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
                 viewModel.newUserAvatar.removeObservers(this)
                 launchCatching {
-                    viewModel.sendProfile(dialog.findViewById<TextView>(R.id.user_bio)!!.text.toString())
+                    val bio = dialog.findViewById<TextView>(R.id.user_bio)?.text ?: ""
+                    viewModel.sendProfile(bio.toString())
                 }
             }
             .create()
@@ -317,11 +318,12 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
 
         viewModel.userBio.value?.let {
-            val bioEdit = dialog.findViewById<EditText>(R.id.user_bio)!!
-            bioEdit.setText(it)
+            dialog.findViewById<EditText>(R.id.user_bio)?.run {
+                setText(it)
 
-            if (it.isNotEmpty()) {
-                bioEdit.minLines = 0
+                if (it.isNotEmpty()) {
+                    minLines = 0
+                }
             }
         }
     }

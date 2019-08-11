@@ -82,9 +82,9 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         }
 
         if (holder.authorName.isVisible) {
-            holder.authorName.text = itemData.author!!.name
+            holder.authorName.text = itemData.author?.name
             AppGlide.with(holder.itemView.context)
-                .load(itemData.author.avatar ?: R.drawable.default_avatar)
+                .load(itemData.author?.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
                 .transition(IMAGE_TRANSITION)
                 .transform(IMAGE_TRANSFORM)

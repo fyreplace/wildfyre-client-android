@@ -39,13 +39,13 @@ interface ImageSelector {
                     null,
                     null,
                     null
-                ).use {
-                    if (it!!.moveToFirst()) {
+                )?.use {
+                    if (it.moveToFirst()) {
                         mimeType = it.getString(it.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE))
                     } else {
                         return
                     }
-                }
+                } ?: return
 
                 contextWrapper.contentResolver.openInputStream(data.data!!).use {
                     tryUseBytes(
@@ -56,11 +56,11 @@ interface ImageSelector {
                 }
             }
             REQUEST_IMAGE_PHOTO -> {
-                val bitmap = data.extras!!.get("data") as Bitmap
+                val bitmap = data.extras?.get("data") as? Bitmap
                 val extension = "png"
                 val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
                 val buffer = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, buffer)
+                bitmap?.compress(Bitmap.CompressFormat.PNG, 100, buffer)
                 tryUseBytes(buffer.toByteArray(), mimeType!!, extension)
             }
         }

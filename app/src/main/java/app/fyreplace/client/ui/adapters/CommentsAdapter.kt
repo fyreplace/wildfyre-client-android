@@ -135,10 +135,8 @@ class CommentsAdapter(
             }
         }
 
-        if (onCommentsChangedAction != null) {
-            withContext(Dispatchers.Main) { onCommentsChangedAction!!.invoke() }
-            onCommentsChangedAction = null
-        }
+        withContext(Dispatchers.Main) { onCommentsChangedAction?.invoke() }
+        onCommentsChangedAction = null
     }
 
     fun getComment(position: Int) = data[position].comment

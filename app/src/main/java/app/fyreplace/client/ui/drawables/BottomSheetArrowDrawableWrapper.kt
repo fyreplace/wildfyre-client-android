@@ -19,14 +19,16 @@ class BottomSheetArrowDrawableWrapper(private val image: ImageView, private var 
         }
 
         pointingUp = up
-        drawable.start()
-        drawable.registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
-            override fun onAnimationEnd(d: Drawable?) = image.setImageDrawable(generateDrawable())
-        })
+        drawable?.run {
+            start()
+            registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
+                override fun onAnimationEnd(d: Drawable?) = image.setImageDrawable(generateDrawable())
+            })
+        }
     }
 
-    private fun generateDrawable(): AnimatedVectorDrawableCompat {
-        drawable = AnimatedVectorDrawableCompat.create(image.context, if (pointingUp) DRAWABLE_UP else DRAWABLE_DOWN)!!
+    private fun generateDrawable(): AnimatedVectorDrawableCompat? {
+        drawable = AnimatedVectorDrawableCompat.create(image.context, if (pointingUp) DRAWABLE_UP else DRAWABLE_DOWN)
         return drawable
     }
 
