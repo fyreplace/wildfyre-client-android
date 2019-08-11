@@ -164,9 +164,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
             clearCommentInput()
             launchCatching {
                 viewModel.sendNewComment()
-                commentsAdapter.doOnCommentsChanged {
-                    comments_list.smoothScrollToPosition(commentsAdapter.itemCount - 1)
-                }
+                commentsAdapter.doOnCommentsChanged { go_down.callOnClick() }
             }
         }
         comment_new.setStartIconOnClickListener { requestImage() }
