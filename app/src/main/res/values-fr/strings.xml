@@ -77,5 +77,4 @@
     <string name="image_desc_comments_toggle">Afficher les commentaires</string>
     <string name="image_desc_comments_send_comment">Envoyer le commentaire</string>
     <string name="image_desc_comments_attach_file">Joindre un fichier</string>
-    <string name="failure_avatar_size">La taille de l\'avatar doit être en dessous de 512k</string>
 </resources>

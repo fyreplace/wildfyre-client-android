@@ -79,5 +79,4 @@
     <string name="image_desc_comments_toggle">Toggle comments</string>
     <string name="image_desc_comments_send_comment">Send comment</string>
     <string name="image_desc_comments_attach_file">Attach a file</string>
-    <string name="failure_avatar_size">Avatar size must be below 512k</string>
 </resources>

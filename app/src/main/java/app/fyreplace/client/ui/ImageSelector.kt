@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.R
@@ -24,10 +23,8 @@ interface ImageSelector {
             return
         }
 
-        fun tryUseBytes(bytes: ByteArray, mimeType: String, extension: String) = when {
-            bytes.size < MAX_AVATAR_IMAGE_SIZE -> onImage(ImageData("avatar.$extension", mimeType, bytes))
-            else -> Toast.makeText(contextWrapper, R.string.failure_avatar_size, Toast.LENGTH_SHORT).show()
-        }
+        fun tryUseBytes(bytes: ByteArray, mimeType: String, extension: String) =
+            onImage(ImageData("avatar.$extension", mimeType, bytes))
 
         when (requestCode) {
             REQUEST_IMAGE_FILE -> {
@@ -83,6 +80,5 @@ interface ImageSelector {
     companion object {
         val REQUEST_IMAGE_FILE = FyreplaceApplication.context.resources.getInteger(R.integer.request_image_file)
         val REQUEST_IMAGE_PHOTO = FyreplaceApplication.context.resources.getInteger(R.integer.request_image_photo)
-        const val MAX_AVATAR_IMAGE_SIZE = 512 * 1024
     }
 }
