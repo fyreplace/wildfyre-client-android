@@ -50,6 +50,11 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_post">
         <argument
+            android:name="post"
+            android:defaultValue="@null"
+            app:argType="app.fyreplace.client.data.models.Post"
+            app:nullable="true" />
+        <argument
             android:name="areaName"
             android:defaultValue="@null"
             app:argType="string"

@@ -42,10 +42,5 @@ abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListF
     }
 
     override fun onItemClicked(item: Post) =
-        findNavController().navigate(
-            NavigationMainDirections.actionGlobalFragmentPost(
-                areaName = areaSelectingViewModel.preferredAreaName.value.orEmpty(),
-                postId = item.id
-            )
-        )
+        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(post = item))
 }

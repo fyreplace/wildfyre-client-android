@@ -65,7 +65,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
     }
     private val markdown by lazyMarkdown()
     private val highlightedCommentIds by lazy {
-        if (arguments != null)
+        if (canUseFragmentArgs())
             fragmentArgs.newCommentsIds?.asList()
                 ?: (if (fragmentArgs.selectedCommentId >= 0) listOf(fragmentArgs.selectedCommentId) else null)
         else
@@ -97,7 +97,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
             )
         )
 
-        if (arguments != null) launchCatching {
+        if (canUseFragmentArgs()) launchCatching {
             viewModel.setPostData(fragmentArgs.areaName, fragmentArgs.postId)
         }
 
@@ -274,6 +274,8 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
     }
 
     override fun onImage(image: ImageData) = viewModel.setCommentImage(image)
+
+    open fun canUseFragmentArgs() = arguments != null
 
     private fun toggleComments() {
         if (collapsible_comments == null) {
