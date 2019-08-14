@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.children
@@ -55,6 +56,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     override val viewModel by lazyViewModel<MainActivityViewModel>()
     override val contextWrapper = this
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val toolbarChangeListener by lazy { OnToolbarChangeListener(toolbar) }
     private var toolbarInset: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -153,12 +155,18 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             navigation_view.findViewById<View>(R.id.edit)?.setOnClickListener { editProfile() }
         }
 
+        toolbar.addOnLayoutChangeListener(toolbarChangeListener)
         toolbar.doOnLayout {
             badge.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 leftMargin = toolbar.height / 2
                 topMargin = toolbar.height / 2 - resources.getDimensionPixelOffset(R.dimen.margin_medium)
             }
         }
+    }
+
+    override fun onDestroy() {
+        toolbar.removeOnLayoutChangeListener(toolbarChangeListener)
+        super.onDestroy()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -213,9 +221,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 && destination.id in TOP_LEVEL_DESTINATIONS
         )
 
-        if ((destination.id in NO_TITLE_DESTINATIONS && toolbar.title.toString() == getString(R.string.app_name))
-            || toolbar.isTitleTruncated
-        ) {
+        if (destination.id in NO_TITLE_DESTINATIONS && toolbar.title.toString() == getString(R.string.app_name)) {
             toolbar.title = ""
         }
 
@@ -373,5 +379,23 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             CenterCrop(),
             RoundedCorners(FyreplaceApplication.context.resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_rounding))
         )
+    }
+
+    private class OnToolbarChangeListener(val toolbar: Toolbar) : View.OnLayoutChangeListener {
+        override fun onLayoutChange(
+            v: View,
+            left: Int,
+            top: Int,
+            right: Int,
+            bottom: Int,
+            oldLeft: Int,
+            oldTop: Int,
+            oldRight: Int,
+            oldBottom: Int
+        ) {
+            if (toolbar.isTitleTruncated) {
+                toolbar.title = ""
+            }
+        }
     }
 }
