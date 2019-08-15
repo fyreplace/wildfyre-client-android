@@ -42,7 +42,7 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
         }
 
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
-        swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.background)
+        swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.colorBackground)
         viewModel.loading.observe(viewLifecycleOwner) { swipeRefresh.isRefreshing = it }
         viewModel.dataSource.observe(viewLifecycleOwner) {
             onRefreshListener = SwipeRefreshLayout.OnRefreshListener(it::invalidate)

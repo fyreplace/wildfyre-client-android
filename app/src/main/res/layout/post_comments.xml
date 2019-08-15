@@ -54,7 +54,7 @@
             android:theme="@style/AppTheme.Button.HighlightButtonOverlay"
             app:drawableLeftCompat="@drawable/ic_comment_black_24dp"
             app:drawableStartCompat="@drawable/ic_comment_black_24dp"
-            app:drawableTint="@color/foreground"
+            app:drawableTint="?attr/colorOnBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -81,7 +81,7 @@
             app:layout_constraintBottom_toBottomOf="@id/comment_count"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/comment_count"
-            app:tint="@color/foreground" />
+            app:tint="?attr/colorOnBackground" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/comment_new"

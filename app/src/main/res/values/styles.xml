@@ -8,8 +8,13 @@
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/colorAccent</item>
+        <item name="alertDialogTheme">@style/AppTheme.Dialog.Alert</item>
     </style>
 
     <style name="AppTheme.Neutral" parent="AppTheme">
@@ -35,11 +40,19 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="AppTheme.Dialog.Alert" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
-    <style name="AppTheme.ActionBar.Button.NeutralButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+    <style name="AppTheme.AppBar.Button.NeutralButtonOverlay" parent="ThemeOverlay.MaterialComponents">
         <item name="colorPrimary">@android:color/white</item>
         <item name="colorOnPrimary">@android:color/black</item>
         <item name="colorSecondary">@android:color/black</item>
@@ -47,10 +60,10 @@
     </style>
 
     <style name="AppTheme.Button.NeutralButtonOverlay" parent="ThemeOverlay.MaterialComponents">
-        <item name="colorPrimary">@color/foreground</item>
-        <item name="colorOnPrimary">@color/background</item>
-        <item name="colorSecondary">@color/background</item>
-        <item name="colorOnSecondary">@color/foreground</item>
+        <item name="colorPrimary">@color/colorOnBackground</item>
+        <item name="colorOnPrimary">@color/colorBackground</item>
+        <item name="colorSecondary">@color/colorBackground</item>
+        <item name="colorOnSecondary">@color/colorOnBackground</item>
     </style>
 
     <style name="AppTheme.Button.HighlightButtonOverlay" parent="ThemeOverlay.MaterialComponents">

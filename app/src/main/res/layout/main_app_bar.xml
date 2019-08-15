@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.Toolbar
+                <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
                     android:gravity="center"
                     android:text="@{model.notificationCountText}"
                     android:textAppearance="?attr/textAppearanceCaption"
-                    android:textColor="@color/foreground"
+                    android:textColor="?attr/colorOnSurface"
                     android:visibility="@{(safeUnbox(model.shouldShowNotificationBadge) &amp;&amp; safeUnbox(model.notificationBadgeVisible) &amp;&amp; safeUnbox(model.notificationCount) &gt; 0) ? View.VISIBLE : View.GONE}" />
             </FrameLayout>
         </com.google.android.material.appbar.AppBarLayout>

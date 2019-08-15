@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/notifications_actions_clear"
-            android:theme="@style/AppTheme.ActionBar.Button.NeutralButtonOverlay"
+            android:theme="@style/AppTheme.AppBar.Button.NeutralButtonOverlay"
             android:visibility="@{safeUnbox(hasData) ? View.VISIBLE : View.GONE}" />
     </FrameLayout>
 </layout>
