@@ -98,7 +98,8 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         )
 
         if (canUseFragmentArgs()) launchCatching {
-            viewModel.setPostData(fragmentArgs.areaName, fragmentArgs.postId)
+            fragmentArgs.post?.let { viewModel.setPost(it) }
+                ?: viewModel.setPostData(fragmentArgs.areaName, fragmentArgs.postId)
         }
 
         viewModel.post.observe(viewLifecycleOwner) {
