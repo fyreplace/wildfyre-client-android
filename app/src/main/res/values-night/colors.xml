@@ -12,6 +12,7 @@
     <color name="colorControlActivatedNeutral">#BFBFBF</color>
     <color name="colorSwitchThumbNormalNeutral">#3F3F3F</color>
     <!-- Other colors -->
+    <color name="backgroundSplash">@color/colorBackground</color>
     <color name="backgroundHighlight">#3FFF7043</color>
     <color name="backgroundHighlightNeutral">#3F3F3F</color>
     <color name="navigation">@color/colorBackground</color>
