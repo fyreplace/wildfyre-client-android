@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg height="320" version="1.1" width="320" xmlns="http://www.w3.org/2000/svg">
-    <path d="M 160,10 L 200,130 L 240,10 310,240 L 240,310 H 80 L 10,240 L 80,10 L 120,130 Z" fill="#FFFFFF"
-        stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="20" />
+<svg height="500" version="1.1" width="500" xmlns="http://www.w3.org/2000/svg">
+    <!-- <path fill="#FFFFFF" d="M 100,500 Q 0,500 0,400 V 50 A 50,50 180 0,1 100,50 V 150 A 50,50 180 0,0 200,150 V 50 A 50,50 180 0,1 300,50 V 150 A 50,50 180 0,0 400,150 V 50 A 50,50 180 0,1 500,50 V 400 Q 500,500 400,500 Z M 150,400 H 350 A 50,50 180 0,0 350,300 H 150 A 50,50 180 0,0 150,400"/> -->
+    <path
+        d="M 100,500 Q 0,500 0,400 V 50 A 50,50 180 0,1 100,50 V 200 A 50,50 150 0,0 200,200 V 50 A 50,50 180 0,1 300,50 V 200 A 50,50 180 0,0 400,200 V 50 A 50,50 180 0,1 500,50 V 400 Q 500,500 400,500 Z"
+        fill="#FFFFFF" />
 </svg>

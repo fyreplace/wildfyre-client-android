@@ -1,17 +1,13 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="800"
-    android:viewportHeight="800">
+    android:viewportWidth="1250"
+    android:viewportHeight="1250">
     <group
-        android:translateX="240"
-        android:translateY="240">
+        android:translateX="375"
+        android:translateY="375">
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M160,10L200,130L240,10 310,240L240,310H80L10,240L80,10L120,130Z"
-            android:strokeWidth="20"
-            android:strokeColor="#FFFFFF"
-            android:strokeLineCap="round"
-            android:strokeLineJoin="round" />
+            android:pathData="M100,500Q0,500 0,400V50A50,50 180,0 1,100 50V200A50,50 150,0 0,200 200V50A50,50 180,0 1,300 50V200A50,50 180,0 0,400 200V50A50,50 180,0 1,500 50V400Q500,500 400,500Z" />
     </group>
 </vector>
