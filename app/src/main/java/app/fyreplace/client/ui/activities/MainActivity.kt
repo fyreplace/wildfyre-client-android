@@ -393,7 +393,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             oldRight: Int,
             oldBottom: Int
         ) {
-            if (toolbar.isTitleTruncated) {
+            if (toolbar.isTitleTruncated && toolbar.subtitle.isNullOrEmpty()) {
                 toolbar.title = ""
             }
         }
