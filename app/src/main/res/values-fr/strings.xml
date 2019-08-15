@@ -67,6 +67,7 @@
     <string name="post_comment_menu_share">Partager</string>
     <string name="post_comment_menu_delete">Supprimer</string>
     <string name="post_comment_copy_label">Commentaire</string>
+    <string name="post_comment_copy_toast">Commentaire copié dans le presse-papier</string>
     <string name="post_comment_share_title">Partager ce commentaire</string>
     <string name="post_comment_delete_dialog_title">Supprimer ce commentaire ? Cette action est irréversible</string>
     <string name="home_empty">Plus de posts dans cette zone</string>

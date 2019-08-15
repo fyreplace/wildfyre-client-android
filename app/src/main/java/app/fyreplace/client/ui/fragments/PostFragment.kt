@@ -13,6 +13,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -323,10 +324,11 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         }
     }
 
-    private fun copyComment(comment: Comment) = getSystemService(
-        requireContext(),
-        ClipboardManager::class.java
-    )?.setPrimaryClip(ClipData.newPlainText(getString(R.string.post_comment_copy_label), comment.text))
+    private fun copyComment(comment: Comment) {
+        getSystemService(requireContext(), ClipboardManager::class.java)
+            ?.setPrimaryClip(ClipData.newPlainText(getString(R.string.post_comment_copy_label), comment.text))
+        Toast.makeText(context, getString(R.string.post_comment_copy_toast), Toast.LENGTH_SHORT).show()
+    }
 
     private fun shareComment(comment: Comment) = shareText(
         Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId, comment.id),

@@ -38,7 +38,7 @@
     <string name="area_selecting_actions_area_reputation">Reputation</string>
     <string name="sharing_actions_share">Share</string>
     <string name="notifications_actions_clear">Clear</string>
-    <string name="notifications_actions_clear_dialog_title">Clear all notifications ?</string>
+    <string name="notifications_actions_clear_dialog_title">Clear all notifications?</string>
     <string name="notifications_empty">No notifications</string>
     <plurals name="notifications_item_comment_count">
         <item quantity="one">%1$d new comment</item>
@@ -69,8 +69,9 @@
     <string name="post_comment_menu_share">Share</string>
     <string name="post_comment_menu_delete">Delete</string>
     <string name="post_comment_copy_label">Comment</string>
+    <string name="post_comment_copy_toast">Comment copied to clipboard</string>
     <string name="post_comment_share_title">Share this comment</string>
-    <string name="post_comment_delete_dialog_title">Delete this comment ? This action cannot be undone</string>
+    <string name="post_comment_delete_dialog_title">Delete this comment? This action cannot be undone</string>
     <string name="home_empty">No posts left in this area</string>
     <string name="user_share_title">Share user profile</string>
     <string name="image_desc_profile_editor_change_image">Select an image</string>
