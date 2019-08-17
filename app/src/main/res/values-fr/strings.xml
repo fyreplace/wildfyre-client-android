@@ -36,6 +36,7 @@
     <string name="area_selecting_actions_area_spread">Propagation</string>
     <string name="area_selecting_actions_area_reputation">Réputation</string>
     <string name="sharing_actions_share">Partager</string>
+    <string name="items_author_anonymous">Anonyme</string>
     <string name="notifications_actions_clear">Effacer</string>
     <string name="notifications_actions_clear_dialog_title">Effacer toutes les notifications ?</string>
     <string name="notifications_empty">Aucune notification</string>

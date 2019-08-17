@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.paging.PagedListAdapter
@@ -61,11 +62,12 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
             return
         }
 
+        val context = holder.itemView.context
         val itemData = getItemData(item)
 
         holder.text.isVisible = itemData.image == null
         holder.image.isVisible = !holder.text.isVisible
-        holder.authorName.isVisible = showAuthors && itemData.author != null
+        holder.authorName.isVisible = showAuthors == (itemData.author != null)
         holder.authorPicture.isVisible = holder.authorName.isVisible
         holder.subtitle.text = itemData.subtitle
         holder.loader.isVisible = false
@@ -74,17 +76,20 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         if (itemData.image != null) {
             holder.image.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 bottomMargin =
-                    if (holder.authorName.isVisible)
-                        FyreplaceApplication.context.resources.getDimensionPixelOffset(R.dimen.margin_small)
-                    else
-                        0
+                    if (holder.authorName.isVisible) context.resources.getDimensionPixelOffset(R.dimen.margin_small)
+                    else 0
             }
         }
 
         if (holder.authorName.isVisible) {
-            holder.authorName.text = itemData.author?.name
-            AppGlide.with(holder.itemView.context)
-                .load(itemData.author?.avatar ?: R.drawable.default_avatar)
+            holder.authorName.text =
+                if (showAuthors) itemData.author?.name
+                else context.getString(R.string.items_author_anonymous)
+            AppGlide.with(context)
+                .load(
+                    if (showAuthors) itemData.author?.avatar ?: R.drawable.default_avatar
+                    else ContextCompat.getDrawable(context, R.drawable.ic_visibility_off_daynight_24dp)
+                )
                 .placeholder(android.R.color.transparent)
                 .transition(IMAGE_TRANSITION)
                 .transform(IMAGE_TRANSFORM)
@@ -93,7 +98,7 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
 
         if (holder.image.isVisible) {
             holder.image.setImageDrawable(null)
-            AppGlide.with(holder.itemView.context)
+            AppGlide.with(context)
                 .load(itemData.image)
                 .placeholder(android.R.color.transparent)
                 .transition(IMAGE_TRANSITION)
