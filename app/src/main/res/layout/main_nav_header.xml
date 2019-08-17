@@ -37,7 +37,7 @@
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginLeft="@dimen/margin_small"
             android:ellipsize="end"
-            android:singleLine="true"
+            android:lines="1"
             android:text="@{model.userName}"
             android:textAppearance="?attr/textAppearanceBody1"
             android:textStyle="bold"
