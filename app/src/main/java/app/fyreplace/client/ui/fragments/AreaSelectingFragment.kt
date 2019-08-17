@@ -31,7 +31,7 @@ interface AreaSelectingFragment : FailureHandler {
             if (it != null) {
                 areaSelectorMenuItem.title = fragment.getString(
                     R.string.area_selecting_actions_area_selector,
-                    it.displayname
+                    it.displayName
                 )
             }
         }
