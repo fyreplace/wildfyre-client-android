@@ -20,8 +20,8 @@ import kotlinx.android.synthetic.main.post_comments.*
  */
 class HomeFragment : PostFragment(), AreaSelectingFragment {
     override val viewModels: List<ViewModel> by lazy { super.viewModels + areaSelectingViewModel }
-    override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
     override val viewModel by lazyViewModel<HomeFragmentViewModel>()
+    override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

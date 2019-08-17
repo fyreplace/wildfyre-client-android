@@ -125,7 +125,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         viewModel.newCommentImage.observe(viewLifecycleOwner) { image ->
             if (image != null) {
                 comment_new.startIconDrawable?.let {
-                    DrawableCompat.setTint(it, ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+                    DrawableCompat.setTint(it, ContextCompat.getColor(view.context, R.color.colorPrimary))
                 }
             } else {
                 comment_new.setStartIconDrawable(R.drawable.ic_attach_file_black_24dp)

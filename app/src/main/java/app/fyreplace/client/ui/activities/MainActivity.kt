@@ -335,9 +335,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
     }
 
-    fun onSelectAvatarImageClicked(view: View) {
-        (view.tag as? String)?.toInt()?.let { selectImage(it) }
-    }
+    fun onSelectAvatarImageClicked(view: View) = (view.tag as? String)?.toInt()?.let { selectImage(it) }
 
     private companion object {
         val TOP_LEVEL_DESTINATIONS = setOf(
