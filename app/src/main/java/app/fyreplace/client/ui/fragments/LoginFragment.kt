@@ -1,6 +1,5 @@
 package app.fyreplace.client.ui.fragments
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -29,8 +28,8 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override val viewModel by lazyViewModel<LoginFragmentViewModel>()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel.authToken.observe(this) {
             if (it.isNotEmpty()) {
                 mainViewModel.login()
