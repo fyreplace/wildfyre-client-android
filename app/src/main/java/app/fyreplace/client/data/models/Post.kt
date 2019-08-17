@@ -4,6 +4,11 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.*
 
+data class Draft(
+    val text: String,
+    val anonym: Boolean
+) : Serializable
+
 data class Image(
     val num: Int,
     val image: String,

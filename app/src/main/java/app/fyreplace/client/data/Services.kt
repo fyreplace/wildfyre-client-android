@@ -203,7 +203,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Body post: Post
-    )
+    ): Post
 
     @POST("/areas/{areaName}/{postId}/spread/")
     @Headers("Content-Type: application/json")
@@ -253,8 +253,8 @@ interface WebService {
     suspend fun postDraft(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
-        @Body post: Post
-    )
+        @Body draft: Draft
+    ): Post
 
     @POST("/areas/{areaName}/drafts/{postId}/publish/")
     @Headers("Content-Type: application/json")
@@ -292,7 +292,7 @@ interface WebService {
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body post: Post
-    )
+    ): Post
 
     @DELETE("/areas/{areaName}/drafts/{postId}/")
     suspend fun deleteDraft(

@@ -1,6 +1,9 @@
 package app.fyreplace.client.data.repositories
 
+import app.fyreplace.client.FyreplaceApplication
+import app.fyreplace.client.R
 import app.fyreplace.client.data.Services
+import app.fyreplace.client.data.models.Draft
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -11,6 +14,14 @@ object DraftRepository {
             AreaRepository.preferredAreaName,
             size,
             offset
+        )
+    }
+
+    suspend fun createDraft(areaName: String, anonym: Boolean) = withContext(Dispatchers.IO) {
+        Services.webService.postDraft(
+            AuthRepository.authToken,
+            areaName,
+            Draft(FyreplaceApplication.context.getString(R.string.drafts_created_text), anonym)
         )
     }
 }

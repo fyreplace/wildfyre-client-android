@@ -350,7 +350,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         val NO_TITLE_DESTINATIONS = setOf(
             R.id.fragment_home,
             R.id.fragment_post,
-            R.id.fragment_user
+            R.id.fragment_user,
+            R.id.fragment_draft
         )
 
         val POST_REGEX = Regex("/areas/(\\w+)/(\\d+)(?:/(\\d+))?")

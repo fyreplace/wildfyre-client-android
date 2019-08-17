@@ -90,6 +90,15 @@
             app:argType="long" />
         <deepLink app:uri="client.wildfyre.net/user/{userId}" />
     </fragment>
+    <fragment
+        android:id="@+id/fragment_draft"
+        android:name="app.fyreplace.client.ui.fragments.DraftFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_draft">
+        <argument
+            android:name="post"
+            app:argType="app.fyreplace.client.data.models.Post" />
+    </fragment>
     <action
         android:id="@+id/action_global_fragment_login"
         app:destination="@id/fragment_login"
@@ -116,6 +125,13 @@
     <action
         android:id="@+id/action_global_fragment_user"
         app:destination="@id/fragment_user"
+        app:enterAnim="@anim/slide_in"
+        app:exitAnim="@anim/slide_out"
+        app:popEnterAnim="@anim/slide_in_reverse"
+        app:popExitAnim="@anim/slide_out_reverse" />
+    <action
+        android:id="@+id/action_global_fragment_draft"
+        app:destination="@id/fragment_draft"
         app:enterAnim="@anim/slide_in"
         app:exitAnim="@anim/slide_out"
         app:popEnterAnim="@anim/slide_in_reverse"

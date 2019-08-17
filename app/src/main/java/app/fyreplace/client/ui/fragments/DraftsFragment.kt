@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
+import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
+import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
@@ -24,14 +26,20 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_drafts_actions, menu)
         super.onCreateOptionsMenu(menu, inflater)
-        menu.findItem(R.id.action_new).actionView?.findViewById<Button>(R.id.button)?.setOnClickListener {
-            Toast.makeText(requireContext(), R.string.main_nav_fragment_drafts, Toast.LENGTH_SHORT).show()
+        menu.findItem(R.id.action_new).actionView?.findViewById<Button>(R.id.button)?.run {
+            areaSelectingViewModel.preferredAreaName.observe(viewLifecycleOwner) { area ->
+                setOnClickListener {
+                    launchCatching {
+                        onItemClicked(viewModel.createDraft(area, false))
+                        onRefreshListener?.onRefresh()
+                    }
+                }
+            }
         }
     }
 
     override fun getItemsAdapter(): PostsAdapter = PostsAdapter(false)
 
-    override fun onItemClicked(item: Post) {
-        Toast.makeText(requireContext(), R.string.main_nav_fragment_drafts, Toast.LENGTH_SHORT).show()
-    }
+    override fun onItemClicked(item: Post) =
+        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentDraft(post = item))
 }
