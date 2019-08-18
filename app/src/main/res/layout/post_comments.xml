@@ -117,46 +117,34 @@
             app:layout_constraintBottom_toTopOf="@id/comment_new"
             app:layout_constraintTop_toBottomOf="@id/comment_count" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:animateLayoutChanges="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/comment_count">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/go_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:scaleX="0"
+            android:scaleY="0"
+            android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
+            android:visibility="gone"
+            app:fabSize="mini"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/comment_count"
+            app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp"
+            app:useCompatPadding="true" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/go_up"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:scaleX="0"
-                android:scaleY="0"
-                android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
-                android:visibility="gone"
-                app:fabSize="mini"
-                app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp"
-                app:useCompatPadding="true" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:animateLayoutChanges="true"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/go_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:scaleX="0"
+            android:scaleY="0"
+            android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
+            android:visibility="gone"
+            app:fabSize="mini"
             app:layout_constraintBottom_toTopOf="@id/comment_new"
-            app:layout_constraintTop_toBottomOf="@id/comment_count">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/go_down"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:scaleX="0"
-                android:scaleY="0"
-                android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
-                android:visibility="gone"
-                app:fabSize="mini"
-                app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp"
-                app:useCompatPadding="true" />
-        </FrameLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp"
+            app:useCompatPadding="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

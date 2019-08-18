@@ -1,8 +1,5 @@
 package app.fyreplace.client.ui.fragments
 
-import android.animation.LayoutTransition
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -20,6 +17,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
+import androidx.dynamicanimation.animation.SpringAnimation
+import androidx.dynamicanimation.animation.SpringForce
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
@@ -132,34 +131,26 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         }
         viewModel.canSendNewComment.observe(viewLifecycleOwner) { comment_new.isEndIconVisible = it }
 
-        comments_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                    clearCommentInput()
-                }
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy != 0) {
-                    go_up?.isVisible = recyclerView.canScrollVertically(-1) && dy < 0
-                    go_down?.isVisible = recyclerView.canScrollVertically(1) && dy > 0
-                }
-            }
-        })
-
-        listOf(go_up.parent as ViewGroup, go_down.parent as ViewGroup).forEach {
-            it.layoutTransition.setAnimator(
-                LayoutTransition.APPEARING,
-                ANIMATOR_APPEARING
-            )
-            it.layoutTransition.setAnimator(
-                LayoutTransition.DISAPPEARING,
-                ANIMATOR_DISAPPEARING
-            )
-        }
-
+        comments_list.addOnScrollListener(CommentsScrollListener())
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
         go_down.setOnClickListener { comments_list.smoothScrollToPosition(max(commentsAdapter.itemCount - 1, 0)) }
+
+        for (button in listOf(go_up, go_down)) {
+            button.setTag(
+                R.id.anim_scale_x,
+                SpringAnimation(button, SpringAnimation.SCALE_X).setSpring(BUTTON_ANIM_SPRING)
+            )
+            button.setTag(
+                R.id.anim_scale_y,
+                SpringAnimation(button, SpringAnimation.SCALE_Y).setSpring(BUTTON_ANIM_SPRING).apply {
+                    addEndListener { _, _, value, _ ->
+                        if (button.isVisible && value == 0f) {
+                            button.isVisible = false
+                        }
+                    }
+                }
+            )
+        }
 
         comment_new.setEndIconOnClickListener {
             clearCommentInput()
@@ -344,15 +335,39 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
 
     private companion object {
         const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
-        val ANIMATOR_DISAPPEARING: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
-            Unit,
-            PropertyValuesHolder.ofFloat(View.SCALE_X, 0f),
-            PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f)
-        )
-        val ANIMATOR_APPEARING: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
-            Unit,
-            PropertyValuesHolder.ofFloat(View.SCALE_X, 1f),
-            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
-        )
+        val BUTTON_ANIM_SPRING: SpringForce = SpringForce().setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
+    }
+
+    private inner class CommentsScrollListener : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                clearCommentInput()
+            }
+        }
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if (dy == 0 || go_up == null || go_down == null) {
+                return
+            }
+
+            for (pair in mapOf(
+                go_up to (recyclerView.canScrollVertically(-1) && dy < 0),
+                go_down to (recyclerView.canScrollVertically(1) && dy > 0)
+            )) {
+                val button = pair.key
+                val visible = pair.value
+
+                if (button.isVisible != visible) {
+                    if (visible) {
+                        button.isVisible = true
+                    }
+
+                    for (key in listOf(R.id.anim_scale_x, R.id.anim_scale_y)) {
+                        (button.getTag(key) as? SpringAnimation)
+                            ?.animateToFinalPosition(if (visible) 1f else 0f)
+                    }
+                }
+            }
+        }
     }
 }
