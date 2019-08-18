@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.Constants
-import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Comment
 import app.fyreplace.client.data.models.ImageData
@@ -345,17 +344,15 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
 
     private companion object {
         const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
-        val TRANSLATION_BUTTON =
-            FyreplaceApplication.context.resources.getDimension(R.dimen.comments_button_translation)
         val ANIMATOR_DISAPPEARING: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
             Unit,
-            PropertyValuesHolder.ofFloat(View.TRANSLATION_X, 0f, TRANSLATION_BUTTON),
-            PropertyValuesHolder.ofFloat(View.ALPHA, 1f, 0f)
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 0f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 0f)
         )
         val ANIMATOR_APPEARING: ObjectAnimator = ObjectAnimator.ofPropertyValuesHolder(
             Unit,
-            PropertyValuesHolder.ofFloat(View.TRANSLATION_X, TRANSLATION_BUTTON, 0f),
-            PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f)
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 1f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f)
         )
     }
 }
