@@ -17,11 +17,11 @@ object DraftRepository {
         )
     }
 
-    suspend fun createDraft(areaName: String, anonym: Boolean) = withContext(Dispatchers.IO) {
+    suspend fun createDraft(areaName: String, anonymous: Boolean) = withContext(Dispatchers.IO) {
         Services.webService.postDraft(
             AuthRepository.authToken,
             areaName,
-            Draft(FyreplaceApplication.context.getString(R.string.drafts_created_text), anonym)
+            Draft(FyreplaceApplication.context.getString(R.string.drafts_created_text), anonymous)
         )
     }
 }

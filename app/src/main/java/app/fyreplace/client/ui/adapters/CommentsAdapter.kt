@@ -56,11 +56,11 @@ class CommentsAdapter(
         recyclers.remove(recyclerView)
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getItemCount() = data.size
 
-    override fun getItemId(position: Int): Long = data[position].comment.id
+    override fun getItemId(position: Int) = data[position].comment.id
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         LayoutInflater
             .from(parent.context)
             .inflate(R.layout.comment, parent, false)

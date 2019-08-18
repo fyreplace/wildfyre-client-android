@@ -14,12 +14,10 @@ abstract class SharingFragment(contentLayoutId: Int) : FailureHandlingFragment(c
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
         inflater.inflate(R.menu.fragment_sharing_actions, menu)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) = super.onOptionsItemSelected(item).also {
         if (item.itemId == R.id.action_share) {
             shareText(menuShareContent, menuShareTitle)
         }
-
-        return super.onOptionsItemSelected(item)
     }
 
     protected fun shareText(text: CharSequence, title: CharSequence) = startActivity(

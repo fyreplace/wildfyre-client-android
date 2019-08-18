@@ -25,8 +25,7 @@ class MarkdownRecyclerView @JvmOverloads constructor(
         mCoroutineContext = SupervisorJob() + Dispatchers.Main
         launch {
             while (true) {
-                children.map { extractText(it) }
-                    .forEach { it?.post { AsyncDrawableScheduler.schedule(it) } }
+                children.map { extractText(it) }.forEach { it?.post { AsyncDrawableScheduler.schedule(it) } }
                 delay(REFRESH_DELAY)
             }
         }

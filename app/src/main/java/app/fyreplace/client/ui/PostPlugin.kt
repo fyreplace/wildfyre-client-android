@@ -55,7 +55,7 @@ class PostPlugin private constructor(private val context: Context) : AbstractMar
         })
     }
 
-    override fun priority(): Priority = Priority.after(CorePlugin::class.java)
+    override fun priority() = Priority.after(CorePlugin::class.java)
 
     companion object {
         fun create(context: Context) = PostPlugin(context)

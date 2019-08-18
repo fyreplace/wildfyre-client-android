@@ -3,7 +3,6 @@ package app.fyreplace.client.ui.fragments
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -55,8 +54,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
     override val viewModel by lazyViewModel<PostFragmentViewModel>()
     override var menuShareContent = ""
     override val menuShareTitle by lazy { getString(R.string.post_share_title) }
-    override val contextWrapper: ContextWrapper
-        get() = requireActivity()
+    override val contextWrapper by lazy { requireActivity() }
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
@@ -76,7 +74,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         FragmentPostBinding.inflate(inflater, container, false).run {
             lifecycleOwner = viewLifecycleOwner
             model = viewModel
@@ -237,12 +235,10 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) = super.onOptionsItemSelected(item).also {
         if (item.itemId == R.id.action_subscribe) launchCatching {
             viewModel.changeSubscription()
         }
-
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -363,8 +359,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
                     }
 
                     for (key in listOf(R.id.anim_scale_x, R.id.anim_scale_y)) {
-                        (button.getTag(key) as? SpringAnimation)
-                            ?.animateToFinalPosition(if (visible) 1f else 0f)
+                        (button.getTag(key) as? SpringAnimation).animateToFinalPosition(if (visible) 1f else 0f)
                     }
                 }
             }

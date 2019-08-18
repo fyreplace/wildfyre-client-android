@@ -10,7 +10,7 @@ import app.fyreplace.client.data.models.Notification
  * Adapter for displaying notifications in [app.fyreplace.client.ui.fragments.NotificationsFragment].
  */
 class NotificationsAdapter : ItemsAdapter<Notification>(NotificationCallback(), true) {
-    override fun getItemData(item: Notification): ItemDataHolder = ItemDataHolder(
+    override fun getItemData(item: Notification) = ItemDataHolder(
         item.post.text,
         null,
         item.post.author,
@@ -21,7 +21,7 @@ class NotificationsAdapter : ItemsAdapter<Notification>(NotificationCallback(), 
         )
     )
 
-    override fun getItemId(position: Int): Long = getItem(position)?.post?.id ?: RecyclerView.NO_ID
+    override fun getItemId(position: Int) = getItem(position)?.post?.id ?: RecyclerView.NO_ID
 
     companion object {
         class NotificationCallback : DiffUtil.ItemCallback<Notification>() {

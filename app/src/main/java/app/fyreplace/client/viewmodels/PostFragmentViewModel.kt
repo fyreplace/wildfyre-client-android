@@ -12,9 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 open class PostFragmentViewModel : ViewModel() {
-    var postAreaName: String = AreaRepository.preferredAreaName
+    var postAreaName = AreaRepository.preferredAreaName
         private set
-    var postId: Long = -1
+    var postId = -1L
         private set
     protected val mHasContent = MutableLiveData<Boolean>()
     private val mPost = MutableLiveData<Post>()
@@ -60,11 +60,9 @@ open class PostFragmentViewModel : ViewModel() {
         mCanSendNewComment.addSource(newCommentData) { updateCanSendNewComment() }
     }
 
-    suspend fun setPostData(areaName: String?, id: Long) {
-        areaName?.let {
-            setPost(PostRepository.getPost(it, id))
-            postAreaName = it
-        }
+    suspend fun setPostData(areaName: String?, id: Long) = areaName?.let {
+        setPost(PostRepository.getPost(it, id))
+        postAreaName = it
     }
 
     fun setPost(post: Post?) {

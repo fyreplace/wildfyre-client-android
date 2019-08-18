@@ -18,17 +18,17 @@ abstract class ItemsDataSourceFactory<I> : DataSource.Factory<Int, I>() {
 
 class NotificationsDataSourceFactory(private val listener: DataLoadingListener) :
     ItemsDataSourceFactory<Notification>() {
-    override fun newSource(): ItemsDataSource<Notification> = NotificationsDataSource(listener)
+    override fun newSource() = NotificationsDataSource(listener)
 }
 
 class ArchiveDataSourceFactory(private val listener: DataLoadingListener) : ItemsDataSourceFactory<Post>() {
-    override fun newSource(): ItemsDataSource<Post> = ArchiveDataSource(listener)
+    override fun newSource() = ArchiveDataSource(listener)
 }
 
 class OwnPostsDataSourceFactory(private val listener: DataLoadingListener) : ItemsDataSourceFactory<Post>() {
-    override fun newSource(): ItemsDataSource<Post> = OwnPostsDataSource(listener)
+    override fun newSource() = OwnPostsDataSource(listener)
 }
 
 class DraftsDataSourceFactory(private val listener: DataLoadingListener) : ItemsDataSourceFactory<Post>() {
-    override fun newSource(): ItemsDataSource<Post> = DraftsDataSource(listener)
+    override fun newSource() = DraftsDataSource(listener)
 }

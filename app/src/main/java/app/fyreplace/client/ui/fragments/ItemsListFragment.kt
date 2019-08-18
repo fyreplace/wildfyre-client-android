@@ -18,8 +18,8 @@ import kotlinx.android.synthetic.main.fragment_items_list.*
  */
 abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : ItemsAdapter<I>> :
     FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemClickedListener<I> {
-    protected var onRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     abstract override val viewModel: VM
+    protected var onRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     abstract val itemsAdapter: A
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

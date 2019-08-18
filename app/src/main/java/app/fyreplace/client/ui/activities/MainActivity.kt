@@ -186,7 +186,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+    override fun onOptionsItemSelected(item: MenuItem) =
         item.onNavDestinationSelected(findNavController(R.id.navigation_host))
 
     override fun onBackPressed() = when {
@@ -194,7 +194,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         else -> super.onBackPressed()
     }
 
-    override fun onSupportNavigateUp(): Boolean =
+    override fun onSupportNavigateUp() =
         findNavController(R.id.navigation_host).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

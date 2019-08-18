@@ -38,7 +38,7 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         FragmentLoginBinding.inflate(inflater, container, false).run {
             model = viewModel
             lifecycleOwner = viewLifecycleOwner

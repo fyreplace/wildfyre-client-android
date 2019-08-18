@@ -6,7 +6,8 @@ import java.util.*
 
 data class Draft(
     val text: String,
-    val anonym: Boolean
+    @SerializedName("anonym")
+    val anonymous: Boolean
 ) : Serializable
 
 data class Image(
@@ -19,7 +20,8 @@ data class Post(
     val id: Long,
     val author: Author? = null,
     val text: String? = null,
-    val anonym: Boolean,
+    @SerializedName("anonym")
+    val anonymous: Boolean,
     val subscribed: Boolean,
     val created: Date,
     val active: Boolean,

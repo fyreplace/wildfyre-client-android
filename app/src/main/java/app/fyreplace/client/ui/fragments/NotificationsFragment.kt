@@ -27,7 +27,7 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
     override val itemsAdapter = NotificationsAdapter()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         super.onCreateView(inflater, container, savedInstanceState)
             .apply { findViewById<TextView>(R.id.text).setText(R.string.notifications_empty) }
 

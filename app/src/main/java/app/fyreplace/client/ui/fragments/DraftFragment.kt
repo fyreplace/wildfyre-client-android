@@ -13,7 +13,6 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft) {
     override val viewModel by lazyViewModel<DraftFragmentViewModel>()
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
         inflater.inflate(R.menu.fragment_draft_actions, menu)
-    }
 }

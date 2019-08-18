@@ -19,18 +19,19 @@ fun hideSoftKeyboard(view: View) {
 }
 
 fun Fragment.lazyMarkdown() = lazy {
-    val context = requireContext()
-    return@lazy Markwon.builder(context)
-        .usePlugin(CorePlugin.create())
-        .usePlugin(MovementMethodPlugin.create())
-        .usePlugin(PostPlugin.create(context))
-        .usePlugin(StrikethroughPlugin.create())
-        .usePlugin(ImagesPlugin.create(context))
-        .usePlugin(OkHttpImagesPlugin.create())
-        .build()
+    requireContext().let {
+        Markwon.builder(it)
+            .usePlugin(CorePlugin.create())
+            .usePlugin(MovementMethodPlugin.create())
+            .usePlugin(PostPlugin.create(it))
+            .usePlugin(StrikethroughPlugin.create())
+            .usePlugin(ImagesPlugin.create(it))
+            .usePlugin(OkHttpImagesPlugin.create())
+            .build()
+    }
 }
 
-fun String.prepareForMarkdown(imageUrls: List<Image>): String = replace(Constants.Api.IMAGE_REGEX) {
+fun String.prepareForMarkdown(imageUrls: List<Image>) = replace(Constants.Api.IMAGE_REGEX) {
     val imageNum = it.groups[1]?.value?.toInt() ?: 0
     val image = imageUrls.first { img -> img.num == imageNum }
     return@replace "\n![${image.comment}](${image.image})\n"
