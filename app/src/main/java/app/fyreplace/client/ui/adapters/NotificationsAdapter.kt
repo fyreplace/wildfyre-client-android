@@ -1,6 +1,7 @@
 package app.fyreplace.client.ui.adapters
 
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Notification
@@ -19,6 +20,8 @@ class NotificationsAdapter : ItemsAdapter<Notification>(NotificationCallback(), 
             item.comments.size
         )
     )
+
+    override fun getItemId(position: Int): Long = getItem(position)?.post?.id ?: RecyclerView.NO_ID
 
     companion object {
         class NotificationCallback : DiffUtil.ItemCallback<Notification>() {

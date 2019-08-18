@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.paging.PagedListAdapter
+import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.AppGlide
@@ -20,6 +21,7 @@ import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.google.android.material.card.MaterialCardView
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
 import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
@@ -31,7 +33,11 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
     PagedListAdapter<I, ItemsAdapter.ViewHolder>(diffCallback) {
     private lateinit var markdown: Markwon
     var onItemClickedListener: OnItemClickedListener<I>? = null
-    var data: List<I> = emptyList()
+    var selectionTracker: SelectionTracker<Long>? = null
+
+    init {
+        setHasStableIds(true)
+    }
 
     final override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -41,6 +47,10 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
             .usePlugin(PostPlugin.create(recyclerView.context))
             .build()
     }
+
+    final override fun setHasStableIds(hasStableIds: Boolean) = super.setHasStableIds(hasStableIds)
+
+    abstract override fun getItemId(position: Int): Long
 
     final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val totalWidth = parent.measuredWidth
@@ -65,6 +75,7 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
         val context = holder.itemView.context
         val itemData = getItemData(item)
 
+        holder.card.isChecked = selectionTracker?.isSelected(getItemId(position)) == true
         holder.text.isVisible = itemData.image == null
         holder.image.isVisible = !holder.text.isVisible
         holder.authorName.isVisible = showAuthors == (itemData.author != null)
@@ -120,6 +131,7 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
 
     class ViewHolder(approxWidth: Int, itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val container: View = itemView.findViewById(R.id.container)
+        val card: MaterialCardView = itemView.findViewById(R.id.card)
         val text: TextView = itemView.findViewById(R.id.text)
         val image: ImageView = itemView.findViewById(R.id.image)
         val authorName: TextView = itemView.findViewById(R.id.author_name)

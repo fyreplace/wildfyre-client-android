@@ -15,10 +15,9 @@ import app.fyreplace.client.viewmodels.lazyViewModel
  */
 class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>() {
     override val viewModel by lazyViewModel<ArchiveFragmentViewModel>()
+    override val itemsAdapter = PostsAdapter(true)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         super.onCreateView(inflater, container, savedInstanceState)
             .apply { findViewById<TextView>(R.id.text).setText(R.string.archive_empty) }
-
-    override fun getItemsAdapter(): PostsAdapter = PostsAdapter(true)
 }

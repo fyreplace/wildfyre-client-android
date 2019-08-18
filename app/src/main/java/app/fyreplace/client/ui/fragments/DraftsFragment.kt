@@ -18,6 +18,7 @@ import app.fyreplace.client.viewmodels.lazyViewModel
  */
 class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
     override val viewModel by lazyViewModel<DraftsFragmentViewModel>()
+    override val itemsAdapter = PostsAdapter(false)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         super.onCreateView(inflater, container, savedInstanceState)
@@ -37,8 +38,6 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
             }
         }
     }
-
-    override fun getItemsAdapter(): PostsAdapter = PostsAdapter(false)
 
     override fun onItemClicked(item: Post) =
         findNavController().navigate(NavigationMainDirections.actionGlobalFragmentDraft(post = item))

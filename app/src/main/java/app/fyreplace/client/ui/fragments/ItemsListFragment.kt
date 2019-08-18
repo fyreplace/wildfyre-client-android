@@ -20,6 +20,7 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
     FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemClickedListener<I> {
     protected var onRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     abstract override val viewModel: VM
+    abstract val itemsAdapter: A
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = FragmentItemsListBinding.inflate(inflater, container, false).run {
@@ -33,7 +34,7 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
         val swipeRefresh = root.findViewById<SwipeRefreshLayout>(R.id.refresher)
 
         itemsList.setHasFixedSize(true)
-        itemsList.adapter = getItemsAdapter().apply {
+        itemsList.adapter = itemsAdapter.apply {
             onItemClickedListener = this@ItemsListFragment
             viewModel.itemsPagedList.observe(viewLifecycleOwner) {
                 submitList(it)
@@ -56,6 +57,4 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
         super.onFailure(failure)
         refresher.isRefreshing = false
     }
-
-    abstract fun getItemsAdapter(): A
 }

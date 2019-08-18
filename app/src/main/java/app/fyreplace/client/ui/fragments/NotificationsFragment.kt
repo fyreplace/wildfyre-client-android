@@ -24,6 +24,7 @@ import app.fyreplace.client.viewmodels.lazyViewModel
 class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>() {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<NotificationsFragmentViewModel>()
+    override val itemsAdapter = NotificationsAdapter()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
@@ -60,8 +61,6 @@ class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragm
                 .show()
         }
     }
-
-    override fun getItemsAdapter(): NotificationsAdapter = NotificationsAdapter()
 
     override fun onItemClicked(item: Notification) {
         viewModel.enableRefresh()
