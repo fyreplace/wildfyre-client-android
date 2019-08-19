@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
+import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
@@ -203,12 +204,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     }
 
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
-        drawer_layout.setDrawerLockMode(
-            if (destination.id in TOP_LEVEL_DESTINATIONS)
-                DrawerLayout.LOCK_MODE_UNLOCKED
-            else
-                DrawerLayout.LOCK_MODE_LOCKED_CLOSED
-        )
+        updateDrawer(destination)
 
         when {
             destination.id == R.id.fragment_login -> toolbar.navigationIcon = null
@@ -231,6 +227,16 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         toolbar.setTitleTextAppearance(this, R.style.AppTheme_TextAppearance_ActionBar_Title)
     }
 
+    override fun onSupportActionModeStarted(mode: ActionMode) {
+        super.onSupportActionModeStarted(mode)
+        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+    }
+
+    override fun onSupportActionModeFinished(mode: ActionMode) {
+        super.onSupportActionModeFinished(mode)
+        findNavController(R.id.navigation_host).currentDestination?.let { updateDrawer(it) }
+    }
+
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
 
     override fun onDrawerOpened(drawerView: View) {
@@ -242,6 +248,15 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     override fun onDrawerStateChanged(newState: Int) = Unit
 
     override fun onImage(image: ImageData) = viewModel.setPendingProfileAvatar(image)
+
+    private fun updateDrawer(destination: NavDestination) {
+        drawer_layout.setDrawerLockMode(
+            if (destination.id in TOP_LEVEL_DESTINATIONS)
+                DrawerLayout.LOCK_MODE_UNLOCKED
+            else
+                DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+        )
+    }
 
     private fun setTitleInfo(info: MainActivityViewModel.PostInfo?) {
         if (info == null) {

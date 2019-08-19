@@ -45,6 +45,7 @@
         <item quantity="one">%1$d new comment</item>
         <item quantity="other">%1$d new comments</item>
     </plurals>
+    <string name="posts_actions_delete">Delete</string>
     <string name="archive_empty">No archived posts from this area</string>
     <string name="own_posts_empty">No posts in this area</string>
     <string name="drafts_actions_new">Create</string>

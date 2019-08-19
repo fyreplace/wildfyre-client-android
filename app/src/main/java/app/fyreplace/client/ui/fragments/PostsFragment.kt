@@ -2,10 +2,10 @@ package app.fyreplace.client.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -27,11 +27,10 @@ import kotlinx.android.synthetic.main.fragment_items_list.*
  * [androidx.fragment.app.Fragment] listing posts.
  */
 abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListFragment<Post, VM, PostsAdapter>(),
-    AreaSelectingFragment {
+    AreaSelectingFragment, ActionMode.Callback {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
     private var settingUp = true
-    private lateinit var selectionTracker: SelectionTracker<Long>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -54,7 +53,10 @@ abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListF
                 StableIdKeyProvider(itemsList),
                 PostDetailsLookup(itemsList),
                 StorageStrategy.createLongStorage()
-            ).build().apply { onRestoreInstanceState(savedInstanceState) }
+            ).build().apply {
+                onRestoreInstanceState(savedInstanceState)
+                addObserver(SelectionObserver())
+            }
         }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -67,10 +69,46 @@ abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListF
         onCreateOptionsMenu(this, menu, inflater)
     }
 
-    override fun onItemClicked(item: Post) =
+    override fun onItemClicked(item: Post) {
+        itemsAdapter.selectionTracker?.clearSelection()
         findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(post = item))
+    }
+
+    override fun onCreateActionMode(mode: ActionMode, menu: Menu) =
+        mode.menuInflater.inflate(R.menu.fragment_posts_action_mode_selection, menu).let { true }
+
+    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
+
+    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
+        R.id.action_delete -> {
+            Toast.makeText(context, R.string.posts_actions_delete, Toast.LENGTH_SHORT).show()
+            true
+        }
+        else -> false
+    }
+
+    override fun onDestroyActionMode(mode: ActionMode) {
+        itemsAdapter.selectionTracker?.clearSelection()
+    }
 
     private companion object {
         const val SELECTION_TRACKER_ID = "selection.posts"
+    }
+
+    private inner class SelectionObserver : SelectionTracker.SelectionObserver<Long>() {
+        private var count = 0
+        private var actionMode: ActionMode? = null
+
+        override fun onItemStateChanged(key: Long, selected: Boolean) {
+            if (count == 0) {
+                actionMode = (activity as? AppCompatActivity)?.startSupportActionMode(this@PostsFragment)
+            }
+
+            count += if (selected) 1 else -1
+
+            if (count == 0) {
+                actionMode?.finish()
+            }
+        }
     }
 }
