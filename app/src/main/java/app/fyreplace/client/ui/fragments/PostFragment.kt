@@ -359,7 +359,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
                     }
 
                     for (key in listOf(R.id.anim_scale_x, R.id.anim_scale_y)) {
-                        (button.getTag(key) as? SpringAnimation).animateToFinalPosition(if (visible) 1f else 0f)
+                        (button.getTag(key) as? SpringAnimation)?.animateToFinalPosition(if (visible) 1f else 0f)
                     }
                 }
             }

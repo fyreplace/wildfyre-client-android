@@ -13,8 +13,8 @@ import app.fyreplace.client.viewmodels.lazyViewModel
  * [androidx.fragment.app.Fragment] listing the user's own posts.
  */
 class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>() {
-    override val itemsAdapter = PostsAdapter(false)
     override val viewModel by lazyViewModel<OwnPostsFragmentViewModel>()
+    override val itemsAdapter = PostsAdapter(false)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
         super.onCreateView(inflater, container, savedInstanceState)
