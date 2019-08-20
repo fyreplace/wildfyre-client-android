@@ -21,14 +21,17 @@ class NotificationsDataSourceFactory(private val listener: DataLoadingListener) 
     override fun newSource() = NotificationsDataSource(listener)
 }
 
-class ArchiveDataSourceFactory(private val listener: DataLoadingListener) : ItemsDataSourceFactory<Post>() {
+class ArchiveDataSourceFactory(private val listener: DataLoadingListener) :
+    ItemsDataSourceFactory<Post>() {
     override fun newSource() = ArchiveDataSource(listener)
 }
 
-class OwnPostsDataSourceFactory(private val listener: DataLoadingListener) : ItemsDataSourceFactory<Post>() {
+class OwnPostsDataSourceFactory(private val listener: DataLoadingListener) :
+    ItemsDataSourceFactory<Post>() {
     override fun newSource() = OwnPostsDataSource(listener)
 }
 
-class DraftsDataSourceFactory(private val listener: DataLoadingListener) : ItemsDataSourceFactory<Post>() {
+class DraftsDataSourceFactory(private val listener: DataLoadingListener) :
+    ItemsDataSourceFactory<Post>() {
     override fun newSource() = DraftsDataSource(listener)
 }

@@ -6,7 +6,10 @@ import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import app.fyreplace.client.R
 
-class BottomSheetArrowDrawableWrapper(private val image: ImageView, private var pointingUp: Boolean) {
+class BottomSheetArrowDrawableWrapper(
+    private val image: ImageView,
+    private var pointingUp: Boolean
+) {
     private var drawable = generateDrawable()
 
     init {
@@ -22,13 +25,17 @@ class BottomSheetArrowDrawableWrapper(private val image: ImageView, private var 
         drawable?.run {
             start()
             registerAnimationCallback(object : Animatable2Compat.AnimationCallback() {
-                override fun onAnimationEnd(d: Drawable?) = image.setImageDrawable(generateDrawable())
+                override fun onAnimationEnd(d: Drawable?) =
+                    image.setImageDrawable(generateDrawable())
             })
         }
     }
 
     private fun generateDrawable(): AnimatedVectorDrawableCompat? {
-        drawable = AnimatedVectorDrawableCompat.create(image.context, if (pointingUp) DRAWABLE_UP else DRAWABLE_DOWN)
+        drawable = AnimatedVectorDrawableCompat.create(
+            image.context,
+            if (pointingUp) DRAWABLE_UP else DRAWABLE_DOWN
+        )
         return drawable
     }
 

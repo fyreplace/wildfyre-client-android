@@ -25,15 +25,18 @@ class MarkdownRecyclerView @JvmOverloads constructor(
         mCoroutineContext = SupervisorJob() + Dispatchers.Main
         launch {
             while (true) {
-                children.map { extractText(it) }.forEach { it?.post { AsyncDrawableScheduler.schedule(it) } }
+                children.map { extractText(it) }
+                    .forEach { it?.post { AsyncDrawableScheduler.schedule(it) } }
                 delay(REFRESH_DELAY)
             }
         }
     }
 
-    override fun onDetachedFromWindow() = mCoroutineContext.cancel().also { super.onDetachedFromWindow() }
+    override fun onDetachedFromWindow() = mCoroutineContext.cancel()
+        .also { super.onDetachedFromWindow() }
 
-    private fun extractText(view: View) = view as? TextView ?: view.findViewById(R.id.text) as? TextView
+    private fun extractText(view: View) = view as? TextView
+        ?: view.findViewById(R.id.text) as? TextView
 
     private companion object {
         const val REFRESH_DELAY = 5000L

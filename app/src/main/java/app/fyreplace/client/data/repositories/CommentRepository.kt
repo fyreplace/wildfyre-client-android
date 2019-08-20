@@ -34,12 +34,13 @@ object CommentRepository {
             }
         }
 
-    suspend fun deleteComment(areaName: String, postId: Long, commentId: Long) = withContext(Dispatchers.IO) {
-        Services.webService.deleteComment(
-            AuthRepository.authToken,
-            areaName,
-            postId,
-            commentId
-        )
-    }
+    suspend fun deleteComment(areaName: String, postId: Long, commentId: Long) =
+        withContext(Dispatchers.IO) {
+            Services.webService.deleteComment(
+                AuthRepository.authToken,
+                areaName,
+                postId,
+                commentId
+            )
+        }
 }

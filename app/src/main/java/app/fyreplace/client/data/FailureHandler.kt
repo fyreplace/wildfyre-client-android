@@ -26,7 +26,10 @@ interface FailureHandler : LifecycleOwner {
         Log.e(FyreplaceApplication.context.getString(R.string.app_name), failure.message.orEmpty())
     }
 
-    fun launchCatching(context: CoroutineContext = Dispatchers.Main, block: suspend CoroutineScope.() -> Unit) =
+    fun launchCatching(
+        context: CoroutineContext = Dispatchers.Main,
+        block: suspend CoroutineScope.() -> Unit
+    ) =
         lifecycleScope.launch(context) {
             try {
                 block()

@@ -9,8 +9,10 @@ import kotlinx.coroutines.withContext
 
 object AreaRepository {
     var preferredAreaName: String
-        get() = FyreplaceApplication.preferences.getString(Constants.Preferences.AREA_PREFERRED, "").orEmpty()
-        set(value) = FyreplaceApplication.preferences.edit { putString(Constants.Preferences.AREA_PREFERRED, value) }
+        get() = FyreplaceApplication.preferences
+            .getString(Constants.Preferences.AREA_PREFERRED, "").orEmpty()
+        set(value) = FyreplaceApplication.preferences
+            .edit { putString(Constants.Preferences.AREA_PREFERRED, value) }
 
     suspend fun getAreas() = withContext(Dispatchers.IO) {
         Services.webService.getAreas(AuthRepository.authToken)

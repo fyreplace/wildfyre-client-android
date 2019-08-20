@@ -30,7 +30,11 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) =
         super.onCreateView(inflater, container, savedInstanceState)
             .apply { findViewById<View>(R.id.buttons).isVisible = true }
 
@@ -60,10 +64,11 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
             model = areaSelectingViewModel
         }
 
-        ActionsAreaReputationBinding.bind(menu.findItem(R.id.action_area_reputation).actionView).run {
-            lifecycleOwner = viewLifecycleOwner
-            model = areaSelectingViewModel
-        }
+        ActionsAreaReputationBinding.bind(menu.findItem(R.id.action_area_reputation).actionView)
+            .run {
+                lifecycleOwner = viewLifecycleOwner
+                model = areaSelectingViewModel
+            }
 
         menu.findItem(R.id.action_area_selector)?.actionView
             ?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
@@ -88,7 +93,8 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
                 MenuItem.SHOW_AS_ACTION_NEVER
 
         for (id in setOf(R.id.action_area_selector, R.id.action_share)) {
-            menu.findItem(id).setShowAsAction(showAsAction or MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+            menu.findItem(id)
+                .setShowAsAction(showAsAction or MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
         }
     }
 

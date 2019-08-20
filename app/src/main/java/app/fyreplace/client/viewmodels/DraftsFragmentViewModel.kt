@@ -7,5 +7,6 @@ import app.fyreplace.client.data.sources.DraftsDataSourceFactory
 class DraftsFragmentViewModel : ItemsListFragmentViewModel<Post>() {
     override val factory = DraftsDataSourceFactory(this)
 
-    suspend fun createDraft(areaName: String, anonymous: Boolean) = DraftRepository.createDraft(areaName, anonymous)
+    suspend fun createDraft(areaName: String, anonymous: Boolean) =
+        DraftRepository.createDraft(areaName, anonymous)
 }

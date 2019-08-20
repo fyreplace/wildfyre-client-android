@@ -23,8 +23,12 @@ class AreaSelectingFragmentViewModel : ViewModel() {
     init {
         mPreferredArea.addSource(areas) { updatePreferredArea(it, preferredAreaName.value) }
         mPreferredArea.addSource(preferredAreaName) { updatePreferredArea(areas.value, it) }
-        mPreferredAreaIndex.addSource(areas) { updatePreferredAreaIndex(it, preferredAreaName.value) }
-        mPreferredAreaIndex.addSource(preferredAreaName) { updatePreferredAreaIndex(areas.value, it) }
+        mPreferredAreaIndex.addSource(areas) {
+            updatePreferredAreaIndex(it, preferredAreaName.value)
+        }
+        mPreferredAreaIndex.addSource(preferredAreaName) {
+            updatePreferredAreaIndex(areas.value, it)
+        }
     }
 
     suspend fun updateAreas() {

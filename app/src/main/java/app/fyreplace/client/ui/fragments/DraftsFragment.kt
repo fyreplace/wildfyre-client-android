@@ -23,7 +23,11 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
     override val viewModel by lazyViewModel<DraftsFragmentViewModel>()
     override val itemsAdapter = PostsAdapter(false)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) =
         super.onCreateView(inflater, container, savedInstanceState)
             .apply { findViewById<TextView>(R.id.text).setText(R.string.drafts_empty) }
 

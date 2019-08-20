@@ -31,10 +31,7 @@ import ru.noties.markwon.Markwon
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
-class CommentsAdapter(
-    private val fragment: Fragment,
-    private val markdown: Markwon
-) :
+class CommentsAdapter(private val fragment: Fragment, private val markdown: Markwon) :
     RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     private var data: List<CommentWrapper> = listOf()
     private val recyclers: MutableList<RecyclerView> = mutableListOf()
@@ -130,7 +127,8 @@ class CommentsAdapter(
 
         if (scrollPosition > -1) withContext(Dispatchers.Main) {
             recyclers.forEach {
-                (it.layoutManager as? LinearLayoutManager)?.scrollToPositionWithOffset(scrollPosition, 0)
+                (it.layoutManager as? LinearLayoutManager)
+                    ?.scrollToPositionWithOffset(scrollPosition, 0)
                     ?: it.scrollToPosition(scrollPosition)
             }
         }

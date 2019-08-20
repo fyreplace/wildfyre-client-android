@@ -35,7 +35,8 @@ class MainActivityViewModel : ViewModel() {
     val userAvatar: LiveData<String> = mSelf.map { it?.avatar.orEmpty() }
     val newUserAvatar: LiveData<ImageData?> = mNewUserAvatar
     val notificationCount: LiveData<Int> = mNotificationCount
-    val notificationCountText: LiveData<String> = notificationCount.map { if (it < 100) it.toString() else "99" }
+    val notificationCountText: LiveData<String> = notificationCount
+        .map { if (it < 100) it.toString() else "99" }
     val notificationBadgeVisible: LiveData<Boolean> = mNotificationBadgeVisible
     val postInfo: LiveData<PostInfo?> = mPostInfo
     val selectedThemeIndex = MutableLiveData<Int>()
@@ -73,7 +74,8 @@ class MainActivityViewModel : ViewModel() {
         AuthRepository.clearAuthToken()
     }
 
-    suspend fun updateNotificationCount() = mNotificationCount.postValue(NotificationRepository.getNotificationCount())
+    suspend fun updateNotificationCount() =
+        mNotificationCount.postValue(NotificationRepository.getNotificationCount())
 
     fun forceNotificationCount(count: Int) = mNotificationCount.postValue(count)
 
@@ -92,7 +94,8 @@ class MainActivityViewModel : ViewModel() {
 
     fun setNotificationBadgeVisible(visible: Boolean) = mNotificationBadgeVisible.postValue(visible)
 
-    fun setPost(post: Post?) = mPostInfo.postValue(post?.let { PostInfo(it.author, DATE_FORMAT.format(it.created)) })
+    fun setPost(post: Post?) =
+        mPostInfo.postValue(post?.let { PostInfo(it.author, DATE_FORMAT.format(it.created)) })
 
     private suspend fun updateProfileInfo() {
         updateNotificationCount()

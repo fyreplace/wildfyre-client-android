@@ -41,14 +41,15 @@ object PostRepository {
         )
     }
 
-    suspend fun setSubscription(areaName: String, id: Long, sub: Boolean) = withContext(Dispatchers.IO) {
-        Services.webService.putSubscription(
-            AuthRepository.authToken,
-            areaName,
-            id,
-            Subscription(sub)
-        )
-    }
+    suspend fun setSubscription(areaName: String, id: Long, sub: Boolean) =
+        withContext(Dispatchers.IO) {
+            Services.webService.putSubscription(
+                AuthRepository.authToken,
+                areaName,
+                id,
+                Subscription(sub)
+            )
+        }
 
     suspend fun spread(areaName: String, id: Long, spread: Boolean) = withContext(Dispatchers.IO) {
         Services.webService.postSpread(

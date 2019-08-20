@@ -19,15 +19,15 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostDetailsLookup
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
-import app.fyreplace.client.viewmodels.ItemsListFragmentViewModel
+import app.fyreplace.client.viewmodels.PostsFragmentViewModel
 import app.fyreplace.client.viewmodels.lazyActivityViewModel
 import kotlinx.android.synthetic.main.fragment_items_list.*
 
 /**
  * [androidx.fragment.app.Fragment] listing posts.
  */
-abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListFragment<Post, VM, PostsAdapter>(),
-    AreaSelectingFragment, ActionMode.Callback {
+abstract class PostsFragment<VM : PostsFragmentViewModel> :
+    ItemsListFragment<Post, VM, PostsAdapter>(), AreaSelectingFragment, ActionMode.Callback {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
     private var settingUp = true
@@ -44,7 +44,11 @@ abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListF
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) =
         super.onCreateView(inflater, container, savedInstanceState).also {
             val itemsList = it.findViewById<RecyclerView>(R.id.items_list)
             itemsAdapter.selectionTracker = SelectionTracker.Builder(
@@ -101,7 +105,8 @@ abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> : ItemsListF
 
         override fun onItemStateChanged(key: Long, selected: Boolean) {
             if (count == 0) {
-                actionMode = (activity as? AppCompatActivity)?.startSupportActionMode(this@PostsFragment)
+                actionMode =
+                    (activity as? AppCompatActivity)?.startSupportActionMode(this@PostsFragment)
             }
 
             count += if (selected) 1 else -1

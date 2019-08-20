@@ -22,7 +22,11 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
     protected var onRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
     abstract val itemsAdapter: A
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val root = FragmentItemsListBinding.inflate(inflater, container, false).run {
             lifecycleOwner = viewLifecycleOwner
             loading = viewModel.loading

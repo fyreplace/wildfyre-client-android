@@ -29,7 +29,10 @@ import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
 /**
  * Standard adapter using a list of items as a data source.
  */
-abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private val showAuthors: Boolean) :
+abstract class ItemsAdapter<I>(
+    diffCallback: DiffUtil.ItemCallback<I>,
+    private val showAuthors: Boolean
+) :
     PagedListAdapter<I, ItemsAdapter.ViewHolder>(diffCallback) {
     private lateinit var markdown: Markwon
     var onItemClickedListener: OnItemClickedListener<I>? = null
@@ -99,7 +102,10 @@ abstract class ItemsAdapter<I>(diffCallback: DiffUtil.ItemCallback<I>, private v
             AppGlide.with(context)
                 .load(
                     if (showAuthors) itemData.author?.avatar ?: R.drawable.default_avatar
-                    else ContextCompat.getDrawable(context, R.drawable.ic_visibility_off_daynight_24dp)
+                    else ContextCompat.getDrawable(
+                        context,
+                        R.drawable.ic_visibility_off_daynight_24dp
+                    )
                 )
                 .placeholder(android.R.color.transparent)
                 .transition(IMAGE_TRANSITION)

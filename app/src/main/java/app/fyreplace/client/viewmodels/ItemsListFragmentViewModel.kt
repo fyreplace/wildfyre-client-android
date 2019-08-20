@@ -24,7 +24,8 @@ abstract class ItemsListFragmentViewModel<I> : ViewModel(), DataLoadingListener 
     abstract val factory: ItemsDataSourceFactory<I>
     val dataSource: LiveData<DataSource<Int, I>> by lazy { factory.dataSource }
     val itemsPagedList: LiveData<PagedList<I>> by lazy {
-        val pageSize = FyreplaceApplication.context.resources.getInteger(R.integer.post_preview_load_page_size)
+        val pageSize = FyreplaceApplication.context.resources
+            .getInteger(R.integer.post_preview_load_page_size)
         return@lazy factory.toLiveData(
             Config(
                 enablePlaceholders = true,

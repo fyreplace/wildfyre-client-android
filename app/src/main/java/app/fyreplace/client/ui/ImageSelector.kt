@@ -38,7 +38,9 @@ interface ImageSelector {
                     null
                 )?.use {
                     if (it.moveToFirst()) {
-                        mimeType = it.getString(it.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE))
+                        mimeType = it.getString(
+                            it.getColumnIndex(MediaStore.MediaColumns.MIME_TYPE)
+                        )
                     } else {
                         return
                     }
@@ -67,7 +69,8 @@ interface ImageSelector {
         startActivityForResult(
             Intent.createChooser(
                 when (request) {
-                    REQUEST_IMAGE_FILE -> Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
+                    REQUEST_IMAGE_FILE -> Intent(Intent.ACTION_GET_CONTENT)
+                        .apply { type = "image/*" }
                     REQUEST_IMAGE_PHOTO -> Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     else -> return
                 },
@@ -78,7 +81,9 @@ interface ImageSelector {
     }
 
     companion object {
-        val REQUEST_IMAGE_FILE = FyreplaceApplication.context.resources.getInteger(R.integer.request_image_file)
-        val REQUEST_IMAGE_PHOTO = FyreplaceApplication.context.resources.getInteger(R.integer.request_image_photo)
+        val REQUEST_IMAGE_FILE = FyreplaceApplication.context.resources
+            .getInteger(R.integer.request_image_file)
+        val REQUEST_IMAGE_PHOTO = FyreplaceApplication.context.resources
+            .getInteger(R.integer.request_image_photo)
     }
 }

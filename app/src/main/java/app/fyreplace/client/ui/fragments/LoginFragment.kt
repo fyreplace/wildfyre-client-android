@@ -38,7 +38,11 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) =
         FragmentLoginBinding.inflate(inflater, container, false).run {
             model = viewModel
             lifecycleOwner = viewLifecycleOwner
@@ -50,7 +54,9 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         // For both the username and the password fields, require the input to not be empty
         mapOf(viewModel.username to username, viewModel.password to password).forEach {
             it.key.observe(viewLifecycleOwner) { content ->
-                it.value.error = if (content.isEmpty()) getString(R.string.login_error_field_required) else null
+                it.value.error =
+                    if (content.isEmpty()) getString(R.string.login_error_field_required)
+                    else null
             }
         }
 

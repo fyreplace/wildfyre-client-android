@@ -39,7 +39,12 @@ interface AreaSelectingFragment : FailureHandler {
         areaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 areaSelectingViewModel.areas.value?.get(position)?.name?.let {
                     launchCatching { areaSelectingViewModel.setPreferredAreaName(it) }
                 }

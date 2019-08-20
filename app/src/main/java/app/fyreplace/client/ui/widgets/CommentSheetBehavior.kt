@@ -7,7 +7,8 @@ import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
-class CommentSheetBehavior<V : View>(context: Context?, attrs: AttributeSet?) : BottomSheetBehavior<V>(context, attrs) {
+class CommentSheetBehavior<V : View>(context: Context?, attrs: AttributeSet?) :
+    BottomSheetBehavior<V>(context, attrs) {
     var canDrag = true
 
     override fun onInterceptTouchEvent(parent: CoordinatorLayout, child: V, event: MotionEvent) =

@@ -74,7 +74,11 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) =
         FragmentPostBinding.inflate(inflater, container, false).run {
             lifecycleOwner = viewLifecycleOwner
             model = viewModel
@@ -100,7 +104,11 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         }
 
         viewModel.post.observe(viewLifecycleOwner) {
-            it?.run { menuShareContent = Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId) }
+            it?.run {
+                menuShareContent =
+                    Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId)
+            }
+
             mainViewModel.setPost(it)
         }
 
@@ -121,17 +129,24 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         viewModel.newCommentImage.observe(viewLifecycleOwner) { image ->
             if (image != null) {
                 comment_new.startIconDrawable?.let {
-                    DrawableCompat.setTint(it, ContextCompat.getColor(view.context, R.color.colorPrimary))
+                    DrawableCompat.setTint(
+                        it,
+                        ContextCompat.getColor(view.context, R.color.colorPrimary)
+                    )
                 }
             } else {
                 comment_new.setStartIconDrawable(R.drawable.ic_attach_file_black_24dp)
             }
         }
-        viewModel.canSendNewComment.observe(viewLifecycleOwner) { comment_new.isEndIconVisible = it }
+        viewModel.canSendNewComment.observe(viewLifecycleOwner) {
+            comment_new.isEndIconVisible = it
+        }
 
         comments_list.addOnScrollListener(CommentsScrollListener())
         go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
-        go_down.setOnClickListener { comments_list.smoothScrollToPosition(max(commentsAdapter.itemCount - 1, 0)) }
+        go_down.setOnClickListener {
+            comments_list.smoothScrollToPosition(max(commentsAdapter.itemCount - 1, 0))
+        }
 
         for (button in listOf(go_up, go_down)) {
             button.setTag(
@@ -140,13 +155,14 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
             )
             button.setTag(
                 R.id.anim_scale_y,
-                SpringAnimation(button, SpringAnimation.SCALE_Y).setSpring(BUTTON_ANIM_SPRING).apply {
-                    addEndListener { _, _, value, _ ->
-                        if (button.isVisible && value == 0f) {
-                            button.isVisible = false
+                SpringAnimation(button, SpringAnimation.SCALE_Y)
+                    .setSpring(BUTTON_ANIM_SPRING).apply {
+                        addEndListener { _, _, value, _ ->
+                            if (button.isVisible && value == 0f) {
+                                button.isVisible = false
+                            }
                         }
                     }
-                }
             )
         }
 
@@ -229,7 +245,8 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
             }
         }
 
-        val postMenuItems = listOf(R.id.action_subscribe, R.id.action_share).map { menu.findItem(it) }
+        val postMenuItems = listOf(R.id.action_subscribe, R.id.action_share)
+            .map { menu.findItem(it) }
         viewModel.contentLoaded.observe(viewLifecycleOwner) {
             postMenuItems.forEach { action -> action.isEnabled = it }
         }
@@ -241,7 +258,11 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         }
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
         super.onCreateContextMenu(menu, v, menuInfo)
         requireActivity().menuInflater.inflate(R.menu.fragment_post_comment_context, menu)
 
@@ -273,7 +294,10 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         val commentsBehavior = BottomSheetBehavior.from(collapsible_comments)
 
         when {
-            commentsBehavior.state in setOf(BottomSheetBehavior.STATE_HIDDEN, BottomSheetBehavior.STATE_COLLAPSED) ->
+            commentsBehavior.state in setOf(
+                BottomSheetBehavior.STATE_HIDDEN,
+                BottomSheetBehavior.STATE_COLLAPSED
+            ) ->
                 commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED ->
                 commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -312,8 +336,14 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
 
     private fun copyComment(comment: Comment) {
         getSystemService(requireContext(), ClipboardManager::class.java)
-            ?.setPrimaryClip(ClipData.newPlainText(getString(R.string.post_comment_copy_label), comment.text))
-        Toast.makeText(context, getString(R.string.post_comment_copy_toast), Toast.LENGTH_SHORT).show()
+            ?.setPrimaryClip(
+                ClipData.newPlainText(
+                    getString(R.string.post_comment_copy_label),
+                    comment.text
+                )
+            )
+        Toast.makeText(context, getString(R.string.post_comment_copy_toast), Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun shareComment(comment: Comment) = shareText(
@@ -325,13 +355,16 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.post_comment_delete_dialog_title)
             .setNegativeButton(R.string.no, null)
-            .setPositiveButton(R.string.yes) { _, _ -> launchCatching { viewModel.deleteComment(position, comment) } }
+            .setPositiveButton(R.string.yes) { _, _ ->
+                launchCatching { viewModel.deleteComment(position, comment) }
+            }
             .show()
     }
 
     private companion object {
         const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
-        val BUTTON_ANIM_SPRING: SpringForce = SpringForce().setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
+        val BUTTON_ANIM_SPRING: SpringForce = SpringForce()
+            .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
     }
 
     private inner class CommentsScrollListener : RecyclerView.OnScrollListener() {

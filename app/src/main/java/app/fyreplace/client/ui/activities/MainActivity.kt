@@ -122,7 +122,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 .into(navHeaderBinding.userPicture)
         }
 
-        val hostFragment = supportFragmentManager.findFragmentById(R.id.navigation_host) as NavHostFragment
+        val hostFragment = supportFragmentManager
+            .findFragmentById(R.id.navigation_host) as NavHostFragment
 
         viewModel.postInfo.observe(this) { info ->
             if (hostFragment.navController.currentDestination?.id in NO_TITLE_DESTINATIONS) {
@@ -160,7 +161,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         toolbar.doOnLayout {
             badge.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 leftMargin = toolbar.height / 2
-                topMargin = toolbar.height / 2 - resources.getDimensionPixelOffset(R.dimen.margin_medium)
+                topMargin = toolbar.height / 2 -
+                    resources.getDimensionPixelOffset(R.dimen.margin_medium)
             }
         }
     }
@@ -203,7 +205,11 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
         updateDrawer(destination)
 
         when {
@@ -270,7 +276,10 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         toolbar.title = " " + (info.author?.name ?: getString(R.string.main_author_anonymous))
         toolbar.subtitle = " " + info.date
         toolbar.contentInsetStartWithNavigation = 0
-        toolbar.setTitleTextAppearance(this, R.style.AppTheme_TextAppearance_ActionBar_Title_Condensed)
+        toolbar.setTitleTextAppearance(
+            this,
+            R.style.AppTheme_TextAppearance_ActionBar_Title_Condensed
+        )
 
         val size = resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_size)
 
@@ -283,14 +292,21 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 .into(object : CustomTarget<Drawable>(size, size) {
                     override fun onLoadCleared(placeholder: Drawable?) = Unit
 
-                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: Transition<in Drawable>?
+                    ) {
                         toolbar.logo = resource
                         toolbar.children
                             .map { it as? ImageView }
                             .find { it?.drawable == resource }
                             ?.setOnClickListener {
                                 findNavController(R.id.navigation_host)
-                                    .navigate(NavigationMainDirections.actionGlobalFragmentUser(author = info.author))
+                                    .navigate(
+                                        NavigationMainDirections.actionGlobalFragmentUser(
+                                            author = info.author
+                                        )
+                                    )
                             }
                     }
                 })
@@ -350,7 +366,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
     }
 
-    fun onSelectAvatarImageClicked(view: View) = (view.tag as? String)?.toInt()?.let { selectImage(it) }
+    fun onSelectAvatarImageClicked(view: View) =
+        (view.tag as? String)?.toInt()?.let { selectImage(it) }
 
     private companion object {
         val TOP_LEVEL_DESTINATIONS = setOf(
@@ -374,7 +391,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 NavigationMainDirections.actionGlobalFragmentPost(
                     areaName = result.groupValues[1],
                     postId = result.groupValues[2].toLong(),
-                    selectedCommentId = result.groupValues[3].takeIf { it.isNotEmpty() }?.toLong() ?: -1
+                    selectedCommentId = result.groupValues[3].takeIf { it.isNotEmpty() }?.toLong()
+                        ?: -1
                 )
             },
             USER_REGEX to { result: MatchResult ->

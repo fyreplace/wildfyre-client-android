@@ -9,8 +9,8 @@ import app.fyreplace.client.data.repositories.NotificationRepository
 import app.fyreplace.client.data.repositories.PostRepository
 import kotlinx.coroutines.*
 
-abstract class ItemsDataSource<I>(private val listener: DataLoadingListener) : PositionalDataSource<I>(),
-    CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.IO) {
+abstract class ItemsDataSource<I>(private val listener: DataLoadingListener) :
+    PositionalDataSource<I>(), CoroutineScope by CoroutineScope(SupervisorJob() + Dispatchers.IO) {
     abstract val fetcher: suspend (Int, Int) -> SuperItem<I>
 
     final override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<I>) {

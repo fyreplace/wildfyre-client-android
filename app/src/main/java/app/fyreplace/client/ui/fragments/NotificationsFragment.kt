@@ -21,19 +21,26 @@ import app.fyreplace.client.viewmodels.lazyViewModel
 /**
  * [androidx.fragment.app.Fragment] listing the user's notifications.
  */
-class NotificationsFragment : ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>() {
+class NotificationsFragment :
+    ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>() {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<NotificationsFragmentViewModel>()
     override val itemsAdapter = NotificationsAdapter()
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) =
         super.onCreateView(inflater, container, savedInstanceState)
             .apply { findViewById<TextView>(R.id.text).setText(R.string.notifications_empty) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.itemsPagedList.observe(viewLifecycleOwner) { mainViewModel.forceNotificationCount(it.size) }
+        viewModel.itemsPagedList.observe(viewLifecycleOwner) {
+            mainViewModel.forceNotificationCount(it.size)
+        }
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
