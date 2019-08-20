@@ -60,7 +60,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0-rc01'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0-rc01'
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta02'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03'
     implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0-rc01'
