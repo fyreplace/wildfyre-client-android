@@ -42,5 +42,6 @@ object CommentRepository {
                 postId,
                 commentId
             )
+            return@withContext
         }
 }
