@@ -54,12 +54,9 @@ class AreaSelectingFragmentViewModel : ViewModel() {
         mPreferredAreaReputationInfo.postValue(AreaRepository.getAreaReputation())
     }
 
-    private fun updatePreferredArea(areas: List<Area>?, areaName: String?) {
-        if (preferredArea.value?.name != areaName) {
-            areas?.firstOrNull { it.name == areaName }?.let { mPreferredArea.postValue(it) }
-        }
-    }
+    private fun updatePreferredArea(areas: List<Area>?, areaName: String?) =
+        areas?.firstOrNull { it.name == areaName }?.let { mPreferredArea.postValue(it) }
 
     private fun updatePreferredAreaIndex(areas: List<Area>?, areaName: String?) =
-        mPreferredAreaIndex.postValue(areas?.indexOfFirst { it.name == areaName })
+        areas?.indexOfFirst { it.name == areaName }?.let { mPreferredAreaIndex.postValue(it) }
 }
