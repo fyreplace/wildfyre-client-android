@@ -19,14 +19,14 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostDetailsLookup
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
-import app.fyreplace.client.viewmodels.PostsFragmentViewModel
+import app.fyreplace.client.viewmodels.ItemsListFragmentViewModel
 import app.fyreplace.client.viewmodels.lazyActivityViewModel
 import kotlinx.android.synthetic.main.fragment_items_list.*
 
 /**
  * [androidx.fragment.app.Fragment] listing posts.
  */
-abstract class PostsFragment<VM : PostsFragmentViewModel> :
+abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> :
     ItemsListFragment<Post, VM, PostsAdapter>(), AreaSelectingFragment, ActionMode.Callback {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
