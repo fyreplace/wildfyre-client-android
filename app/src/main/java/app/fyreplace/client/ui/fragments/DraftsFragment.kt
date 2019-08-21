@@ -7,7 +7,6 @@ import android.view.MenuInflater
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
@@ -34,16 +33,13 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_drafts_actions, menu)
         super.onCreateOptionsMenu(menu, inflater)
-        menu.findItem(R.id.action_new).actionView?.findViewById<Button>(R.id.button)?.run {
-            areaSelectingViewModel.preferredAreaName.observe(viewLifecycleOwner) { area ->
-                setOnClickListener {
-                    launchCatching {
-                        onItemClicked(viewModel.createDraft(area, false))
-                        onRefreshListener?.onRefresh()
-                    }
+        menu.findItem(R.id.action_new).actionView?.findViewById<Button>(R.id.button)
+            ?.setOnClickListener {
+                launchCatching {
+                    onItemClicked(viewModel.createDraft(false))
+                    onRefreshListener?.onRefresh()
                 }
             }
-        }
     }
 
     override fun onItemClicked(item: Post) =
