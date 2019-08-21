@@ -60,4 +60,12 @@ object PostRepository {
         )
         return@withContext
     }
+
+    suspend fun deletePost(id: Long) = withContext(Dispatchers.IO) {
+        Services.webService.deletePost(
+            AuthRepository.authToken,
+            AreaRepository.preferredAreaName,
+            id
+        )
+    }
 }

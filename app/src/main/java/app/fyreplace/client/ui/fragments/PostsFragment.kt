@@ -3,30 +3,30 @@ package app.fyreplace.client.ui.fragments
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.selection.SelectionTracker
-import androidx.recyclerview.selection.StableIdKeyProvider
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Post
-import app.fyreplace.client.ui.adapters.PostDetailsLookup
 import app.fyreplace.client.ui.adapters.PostsAdapter
+import app.fyreplace.client.ui.widgets.ItemIdKeyProvider
+import app.fyreplace.client.ui.widgets.PostDetailsLookup
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
-import app.fyreplace.client.viewmodels.ItemsListFragmentViewModel
+import app.fyreplace.client.viewmodels.PostsFragmentViewModel
 import app.fyreplace.client.viewmodels.lazyActivityViewModel
 import kotlinx.android.synthetic.main.fragment_items_list.*
 
 /**
  * [androidx.fragment.app.Fragment] listing posts.
  */
-abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> :
+abstract class PostsFragment<VM : PostsFragmentViewModel> :
     ItemsListFragment<Post, VM, PostsAdapter>(), AreaSelectingFragment, ActionMode.Callback {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
@@ -54,7 +54,7 @@ abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> :
             itemsAdapter.selectionTracker = SelectionTracker.Builder(
                 SELECTION_TRACKER_ID,
                 itemsList,
-                StableIdKeyProvider(itemsList),
+                ItemIdKeyProvider(itemsList),
                 PostDetailsLookup(itemsList),
                 StorageStrategy.createLongStorage()
             ).build().apply {
@@ -84,15 +84,26 @@ abstract class PostsFragment<VM : ItemsListFragmentViewModel<Post>> :
     override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
 
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
-        R.id.action_delete -> {
-            Toast.makeText(context, R.string.posts_actions_delete, Toast.LENGTH_SHORT).show()
-            true
-        }
+        R.id.action_delete -> deleteSelection(mode).let { true }
         else -> false
     }
 
     override fun onDestroyActionMode(mode: ActionMode) {
         itemsAdapter.selectionTracker?.clearSelection()
+    }
+
+    private fun deleteSelection(mode: ActionMode) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.posts_delete_dialog_title)
+            .setNegativeButton(R.string.no, null)
+            .setPositiveButton(R.string.yes) { _, _ ->
+                launchCatching {
+                    itemsAdapter.selectionTracker?.selection?.forEach { viewModel.delete(it) }
+                    mode.finish()
+                    onRefreshListener?.onRefresh()
+                }
+            }
+            .show()
     }
 
     private companion object {

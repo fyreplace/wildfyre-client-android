@@ -24,4 +24,12 @@ object DraftRepository {
             Draft(FyreplaceApplication.context.getString(R.string.drafts_created_text), anonymous)
         )
     }
+
+    suspend fun deleteDraft(id: Long) = withContext(Dispatchers.IO) {
+        Services.webService.deleteDraft(
+            AuthRepository.authToken,
+            AreaRepository.preferredAreaName,
+            id
+        )
+    }
 }
