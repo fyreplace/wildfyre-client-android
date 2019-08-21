@@ -25,7 +25,7 @@ open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(
             override fun areItemsTheSame(oldItem: Post, newItem: Post) = oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: Post, newItem: Post) =
-                areItemsTheSame(oldItem, newItem) &&
+                oldItem.created == newItem.created &&
                     oldItem.text == newItem.text &&
                     oldItem.image == newItem.image &&
                     oldItem.author == newItem.author
