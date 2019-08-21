@@ -12,7 +12,7 @@ class AreaSelectingFragmentViewModel : ViewModel() {
     private val mPreferredAreaIndex = MediatorLiveData<Int?>()
     private val mPreferredAreaReputationInfo = MutableLiveData<Reputation>()
 
-    val areas: LiveData<List<Area>> = mAreas
+    val areas: LiveData<List<Area>> = mAreas.distinctUntilChanged()
     val areasDisplayNames: LiveData<List<String>> = areas.map { it.map { a -> a.displayName } }
     val preferredAreaName: LiveData<String> = mPreferredAreaName.distinctUntilChanged()
     val preferredArea: LiveData<Area?> = mPreferredArea.distinctUntilChanged()
@@ -34,16 +34,15 @@ class AreaSelectingFragmentViewModel : ViewModel() {
     suspend fun updateAreas() {
         val fetchedAreas = AreaRepository.getAreas()
         mAreas.postValue(fetchedAreas)
-        val current = preferredAreaName.value
 
-        if (current == null || current.isEmpty()) {
+        if (preferredAreaName.value.isNullOrEmpty()) {
             val name = AreaRepository.preferredAreaName
             updatePreferredAreaInfo(if (name.isNotEmpty()) name else fetchedAreas.first().name)
         }
     }
 
     suspend fun setPreferredAreaName(areaName: String) {
-        if (areaName != AreaRepository.preferredAreaName) {
+        if (areaName != AreaRepository.preferredAreaName && preferredAreaIndex.value != null) {
             updatePreferredAreaInfo(areaName)
         }
     }
