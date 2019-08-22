@@ -2,11 +2,12 @@ package app.fyreplace.client.ui
 
 import android.content.Context
 import android.graphics.Rect
-import android.os.Build
 import android.text.SpannableString
 import android.text.util.Linkify
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.util.LinkifyCompat
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import app.fyreplace.client.R
 import org.commonmark.node.SoftLineBreak
 import org.commonmark.node.Text
@@ -31,12 +32,16 @@ class PostPlugin private constructor(private val context: Context) : AbstractMar
     }
 
     override fun configureImages(builder: AsyncDrawableLoader.Builder) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.placeholderDrawableProvider {
-                ContextCompat.getDrawable(
-                    context,
-                    R.drawable.ic_image_black_24dp
-                )?.apply { setTint(ContextCompat.getColor(context, R.color.colorOnBackground)) }
+        builder.placeholderDrawableProvider {
+            VectorDrawableCompat.create(
+                context.resources,
+                R.drawable.ic_image_black_24dp,
+                context.theme
+            )?.apply {
+                DrawableCompat.setTint(
+                    this,
+                    ContextCompat.getColor(context, R.color.colorOnBackground)
+                )
             }
         }
     }
