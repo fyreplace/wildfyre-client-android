@@ -35,7 +35,7 @@ class PostPlugin private constructor(private val context: Context) : AbstractMar
         builder.placeholderDrawableProvider {
             VectorDrawableCompat.create(
                 context.resources,
-                R.drawable.ic_image_black_24dp,
+                R.drawable.ic_image_daynight_24dp,
                 context.theme
             )?.apply {
                 DrawableCompat.setTint(

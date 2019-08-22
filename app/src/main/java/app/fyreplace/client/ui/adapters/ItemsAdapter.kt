@@ -55,17 +55,10 @@ abstract class ItemsAdapter<I>(
 
     abstract override fun getItemId(position: Int): Long
 
-    final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val totalWidth = parent.measuredWidth
-        val spanCount = parent.resources.getInteger(R.integer.post_preview_span_count)
-
-        return ViewHolder(
-            totalWidth / spanCount,
-            LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.list_item, parent, false)
-        )
-    }
+    final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
+        parent.measuredWidth / parent.resources.getInteger(R.integer.post_preview_span_count),
+        LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
+    )
 
     final override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)

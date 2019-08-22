@@ -5,7 +5,7 @@
     tools:context=".ui.fragments.DraftFragment">
     <item
         android:id="@+id/action_publish"
-        android:icon="@drawable/ic_done_black_24dp"
+        android:icon="@drawable/ic_done_white_24dp"
         android:title="@string/draft_actions_publish"
         app:showAsAction="ifRoom" />
     <item

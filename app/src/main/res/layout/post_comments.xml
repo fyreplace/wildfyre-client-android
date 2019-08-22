@@ -52,9 +52,8 @@
             android:text="@{@plurals/post_comment_count(safeUnbox(model.commentCount), safeUnbox(model.commentCount))}"
             android:textAppearance="?attr/textAppearanceBody1"
             android:theme="@style/AppTheme.Button.HighlightButtonOverlay"
-            app:drawableLeftCompat="@drawable/ic_comment_black_24dp"
-            app:drawableStartCompat="@drawable/ic_comment_black_24dp"
-            app:drawableTint="?attr/colorOnBackground"
+            app:drawableLeftCompat="@drawable/ic_comment_daynight_24dp"
+            app:drawableStartCompat="@drawable/ic_comment_daynight_24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
