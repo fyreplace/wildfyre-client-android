@@ -7,11 +7,6 @@
     <string name="theme_automatic">Auto</string>
     <string name="theme_light">Clair</string>
     <string name="theme_dark">Sombre</string>
-    <string name="login_username">Nom d\'utilisateur</string>
-    <string name="login_password">Mot de passe</string>
-    <string name="login_login">Connexion</string>
-    <string name="login_register">S\'enregistrer</string>
-    <string name="login_error_field_required">Ce champ est obligatoire</string>
     <string name="main_nav_fragment_login">Connexion</string>
     <string name="main_nav_fragment_home">Accueil</string>
     <string name="main_nav_fragment_notifications">Notifications</string>
@@ -32,6 +27,12 @@
     <string name="main_profile_editor_avatar_chooser">Choisir un avatar</string>
     <string name="main_profile_editor_bio">Votre bio</string>
     <string name="main_author_anonymous">Anonyme</string>
+    <string name="login_username">Nom d\'utilisateur</string>
+    <string name="login_password">Mot de passe</string>
+    <string name="login_login">Connexion</string>
+    <string name="login_register">S\'enregistrer</string>
+    <string name="login_error_field_required">Ce champ est obligatoire</string>
+    <string name="login_failure_login">La connexion a échoué</string>
     <string name="area_selecting_actions_area_selector">Zone: %1$s</string>
     <string name="area_selecting_actions_area_spread">Propagation</string>
     <string name="area_selecting_actions_area_reputation">Réputation</string>

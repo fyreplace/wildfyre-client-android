@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -19,6 +20,7 @@ import app.fyreplace.client.viewmodels.MainActivityViewModel
 import app.fyreplace.client.viewmodels.lazyActivityViewModel
 import app.fyreplace.client.viewmodels.lazyViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
+import retrofit2.HttpException
 
 /**
  * [androidx.fragment.app.Fragment] showing a login screen to the user.
@@ -72,7 +74,12 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     }
 
     override fun onFailure(failure: Throwable) {
-        super.onFailure(failure)
+        if (failure is HttpException && failure.code() == 400) {
+            Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show()
+        } else {
+            super.onFailure(failure)
+        }
+
         viewModel.setLoginAllowed(true)
     }
 
