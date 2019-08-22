@@ -101,7 +101,7 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
 
         if (cancel) {
             focusView?.requestFocus()
-        } else launchCatching {
+        } else launch {
             hideSoftKeyboard(login)
             viewModel.setLoginAllowed(false)
             viewModel.attemptLogin(usernameStr, passwordStr)

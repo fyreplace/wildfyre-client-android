@@ -26,7 +26,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         areaSelectingViewModel.preferredAreaName.observe(this) {
-            if (it.isNotEmpty()) launchCatching { viewModel.nextPost(it) }
+            if (it.isNotEmpty()) launch { viewModel.nextPost(it) }
         }
     }
 
@@ -41,18 +41,8 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         text.setText(R.string.home_empty)
-        extinguish.setOnClickListener {
-            launchCatching {
-                viewModel.spread(false)
-                resetHomeView()
-            }
-        }
-        ignite.setOnClickListener {
-            launchCatching {
-                viewModel.spread(true)
-                resetHomeView()
-            }
-        }
+        extinguish.setOnClickListener { launch { viewModel.spread(false); resetHomeView() } }
+        ignite.setOnClickListener { launch { viewModel.spread(true); resetHomeView() } }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

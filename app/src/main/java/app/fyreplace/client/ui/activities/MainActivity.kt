@@ -89,7 +89,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         MainAppBarBinding.bind(content)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
 
-        viewModel.uiRefreshTick.observe(this) { launchCatching { viewModel.updateNotificationCount() } }
+        viewModel.uiRefreshTick.observe(this) { launch { viewModel.updateNotificationCount() } }
 
         viewModel.isLogged.observe(this) {
             if (!it) {
@@ -246,7 +246,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
 
     override fun onDrawerOpened(drawerView: View) {
-        launchCatching { viewModel.updateNotificationCount() }
+        launch { viewModel.updateNotificationCount() }
     }
 
     override fun onDrawerClosed(drawerView: View) = Unit
@@ -329,7 +329,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             }
             .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
                 viewModel.newUserAvatar.removeObservers(this)
-                launchCatching {
+                launch {
                     val bio = dialog.findViewById<TextView>(R.id.user_bio)?.text ?: ""
                     viewModel.sendProfile(bio.toString())
                 }

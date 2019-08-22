@@ -98,7 +98,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
             )
         )
 
-        if (canUseFragmentArgs()) launchCatching {
+        if (canUseFragmentArgs()) launch {
             fragmentArgs.post?.let { viewModel.setPost(it) }
                 ?: viewModel.setPostData(fragmentArgs.areaName, fragmentArgs.postId)
         }
@@ -168,7 +168,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
 
         comment_new.setEndIconOnClickListener {
             clearCommentInput()
-            launchCatching {
+            launch {
                 viewModel.sendNewComment()
                 commentsAdapter.doOnCommentsChanged { go_down.callOnClick() }
             }
@@ -253,9 +253,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = super.onOptionsItemSelected(item).also {
-        if (item.itemId == R.id.action_subscribe) launchCatching {
-            viewModel.changeSubscription()
-        }
+        if (item.itemId == R.id.action_subscribe) launch { viewModel.changeSubscription() }
     }
 
     override fun onCreateContextMenu(
@@ -356,7 +354,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
             .setTitle(R.string.post_comment_delete_dialog_title)
             .setNegativeButton(R.string.no, null)
             .setPositiveButton(R.string.yes) { _, _ ->
-                launchCatching { viewModel.deleteComment(position, comment) }
+                launch { viewModel.deleteComment(position, comment) }
             }
             .show()
     }

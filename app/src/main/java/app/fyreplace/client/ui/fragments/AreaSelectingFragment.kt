@@ -46,11 +46,11 @@ interface AreaSelectingFragment : FailureHandler {
                     position: Int,
                     id: Long
                 ) {
-                    launchCatching { areaSelectingViewModel.setPreferredAreaName(areas[position].name) }
+                    launch { areaSelectingViewModel.setPreferredAreaName(areas[position].name) }
                 }
             }
         }
 
-        launchCatching { areaSelectingViewModel.updateAreas() }
+        launch { areaSelectingViewModel.updateAreas() }
     }
 }

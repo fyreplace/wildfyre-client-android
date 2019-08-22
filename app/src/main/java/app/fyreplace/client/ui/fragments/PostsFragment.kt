@@ -97,7 +97,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
             .setTitle(R.string.posts_delete_dialog_title)
             .setNegativeButton(R.string.no, null)
             .setPositiveButton(R.string.yes) { _, _ ->
-                launchCatching {
+                launch {
                     itemsAdapter.selectionTracker?.selection?.forEach { viewModel.delete(it) }
                     mode.finish()
                     onRefreshListener?.onRefresh()

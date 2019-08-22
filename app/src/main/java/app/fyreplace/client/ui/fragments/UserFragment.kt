@@ -30,7 +30,7 @@ class UserFragment : SharingFragment(R.layout.fragment_user) {
 
         when {
             fragmentArgs.author != null -> viewModel.setAuthor(fragmentArgs.author!!)
-            fragmentArgs.userId != -1L -> launchCatching { viewModel.setUserId(fragmentArgs.userId) }
+            fragmentArgs.userId != -1L -> launch { viewModel.setUserId(fragmentArgs.userId) }
             else -> throw IllegalStateException("Cannot start UserFragment without a user to show")
         }
     }
