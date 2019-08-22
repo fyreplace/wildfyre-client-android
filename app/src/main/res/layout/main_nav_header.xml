@@ -28,7 +28,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_account_box_white_24dp" />
+            app:srcCompat="@drawable/ic_account_box_white" />
 
         <TextView
             android:id="@+id/user_name"
@@ -69,7 +69,7 @@
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_edit_black_24dp"
+            app:srcCompat="@drawable/ic_edit_black"
             app:useCompatPadding="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -52,8 +52,8 @@
             android:text="@{@plurals/post_comment_count(safeUnbox(model.commentCount), safeUnbox(model.commentCount))}"
             android:textAppearance="?attr/textAppearanceBody1"
             android:theme="@style/AppTheme.Button.HighlightButtonOverlay"
-            app:drawableLeftCompat="@drawable/ic_comment_daynight_24dp"
-            app:drawableStartCompat="@drawable/ic_comment_daynight_24dp"
+            app:drawableLeftCompat="@drawable/ic_comment_daynight"
+            app:drawableStartCompat="@drawable/ic_comment_daynight"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -88,11 +88,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:endIconContentDescription="@string/image_desc_comments_send_comment"
-            app:endIconDrawable="@drawable/ic_send_black_24dp"
+            app:endIconDrawable="@drawable/ic_send_black"
             app:endIconMode="custom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:startIconContentDescription="@string/image_desc_comments_attach_file"
-            app:startIconDrawable="@drawable/ic_attach_file_black_24dp">
+            app:startIconDrawable="@drawable/ic_attach_file_black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -128,7 +128,7 @@
             app:fabSize="mini"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/comment_count"
-            app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp"
+            app:srcCompat="@drawable/ic_keyboard_arrow_up_black"
             app:useCompatPadding="true" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -143,7 +143,7 @@
             app:fabSize="mini"
             app:layout_constraintBottom_toTopOf="@id/comment_new"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp"
+            app:srcCompat="@drawable/ic_keyboard_arrow_down_black"
             app:useCompatPadding="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

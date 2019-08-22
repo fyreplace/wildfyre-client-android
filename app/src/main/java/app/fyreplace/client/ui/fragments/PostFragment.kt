@@ -135,7 +135,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
                     )
                 }
             } else {
-                comment_new.setStartIconDrawable(R.drawable.ic_attach_file_black_24dp)
+                comment_new.setStartIconDrawable(R.drawable.ic_attach_file_black)
             }
         }
         viewModel.canSendNewComment.observe(viewLifecycleOwner) {
@@ -238,9 +238,9 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
                 )
                 setIcon(
                     if (it)
-                        R.drawable.ic_notifications_white_24dp
+                        R.drawable.ic_notifications_white
                     else
-                        R.drawable.ic_notifications_none_white_24dp
+                        R.drawable.ic_notifications_none_white
                 )
             }
         }

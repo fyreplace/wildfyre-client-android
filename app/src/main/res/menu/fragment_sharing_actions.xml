@@ -5,7 +5,7 @@
     tools:context=".ui.fragments.AreaSelectingFragment">
     <item
         android:id="@+id/action_share"
-        android:icon="@drawable/ic_share_white_24dp"
+        android:icon="@drawable/ic_share_white"
         android:title="@string/sharing_actions_share"
         app:showAsAction="ifRoom" />
 </menu>

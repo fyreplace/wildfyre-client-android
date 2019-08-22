@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_register"
-                app:icon="@drawable/ic_open_in_new_black_24dp"
+                app:icon="@drawable/ic_open_in_new_black"
                 app:iconGravity="textEnd" />
         </LinearLayout>
     </ScrollView>

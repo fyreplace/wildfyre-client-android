@@ -21,7 +21,7 @@
         android:text="@{Integer.toString(safeUnbox(model.currentAreaSpread))}"
         android:textAppearance="?attr/textAppearanceBody1"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
-        app:drawableLeftCompat="@drawable/ic_settings_input_antenna_white_24dp"
-        app:drawableStartCompat="@drawable/ic_settings_input_antenna_white_24dp"
+        app:drawableLeftCompat="@drawable/ic_settings_input_antenna_white"
+        app:drawableStartCompat="@drawable/ic_settings_input_antenna_white"
         tools:ignore="RtlSymmetry" />
 </layout>

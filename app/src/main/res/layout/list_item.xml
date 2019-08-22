@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_tiny"
     android:checkable="true"
-    app:checkedIcon="@drawable/ic_check_circle_black_24dp"
+    app:checkedIcon="@drawable/ic_check_circle_black"
     app:checkedIconTint="?colorPrimary"
     app:rippleColor="?colorPrimary">
 

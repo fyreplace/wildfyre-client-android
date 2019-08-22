@@ -38,7 +38,7 @@
                     android:id="@+id/badge"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:background="@drawable/ic_badge_background_daynight_24dp"
+                    android:background="@drawable/ic_badge_background_daynight"
                     android:clickable="false"
                     android:focusable="false"
                     android:gravity="center"
