@@ -107,7 +107,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
 
         viewModel.selectedThemeIndex.observe(this) {
-            AppCompatDelegate.setDefaultNightMode(MainActivityViewModel.THEMES[it])
+            AppCompatDelegate.setDefaultNightMode(viewModel.getTheme(it))
             delegate.applyDayNight()
         }
 

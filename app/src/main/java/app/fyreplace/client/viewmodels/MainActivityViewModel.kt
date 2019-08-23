@@ -50,10 +50,12 @@ class MainActivityViewModel : ViewModel() {
         }
 
         selectedThemeIndex.value = THEMES.indexOfFirst { it == SettingsRepository.theme }
-        selectedThemeIndex.observeForever { SettingsRepository.theme = THEMES[it] }
+        selectedThemeIndex.observeForever { SettingsRepository.theme = getTheme(it) }
         shouldShowNotificationBadge.value = SettingsRepository.showBadge
         shouldShowNotificationBadge.observeForever { SettingsRepository.showBadge = it }
     }
+
+    fun getTheme(which: Int) = if (which in THEMES) THEMES[which] else Constants.Themes.AUTOMATIC
 
     fun login() {
         uiRefreshTickerJob = viewModelScope.launch {
