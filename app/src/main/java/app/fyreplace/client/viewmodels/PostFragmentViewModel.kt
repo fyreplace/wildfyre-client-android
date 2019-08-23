@@ -88,14 +88,21 @@ open class PostFragmentViewModel : ViewModel() {
 
     suspend fun sendNewComment() = newCommentData.value?.let { commentData ->
         if (postId != -1L) {
-            commentsData.add(
-                CommentRepository.sendComment(
-                    postAreaName,
-                    postId,
-                    commentData,
-                    newCommentImage.value
+            try {
+                mCanSendNewComment.postValue(false)
+                commentsData.add(
+                    CommentRepository.sendComment(
+                        postAreaName,
+                        postId,
+                        commentData,
+                        newCommentImage.value
+                    )
                 )
-            )
+            } catch (t: Throwable) {
+                mCanSendNewComment.postValue(commentData.isNotBlank())
+                throw t
+            }
+
             mComments.postValue(commentsData)
             mSubscribed.postValue(true)
             resetNewComment()
