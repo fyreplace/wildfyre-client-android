@@ -73,16 +73,6 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
         }
     }
 
-    override fun onFailure(failure: Throwable) {
-        if (failure is HttpException && failure.code() == 400) {
-            Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show()
-        } else {
-            super.onFailure(failure)
-        }
-
-        viewModel.setLoginAllowed(true)
-    }
-
     private fun attemptLogin() {
         val usernameStr = username.text.toString()
         val passwordStr = password.text.toString()
@@ -103,8 +93,19 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
             focusView?.requestFocus()
         } else launch {
             hideSoftKeyboard(login)
-            viewModel.setLoginAllowed(false)
-            viewModel.attemptLogin(usernameStr, passwordStr)
+
+            try {
+                viewModel.setLoginAllowed(false)
+                viewModel.attemptLogin(usernameStr, passwordStr)
+            } catch (e: HttpException) {
+                if (e.code() == 400) {
+                    Toast.makeText(context, R.string.login_failure_login, Toast.LENGTH_SHORT).show()
+                } else {
+                    throw e
+                }
+            } finally {
+                viewModel.setLoginAllowed(true)
+            }
         }
     }
 }
