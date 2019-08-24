@@ -67,7 +67,6 @@ class NotificationsFragment :
             NavigationMainDirections.actionGlobalFragmentPost(
                 areaName = item.area,
                 postId = item.post.id,
-                selectedCommentId = -1,
                 newCommentsIds = item.comments.toLongArray()
             )
         )

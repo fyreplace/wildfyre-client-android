@@ -97,6 +97,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Image
         if (canUseFragmentArgs()) launch {
             fragmentArgs.post?.let { viewModel.setPost(it) }
                 ?: viewModel.setPostData(fragmentArgs.areaName, fragmentArgs.postId)
+            viewModel.setIsOwnPost(fragmentArgs.ownPost)
         }
 
         mainViewModel.userId.observe(viewLifecycleOwner) { commentsAdapter.selfId = it }
@@ -243,8 +244,10 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Image
             }
         }
 
+        val deleteItem = menu.findItem(R.id.action_delete)
+        viewModel.isOwnPost.observe(viewLifecycleOwner) { deleteItem.isVisible = it }
         viewModel.authorId.observe(viewLifecycleOwner) {
-            menu.findItem(R.id.action_delete).isVisible = it == mainViewModel.userId.value
+            deleteItem.isVisible = it == mainViewModel.userId.value
         }
 
         val postMenuItems = listOf(R.id.action_subscribe, R.id.action_share, R.id.action_delete)

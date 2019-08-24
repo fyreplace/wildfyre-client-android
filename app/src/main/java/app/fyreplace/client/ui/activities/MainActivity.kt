@@ -399,7 +399,9 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                 NavigationMainDirections.actionGlobalFragmentPost(
                     areaName = result.groupValues[1],
                     postId = result.groupValues[2].toLong(),
-                    selectedCommentId = result.groupValues[3].takeIf { it.isNotEmpty() }?.toLong()
+                    selectedCommentId = result.groupValues[3]
+                        .takeIf { it.isNotEmpty() }
+                        ?.toLong()
                         ?: -1
                 )
             },

@@ -8,11 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
@@ -76,7 +74,6 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
     override fun onItemClicked(item: Post) {
         super.onItemClicked(item)
         itemsAdapter.selectionTracker?.clearSelection()
-        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(post = item))
     }
 
     override fun onCreateActionMode(mode: ActionMode, menu: Menu) =

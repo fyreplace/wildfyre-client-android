@@ -45,7 +45,7 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
     }
 
     override fun onItemClicked(item: Post) {
-        viewModel.pushRefresh()
+        super.onItemClicked(item)
         findNavController().navigate(NavigationMainDirections.actionGlobalFragmentDraft(post = item))
     }
 }
