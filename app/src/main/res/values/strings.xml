@@ -43,8 +43,8 @@
     <string name="notifications_actions_clear_dialog_title">Clear all notifications?</string>
     <string name="notifications_empty">No notifications</string>
     <plurals name="notifications_item_comment_count">
-        <item quantity="one">%1$d new comment</item>
-        <item quantity="other">%1$d new comments</item>
+        <item quantity="one">%1$d comment</item>
+        <item quantity="other">%1$d comments</item>
     </plurals>
     <string name="posts_actions_delete">Delete</string>
     <string name="posts_delete_dialog_title">Delete these items? This action cannot be undone</string>
@@ -64,7 +64,6 @@
     <string name="post_ignite">Ignite</string>
     <string name="post_comments_empty">No comments</string>
     <plurals name="post_comment_count">
-        <item quantity="zero">No comments</item>
         <item quantity="one">%1$d comment</item>
         <item quantity="other">%1$d comments</item>
     </plurals>
