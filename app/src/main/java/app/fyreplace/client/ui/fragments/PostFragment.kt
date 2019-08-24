@@ -36,10 +36,7 @@ import app.fyreplace.client.ui.drawables.BottomSheetArrowDrawableWrapper
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.ui.lazyMarkdown
 import app.fyreplace.client.ui.widgets.CommentSheetBehavior
-import app.fyreplace.client.viewmodels.MainActivityViewModel
-import app.fyreplace.client.viewmodels.PostFragmentViewModel
-import app.fyreplace.client.viewmodels.lazyActivityViewModel
-import app.fyreplace.client.viewmodels.lazyViewModel
+import app.fyreplace.client.viewmodels.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.post_comments.*
@@ -49,11 +46,9 @@ import kotlinx.coroutines.withContext
 import ru.noties.markwon.recycler.MarkwonAdapter
 import kotlin.math.max
 
-open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector {
+open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), ImageSelector {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<PostFragmentViewModel>()
-    override var menuShareContent = ""
-    override val menuShareTitle by lazy { getString(R.string.post_share_title) }
     override val contextWrapper by lazy { requireActivity() }
     private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()
@@ -103,16 +98,8 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
                 ?: viewModel.setPostData(fragmentArgs.areaName, fragmentArgs.postId)
         }
 
-        viewModel.post.observe(viewLifecycleOwner) {
-            it?.run {
-                menuShareContent =
-                    Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId)
-            }
-
-            mainViewModel.setPost(it)
-        }
-
         mainViewModel.userId.observe(viewLifecycleOwner) { commentsAdapter.selfId = it }
+        viewModel.post.observe(viewLifecycleOwner) { mainViewModel.setPost(it) }
         viewModel.authorId.observe(viewLifecycleOwner) { commentsAdapter.authorId = it }
         viewModel.markdownContent.observe(viewLifecycleOwner) {
             lifecycleScope.launch(Dispatchers.Default) {
@@ -226,7 +213,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_fragment_post, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.actions_fragment_sharing, menu)
 
         viewModel.subscribed.observe(viewLifecycleOwner) {
             menu.findItem(R.id.action_subscribe).run {
@@ -241,6 +228,15 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
                         R.drawable.ic_notifications_white
                     else
                         R.drawable.ic_notifications_none_white
+                )
+            }
+        }
+
+        viewModel.post.observe(viewLifecycleOwner) {
+            menu.findItem(R.id.action_share).intent = it?.let {
+                getShareIntent(
+                    Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId),
+                    getString(R.string.post_share_title)
                 )
             }
         }
@@ -276,7 +272,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super<SharingFragment>.onActivityResult(requestCode, resultCode, data)
+        super<FailureHandlingFragment>.onActivityResult(requestCode, resultCode, data)
         super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -344,9 +340,11 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
             .show()
     }
 
-    private fun shareComment(comment: Comment) = shareText(
-        Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId, comment.id),
-        getString(R.string.post_comment_share_title)
+    private fun shareComment(comment: Comment) = startActivity(
+        getShareIntent(
+            Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId, comment.id),
+            getString(R.string.post_comment_share_title)
+        )
     )
 
     private fun deleteComment(position: Int, comment: Comment) {
