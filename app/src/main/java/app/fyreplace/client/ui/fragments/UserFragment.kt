@@ -41,7 +41,7 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
         viewModel.author.observe(viewLifecycleOwner) {
             menu.findItem(R.id.action_share).intent = getShareIntent(
                 Constants.Api.userShareUrl(it.user),
-                getString(R.string.user_share_title)
+                getString(R.string.user_action_share_title)
             )
         }
     }

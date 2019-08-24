@@ -82,6 +82,8 @@ open class PostFragmentViewModel : ViewModel() {
         ).subscribed
     )
 
+    suspend fun deletePost() = PostRepository.deletePost(postAreaName, postId)
+
     fun setCommentImage(image: ImageData) = mNewCommentImage.postValue(image)
 
     fun resetCommentImage() = mNewCommentImage.postValue(null)

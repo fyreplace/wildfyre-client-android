@@ -21,6 +21,7 @@ import androidx.dynamicanimation.animation.SpringForce
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -214,6 +215,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Image
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_fragment_post, menu)
         inflater.inflate(R.menu.actions_fragment_sharing, menu)
+        inflater.inflate(R.menu.actions_fragment_deleting, menu)
 
         viewModel.subscribed.observe(viewLifecycleOwner) {
             menu.findItem(R.id.action_subscribe).run {
@@ -236,12 +238,16 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Image
             menu.findItem(R.id.action_share).intent = it?.let {
                 getShareIntent(
                     Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId),
-                    getString(R.string.post_share_title)
+                    getString(R.string.post_action_share_title)
                 )
             }
         }
 
-        val postMenuItems = listOf(R.id.action_subscribe, R.id.action_share)
+        viewModel.authorId.observe(viewLifecycleOwner) {
+            menu.findItem(R.id.action_delete).isVisible = it == mainViewModel.userId.value
+        }
+
+        val postMenuItems = listOf(R.id.action_subscribe, R.id.action_share, R.id.action_delete)
             .map { menu.findItem(it) }
         viewModel.contentLoaded.observe(viewLifecycleOwner) {
             postMenuItems.forEach { action -> action.isEnabled = it }
@@ -249,7 +255,19 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Image
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = super.onOptionsItemSelected(item).also {
-        if (item.itemId == R.id.action_subscribe) launch { viewModel.changeSubscription() }
+        when (item.itemId) {
+            R.id.action_subscribe -> launch { viewModel.changeSubscription() }
+            R.id.action_delete -> AlertDialog.Builder(requireContext())
+                .setTitle(R.string.post_action_delete_dialog_title)
+                .setNegativeButton(R.string.no, null)
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    launch {
+                        viewModel.deletePost()
+                        findNavController().navigateUp()
+                    }
+                }
+                .show()
+        }
     }
 
     override fun onCreateContextMenu(

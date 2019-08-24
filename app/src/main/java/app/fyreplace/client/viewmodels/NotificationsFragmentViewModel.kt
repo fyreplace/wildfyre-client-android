@@ -8,16 +8,9 @@ import kotlinx.coroutines.withContext
 
 class NotificationsFragmentViewModel : ItemsListFragmentViewModel<Notification>() {
     override val factory = NotificationsDataSourceFactory(this)
-    private var mShouldRefresh = false
 
     suspend fun clearNotifications() {
         NotificationRepository.clearNotifications()
         withContext(Dispatchers.Main) { dataSource.value?.invalidate() }
-    }
-
-    fun checkRefresh() = mShouldRefresh.also { mShouldRefresh = false }
-
-    fun enableRefresh() {
-        mShouldRefresh = true
     }
 }

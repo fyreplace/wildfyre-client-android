@@ -43,14 +43,6 @@ class NotificationsFragment :
         }
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-
-        if (viewModel.checkRefresh()) {
-            onRefreshListener?.onRefresh()
-        }
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_fragment_notifications, menu)
         val clear = menu.findItem(R.id.action_clear).actionView
@@ -70,7 +62,7 @@ class NotificationsFragment :
     }
 
     override fun onItemClicked(item: Notification) {
-        viewModel.enableRefresh()
+        super.onItemClicked(item)
         findNavController().navigate(
             NavigationMainDirections.actionGlobalFragmentPost(
                 areaName = item.area,

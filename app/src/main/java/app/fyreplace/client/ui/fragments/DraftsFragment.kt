@@ -41,14 +41,11 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
         inflater.inflate(R.menu.actions_fragment_drafts, menu)
         super.onCreateOptionsMenu(menu, inflater)
         menu.findItem(R.id.action_new).actionView?.findViewById<Button>(R.id.button)
-            ?.setOnClickListener {
-                launch {
-                    onItemClicked(viewModel.createDraft())
-                    onRefreshListener?.onRefresh()
-                }
-            }
+            ?.setOnClickListener { launch { onItemClicked(viewModel.createDraft()) } }
     }
 
-    override fun onItemClicked(item: Post) =
+    override fun onItemClicked(item: Post) {
+        viewModel.pushRefresh()
         findNavController().navigate(NavigationMainDirections.actionGlobalFragmentDraft(post = item))
+    }
 }

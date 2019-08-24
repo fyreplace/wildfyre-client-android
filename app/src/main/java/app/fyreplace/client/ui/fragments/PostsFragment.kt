@@ -74,12 +74,13 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
     }
 
     override fun onItemClicked(item: Post) {
+        super.onItemClicked(item)
         itemsAdapter.selectionTracker?.clearSelection()
         findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(post = item))
     }
 
     override fun onCreateActionMode(mode: ActionMode, menu: Menu) =
-        mode.menuInflater.inflate(R.menu.action_mode_fragment_posts_selection, menu).let { true }
+        mode.menuInflater.inflate(R.menu.actions_fragment_deleting, menu).let { true }
 
     override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
         itemsAdapter.selectionTracker?.selection?.size()?.let {

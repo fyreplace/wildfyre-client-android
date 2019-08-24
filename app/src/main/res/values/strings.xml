@@ -38,6 +38,7 @@
     <string name="area_selecting_action_area_spread">Spread</string>
     <string name="area_selecting_action_area_reputation">Reputation</string>
     <string name="sharing_action_share">Share</string>
+    <string name="deleting_action_delete">Delete</string>
     <string name="items_author_anonymous">Anonymous</string>
     <string name="notifications_action_clear">Clear</string>
     <string name="notifications_action_clear_dialog_title">Clear all notifications?</string>
@@ -46,7 +47,6 @@
         <item quantity="one">%1$d comment</item>
         <item quantity="other">%1$d comments</item>
     </plurals>
-    <string name="posts_action_delete">Delete</string>
     <string name="posts_action_delete_dialog_title">Delete these items? This action cannot be undone</string>
     <plurals name="posts_action_mode_selection_title">
         <item quantity="one">%1$d item selected</item>
@@ -62,7 +62,8 @@
     <string name="draft_action_delete">Delete</string>
     <string name="post_action_subscribe">Subscribe</string>
     <string name="post_action_unsubscribe">Unsubscribe</string>
-    <string name="post_share_title">Share post</string>
+    <string name="post_action_share_title">Share post</string>
+    <string name="post_action_delete_dialog_title">Delete this post? This action cannot be undone</string>
     <string name="post_extinguish">Extinguish</string>
     <string name="post_ignite">Ignite</string>
     <string name="post_comments_empty">No comments</string>
@@ -84,7 +85,8 @@
     <string name="post_comment_share_title">Share this comment</string>
     <string name="post_comment_delete_dialog_title">Delete this comment? This action cannot be undone</string>
     <string name="home_empty">No posts left in this area</string>
-    <string name="user_share_title">Share user profile</string>
+    <string name="draft_action_delete_dialog_title">Delete this draft?</string>
+    <string name="user_action_share_title">Share user profile</string>
     <string name="image_desc_profile_editor_change_image">Select an image</string>
     <string name="image_desc_profile_editor_change_photo">Take a picture</string>
     <string name="image_desc_user_picture">Profile picture</string>

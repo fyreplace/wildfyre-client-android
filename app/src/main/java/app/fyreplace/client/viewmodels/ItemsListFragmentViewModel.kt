@@ -18,6 +18,7 @@ import app.fyreplace.client.data.sources.ItemsDataSourceFactory
  */
 abstract class ItemsListFragmentViewModel<I> : ViewModel(), DataLoadingListener {
     private var firstLoading = true
+    private var mShouldRefresh = false
     private val mLoading = MutableLiveData<Boolean>()
     private val mHasData = MutableLiveData<Boolean>()
 
@@ -45,6 +46,12 @@ abstract class ItemsListFragmentViewModel<I> : ViewModel(), DataLoadingListener 
     }
 
     override fun onLoadingStop() = mLoading.postValue(false)
+
+    fun pushRefresh() {
+        mShouldRefresh = true
+    }
+
+    fun popRefresh() = mShouldRefresh.also { mShouldRefresh = false }
 
     fun setHasData(hasSome: Boolean) = mHasData.postValue(hasSome)
 }

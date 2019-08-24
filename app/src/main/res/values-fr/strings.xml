@@ -37,6 +37,7 @@
     <string name="area_selecting_action_area_spread">Propagation</string>
     <string name="area_selecting_action_area_reputation">Réputation</string>
     <string name="sharing_action_share">Partager</string>
+    <string name="deleting_action_delete">Supprimer</string>
     <string name="items_author_anonymous">Anonyme</string>
     <string name="notifications_action_clear">Effacer</string>
     <string name="notifications_action_clear_dialog_title">Effacer toutes les notifications ?</string>
@@ -45,7 +46,6 @@
         <item quantity="one">%1$d commentaire</item>
         <item quantity="other">%1$d commentaires</item>
     </plurals>
-    <string name="posts_action_delete">Supprimer</string>
     <string name="posts_action_delete_dialog_title">Supprimer ces éléments ? Cette action est irréversible</string>
     <plurals name="posts_action_mode_selection_title">
         <item quantity="one">%1$d élément sélectionné</item>
@@ -61,7 +61,8 @@
     <string name="draft_action_delete">Supprimer</string>
     <string name="post_action_subscribe">S\'inscrire</string>
     <string name="post_action_unsubscribe">Se désinscrire</string>
-    <string name="post_share_title">Partager ce post</string>
+    <string name="post_action_share_title">Partager ce post</string>
+    <string name="post_action_delete_dialog_title">Supprimer ce post ? Cette action est irréversible</string>
     <string name="post_extinguish">Éteindre</string>
     <string name="post_ignite">Enflammer</string>
     <string name="post_comments_empty">Aucun commentaire</string>
@@ -83,7 +84,8 @@
     <string name="post_comment_share_title">Partager ce commentaire</string>
     <string name="post_comment_delete_dialog_title">Supprimer ce commentaire ? Cette action est irréversible</string>
     <string name="home_empty">Plus de posts dans cette zone</string>
-    <string name="user_share_title">Partager ce profil</string>
+    <string name="draft_action_delete_dialog_title">Supprimer ce brouillon ?</string>
+    <string name="user_action_share_title">Partager ce profil</string>
     <string name="image_desc_profile_editor_change_image">Choisir une image</string>
     <string name="image_desc_profile_editor_change_photo">Prendre une photo</string>
     <string name="image_desc_user_picture">Image de profile</string>
