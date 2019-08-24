@@ -46,6 +46,10 @@
         <item quantity="other">%1$d commentaires</item>
     </plurals>
     <string name="posts_actions_delete">Supprimer</string>
+    <plurals name="posts_action_mode_selection_title">
+        <item quantity="one">%1$d élément sélectionné</item>
+        <item quantity="other">%1$d éléments sélectionnés</item>
+    </plurals>
     <string name="posts_delete_dialog_title">Supprimer ces éléments ? Cette action est irréversible</string>
     <string name="archive_empty">Aucun post archivé dans cette zone</string>
     <string name="own_posts_empty">Aucun post dans cette zone</string>

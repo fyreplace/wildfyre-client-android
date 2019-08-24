@@ -81,7 +81,17 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
     override fun onCreateActionMode(mode: ActionMode, menu: Menu) =
         mode.menuInflater.inflate(R.menu.fragment_posts_action_mode_selection, menu).let { true }
 
-    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
+    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+        itemsAdapter.selectionTracker?.selection?.size()?.let {
+            mode.title = resources.getQuantityString(
+                R.plurals.posts_action_mode_selection_title,
+                it,
+                it
+            )
+        }
+
+        return false
+    }
 
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
         R.id.action_delete -> deleteSelection(mode).let { true }
@@ -121,6 +131,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
             }
 
             count += if (selected) 1 else -1
+            actionMode?.invalidate()
 
             if (count == 0) {
                 actionMode?.finish()

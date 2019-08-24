@@ -47,6 +47,10 @@
         <item quantity="other">%1$d comments</item>
     </plurals>
     <string name="posts_actions_delete">Delete</string>
+    <plurals name="posts_action_mode_selection_title">
+        <item quantity="one">%1$d item selected</item>
+        <item quantity="other">%1$d items selected</item>
+    </plurals>
     <string name="posts_delete_dialog_title">Delete these items? This action cannot be undone</string>
     <string name="archive_empty">No archived posts from this area</string>
     <string name="own_posts_empty">No posts in this area</string>
