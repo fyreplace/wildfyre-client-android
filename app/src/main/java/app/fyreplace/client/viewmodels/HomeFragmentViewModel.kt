@@ -82,6 +82,6 @@ class HomeFragmentViewModel : PostFragmentViewModel() {
 
     private companion object {
         const val RESERVE_SIZE = 10
-        const val SPREAD_DELAY = 500L
+        const val SPREAD_DELAY = 300L
     }
 }
