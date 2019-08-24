@@ -71,8 +71,11 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
                 override fun onViewDetachedFromWindow(v: View?) = switchItems(false)
 
                 private fun switchItems(showAreaStuff: Boolean) {
-                    menu.forEach { it.isVisible = areaStuff.contains(it.itemId) == showAreaStuff }
                     mainViewModel.setNotificationBadgeVisible(!showAreaStuff)
+                    menu.forEach {
+                        it.isVisible = it.itemId != R.id.action_delete
+                            && areaStuff.contains(it.itemId) == showAreaStuff
+                    }
                 }
             })
 
@@ -83,7 +86,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
             else
                 MenuItem.SHOW_AS_ACTION_NEVER
 
-        for (id in setOf(R.id.action_area_selector, R.id.action_share)) {
+        for (id in setOf(R.id.action_area_selector, R.id.action_share, R.id.action_delete)) {
             menu.findItem(id)
                 .setShowAsAction(showAsAction or MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
         }
