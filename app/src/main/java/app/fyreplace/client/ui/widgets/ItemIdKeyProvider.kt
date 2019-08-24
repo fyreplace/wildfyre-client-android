@@ -6,5 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 class ItemIdKeyProvider(private val recycler: RecyclerView) : ItemKeyProvider<Long>(SCOPE_MAPPED) {
     override fun getKey(position: Int) = recycler.findViewHolderForAdapterPosition(position)?.itemId
 
-    override fun getPosition(key: Long) = recycler.findViewHolderForItemId(key).adapterPosition
+    override fun getPosition(key: Long) = recycler.findViewHolderForItemId(key)?.adapterPosition
+        ?: RecyclerView.NO_POSITION
 }
