@@ -36,7 +36,7 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
         menu.findItem(R.id.action_new).actionView?.findViewById<Button>(R.id.button)
             ?.setOnClickListener {
                 launch {
-                    onItemClicked(viewModel.createDraft(false))
+                    onItemClicked(viewModel.createDraft())
                     onRefreshListener?.onRefresh()
                 }
             }

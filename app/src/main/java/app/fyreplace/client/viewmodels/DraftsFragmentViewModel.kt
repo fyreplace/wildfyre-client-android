@@ -8,6 +8,5 @@ class DraftsFragmentViewModel : PostsFragmentViewModel() {
 
     override suspend fun delete(id: Long) = DraftRepository.deleteDraft(id)
 
-    suspend fun createDraft(anonymous: Boolean) =
-        DraftRepository.createDraft(anonymous)
+    suspend fun createDraft() = DraftRepository.createDraft()
 }
