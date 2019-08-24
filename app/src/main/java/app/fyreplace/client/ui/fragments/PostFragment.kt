@@ -232,9 +232,9 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
             menu.findItem(R.id.action_subscribe).run {
                 setTitle(
                     if (it)
-                        R.string.post_actions_unsubscribe
+                        R.string.post_action_unsubscribe
                     else
-                        R.string.post_actions_subscribe
+                        R.string.post_action_subscribe
                 )
                 setIcon(
                     if (it)

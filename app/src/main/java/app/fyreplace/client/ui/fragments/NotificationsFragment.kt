@@ -62,7 +62,7 @@ class NotificationsFragment :
 
         clear.findViewById<View>(R.id.button).setOnClickListener {
             AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.notifications_actions_clear_dialog_title))
+                .setTitle(getString(R.string.notifications_action_clear_dialog_title))
                 .setNegativeButton(R.string.no, null)
                 .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int -> launch { viewModel.clearNotifications() } }
                 .show()

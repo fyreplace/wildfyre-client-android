@@ -12,6 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/drafts_actions_new"
+        android:text="@string/drafts_action_new"
         android:theme="@style/AppTheme.AppBar.Button.NeutralButtonOverlay" />
 </FrameLayout>

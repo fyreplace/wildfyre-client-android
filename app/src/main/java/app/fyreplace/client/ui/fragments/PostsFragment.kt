@@ -104,7 +104,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
 
     private fun deleteSelection(mode: ActionMode) {
         AlertDialog.Builder(requireContext())
-            .setTitle(R.string.posts_delete_dialog_title)
+            .setTitle(R.string.posts_action_delete_dialog_title)
             .setNegativeButton(R.string.no, null)
             .setPositiveButton(R.string.yes) { _, _ ->
                 launch {

@@ -30,7 +30,7 @@ interface AreaSelectingFragment : FailureHandler {
         areaSelectingViewModel.preferredArea.observe(fragment.viewLifecycleOwner) {
             if (it != null) {
                 areaSelectorMenuItem.title = fragment.getString(
-                    R.string.area_selecting_actions_area_selector,
+                    R.string.area_selecting_action_area_selector,
                     it.displayName
                 )
             }

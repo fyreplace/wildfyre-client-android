@@ -5,7 +5,7 @@
     tools:context=".ui.fragments.NotificationsFragment">
     <item
         android:id="@+id/action_clear"
-        android:title="@string/notifications_actions_clear"
+        android:title="@string/notifications_action_clear"
         app:actionLayout="@layout/notifications_actions_clear"
         app:showAsAction="always" />
 </menu>
