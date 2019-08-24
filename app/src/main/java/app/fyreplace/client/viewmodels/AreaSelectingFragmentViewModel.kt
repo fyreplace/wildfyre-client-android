@@ -15,9 +15,9 @@ class AreaSelectingFragmentViewModel : ViewModel() {
     val areasDisplayNames: LiveData<List<String>> = areas.map { it.map { a -> a.displayName } }
     val preferredAreaName: LiveData<String> = mPreferredAreaName.distinctUntilChanged()
     val preferredArea: LiveData<Area?> = mPreferredArea.distinctUntilChanged()
-    val preferredAreaIndex: LiveData<Int?> = areas.map { areas ->
-        areas.indexOfFirst { it.name == AreaRepository.preferredAreaName }.takeIf { it > -1 }
-    }.distinctUntilChanged()
+    val preferredAreaIndex: LiveData<Int> =
+        areas.map { areas -> areas.indexOfFirst { it.name == AreaRepository.preferredAreaName } }
+            .distinctUntilChanged()
     val currentAreaSpread: LiveData<Int> = mPreferredAreaReputationInfo.map { it.spread }
     val currentAreaReputation: LiveData<Int> = mPreferredAreaReputationInfo.map { it.reputation }
 
@@ -37,7 +37,7 @@ class AreaSelectingFragmentViewModel : ViewModel() {
     }
 
     suspend fun setPreferredAreaName(areaName: String) {
-        if (areaName != AreaRepository.preferredAreaName && preferredAreaIndex.value != null) {
+        if (areaName != AreaRepository.preferredAreaName) {
             updatePreferredAreaInfo(areaName)
         }
     }
