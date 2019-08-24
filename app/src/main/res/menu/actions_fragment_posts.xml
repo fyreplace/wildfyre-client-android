@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragments.DraftsFragment">
+    tools:context=".ui.fragments.PostsFragment">
     <item
-        android:id="@+id/action_new"
-        android:title="@string/drafts_action_new"
-        app:actionLayout="@layout/drafts_actions_new"
+        android:id="@+id/action_area_selector"
+        android:title=""
+        app:actionLayout="@layout/action_area_selecting_area_spinner"
         app:showAsAction="always" />
 </menu>

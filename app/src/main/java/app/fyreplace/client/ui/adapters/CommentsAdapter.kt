@@ -60,7 +60,7 @@ class CommentsAdapter(private val fragment: Fragment, private val markdown: Mark
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         LayoutInflater
             .from(parent.context)
-            .inflate(R.layout.comment, parent, false)
+            .inflate(R.layout.post_comments_comment, parent, false)
     ).also { fragment.registerForContextMenu(it.text) }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -8,8 +8,8 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import app.fyreplace.client.R
-import app.fyreplace.client.databinding.ActionAreaReputationBinding
-import app.fyreplace.client.databinding.ActionAreaSpreadBinding
+import app.fyreplace.client.databinding.ActionAreaSelectingAreaReputationBinding
+import app.fyreplace.client.databinding.ActionAreaSelectingAreaSpreadBinding
 import app.fyreplace.client.viewmodels.*
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.post_buttons.*
@@ -46,15 +46,16 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_home_actions, menu)
+        inflater.inflate(R.menu.actions_fragment_home, menu)
         onCreateOptionsMenu(this, menu, inflater)
 
-        ActionAreaSpreadBinding.bind(menu.findItem(R.id.action_area_spread).actionView).run {
-            lifecycleOwner = viewLifecycleOwner
-            model = areaSelectingViewModel
-        }
+        ActionAreaSelectingAreaSpreadBinding.bind(menu.findItem(R.id.action_area_spread).actionView)
+            .run {
+                lifecycleOwner = viewLifecycleOwner
+                model = areaSelectingViewModel
+            }
 
-        ActionAreaReputationBinding.bind(menu.findItem(R.id.action_area_reputation).actionView)
+        ActionAreaSelectingAreaReputationBinding.bind(menu.findItem(R.id.action_area_reputation).actionView)
             .run {
                 lifecycleOwner = viewLifecycleOwner
                 model = areaSelectingViewModel

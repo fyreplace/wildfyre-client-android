@@ -80,11 +80,11 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
         val navHeaderBinding = MainNavHeaderBinding.bind(navigation_view.getHeaderView(0))
             .apply { lifecycleOwner = this@MainActivity; model = viewModel }
-        MainNavActionsNotificationsBinding.bind(navigation_view.menu.findItem(R.id.fragment_notifications).actionView)
+        ActionMainNavFragmentNotificationsBinding.bind(navigation_view.menu.findItem(R.id.fragment_notifications).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
-        MainNavActionsThemeBinding.bind(navigation_view.menu.findItem(R.id.settings_theme_selector).actionView)
+        ActionMainNavSettingsThemeSelectorBinding.bind(navigation_view.menu.findItem(R.id.settings_theme_selector).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
-        MainNavActionsBadgeBinding.bind(navigation_view.menu.findItem(R.id.settings_badge_toggle).actionView)
+        ActionMainNavSettingsBadgeToggleBinding.bind(navigation_view.menu.findItem(R.id.settings_badge_toggle).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
         MainAppBarBinding.bind(content)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
@@ -322,7 +322,7 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         lateinit var dialog: AlertDialog
 
         dialog = AlertDialog.Builder(this)
-            .setView(R.layout.profile_editor)
+            .setView(R.layout.main_profile_editor)
             .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
                 viewModel.newUserAvatar.removeObservers(this)
                 viewModel.resetPendingProfileAvatar()

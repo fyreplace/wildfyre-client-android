@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Notification
-import app.fyreplace.client.databinding.NotificationsActionsClearBinding
+import app.fyreplace.client.databinding.ActionNotificationsClearBinding
 import app.fyreplace.client.ui.adapters.NotificationsAdapter
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import app.fyreplace.client.viewmodels.NotificationsFragmentViewModel
@@ -52,10 +52,10 @@ class NotificationsFragment :
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_notifications_actions, menu)
+        inflater.inflate(R.menu.actions_fragment_notifications, menu)
         val clear = menu.findItem(R.id.action_clear).actionView
 
-        NotificationsActionsClearBinding.bind(clear).run {
+        ActionNotificationsClearBinding.bind(clear).run {
             lifecycleOwner = viewLifecycleOwner
             hasData = viewModel.hasData
         }

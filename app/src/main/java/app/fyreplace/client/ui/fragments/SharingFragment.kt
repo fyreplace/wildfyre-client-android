@@ -12,7 +12,7 @@ abstract class SharingFragment(contentLayoutId: Int) : FailureHandlingFragment(c
     abstract val menuShareTitle: CharSequence
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
-        inflater.inflate(R.menu.fragment_sharing_actions, menu)
+        inflater.inflate(R.menu.actions_fragment_sharing, menu)
 
     override fun onOptionsItemSelected(item: MenuItem) = super.onOptionsItemSelected(item).also {
         if (item.itemId == R.id.action_share) {

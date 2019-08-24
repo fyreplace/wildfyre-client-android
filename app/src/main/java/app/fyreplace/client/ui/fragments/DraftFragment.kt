@@ -14,5 +14,5 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft) {
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
-        inflater.inflate(R.menu.fragment_draft_actions, menu)
+        inflater.inflate(R.menu.actions_fragment_draft, menu)
 }

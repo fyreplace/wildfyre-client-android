@@ -14,7 +14,7 @@
             android:id="@+id/fragment_notifications"
             android:icon="@drawable/ic_notifications_black"
             android:title="@string/main_nav_fragment_notifications"
-            app:actionLayout="@layout/main_nav_actions_notifications"
+            app:actionLayout="@layout/action_main_nav_fragment_notifications"
             app:showAsAction="always" />
         <item
             android:id="@+id/fragment_archive"
@@ -34,14 +34,14 @@
             <item
                 android:id="@+id/settings_theme_selector"
                 android:icon="@drawable/ic_brightness_medium_black"
-                android:title="@string/main_nav_settings_theme"
-                app:actionLayout="@layout/main_nav_actions_theme"
+                android:title="@string/main_nav_settings_theme_selector"
+                app:actionLayout="@layout/action_main_nav_settings_theme_selector"
                 app:showAsAction="always" />
             <item
                 android:id="@+id/settings_badge_toggle"
                 android:icon="@drawable/ic_menu_badge_black"
                 android:title="@string/main_nav_settings_badge_toggle"
-                app:actionLayout="@layout/main_nav_actions_badge"
+                app:actionLayout="@layout/action_main_nav_settings_badge_toggle"
                 app:showAsAction="always" />
         </menu>
     </item>

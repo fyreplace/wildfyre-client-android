@@ -69,7 +69,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_posts_actions, menu)
+        inflater.inflate(R.menu.actions_fragment_posts, menu)
         onCreateOptionsMenu(this, menu, inflater)
     }
 
@@ -79,7 +79,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
     }
 
     override fun onCreateActionMode(mode: ActionMode, menu: Menu) =
-        mode.menuInflater.inflate(R.menu.fragment_posts_action_mode_selection, menu).let { true }
+        mode.menuInflater.inflate(R.menu.action_mode_fragment_posts_selection, menu).let { true }
 
     override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
         itemsAdapter.selectionTracker?.selection?.size()?.let {

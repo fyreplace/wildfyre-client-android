@@ -225,7 +225,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_post_actions, menu)
+        inflater.inflate(R.menu.actions_fragment_post, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
         viewModel.subscribed.observe(viewLifecycleOwner) {
@@ -262,7 +262,7 @@ open class PostFragment : SharingFragment(R.layout.fragment_post), ImageSelector
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        requireActivity().menuInflater.inflate(R.menu.fragment_post_comment_context, menu)
+        requireActivity().menuInflater.inflate(R.menu.context_fragment_post_comment, menu)
 
         val position = v.tag as Int
         val comment = (comments_list.adapter as CommentsAdapter).getComment(position)

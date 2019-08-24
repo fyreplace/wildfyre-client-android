@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import app.fyreplace.client.R
 import app.fyreplace.client.data.FailureHandler
-import app.fyreplace.client.databinding.AreaSelectingSpinnerBinding
+import app.fyreplace.client.databinding.ActionAreaSelectingAreaSpinnerBinding
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 
 /**
@@ -22,7 +22,7 @@ interface AreaSelectingFragment : FailureHandler {
         val areaSelectorMenuItem = menu.findItem(R.id.action_area_selector)
         val areaSpinner = areaSelectorMenuItem?.actionView as Spinner
 
-        AreaSelectingSpinnerBinding.bind(areaSpinner).apply {
+        ActionAreaSelectingAreaSpinnerBinding.bind(areaSpinner).apply {
             lifecycleOwner = fragment.viewLifecycleOwner
             model = areaSelectingViewModel
         }

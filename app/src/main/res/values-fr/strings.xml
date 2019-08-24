@@ -14,7 +14,7 @@
     <string name="main_nav_fragment_own_posts">Mes posts</string>
     <string name="main_nav_fragment_drafts">Drafts</string>
     <string name="main_nav_settings">Paramètres</string>
-    <string name="main_nav_settings_theme">Thème</string>
+    <string name="main_nav_settings_theme_selector">Thème</string>
     <string name="main_nav_settings_badge_toggle">Badge de notifications</string>
     <string name="main_nav_fyreplace_website">Site web</string>
     <string name="main_nav_fyreplace_open_source">Open source</string>

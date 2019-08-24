@@ -7,18 +7,18 @@
     <item
         android:id="@+id/action_area_selector"
         android:title=""
-        app:actionLayout="@layout/area_selecting_spinner"
+        app:actionLayout="@layout/action_area_selecting_area_spinner"
         app:showAsAction="never|collapseActionView" />
     <item
         android:id="@+id/action_area_spread"
         android:title="@string/area_selecting_action_area_spread"
         android:visible="false"
-        app:actionLayout="@layout/action_area_spread"
+        app:actionLayout="@layout/action_area_selecting_area_spread"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_area_reputation"
         android:title="@string/area_selecting_action_area_reputation"
         android:visible="false"
-        app:actionLayout="@layout/action_area_reputation"
+        app:actionLayout="@layout/action_area_selecting_area_reputation"
         app:showAsAction="always" />
 </menu>

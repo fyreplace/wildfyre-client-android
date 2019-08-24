@@ -31,7 +31,7 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
             .apply { findViewById<TextView>(R.id.text).setText(R.string.drafts_empty) }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_drafts_actions, menu)
+        inflater.inflate(R.menu.actions_fragment_drafts, menu)
         super.onCreateOptionsMenu(menu, inflater)
         menu.findItem(R.id.action_new).actionView?.findViewById<Button>(R.id.button)
             ?.setOnClickListener {

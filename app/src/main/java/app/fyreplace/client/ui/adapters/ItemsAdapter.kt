@@ -57,7 +57,7 @@ abstract class ItemsAdapter<I>(
 
     final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         parent.measuredWidth / parent.resources.getInteger(R.integer.post_preview_span_count),
-        LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.items_list_item, parent, false)
     )
 
     final override fun onBindViewHolder(holder: ViewHolder, position: Int) {
