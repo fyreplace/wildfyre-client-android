@@ -5,7 +5,7 @@
     tools:context=".ui.fragments.DraftsFragment">
     <item
         android:id="@+id/action_new"
-        android:title="@string/drafts_action_new"
-        app:actionLayout="@layout/action_drafts_new"
+        android:title="@string/drafts_action_create"
+        app:actionLayout="@layout/action_drafts_create"
         app:showAsAction="always" />
 </menu>

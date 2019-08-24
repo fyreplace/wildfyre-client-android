@@ -27,7 +27,9 @@
         <item
             android:id="@+id/fragment_drafts"
             android:icon="@drawable/ic_wb_incandescent_flipped_black"
-            android:title="@string/main_nav_fragment_drafts" />
+            android:title="@string/main_nav_fragment_drafts"
+            app:actionLayout="@layout/action_main_nav_fragment_drafts"
+            app:showAsAction="always" />
     </group>
     <item android:title="@string/main_nav_settings">
         <menu>

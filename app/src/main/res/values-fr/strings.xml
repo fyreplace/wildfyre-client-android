@@ -53,7 +53,7 @@
     </plurals>
     <string name="archive_empty">Aucun post archivé dans cette zone</string>
     <string name="own_posts_empty">Aucun post dans cette zone</string>
-    <string name="drafts_action_new">Créer</string>
+    <string name="drafts_action_create">Créer</string>
     <string name="drafts_empty">Aucun brouillon dans cette zone</string>
     <string name="drafts_created_text">Écris ton post ici</string>
     <string name="draft_action_publish">Publier</string>

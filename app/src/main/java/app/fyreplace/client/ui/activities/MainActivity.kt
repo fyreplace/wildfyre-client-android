@@ -78,9 +78,12 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             }
         }
 
+        val navController = findNavController(R.id.navigation_host)
         val navHeaderBinding = MainNavHeaderBinding.bind(navigation_view.getHeaderView(0))
             .apply { lifecycleOwner = this@MainActivity; model = viewModel }
         ActionMainNavFragmentNotificationsBinding.bind(navigation_view.menu.findItem(R.id.fragment_notifications).actionView)
+            .run { lifecycleOwner = this@MainActivity; model = viewModel }
+        ActionMainNavFragmentDraftsBinding.bind(navigation_view.menu.findItem(R.id.fragment_drafts).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
         ActionMainNavSettingsThemeSelectorBinding.bind(navigation_view.menu.findItem(R.id.settings_theme_selector).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
@@ -89,20 +92,24 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         MainAppBarBinding.bind(content)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
 
+        navigation_view.menu.findItem(R.id.fragment_drafts).actionView
+            .findViewById<View>(R.id.button)
+            .setOnClickListener {
+                launch {
+                    navController.navigate(NavigationMainDirections.actionGlobalFragmentDraft(post = viewModel.createDraft()))
+                }
+            }
+
         viewModel.uiRefreshTick.observe(this) { launch { viewModel.updateNotificationCount() } }
 
         viewModel.isLogged.observe(this) {
-            if (!it) {
-                val navController = findNavController(R.id.navigation_host)
-
-                if (navController.currentDestination?.id != R.id.fragment_login) {
-                    navController.navigate(
-                        if (viewModel.startupLogin)
-                            NavigationMainDirections.actionGlobalFragmentLoginStartup()
-                        else
-                            NavigationMainDirections.actionGlobalFragmentLogin()
-                    )
-                }
+            if (!it && navController.currentDestination?.id != R.id.fragment_login) {
+                navController.navigate(
+                    if (viewModel.startupLogin)
+                        NavigationMainDirections.actionGlobalFragmentLoginStartup()
+                    else
+                        NavigationMainDirections.actionGlobalFragmentLogin()
+                )
             }
         }
 

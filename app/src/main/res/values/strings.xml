@@ -54,7 +54,7 @@
     </plurals>
     <string name="archive_empty">No archived posts from this area</string>
     <string name="own_posts_empty">No posts in this area</string>
-    <string name="drafts_action_new">Create</string>
+    <string name="drafts_action_create">Create</string>
     <string name="drafts_empty">No drafts in this area</string>
     <string name="drafts_created_text">Write your post here</string>
     <string name="draft_action_publish">Publish</string>

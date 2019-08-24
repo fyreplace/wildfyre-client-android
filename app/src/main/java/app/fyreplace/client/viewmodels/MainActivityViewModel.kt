@@ -6,10 +6,7 @@ import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.models.Post
-import app.fyreplace.client.data.repositories.AuthRepository
-import app.fyreplace.client.data.repositories.AuthorRepository
-import app.fyreplace.client.data.repositories.NotificationRepository
-import app.fyreplace.client.data.repositories.SettingsRepository
+import app.fyreplace.client.data.repositories.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -24,6 +21,7 @@ class MainActivityViewModel : ViewModel() {
     private val mNotificationCount = MutableLiveData<Int>()
     private val mNotificationBadgeVisible = MutableLiveData<Boolean>()
     private val mPostInfo = MutableLiveData<PostInfo?>()
+    private val mAllowDraftCreation = MutableLiveData<Boolean>()
 
     val uiRefreshTick: LiveData<Unit> = mUiRefreshTick
     var startupLogin = true
@@ -39,6 +37,7 @@ class MainActivityViewModel : ViewModel() {
         .map { if (it < 100) it.toString() else "99" }
     val notificationBadgeVisible: LiveData<Boolean> = mNotificationBadgeVisible
     val postInfo: LiveData<PostInfo?> = mPostInfo
+    val allowDraftCreation: LiveData<Boolean> = mAllowDraftCreation
     val selectedThemeIndex = MutableLiveData<Int>()
     val shouldShowNotificationBadge = MutableLiveData<Boolean>()
 
@@ -53,6 +52,7 @@ class MainActivityViewModel : ViewModel() {
         selectedThemeIndex.observeForever { SettingsRepository.theme = getTheme(it) }
         shouldShowNotificationBadge.value = SettingsRepository.showBadge
         shouldShowNotificationBadge.observeForever { SettingsRepository.showBadge = it }
+        setAllowDraftCreation(true)
     }
 
     fun getTheme(which: Int) = if (which in THEMES) THEMES[which] else Constants.Themes.AUTOMATIC
@@ -98,6 +98,10 @@ class MainActivityViewModel : ViewModel() {
 
     fun setPost(post: Post?) =
         mPostInfo.postValue(post?.let { PostInfo(it.author, DATE_FORMAT.format(it.created)) })
+
+    fun setAllowDraftCreation(allow: Boolean) = mAllowDraftCreation.postValue(allow)
+
+    suspend fun createDraft() = DraftRepository.createDraft()
 
     private suspend fun updateProfileInfo() {
         updateNotificationCount()

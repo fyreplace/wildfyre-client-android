@@ -3,15 +3,20 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="model"
             type="app.fyreplace.client.viewmodels.MainActivityViewModel" />
     </data>
 
-    <androidx.appcompat.widget.SwitchCompat
+    <Button
+        android:id="@+id/button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:checked="@={model.shouldShowNotificationBadge}"
-        android:theme="@style/AppTheme.Neutral" />
+        android:text="@string/drafts_action_create"
+        android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
+        android:visibility="@{safeUnbox(model.allowDraftCreation) ? View.VISIBLE : View.GONE}" />
 </layout>

@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:paddingLeft="@dimen/margin_small"
     android:paddingRight="@dimen/margin_small">
 
@@ -11,7 +10,7 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/drafts_action_new"
+        android:layout_gravity="center_vertical"
+        android:text="@string/drafts_action_create"
         android:theme="@style/AppTheme.AppBar.Button.NeutralButtonOverlay" />
 </FrameLayout>
