@@ -246,7 +246,7 @@ interface WebService {
     suspend fun getDraft(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
-        @Query("postId") postId: Long
+        @Path("postId") postId: Long
     ): Post
 
     @POST("/areas/{areaName}/drafts/")
@@ -262,7 +262,7 @@ interface WebService {
     suspend fun postDraftPublication(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
-        @Query("postId") postId: Long
+        @Path("postId") postId: Long
     ): Response<Unit>
 
     @PUT("/areas/{areaName}/drafts/{postId}/")
@@ -292,7 +292,7 @@ interface WebService {
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Body post: Post
+        @Body draft: Draft
     ): Post
 
     @DELETE("/areas/{areaName}/drafts/{postId}/")
