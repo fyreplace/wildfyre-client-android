@@ -56,12 +56,6 @@
     <string name="drafts_action_create">Créer</string>
     <string name="drafts_empty">Aucun brouillon dans cette zone</string>
     <string name="drafts_created_text">Écris ton post ici</string>
-    <string name="draft_action_preview">Prévisualiser</string>
-    <string name="draft_action_publish">Publier</string>
-    <string name="draft_action_publish_toast_success">Post publié !</string>
-    <string name="draft_action_save">Sauvegarder</string>
-    <string name="draft_action_save_toast_success">Brouillon enregistré avec succès</string>
-    <string name="draft_action_delete">Supprimer</string>
     <string name="post_action_subscribe">S\'inscrire</string>
     <string name="post_action_unsubscribe">Se désinscrire</string>
     <string name="post_action_share_title">Partager ce post</string>
@@ -87,7 +81,14 @@
     <string name="post_comment_share_title">Partager ce commentaire</string>
     <string name="post_comment_delete_dialog_title">Supprimer ce commentaire ? Cette action est irréversible</string>
     <string name="home_empty">Plus de posts dans cette zone</string>
+    <string name="draft_action_preview">Prévisualiser</string>
+    <string name="draft_action_publish">Publier</string>
+    <string name="draft_action_publish_toast">Post publié !</string>
+    <string name="draft_action_save">Sauvegarder</string>
+    <string name="draft_action_save_toast">Brouillon enregistré avec succès</string>
+    <string name="draft_action_delete">Supprimer</string>
     <string name="draft_action_delete_dialog_title">Supprimer ce brouillon ?</string>
+    <string name="draft_hint_toast">Brouillon créé dans la zone actuelle (%1$s)</string>
     <string name="user_action_share_title">Partager ce profil</string>
     <string name="image_desc_profile_editor_change_image">Choisir une image</string>
     <string name="image_desc_profile_editor_change_photo">Prendre une photo</string>

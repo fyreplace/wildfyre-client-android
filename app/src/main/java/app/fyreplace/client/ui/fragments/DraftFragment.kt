@@ -34,14 +34,25 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), TextWatc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setDraft(fragmentArgs.post)
+        viewModel.setDraft(fragmentArgs.draft)
 
         preview?.let {
             it.adapter = markdownAdapter
             editor.addTextChangedListener(this)
         }
 
-        editor.setText(fragmentArgs.post.text)
+        editor.setText(fragmentArgs.draft.text)
+
+        if (fragmentArgs.showHint) launch {
+            Toast.makeText(
+                requireContext(),
+                getString(
+                    R.string.draft_hint_toast,
+                    viewModel.getPreferredArea()?.displayName
+                ),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     override fun onDestroyView() {
@@ -78,7 +89,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), TextWatc
                 viewModel.publishDraft()
                 Toast.makeText(
                     context,
-                    R.string.draft_action_publish_toast_success,
+                    R.string.draft_action_publish_toast,
                     Toast.LENGTH_SHORT
                 ).show()
                 findNavController().navigateUp()
@@ -87,7 +98,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), TextWatc
                 viewModel.saveDraft(editor.text.toString())
                 Toast.makeText(
                     context,
-                    R.string.draft_action_save_toast_success,
+                    R.string.draft_action_save_toast,
                     Toast.LENGTH_SHORT
                 ).show()
             }

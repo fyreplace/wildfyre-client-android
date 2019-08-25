@@ -100,8 +100,12 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_draft">
         <argument
-            android:name="post"
+            android:name="draft"
             app:argType="app.fyreplace.client.data.models.Post" />
+        <argument
+            android:name="showHint"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <action
         android:id="@+id/action_global_fragment_login"

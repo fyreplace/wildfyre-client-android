@@ -57,12 +57,6 @@
     <string name="drafts_action_create">Create</string>
     <string name="drafts_empty">No drafts in this area</string>
     <string name="drafts_created_text">Write your post here</string>
-    <string name="draft_action_preview">Preview</string>
-    <string name="draft_action_publish">Publish</string>
-    <string name="draft_action_publish_toast_success">Post published!</string>
-    <string name="draft_action_save">Save</string>
-    <string name="draft_action_save_toast_success">Draft saved successfully</string>
-    <string name="draft_action_delete">Delete</string>
     <string name="post_action_subscribe">Subscribe</string>
     <string name="post_action_unsubscribe">Unsubscribe</string>
     <string name="post_action_share_title">Share post</string>
@@ -88,7 +82,14 @@
     <string name="post_comment_share_title">Share this comment</string>
     <string name="post_comment_delete_dialog_title">Delete this comment? This action cannot be undone</string>
     <string name="home_empty">No posts left in this area</string>
+    <string name="draft_action_preview">Preview</string>
+    <string name="draft_action_publish">Publish</string>
+    <string name="draft_action_publish_toast">Post published!</string>
+    <string name="draft_action_save">Save</string>
+    <string name="draft_action_save_toast">Draft saved successfully</string>
+    <string name="draft_action_delete">Delete</string>
     <string name="draft_action_delete_dialog_title">Delete this draft?</string>
+    <string name="draft_hint_toast">Draft created in current area (%1$s)</string>
     <string name="user_action_share_title">Share user profile</string>
     <string name="image_desc_profile_editor_change_image">Select an image</string>
     <string name="image_desc_profile_editor_change_photo">Take a picture</string>

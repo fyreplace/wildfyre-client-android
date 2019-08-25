@@ -98,7 +98,12 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
             .findViewById<View>(R.id.button)
             .setOnClickListener {
                 launch {
-                    navController.navigate(NavigationMainDirections.actionGlobalFragmentDraft(post = viewModel.createDraft()))
+                    navController.navigate(
+                        NavigationMainDirections.actionGlobalFragmentDraft(
+                            draft = viewModel.createDraft(),
+                            showHint = true
+                        )
+                    )
                 }
             }
 
