@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.fragments.DraftFragment">
     <item
+        android:id="@+id/action_preview"
+        android:icon="@drawable/ic_visibility_white"
+        android:title="@string/draft_action_preview"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_publish"
         android:icon="@drawable/ic_done_white"
         android:title="@string/draft_action_publish"

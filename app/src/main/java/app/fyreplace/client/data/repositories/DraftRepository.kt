@@ -25,8 +25,26 @@ object DraftRepository {
         )
     }
 
+    suspend fun saveDraft(id: Long, content: String) = withContext(Dispatchers.IO) {
+        Services.webService.patchDraft(
+            AuthRepository.authToken,
+            AreaRepository.preferredAreaName,
+            id,
+            Draft(content, false)
+        )
+    }
+
     suspend fun deleteDraft(id: Long) = withContext(Dispatchers.IO) {
         Services.webService.deleteDraft(
+            AuthRepository.authToken,
+            AreaRepository.preferredAreaName,
+            id
+        )
+        return@withContext
+    }
+
+    suspend fun publishDraft(id: Long) = withContext(Dispatchers.IO) {
+        Services.webService.postDraftPublication(
             AuthRepository.authToken,
             AreaRepository.preferredAreaName,
             id

@@ -38,7 +38,7 @@
     <string name="area_selecting_action_area_spread">Spread</string>
     <string name="area_selecting_action_area_reputation">Reputation</string>
     <string name="sharing_action_share">Share</string>
-    <string name="deleting_action_delete">Delete</string>
+    <string name="deletion_action_delete">Delete</string>
     <string name="items_author_anonymous">Anonymous</string>
     <string name="notifications_action_clear">Clear</string>
     <string name="notifications_action_clear_dialog_title">Clear all notifications?</string>
@@ -57,8 +57,11 @@
     <string name="drafts_action_create">Create</string>
     <string name="drafts_empty">No drafts in this area</string>
     <string name="drafts_created_text">Write your post here</string>
+    <string name="draft_action_preview">Preview</string>
     <string name="draft_action_publish">Publish</string>
+    <string name="draft_action_publish_toast_success">Post published!</string>
     <string name="draft_action_save">Save</string>
+    <string name="draft_action_save_toast_success">Draft saved successfully</string>
     <string name="draft_action_delete">Delete</string>
     <string name="post_action_subscribe">Subscribe</string>
     <string name="post_action_unsubscribe">Unsubscribe</string>

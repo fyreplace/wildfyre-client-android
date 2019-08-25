@@ -5,12 +5,15 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.DraftRepository
 
 class DraftFragmentViewModel : ViewModel() {
-    var draftId: Long? = null
-        private set
+    private lateinit var draft: Post
 
-    fun setDraft(draft: Post) {
-        draftId = draft.id
+    fun setDraft(d: Post) {
+        draft = d
     }
 
-    suspend fun deleteDraft() = draftId?.let { DraftRepository.deleteDraft(it) }
+    suspend fun saveDraft(content: String) = setDraft(DraftRepository.saveDraft(draft.id, content))
+
+    suspend fun deleteDraft() = DraftRepository.deleteDraft(draft.id)
+
+    suspend fun publishDraft() = DraftRepository.publishDraft(draft.id)
 }

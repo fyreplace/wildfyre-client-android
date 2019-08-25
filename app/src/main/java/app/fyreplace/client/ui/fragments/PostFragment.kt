@@ -216,7 +216,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Image
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_fragment_post, menu)
         inflater.inflate(R.menu.actions_fragment_sharing, menu)
-        inflater.inflate(R.menu.actions_fragment_deleting, menu)
+        inflater.inflate(R.menu.actions_fragment_deletion, menu)
 
         viewModel.subscribed.observe(viewLifecycleOwner) {
             menu.findItem(R.id.action_subscribe).run {
@@ -257,7 +257,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Image
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = super.onOptionsItemSelected(item).also {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_subscribe -> launch { viewModel.changeSubscription() }
             R.id.action_delete -> AlertDialog.Builder(requireContext())
@@ -271,6 +271,8 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Image
                 }
                 .show()
         }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateContextMenu(
