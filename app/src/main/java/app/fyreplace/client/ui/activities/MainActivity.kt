@@ -37,6 +37,8 @@ import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.databinding.*
 import app.fyreplace.client.ui.ImageSelector
+import app.fyreplace.client.ui.fragments.FailureHandlingFragment
+import app.fyreplace.client.ui.fragments.ToolbarUsingFragment
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import app.fyreplace.client.viewmodels.lazyViewModel
 import com.bumptech.glide.load.MultiTransformation
@@ -272,6 +274,18 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     }
 
     private fun setTitleInfo(info: MainActivityViewModel.PostInfo?) {
+        val destinationFragments = supportFragmentManager.fragments
+            .firstOrNull { it is NavHostFragment }
+            ?.childFragmentManager
+            ?.fragments
+            ?.filterIsInstance<FailureHandlingFragment>()
+
+        destinationFragments?.let {
+            if (it.isEmpty() || it.last() !is ToolbarUsingFragment) {
+                return
+            }
+        } ?: return
+
         if (info == null) {
             toolbar.title = ""
             toolbar.subtitle = ""
@@ -305,8 +319,8 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
                     ) {
                         toolbar.logo = resource
                         toolbar.children
-                            .map { it as? ImageView }
-                            .find { it?.drawable == resource }
+                            .filterIsInstance<ImageView>()
+                            .find { it.drawable == resource }
                             ?.setOnClickListener {
                                 findNavController(R.id.navigation_host)
                                     .navigate(

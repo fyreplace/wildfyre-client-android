@@ -47,7 +47,8 @@ import kotlinx.coroutines.withContext
 import ru.noties.markwon.recycler.MarkwonAdapter
 import kotlin.math.max
 
-open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), ImageSelector {
+open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), ToolbarUsingFragment,
+    ImageSelector {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<PostFragmentViewModel>()
     override val contextWrapper by lazy { requireActivity() }
