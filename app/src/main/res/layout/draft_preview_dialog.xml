@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<app.fyreplace.client.ui.widgets.MarkdownRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/preview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:overScrollMode="never"
+    android:padding="@dimen/margin_small"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

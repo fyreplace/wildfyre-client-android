@@ -13,11 +13,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.R
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.ui.lazyMarkdown
-import app.fyreplace.client.ui.widgets.MarkdownRecyclerView
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
 import app.fyreplace.client.viewmodels.lazyViewModel
 import kotlinx.android.synthetic.main.draft_editor.*
@@ -73,15 +72,9 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), TextWatc
             R.id.action_preview -> {
                 hideSoftKeyboard(editor)
                 AlertDialog.Builder(context)
-                    .setView(MarkdownRecyclerView(context).apply {
-                        adapter = markdownAdapter
-                        layoutManager = LinearLayoutManager(
-                            context,
-                            LinearLayoutManager.VERTICAL,
-                            false
-                        )
-                    })
+                    .setView(R.layout.draft_preview_dialog)
                     .show()
+                    .findViewById<RecyclerView>(R.id.preview)?.adapter = markdownAdapter
                 updatePreview()
             }
             R.id.action_publish -> launch {
