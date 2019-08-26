@@ -395,7 +395,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Toolb
         }
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            if (dy == 0 || go_up == null || go_down == null) {
+            if (go_up == null || go_down == null) {
                 return
             }
 
