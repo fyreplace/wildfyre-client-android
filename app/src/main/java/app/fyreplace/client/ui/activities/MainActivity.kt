@@ -37,6 +37,7 @@ import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.databinding.*
 import app.fyreplace.client.ui.ImageSelector
+import app.fyreplace.client.ui.fragments.BackHandlingFragment
 import app.fyreplace.client.ui.fragments.FailureHandlingFragment
 import app.fyreplace.client.ui.fragments.ToolbarUsingFragment
 import app.fyreplace.client.viewmodels.MainActivityViewModel
@@ -199,11 +200,15 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
     override fun onBackPressed() = when {
         drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
+        currentFragmentAs<BackHandlingFragment>()?.onGoBack() == false -> Unit
         else -> super.onBackPressed()
     }
 
-    override fun onSupportNavigateUp() =
-        findNavController(R.id.navigation_host).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    override fun onSupportNavigateUp() = when {
+        currentFragmentAs<BackHandlingFragment>()?.onGoBack() == false -> false
+        findNavController(R.id.navigation_host).navigateUp(appBarConfiguration) -> true
+        else -> super.onSupportNavigateUp()
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super<FailureHandlingActivity>.onActivityResult(requestCode, resultCode, data)
@@ -260,6 +265,10 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
     override fun onImage(image: ImageData) = viewModel.setPendingProfileAvatar(image)
 
+    fun onSelectAvatarImageClicked(view: View) {
+        (view.tag as? String)?.toInt()?.let { selectImage(it) }
+    }
+
     private fun updateDrawer(destination: NavDestination) {
         drawer_layout.setDrawerLockMode(
             if (destination.id in TOP_LEVEL_DESTINATIONS)
@@ -270,17 +279,9 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
     }
 
     private fun setTitleInfo(info: MainActivityViewModel.PostInfo?) {
-        val destinationFragments = supportFragmentManager.fragments
-            .firstOrNull { it is NavHostFragment }
-            ?.childFragmentManager
-            ?.fragments
-            ?.filterIsInstance<FailureHandlingFragment>()
-
-        destinationFragments?.let {
-            if (it.isEmpty() || it.last() !is ToolbarUsingFragment) {
-                return
-            }
-        } ?: return
+        if (currentFragmentAs<ToolbarUsingFragment>() == null) {
+            return
+        }
 
         if (info == null) {
             toolbar.title = ""
@@ -383,8 +384,22 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
         }
     }
 
-    fun onSelectAvatarImageClicked(view: View) {
-        (view.tag as? String)?.toInt()?.let { selectImage(it) }
+    private inline fun <reified T> currentFragmentAs(): T? {
+        val destinationFragments = supportFragmentManager.fragments
+            .firstOrNull { it is NavHostFragment }
+            ?.childFragmentManager
+            ?.fragments
+            ?.filterIsInstance<FailureHandlingFragment>()
+
+        destinationFragments?.let {
+            val last = it.last()
+
+            if (it.isNotEmpty() && last as? T != null) {
+                return last
+            }
+        } ?: return null
+
+        return null
     }
 
     private companion object {

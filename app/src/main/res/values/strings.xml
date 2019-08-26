@@ -89,6 +89,7 @@
     <string name="draft_action_save_toast">Draft saved successfully</string>
     <string name="draft_action_delete">Delete</string>
     <string name="draft_action_delete_dialog_title">Delete this draft?</string>
+    <string name="draft_back_dialog_title">Save changes?</string>
     <string name="draft_hint_toast">Draft created in current area (%1$s)</string>
     <string name="user_action_share_title">Share user profile</string>
     <string name="image_desc_profile_editor_change_image">Select an image</string>

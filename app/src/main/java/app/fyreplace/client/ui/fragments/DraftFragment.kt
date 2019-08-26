@@ -23,23 +23,22 @@ import kotlinx.android.synthetic.main.draft_editor.*
 import kotlinx.android.synthetic.main.fragment_draft.*
 import ru.noties.markwon.recycler.MarkwonAdapter
 
-class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), TextWatcher {
+class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
+    TextWatcher {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<DraftFragmentViewModel>()
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
     private val markdown by lazyMarkdown()
     private val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
+    private var allowDirtyingDraft = false
     private var countDownTimer: CountDownTimer? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setDraft(fragmentArgs.draft)
 
-        preview?.let {
-            it.adapter = markdownAdapter
-            editor.addTextChangedListener(this)
-        }
-
+        preview?.adapter = markdownAdapter
+        editor.addTextChangedListener(this)
         editor.setText(fragmentArgs.draft.text)
 
         if (fragmentArgs.showHint) launch {
@@ -57,6 +56,11 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), TextWatc
     override fun onDestroyView() {
         hideSoftKeyboard(editor)
         super.onDestroyView()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        allowDirtyingDraft = true
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -78,7 +82,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), TextWatc
                 updatePreview()
             }
             R.id.action_publish -> launch {
-                viewModel.saveDraft(editor.text.toString())
+                saveDraft(false)
                 viewModel.publishDraft()
                 Toast.makeText(
                     context,
@@ -87,14 +91,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), TextWatc
                 ).show()
                 findNavController().navigateUp()
             }
-            R.id.action_save -> launch {
-                viewModel.saveDraft(editor.text.toString())
-                Toast.makeText(
-                    context,
-                    R.string.draft_action_save_toast,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            R.id.action_save -> launch { saveDraft(true) }
             R.id.action_delete -> AlertDialog.Builder(context)
                 .setTitle(R.string.draft_action_delete_dialog_title)
                 .setNegativeButton(R.string.no, null)
@@ -110,18 +107,51 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), TextWatc
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onGoBack(): Boolean {
+        if (viewModel.saved) {
+            return true
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.draft_back_dialog_title)
+            .setNegativeButton(R.string.no) { _, _ -> findNavController().navigateUp() }
+            .setPositiveButton(R.string.yes) { _, _ ->
+                launch {
+                    saveDraft(true)
+                    findNavController().navigateUp()
+                }
+            }
+            .show()
+
+        return false
+    }
+
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) = Unit
 
     override fun afterTextChanged(s: Editable) {
-        countDownTimer?.cancel()
-        countDownTimer = Timer().apply { start() }
+        if (allowDirtyingDraft) {
+            viewModel.dirtyDraft()
+        }
+
+        if (preview != null) {
+            countDownTimer?.cancel()
+            countDownTimer = Timer().apply { start() }
+        }
     }
 
     private fun updatePreview() {
         markdownAdapter.setMarkdown(markdown, editor.text.toString())
         markdownAdapter.notifyDataSetChanged()
+    }
+
+    private suspend fun saveDraft(showConfirmation: Boolean) {
+        viewModel.saveDraft(editor.text.toString())
+
+        if (showConfirmation) {
+            Toast.makeText(context, R.string.draft_action_save_toast, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private companion object {

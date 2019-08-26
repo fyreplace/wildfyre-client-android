@@ -88,6 +88,7 @@
     <string name="draft_action_save_toast">Brouillon enregistré avec succès</string>
     <string name="draft_action_delete">Supprimer</string>
     <string name="draft_action_delete_dialog_title">Supprimer ce brouillon ?</string>
+    <string name="draft_back_dialog_title">Sauvegarder les changements ?</string>
     <string name="draft_hint_toast">Brouillon créé dans la zone actuelle (%1$s)</string>
     <string name="user_action_share_title">Partager ce profil</string>
     <string name="image_desc_profile_editor_change_image">Choisir une image</string>
