@@ -36,21 +36,22 @@ interface AreaSelectingFragment : FailureHandler {
             }
         }
 
-        areaSelectingViewModel.areas.observe(fragment.viewLifecycleOwner) { areas ->
-            areaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        launch {
+            areaSelectingViewModel.updateAreas()
+            areaSelectingViewModel.areas.observe(fragment.viewLifecycleOwner) { areas ->
+                areaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
-                override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    launch { areaSelectingViewModel.setPreferredAreaName(areas[position].name) }
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        launch { areaSelectingViewModel.setPreferredAreaName(areas[position].name) }
+                    }
                 }
             }
         }
-
-        launch { areaSelectingViewModel.updateAreas() }
     }
 }

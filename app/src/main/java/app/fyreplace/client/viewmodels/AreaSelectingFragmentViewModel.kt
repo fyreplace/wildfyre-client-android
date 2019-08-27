@@ -4,6 +4,8 @@ import androidx.lifecycle.*
 import app.fyreplace.client.data.models.Area
 import app.fyreplace.client.data.models.Reputation
 import app.fyreplace.client.data.repositories.AreaRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class AreaSelectingFragmentViewModel : ViewModel() {
     private val mAreas = MutableLiveData<List<Area>>()
@@ -11,13 +13,12 @@ class AreaSelectingFragmentViewModel : ViewModel() {
     private val mPreferredArea = MediatorLiveData<Area?>()
     private val mPreferredAreaReputationInfo = MutableLiveData<Reputation>()
 
-    val areas: LiveData<List<Area>> = mAreas.distinctUntilChanged()
+    val areas: LiveData<List<Area>> = mAreas
     val areasDisplayNames: LiveData<List<String>> = areas.map { it.map { a -> a.displayName } }
     val preferredAreaName: LiveData<String> = mPreferredAreaName.distinctUntilChanged()
     val preferredArea: LiveData<Area?> = mPreferredArea.distinctUntilChanged()
     val preferredAreaIndex: LiveData<Int> =
         areas.map { areas -> areas.indexOfFirst { it.name == AreaRepository.preferredAreaName } }
-            .distinctUntilChanged()
     val currentAreaSpread: LiveData<Int> = mPreferredAreaReputationInfo.map { it.spread }
     val currentAreaReputation: LiveData<Int> = mPreferredAreaReputationInfo.map { it.reputation }
 
@@ -28,7 +29,7 @@ class AreaSelectingFragmentViewModel : ViewModel() {
 
     suspend fun updateAreas() {
         val fetchedAreas = AreaRepository.getAreas()
-        mAreas.postValue(fetchedAreas)
+        withContext(Dispatchers.Main) { mAreas.value = fetchedAreas }
 
         if (preferredAreaName.value.isNullOrEmpty()) {
             val name = AreaRepository.preferredAreaName

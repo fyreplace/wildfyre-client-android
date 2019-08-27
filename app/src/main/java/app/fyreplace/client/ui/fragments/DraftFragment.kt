@@ -42,7 +42,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
         if (fragmentArgs.showHint) launch {
             Toast.makeText(
-                requireContext(),
+                context,
                 getString(
                     R.string.draft_hint_toast,
                     viewModel.getPreferredArea()?.displayName
