@@ -79,17 +79,12 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
     override fun onCreateActionMode(mode: ActionMode, menu: Menu) =
         mode.menuInflater.inflate(R.menu.actions_fragment_deletion, menu).let { true }
 
-    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) =
         itemsAdapter.selectionTracker?.selection?.size()?.let {
-            mode.title = resources.getQuantityString(
-                R.plurals.posts_action_mode_selection_title,
-                it,
-                it
-            )
-        }
-
-        return false
-    }
+            mode.title = resources
+                .getQuantityString(R.plurals.posts_action_mode_selection_title, it, it)
+            true
+        } ?: false
 
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
         R.id.action_delete -> deleteSelection(mode).let { true }

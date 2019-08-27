@@ -67,6 +67,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         inflater.inflate(R.menu.actions_fragment_draft, menu)
         inflater.inflate(R.menu.actions_fragment_deletion, menu)
         menu.findItem(R.id.action_preview).isVisible = preview == null
+        menu.findItem(R.id.action_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -76,7 +77,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             R.id.action_preview -> {
                 hideSoftKeyboard(editor)
                 AlertDialog.Builder(context)
-                    .setView(R.layout.draft_preview_dialog)
+                    .setView(R.layout.draft_dialog_preview)
                     .show()
                     .findViewById<RecyclerView>(R.id.preview)?.adapter = markdownAdapter
                 updatePreview()

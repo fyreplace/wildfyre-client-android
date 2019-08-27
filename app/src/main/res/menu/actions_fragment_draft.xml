@@ -2,20 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragments.DraftFragment">
+    tools:context=".ui.fragments.DraftFragment"
+    tools:ignore="AlwaysShowAction">
     <item
         android:id="@+id/action_preview"
         android:icon="@drawable/ic_visibility_white"
         android:title="@string/draft_action_preview"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_publish"
         android:icon="@drawable/ic_done_white"
         android:title="@string/draft_action_publish"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_save"
         android:icon="@drawable/ic_save_white"
         android:title="@string/draft_action_save"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>
