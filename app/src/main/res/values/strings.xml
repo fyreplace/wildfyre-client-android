@@ -89,6 +89,13 @@
     <string name="draft_action_save_toast">Draft saved successfully</string>
     <string name="draft_action_delete">Delete</string>
     <string name="draft_action_delete_dialog_title">Delete this draft?</string>
+    <string name="draft_selection_bold"><b>Bold</b></string>
+    <string name="draft_selection_italic"><i>Italic</i></string>
+    <string name="draft_selection_strikethrough"><strike>Strike-through</strike></string>
+    <string name="draft_selection_code"><tt>Code</tt></string>
+    <string name="draft_selection_link"><u><font color="#E64A19">Link</font></u></string>
+    <string name="draft_selection_link_dialog_title">Add a link</string>
+    <string name="draft_selection_link_dialog_hint">Paste a link here (e.g. https://example.org)</string>
     <string name="draft_back_dialog_title">Save changes?</string>
     <string name="draft_hint_toast">Draft created in current area (%1$s)</string>
     <string name="user_action_share_title">Share user profile</string>

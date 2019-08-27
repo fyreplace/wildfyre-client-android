@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModel
@@ -24,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_draft.*
 import ru.noties.markwon.recycler.MarkwonAdapter
 
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
-    TextWatcher {
+    TextWatcher, ActionMode.Callback {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<DraftFragmentViewModel>()
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
@@ -39,6 +37,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
         preview?.adapter = markdownAdapter
         editor.addTextChangedListener(this)
+        editor.customSelectionActionModeCallback = this
         editor.setText(fragmentArgs.draft.text)
 
         if (fragmentArgs.showHint) launch {
@@ -142,6 +141,36 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         }
     }
 
+    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+        mode.menuInflater.inflate(R.menu.selection_fragment_draft, menu)
+        return editor.hasSelection()
+    }
+
+    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
+
+    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
+        R.id.action_bold -> surroundCurrentSelection("**", "**").let { true }
+        R.id.action_italic -> surroundCurrentSelection("_", "_").let { true }
+        R.id.action_strikethrough -> surroundCurrentSelection("~~", "~~").let { true }
+        R.id.action_code -> surroundCurrentSelection("`", "`").let { true }
+        R.id.action_link -> {
+            var link: EditText? = null
+            link = AlertDialog.Builder(requireContext())
+                .setTitle(R.string.draft_selection_link_dialog_title)
+                .setView(R.layout.draft_dialog_link)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    link?.text?.let { surroundCurrentSelection("[", "]($it)") }
+                }
+                .show()
+                .findViewById(R.id.text)
+            true
+        }
+        else -> false
+    }
+
+    override fun onDestroyActionMode(mode: ActionMode) = Unit
+
     private fun updatePreview() {
         markdownAdapter.setMarkdown(markdown, editor.text.toString())
         markdownAdapter.notifyDataSetChanged()
@@ -153,6 +182,10 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         if (showConfirmation) {
             Toast.makeText(context, R.string.draft_action_save_toast, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun surroundCurrentSelection(start: String, end: String) {
+        editor.editableText.insert(editor.selectionStart, start).insert(editor.selectionEnd, end)
     }
 
     private companion object {
