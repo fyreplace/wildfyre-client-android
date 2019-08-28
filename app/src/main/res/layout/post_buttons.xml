@@ -26,6 +26,7 @@
             android:id="@+id/vertical_center"
             android:layout_width="1dp"
             android:layout_height="0dp"
+            android:layout_marginTop="1dp"
             android:background="?android:attr/dividerVertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
