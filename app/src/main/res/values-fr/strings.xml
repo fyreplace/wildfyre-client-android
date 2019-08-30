@@ -25,7 +25,7 @@
     <string name="main_nav_wildfyre_terms">Conditions d\'utilisation</string>
     <string name="main_nav_wildfyre_privacy">Politique de confidentialité</string>
     <string name="main_profile_editor_avatar_chooser">Choisir un avatar</string>
-    <string name="main_profile_editor_bio">Votre bio</string>
+    <string name="main_profile_editor_bio">Ta bio</string>
     <string name="main_author_anonymous">Anonyme</string>
     <string name="login_username">Nom d\'utilisateur</string>
     <string name="login_password">Mot de passe</string>
