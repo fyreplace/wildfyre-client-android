@@ -97,7 +97,7 @@ abstract class ItemsAdapter<I>(
                     if (showAuthors) itemData.author?.avatar ?: R.drawable.default_avatar
                     else ContextCompat.getDrawable(
                         context,
-                        R.drawable.ic_visibility_off_daynight
+                        R.drawable.ic_visibility_off
                     )
                 )
                 .placeholder(android.R.color.transparent)

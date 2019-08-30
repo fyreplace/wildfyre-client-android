@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="@id/vertical_center"
         app:layout_constraintStart_toStartOf="@id/user_picture"
         app:layout_constraintTop_toBottomOf="@+id/user_picture"
-        app:srcCompat="@drawable/ic_image_daynight" />
+        app:srcCompat="@drawable/ic_image" />
 
     <ImageView
         android:id="@+id/user_picture_change_photo"
@@ -55,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="@id/user_picture"
         app:layout_constraintStart_toStartOf="@id/vertical_center"
         app:layout_constraintTop_toBottomOf="@+id/user_picture"
-        app:srcCompat="@drawable/ic_photo_camera_daynight" />
+        app:srcCompat="@drawable/ic_photo_camera" />
 
     <EditText
         android:id="@+id/user_bio"
