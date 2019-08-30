@@ -7,13 +7,13 @@
     <group
         android:translateX="125"
         android:translateY="125">
-        <path android:pathData="M275,725l475,475l450,0l0,-470l-465,-465l-35,435z">
+        <path android:pathData="M275,725l525,525l450,-470l-515,-515l-50,150l-150,-150l-50,150l-150,-150z">
             <aapt:attr name="android:fillColor">
                 <gradient
-                    android:endX="663.1489"
-                    android:endY="1045.0847"
-                    android:startX="9.075168"
-                    android:startY="383.93988"
+                    android:endX="698.4025"
+                    android:endY="1080.3323"
+                    android:startX="8.973436"
+                    android:startY="383.83206"
                     android:type="linear">
                     <item
                         android:color="#3F000000"
