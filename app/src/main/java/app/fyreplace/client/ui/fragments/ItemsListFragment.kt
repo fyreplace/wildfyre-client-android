@@ -67,7 +67,7 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
 
     override fun onFailure(failure: Throwable) {
         super.onFailure(failure)
-        refresher.isRefreshing = false
+        refresher?.isRefreshing = false
     }
 
     override fun onItemClicked(item: I) = viewModel.pushRefresh()
