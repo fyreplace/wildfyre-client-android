@@ -302,12 +302,19 @@ interface WebService {
         @Path("postId") postId: Long
     ): Response<Unit>
 
+    @DELETE("/areas/{areaName}/drafts/{postId}/")
+    suspend fun deleteImage(
+        @Header("Authorization") authorization: String,
+        @Path("areaName") areaName: String,
+        @Path("postId") postId: Long
+    ): Response<Unit>
+
     @DELETE("/areas/{areaName}/drafts/{postId}/img/{slot}/")
     suspend fun deleteImage(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
-        @Path("postId") slot: Int
+        @Path("slot") slot: Int
     ): Response<Unit>
 
 
