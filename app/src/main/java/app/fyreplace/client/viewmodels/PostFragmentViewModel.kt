@@ -7,7 +7,7 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.AreaRepository
 import app.fyreplace.client.data.repositories.CommentRepository
 import app.fyreplace.client.data.repositories.PostRepository
-import app.fyreplace.client.ui.prepareForMarkdown
+import app.fyreplace.client.ui.toMarkdown
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -44,15 +44,7 @@ open class PostFragmentViewModel : ViewModel() {
         mIsOwnPost.value = false
         mSubscribed.addSource(post) { mSubscribed.postValue(it?.subscribed ?: false) }
         mMarkdownContent.addSource(post) {
-            viewModelScope.launch(Dispatchers.Default) {
-                val markdownContent = StringBuilder()
-                it?.image?.run { markdownContent.append("![]($this)\n\n") }
-                it?.text?.run {
-                    markdownContent.append(it.additionalImages
-                        ?.let { images -> prepareForMarkdown(images) } ?: this)
-                }
-                mMarkdownContent.postValue(markdownContent.toString())
-            }
+            viewModelScope.launch(Dispatchers.Default) { mMarkdownContent.postValue(it?.toMarkdown().orEmpty()) }
         }
         mComments.addSource(post) {
             commentsData.clear()

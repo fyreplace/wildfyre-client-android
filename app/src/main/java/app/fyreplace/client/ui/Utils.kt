@@ -5,7 +5,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import app.fyreplace.client.Constants
-import app.fyreplace.client.data.models.Image
+import app.fyreplace.client.data.models.Post
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
 import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
@@ -31,8 +31,9 @@ fun Fragment.lazyMarkdown() = lazy {
     }
 }
 
-fun String.prepareForMarkdown(imageUrls: List<Image>) = replace(Constants.Api.IMAGE_REGEX) {
-    val imageNum = it.groups[1]?.value?.toInt() ?: 0
-    val image = imageUrls.first { img -> img.num == imageNum }
-    return@replace "\n![${image.comment}](${image.image})\n"
-}
+fun Post.toMarkdown() =
+    (image?.let { "![]($it)\n\n" } ?: "") + text?.replace(Constants.Api.IMAGE_REGEX) {
+        val imageNum = it.groups[1]?.value?.toInt() ?: 0
+        val image = additionalImages?.firstOrNull { img -> img.num == imageNum }
+        return@replace image?.run { "\n![${image.comment}](${image.image})\n" } ?: ""
+    }
