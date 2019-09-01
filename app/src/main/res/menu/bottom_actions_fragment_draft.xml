@@ -9,14 +9,24 @@
         android:title="@string/draft_bottom_actions_title"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_list"
-        android:icon="@drawable/ic_list"
-        android:title="@string/draft_bottom_actions_list"
+        android:id="@+id/action_list_bulleted"
+        android:icon="@drawable/ic_format_list_bulleted"
+        android:title="@string/draft_bottom_actions_list_bulleted"
         app:showAsAction="always" />
     <item
-        android:id="@+id/action_image"
+        android:id="@+id/action_list_numbered"
+        android:icon="@drawable/ic_format_list_numbered"
+        android:title="@string/draft_bottom_actions_list_numbered"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_main_image"
         android:icon="@drawable/ic_image"
-        android:title="@string/draft_bottom_actions_image"
+        android:title="@string/draft_bottom_actions_main_image"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_images"
+        android:icon="@drawable/ic_photo_library"
+        android:title="@string/draft_bottom_actions_images"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_youtube"

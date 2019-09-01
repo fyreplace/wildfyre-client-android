@@ -137,23 +137,17 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     override fun onMenuItemClick(item: MenuItem) = when (item.itemId) {
-        R.id.action_bold -> surroundCurrentSelection("**", "**").let { true }
-        R.id.action_italic -> surroundCurrentSelection("_", "_").let { true }
-        R.id.action_strikethrough -> surroundCurrentSelection("~~", "~~").let { true }
-        R.id.action_code -> surroundCurrentSelection("`", "`").let { true }
-        R.id.action_link -> {
-            var link: EditText? = null
-            link = AlertDialog.Builder(requireContext())
-                .setTitle(R.string.draft_bottom_actions_selection_link_dialog_title)
-                .setView(R.layout.draft_dialog_link)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    link?.text?.let { surroundCurrentSelection("[", "]($it)") }
-                }
-                .show()
-                .findViewById(R.id.text)
-            true
-        }
+        R.id.action_title -> addTitle().let { true }
+        R.id.action_list_bulleted -> addList(false).let { true }
+        R.id.action_list_numbered -> addList(true).let { true }
+        R.id.action_main_image -> addImage(true).let { true }
+        R.id.action_images -> addImage(false).let { true }
+        R.id.action_youtube -> addYoutubeLink().let { true }
+        R.id.action_bold -> surroundSelectionWith("**", "**").let { true }
+        R.id.action_italic -> surroundSelectionWith("_", "_").let { true }
+        R.id.action_strikethrough -> surroundSelectionWith("~~", "~~").let { true }
+        R.id.action_code -> surroundSelectionWith("`", "`").let { true }
+        R.id.action_link -> surroundSelectionWithLink().let { true }
         else -> false
     }
 
@@ -185,7 +179,44 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         }
     }
 
-    private fun surroundCurrentSelection(start: String, end: String) {
+    private fun addTitle() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.draft_bottom_actions_title_dialog_title)
+            .setItems((1..6).map { it.toString() }.toTypedArray()) { _, i ->
+                editor.editableText.insert(editorLineStart(), "#".repeat(i + 1) + ' ')
+            }
+            .show()
+    }
+
+    private fun addList(numbered: Boolean) {
+        editor.editableText.insert(editorLineStart(), if (numbered) "1. " else "- ")
+    }
+
+    private fun addImage(main: Boolean) {
+        // TODO
+    }
+
+    private fun addYoutubeLink() {
+        // TODO
+    }
+
+    private fun editorLineStart() = editor.editableText.subSequence(0, editor.selectionStart)
+        .indexOfLast { it == '\n' } + 1
+
+    private fun surroundSelectionWithLink() {
+        var link: EditText? = null
+        link = AlertDialog.Builder(requireContext())
+            .setTitle(R.string.draft_bottom_actions_selection_link_dialog_title)
+            .setView(R.layout.draft_dialog_link)
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                link?.text?.let { surroundSelectionWith("[", "]($it)") }
+            }
+            .show()
+            .findViewById(R.id.text)
+    }
+
+    private fun surroundSelectionWith(start: String, end: String) {
         editor.editableText.insert(editor.selectionStart, start).insert(editor.selectionEnd, end)
     }
 

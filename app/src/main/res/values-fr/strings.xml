@@ -96,8 +96,11 @@
     <string name="draft_bottom_actions_selection_link_dialog_title">Ajouter un lien</string>
     <string name="draft_bottom_actions_selection_link_dialog_hint">Copier un lien ici</string>
     <string name="draft_bottom_actions_title">Titre</string>
-    <string name="draft_bottom_actions_list">Liste</string>
-    <string name="draft_bottom_actions_image">Image</string>
+    <string name="draft_bottom_actions_title_dialog_title">Niveau de titre</string>
+    <string name="draft_bottom_actions_list_bulleted">Liste à puces</string>
+    <string name="draft_bottom_actions_list_numbered">Liste numérotée</string>
+    <string name="draft_bottom_actions_main_image">Image principale</string>
+    <string name="draft_bottom_actions_images">Images</string>
     <string name="draft_bottom_actions_youtube">Video Youtube</string>
     <string name="draft_bottom_app_bar_title">Outils</string>
     <string name="draft_back_dialog_title">Sauvegarder les changements ?</string>
