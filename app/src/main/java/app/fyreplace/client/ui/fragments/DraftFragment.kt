@@ -26,14 +26,13 @@ import kotlinx.android.synthetic.main.fragment_draft.*
 import ru.noties.markwon.recycler.MarkwonAdapter
 
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
-    Toolbar.OnMenuItemClickListener, TextWatcher {
+    Toolbar.OnMenuItemClickListener {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<DraftFragmentViewModel>()
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
     private val markdown by lazyMarkdown()
     private val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
     private var allowDirtyingDraft = false
-    private var countDownTimer: CountDownTimer? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,7 +40,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
         preview?.adapter = markdownAdapter
         bottom_app_bar.setOnMenuItemClickListener(this)
-        editor.addTextChangedListener(this)
+        editor.addTextChangedListener(EditorWatcher())
         editor.setText(fragmentArgs.draft.text)
         editor.onSelectionChangedListener = { hasSelection ->
             bottom_app_bar.replaceMenu(
@@ -151,21 +150,6 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         else -> false
     }
 
-    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
-
-    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) = Unit
-
-    override fun afterTextChanged(s: Editable) {
-        if (allowDirtyingDraft) {
-            viewModel.dirtyDraft()
-        }
-
-        if (preview != null) {
-            countDownTimer?.cancel()
-            countDownTimer = Timer().apply { start() }
-        }
-    }
-
     private fun updatePreview() {
         markdownAdapter.setMarkdown(markdown, editor.text.toString())
         markdownAdapter.notifyDataSetChanged()
@@ -200,8 +184,8 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         // TODO
     }
 
-    private fun editorLineStart() = editor.editableText.subSequence(0, editor.selectionStart)
-        .indexOfLast { it == '\n' } + 1
+    private fun editorLineStart(cursorPos: Int = editor.selectionStart) =
+        editor.editableText.subSequence(0, cursorPos).indexOfLast { it == '\n' } + 1
 
     private fun surroundSelectionWithLink() {
         var link: EditText? = null
@@ -222,6 +206,41 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     private companion object {
         const val PREVIEW_DELAY = 1500L
+    }
+
+    private inner class EditorWatcher : TextWatcher {
+        private var countDownTimer: CountDownTimer? = null
+        private var newText: CharSequence? = null
+
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
+
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            newText = if (s.subSequence(start, start + count).toString() == "\n") {
+                val endText = s.subSequence(editorLineStart(start), s.length)
+
+                if (Regex("^-\\s.*", RegexOption.DOT_MATCHES_ALL).matches(endText)) {
+                    "- "
+                } else {
+                    Regex("^(\\d+)\\.\\s.*", RegexOption.DOT_MATCHES_ALL).matchEntire(endText)
+                        ?.groupValues?.get(1)?.toInt()?.let { "${it + 1}. " }
+                }
+            } else null
+        }
+
+        override fun afterTextChanged(s: Editable) {
+            if (allowDirtyingDraft) {
+                viewModel.dirtyDraft()
+            }
+
+            if (preview != null) {
+                countDownTimer?.cancel()
+                countDownTimer = Timer().apply { start() }
+            }
+
+            newText?.let {
+                editor.editableText.append(it)
+            }
+        }
     }
 
     private inner class Timer : CountDownTimer(PREVIEW_DELAY, Long.MAX_VALUE) {
