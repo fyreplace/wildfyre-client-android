@@ -81,7 +81,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
 
         super<PostFragment>.onCreateOptionsMenu(menu, inflater)
         val showAsAction =
-            if (resources.getBoolean(R.bool.home_show_menu))
+            if (resources.getBoolean(R.bool.home_show_full_menu))
                 MenuItem.SHOW_AS_ACTION_IF_ROOM
             else
                 MenuItem.SHOW_AS_ACTION_NEVER

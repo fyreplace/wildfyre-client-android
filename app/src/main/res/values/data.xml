@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="themes">
+    <integer name="request_image_file">0</integer>
+    <integer name="request_image_photo">1</integer>
+    <string-array name="settings_themes">
         <item>@string/theme_automatic</item>
         <item>@string/theme_light</item>
         <item>@string/theme_dark</item>
     </string-array>
-    <bool name="home_show_menu">false</bool>
+    <bool name="home_show_full_menu">false</bool>
     <integer name="post_preview_span_count">2</integer>
     <integer name="post_preview_load_page_size">16</integer>
-    <integer name="request_image_file">0</integer>
-    <integer name="request_image_photo">1</integer>
 </resources>

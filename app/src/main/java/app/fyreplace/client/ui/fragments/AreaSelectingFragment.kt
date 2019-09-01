@@ -8,8 +8,8 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import app.fyreplace.client.R
-import app.fyreplace.client.data.FailureHandler
 import app.fyreplace.client.databinding.ActionAreaSelectingAreaSpinnerBinding
+import app.fyreplace.client.ui.FailureHandler
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 
 /**

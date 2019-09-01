@@ -1,6 +1,8 @@
-package app.fyreplace.client.data
+package app.fyreplace.client.ui
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import app.fyreplace.client.FyreplaceApplication
@@ -15,8 +17,13 @@ import kotlin.coroutines.CoroutineContext
  * Interface implemented by classes that can receive a [Throwable] and propagate it.
  */
 interface FailureHandler : LifecycleOwner {
+    fun getContext(): Context?
+
     fun onFailure(failure: Throwable) {
         Log.e(FyreplaceApplication.context.getString(R.string.app_name), failure.message.orEmpty())
+        getContext()?.let {
+            Toast.makeText(it, failure.localizedMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun launch(

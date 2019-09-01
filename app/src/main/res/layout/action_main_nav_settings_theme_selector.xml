@@ -11,6 +11,6 @@
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:entries="@array/themes"
+        android:entries="@array/settings_themes"
         android:selectedItemPosition="@={model.selectedThemeIndex}" />
 </layout>
