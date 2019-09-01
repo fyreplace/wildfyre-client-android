@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction">
+    <item
+        android:id="@+id/action_title"
+        android:icon="@drawable/ic_title"
+        android:title="@string/draft_bottom_actions_title"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_list"
+        android:icon="@drawable/ic_list"
+        android:title="@string/draft_bottom_actions_list"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_image"
+        android:icon="@drawable/ic_image"
+        android:title="@string/draft_bottom_actions_image"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_youtube"
+        android:icon="@drawable/ic_play_circle_filled"
+        android:title="@string/draft_bottom_actions_youtube"
+        app:showAsAction="always" />
+</menu>

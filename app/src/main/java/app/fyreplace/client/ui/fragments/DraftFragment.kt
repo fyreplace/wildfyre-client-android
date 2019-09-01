@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -22,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_draft.*
 import ru.noties.markwon.recycler.MarkwonAdapter
 
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
-    TextWatcher, ActionMode.Callback {
+    Toolbar.OnMenuItemClickListener, TextWatcher {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by lazyViewModel<DraftFragmentViewModel>()
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
@@ -36,9 +40,15 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         viewModel.setDraft(fragmentArgs.draft)
 
         preview?.adapter = markdownAdapter
+        bottom_app_bar.setOnMenuItemClickListener(this)
         editor.addTextChangedListener(this)
-        editor.customSelectionActionModeCallback = this
         editor.setText(fragmentArgs.draft.text)
+        editor.onSelectionChangedListener = { hasSelection ->
+            bottom_app_bar.replaceMenu(
+                if (hasSelection) R.menu.bottom_actions_fragment_draft_selection
+                else R.menu.bottom_actions_fragment_draft
+            )
+        }
 
         if (fragmentArgs.showHint) launch {
             Toast.makeText(
@@ -126,6 +136,27 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         return false
     }
 
+    override fun onMenuItemClick(item: MenuItem) = when (item.itemId) {
+        R.id.action_bold -> surroundCurrentSelection("**", "**").let { true }
+        R.id.action_italic -> surroundCurrentSelection("_", "_").let { true }
+        R.id.action_strikethrough -> surroundCurrentSelection("~~", "~~").let { true }
+        R.id.action_code -> surroundCurrentSelection("`", "`").let { true }
+        R.id.action_link -> {
+            var link: EditText? = null
+            link = AlertDialog.Builder(requireContext())
+                .setTitle(R.string.draft_bottom_actions_selection_link_dialog_title)
+                .setView(R.layout.draft_dialog_link)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    link?.text?.let { surroundCurrentSelection("[", "]($it)") }
+                }
+                .show()
+                .findViewById(R.id.text)
+            true
+        }
+        else -> false
+    }
+
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) = Unit
@@ -140,36 +171,6 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             countDownTimer = Timer().apply { start() }
         }
     }
-
-    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-        mode.menuInflater.inflate(R.menu.selection_fragment_draft, menu)
-        return editor.hasSelection()
-    }
-
-    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
-
-    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
-        R.id.action_bold -> surroundCurrentSelection("**", "**").let { true }
-        R.id.action_italic -> surroundCurrentSelection("_", "_").let { true }
-        R.id.action_strikethrough -> surroundCurrentSelection("~~", "~~").let { true }
-        R.id.action_code -> surroundCurrentSelection("`", "`").let { true }
-        R.id.action_link -> {
-            var link: EditText? = null
-            link = AlertDialog.Builder(requireContext())
-                .setTitle(R.string.draft_selection_link_dialog_title)
-                .setView(R.layout.draft_dialog_link)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    link?.text?.let { surroundCurrentSelection("[", "]($it)") }
-                }
-                .show()
-                .findViewById(R.id.text)
-            true
-        }
-        else -> false
-    }
-
-    override fun onDestroyActionMode(mode: ActionMode) = Unit
 
     private fun updatePreview() {
         markdownAdapter.setMarkdown(markdown, editor.text.toString())

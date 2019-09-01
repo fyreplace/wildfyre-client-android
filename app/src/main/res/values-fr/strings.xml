@@ -88,13 +88,18 @@
     <string name="draft_action_save_toast">Brouillon enregistré avec succès</string>
     <string name="draft_action_delete">Supprimer</string>
     <string name="draft_action_delete_dialog_title">Supprimer ce brouillon ?</string>
-    <string name="draft_selection_bold"><b>Gras</b></string>
-    <string name="draft_selection_italic"><i>Italique</i></string>
-    <string name="draft_selection_strikethrough"><strike>Barré</strike></string>
-    <string name="draft_selection_code"><tt>Code</tt></string>
-    <string name="draft_selection_link"><u><font color="#E64A19">Lien</font></u></string>
-    <string name="draft_selection_link_dialog_title">Ajouter un lien</string>
-    <string name="draft_selection_link_dialog_hint">Copier un lien ici (par example: https://example.org)</string>
+    <string name="draft_bottom_actions_selection_bold"><b>Gras</b></string>
+    <string name="draft_bottom_actions_selection_italic"><i>Italique</i></string>
+    <string name="draft_bottom_actions_selection_strikethrough"><strike>Barré</strike></string>
+    <string name="draft_bottom_actions_selection_code"><tt>Code</tt></string>
+    <string name="draft_bottom_actions_selection_link"><u><font color="#E64A19">Lien</font></u></string>
+    <string name="draft_bottom_actions_selection_link_dialog_title">Ajouter un lien</string>
+    <string name="draft_bottom_actions_selection_link_dialog_hint">Copier un lien ici</string>
+    <string name="draft_bottom_actions_title">Titre</string>
+    <string name="draft_bottom_actions_list">Liste</string>
+    <string name="draft_bottom_actions_image">Image</string>
+    <string name="draft_bottom_actions_youtube">Video Youtube</string>
+    <string name="draft_bottom_app_bar_title">Outils</string>
     <string name="draft_back_dialog_title">Sauvegarder les changements ?</string>
     <string name="draft_hint_toast">Brouillon créé dans la zone actuelle (%1$s)</string>
     <string name="user_action_share_title">Partager ce profil</string>

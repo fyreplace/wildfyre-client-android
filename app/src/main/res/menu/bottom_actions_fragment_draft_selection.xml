@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction">
+    <item
+        android:id="@+id/action_bold"
+        android:icon="@drawable/ic_format_bold"
+        android:title="@string/draft_bottom_actions_selection_bold"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_italic"
+        android:icon="@drawable/ic_format_italic"
+        android:title="@string/draft_bottom_actions_selection_italic"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_strikethrough"
+        android:icon="@drawable/ic_strikethrough_s"
+        android:title="@string/draft_bottom_actions_selection_strikethrough"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_link"
+        android:icon="@drawable/ic_insert_link"
+        android:title="@string/draft_bottom_actions_selection_link"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_code"
+        android:icon="@drawable/ic_code"
+        android:title="@string/draft_bottom_actions_selection_code"
+        app:showAsAction="always" />
+</menu>

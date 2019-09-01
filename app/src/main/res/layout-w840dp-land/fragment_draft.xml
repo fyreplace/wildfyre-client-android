@@ -10,7 +10,6 @@
         layout="@layout/draft_editor"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin_small"
         android:layout_weight="1" />
 
     <app.fyreplace.client.ui.widgets.MarkdownRecyclerView
