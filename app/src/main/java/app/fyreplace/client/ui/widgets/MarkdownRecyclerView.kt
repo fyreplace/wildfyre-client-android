@@ -11,14 +11,18 @@ import kotlinx.coroutines.*
 import ru.noties.markwon.image.AsyncDrawableScheduler
 import kotlin.coroutines.CoroutineContext
 
-class MarkdownRecyclerView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : RecyclerView(context, attrs, defStyleAttr), CoroutineScope {
+class MarkdownRecyclerView : RecyclerView, CoroutineScope {
     private lateinit var mCoroutineContext: CoroutineContext
     override val coroutineContext: CoroutineContext
         get() = mCoroutineContext
+
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
