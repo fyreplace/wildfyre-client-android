@@ -3,7 +3,7 @@
     <!-- Material colors -->
     <color name="colorPrimary">#FF7043</color>
     <color name="colorPrimaryVariant">#FF5722</color>
-    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimaryDark">@android:color/black</color>
     <color name="colorBackground">@android:color/black</color>
     <color name="colorOnBackground">@android:color/white</color>
     <color name="colorSurface">@android:color/black</color>
@@ -17,5 +17,5 @@
     <color name="backgroundHighlightNeutral">#3F3F3F</color>
     <color name="navigation">@color/colorBackground</color>
     <color name="loginLogo">@android:color/white</color>
-    <color name="badgeBackground">#BF0000</color>
+    <color name="badgeBackground">#D50000</color>
 </resources>

@@ -12,7 +12,6 @@
         <item name="colorOnBackground">@color/colorOnBackground</item>
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
-        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/backgroundSplash</item>
         <item name="alertDialogTheme">@style/AppTheme.Dialog.Alert</item>
         <item name="windowActionModeOverlay">true</item>
