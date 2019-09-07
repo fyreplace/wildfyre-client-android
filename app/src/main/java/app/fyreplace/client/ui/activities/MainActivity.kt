@@ -200,12 +200,12 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
     override fun onBackPressed() = when {
         drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
-        currentFragmentAs<BackHandlingFragment>()?.onGoBack() == false -> Unit
+        currentFragmentAs<BackHandlingFragment>()?.onGoBack(BackHandlingFragment.Method.BACK_BUTTON) == false -> Unit
         else -> super.onBackPressed()
     }
 
     override fun onSupportNavigateUp() = when {
-        currentFragmentAs<BackHandlingFragment>()?.onGoBack() == false -> false
+        currentFragmentAs<BackHandlingFragment>()?.onGoBack(BackHandlingFragment.Method.UP_BUTTON) == false -> false
         findNavController(R.id.navigation_host).navigateUp(appBarConfiguration) -> true
         else -> super.onSupportNavigateUp()
     }

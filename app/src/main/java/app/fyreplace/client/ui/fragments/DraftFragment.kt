@@ -116,7 +116,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onGoBack(): Boolean {
+    override fun onGoBack(method: BackHandlingFragment.Method): Boolean {
         if (viewModel.saved) {
             return true
         }

@@ -293,10 +293,11 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onGoBack() = collapsible_comments?.let { view ->
-        (BottomSheetBehavior.from(view).state != BottomSheetBehavior.STATE_EXPANDED)
-            .apply { takeIf { !it }?.run { toggleComments() } }
-    } ?: true
+    override fun onGoBack(method: BackHandlingFragment.Method) =
+        method == BackHandlingFragment.Method.UP_BUTTON || collapsible_comments?.let { view ->
+            (BottomSheetBehavior.from(view).state != BottomSheetBehavior.STATE_EXPANDED)
+                .apply { takeIf { !it }?.run { toggleComments() } }
+        } ?: true
 
     override fun onImage(image: ImageData) = viewModel.setCommentImage(image)
 
