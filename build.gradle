@@ -2,18 +2,19 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.3.41'
-        dokka_version = '0.9.18'
+        version_kotlin = '1.3.50'
+        version_dokka = '0.9.18'
+        version_navigation = '2.1.0'
     }
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.0.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokka_version"
+        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$version_kotlin"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$version_dokka"
     }
 }
 
