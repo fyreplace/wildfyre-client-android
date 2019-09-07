@@ -58,7 +58,9 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Toolb
     override val contextWrapper by lazy { requireActivity() }
     private val mainViewModel by activityViewModels<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()
-    private val onBackPressedCallback = BackPressedCallback()
+    private val onBackPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() = toggleComments()
+    }
     private val markdown by lazyMarkdown()
     private val highlightedCommentIds by lazy {
         if (canUseFragmentArgs())
@@ -385,10 +387,6 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Toolb
         const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
         val BUTTON_ANIM_SPRING: SpringForce = SpringForce()
             .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
-    }
-
-    private inner class BackPressedCallback : OnBackPressedCallback(false) {
-        override fun handleOnBackPressed() = toggleComments()
     }
 
     private inner class CommentsScrollListener : RecyclerView.OnScrollListener() {
