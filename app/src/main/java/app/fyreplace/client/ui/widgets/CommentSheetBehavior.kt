@@ -7,7 +7,7 @@ import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
-class CommentSheetBehavior<V : View>(context: Context?, attrs: AttributeSet?) :
+class CommentSheetBehavior<V : View>(context: Context, attrs: AttributeSet?) :
     BottomSheetBehavior<V>(context, attrs) {
     var canDrag = true
 

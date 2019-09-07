@@ -173,7 +173,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Toolb
             val arrowWrapper = BottomSheetArrowDrawableWrapper(arrow, !commentsExpanded)
             val behavior = CommentSheetBehavior.from(it)
 
-            behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            behavior.bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
                 @SuppressLint("SwitchIntDef")
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     onBackPressedCallback.isEnabled = newState == BottomSheetBehavior.STATE_EXPANDED
@@ -190,7 +190,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Toolb
                 }
 
                 override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
-            })
+            }
 
             if (commentsExpanded) {
                 onBackPressedCallback.isEnabled = true
@@ -305,20 +305,18 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Toolb
     open fun canUseFragmentArgs() = arguments != null
 
     private fun toggleComments() {
-        if (collapsible_comments == null) {
-            return
-        }
+        collapsible_comments?.let {
+            val commentsBehavior = BottomSheetBehavior.from(it)
 
-        val commentsBehavior = BottomSheetBehavior.from(collapsible_comments)
-
-        when {
-            commentsBehavior.state in setOf(
-                BottomSheetBehavior.STATE_HIDDEN,
-                BottomSheetBehavior.STATE_COLLAPSED
-            ) ->
-                commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED ->
-                commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            when {
+                commentsBehavior.state in setOf(
+                    BottomSheetBehavior.STATE_HIDDEN,
+                    BottomSheetBehavior.STATE_COLLAPSED
+                ) ->
+                    commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED ->
+                    commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
         }
     }
 
