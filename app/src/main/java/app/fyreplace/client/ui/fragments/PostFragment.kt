@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
@@ -51,16 +50,13 @@ import kotlinx.coroutines.withContext
 import ru.noties.markwon.recycler.MarkwonAdapter
 import kotlin.math.max
 
-open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), ToolbarUsingFragment,
-    ImageSelector {
+open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackHandlingFragment,
+    ToolbarUsingFragment, ImageSelector {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by viewModels<PostFragmentViewModel>()
     override val contextWrapper by lazy { requireActivity() }
     private val mainViewModel by activityViewModels<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()
-    private val onBackPressedCallback = object : OnBackPressedCallback(false) {
-        override fun handleOnBackPressed() = toggleComments()
-    }
     private val markdown by lazyMarkdown()
     private val highlightedCommentIds by lazy {
         if (canUseFragmentArgs())
@@ -68,11 +64,6 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Toolb
                 ?: (if (fragmentArgs.selectedCommentId >= 0) listOf(fragmentArgs.selectedCommentId) else null)
         else
             null
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     override fun onCreateView(
@@ -173,14 +164,13 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Toolb
             comment_count.setOnClickListener { toggleComments() }
 
             val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED)
-                ?: (highlightedCommentIds != null) || onBackPressedCallback.isEnabled
+                ?: (highlightedCommentIds != null)
             val arrowWrapper = BottomSheetArrowDrawableWrapper(arrow, !commentsExpanded)
             val behavior = CommentSheetBehavior.from(it)
 
             behavior.bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
                 @SuppressLint("SwitchIntDef")
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    onBackPressedCallback.isEnabled = newState == BottomSheetBehavior.STATE_EXPANDED
                     content?.isVisible = newState != BottomSheetBehavior.STATE_EXPANDED
                     behavior.canDrag = newState != BottomSheetBehavior.STATE_EXPANDED
 
@@ -197,7 +187,6 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Toolb
             }
 
             if (commentsExpanded) {
-                onBackPressedCallback.isEnabled = true
                 toggleComments()
             }
         }
@@ -303,6 +292,11 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Toolb
         super<FailureHandlingFragment>.onActivityResult(requestCode, resultCode, data)
         super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
     }
+
+    override fun onGoBack() = collapsible_comments?.let { view ->
+        (BottomSheetBehavior.from(view).state != BottomSheetBehavior.STATE_EXPANDED)
+            .apply { takeIf { !it }?.run { toggleComments() } }
+    } ?: true
 
     override fun onImage(image: ImageData) = viewModel.setCommentImage(image)
 
