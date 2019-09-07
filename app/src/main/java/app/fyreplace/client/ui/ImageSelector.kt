@@ -23,7 +23,7 @@ interface ImageSelector {
             return
         }
 
-        fun tryUseBytes(bytes: ByteArray, mimeType: String, extension: String) =
+        fun useBytes(bytes: ByteArray, mimeType: String, extension: String) =
             onImage(ImageData("image.$extension", mimeType, bytes))
 
         when (requestCode) {
@@ -47,11 +47,13 @@ interface ImageSelector {
                 } ?: return
 
                 contextWrapper.contentResolver.openInputStream(data.data!!).use {
-                    tryUseBytes(
-                        it!!.readBytes(),
-                        mimeType,
-                        MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)!!
-                    )
+                    it?.run {
+                        useBytes(
+                            readBytes(),
+                            mimeType,
+                            MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)!!
+                        )
+                    }
                 }
             }
             REQUEST_IMAGE_PHOTO -> {
@@ -60,7 +62,7 @@ interface ImageSelector {
                 val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
                 val buffer = ByteArrayOutputStream()
                 bitmap?.compress(Bitmap.CompressFormat.PNG, 100, buffer)
-                tryUseBytes(buffer.toByteArray(), mimeType!!, extension)
+                useBytes(buffer.toByteArray(), mimeType!!, extension)
             }
         }
     }
