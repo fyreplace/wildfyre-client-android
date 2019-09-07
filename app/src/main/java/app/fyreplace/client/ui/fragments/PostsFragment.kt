@@ -29,6 +29,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
     private var settingUp = true
+    private var selectionObserver: SelectionObserver? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -57,13 +58,23 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
                 StorageStrategy.createLongStorage()
             ).build().apply {
                 onRestoreInstanceState(savedInstanceState)
-                addObserver(SelectionObserver())
+                selectionObserver = SelectionObserver()
+                addObserver(selectionObserver)
             }
         }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         itemsAdapter.selectionTracker?.onSaveInstanceState(outState)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+
+        if (itemsAdapter.selectionTracker?.hasSelection() == true) {
+            selectionObserver?.startActionMode()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -114,21 +125,25 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
     }
 
     private inner class SelectionObserver : SelectionTracker.SelectionObserver<Long>() {
-        private var count = 0
         private var actionMode: ActionMode? = null
 
         override fun onItemStateChanged(key: Long, selected: Boolean) {
-            if (count == 0) {
-                actionMode =
-                    (activity as? AppCompatActivity)?.startSupportActionMode(this@PostsFragment)
+            val count = itemsAdapter.selectionTracker?.selection?.size()
+
+            if (count == 1 && selected) {
+                startActionMode()
             }
 
-            count += if (selected) 1 else -1
             actionMode?.invalidate()
 
             if (count == 0) {
                 actionMode?.finish()
             }
+        }
+
+        fun startActionMode() {
+            actionMode =
+                (activity as? AppCompatActivity)?.startSupportActionMode(this@PostsFragment)
         }
     }
 }
