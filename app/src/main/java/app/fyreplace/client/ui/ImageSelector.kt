@@ -24,7 +24,7 @@ interface ImageSelector {
         }
 
         fun tryUseBytes(bytes: ByteArray, mimeType: String, extension: String) =
-            onImage(ImageData("avatar.$extension", mimeType, bytes))
+            onImage(ImageData("image.$extension", mimeType, bytes))
 
         when (requestCode) {
             REQUEST_IMAGE_FILE -> {
@@ -74,7 +74,7 @@ interface ImageSelector {
                     REQUEST_IMAGE_PHOTO -> Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     else -> return
                 },
-                contextWrapper.getString(R.string.main_profile_editor_avatar_chooser)
+                contextWrapper.getString(R.string.image_selector_chooser)
             ),
             request
         )
