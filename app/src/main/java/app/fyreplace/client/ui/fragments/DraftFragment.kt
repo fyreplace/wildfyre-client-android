@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -20,7 +21,6 @@ import app.fyreplace.client.R
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.ui.lazyMarkdown
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
-import app.fyreplace.client.viewmodels.lazyViewModel
 import kotlinx.android.synthetic.main.draft_editor.*
 import kotlinx.android.synthetic.main.fragment_draft.*
 import ru.noties.markwon.recycler.MarkwonAdapter
@@ -28,7 +28,7 @@ import ru.noties.markwon.recycler.MarkwonAdapter
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
     Toolbar.OnMenuItemClickListener {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
-    override val viewModel by lazyViewModel<DraftFragmentViewModel>()
+    override val viewModel by viewModels<DraftFragmentViewModel>()
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
     private val markdown by lazyMarkdown()
     private val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)

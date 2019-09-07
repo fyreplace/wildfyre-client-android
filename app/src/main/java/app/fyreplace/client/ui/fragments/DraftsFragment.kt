@@ -7,6 +7,8 @@ import android.view.MenuInflater
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
@@ -14,16 +16,14 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.DraftsFragmentViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
-import app.fyreplace.client.viewmodels.lazyActivityViewModel
-import app.fyreplace.client.viewmodels.lazyViewModel
 
 /**
  * [androidx.fragment.app.Fragment] listing the user's drafts.
  */
 class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
-    override val viewModel by lazyViewModel<DraftsFragmentViewModel>()
+    override val viewModel by viewModels<DraftsFragmentViewModel>()
     override val itemsAdapter = PostsAdapter(false)
-    private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
+    private val mainViewModel by activityViewModels<MainActivityViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

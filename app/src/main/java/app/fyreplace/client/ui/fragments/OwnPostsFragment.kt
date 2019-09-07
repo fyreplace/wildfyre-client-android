@@ -4,19 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.OwnPostsFragmentViewModel
-import app.fyreplace.client.viewmodels.lazyViewModel
 
 /**
  * [androidx.fragment.app.Fragment] listing the user's own posts.
  */
 class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>() {
-    override val viewModel by lazyViewModel<OwnPostsFragmentViewModel>()
+    override val viewModel by viewModels<OwnPostsFragmentViewModel>()
     override val itemsAdapter = PostsAdapter(false)
 
     override fun onCreateView(

@@ -5,16 +5,16 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.Constants
 import app.fyreplace.client.R
+import app.fyreplace.client.ui.getShareIntent
 import app.fyreplace.client.ui.lazyMarkdown
 import app.fyreplace.client.viewmodels.UserFragmentViewModel
-import app.fyreplace.client.viewmodels.getShareIntent
-import app.fyreplace.client.viewmodels.lazyViewModel
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_user.*
 
 class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
-    override val viewModel by lazyViewModel<UserFragmentViewModel>()
+    override val viewModel by viewModels<UserFragmentViewModel>()
     private val fragmentArgs by navArgs<UserFragmentArgs>()
     private val markdown by lazyMarkdown()
 

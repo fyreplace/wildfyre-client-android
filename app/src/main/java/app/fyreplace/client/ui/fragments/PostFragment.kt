@@ -18,6 +18,8 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
@@ -34,10 +36,12 @@ import app.fyreplace.client.databinding.FragmentPostBinding
 import app.fyreplace.client.ui.ImageSelector
 import app.fyreplace.client.ui.adapters.CommentsAdapter
 import app.fyreplace.client.ui.drawables.BottomSheetArrowDrawableWrapper
+import app.fyreplace.client.ui.getShareIntent
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.ui.lazyMarkdown
 import app.fyreplace.client.ui.widgets.CommentSheetBehavior
-import app.fyreplace.client.viewmodels.*
+import app.fyreplace.client.viewmodels.MainActivityViewModel
+import app.fyreplace.client.viewmodels.PostFragmentViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.post_comments.*
@@ -50,9 +54,9 @@ import kotlin.math.max
 open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), ToolbarUsingFragment,
     ImageSelector {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
-    override val viewModel by lazyViewModel<PostFragmentViewModel>()
+    override val viewModel by viewModels<PostFragmentViewModel>()
     override val contextWrapper by lazy { requireActivity() }
-    private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
+    private val mainViewModel by activityViewModels<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()
     private val onBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() = toggleComments()
@@ -351,13 +355,13 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), Toolb
     }
 
     private fun copyComment(comment: Comment) {
-        getSystemService(requireContext(), ClipboardManager::class.java)
-            ?.setPrimaryClip(
-                ClipData.newPlainText(
-                    getString(R.string.post_comment_copy_label),
-                    comment.text
-                )
+        getSystemService(requireContext(), ClipboardManager::class.java)?.setPrimaryClip(
+            ClipData.newPlainText(
+                getString(R.string.post_comment_copy_label),
+                comment.text
             )
+        )
+
         Toast.makeText(context, getString(R.string.post_comment_copy_toast), Toast.LENGTH_SHORT)
             .show()
     }

@@ -17,8 +17,8 @@ class AreaSelectingFragmentViewModel : ViewModel() {
     val areasDisplayNames: LiveData<List<String>> = areas.map { it.map { a -> a.displayName } }
     val preferredAreaName: LiveData<String> = mPreferredAreaName.distinctUntilChanged()
     val preferredArea: LiveData<Area?> = mPreferredArea.distinctUntilChanged()
-    val preferredAreaIndex: LiveData<Int> =
-        areas.map { areas -> areas.indexOfFirst { it.name == AreaRepository.preferredAreaName } }
+    val preferredAreaIndex: LiveData<Int> = areas
+        .map { areas -> areas.indexOfFirst { it.name == AreaRepository.preferredAreaName } }
     val currentAreaSpread: LiveData<Int> = mPreferredAreaReputationInfo.map { it.spread }
     val currentAreaReputation: LiveData<Int> = mPreferredAreaReputationInfo.map { it.reputation }
 

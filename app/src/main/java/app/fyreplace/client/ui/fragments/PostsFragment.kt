@@ -6,6 +6,7 @@ import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.recyclerview.selection.SelectionTracker
@@ -18,7 +19,6 @@ import app.fyreplace.client.ui.widgets.ItemIdKeyProvider
 import app.fyreplace.client.ui.widgets.PostDetailsLookup
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 import app.fyreplace.client.viewmodels.PostsFragmentViewModel
-import app.fyreplace.client.viewmodels.lazyActivityViewModel
 import kotlinx.android.synthetic.main.fragment_items_list.*
 
 /**
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_items_list.*
 abstract class PostsFragment<VM : PostsFragmentViewModel> :
     ItemsListFragment<Post, VM, PostsAdapter>(), AreaSelectingFragment, ActionMode.Callback {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
-    override val areaSelectingViewModel by lazyActivityViewModel<AreaSelectingFragmentViewModel>()
+    override val areaSelectingViewModel by activityViewModels<AreaSelectingFragmentViewModel>()
     private var settingUp = true
     private var selectionObserver: SelectionObserver? = null
 

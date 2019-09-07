@@ -1,5 +1,7 @@
 package app.fyreplace.client.ui
 
+import android.content.ClipDescription
+import android.content.Intent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
@@ -37,3 +39,12 @@ fun Post.toMarkdown() =
         val image = additionalImages?.firstOrNull { img -> img.num == imageNum }
         return@replace image?.run { "\n![${image.comment}](${image.image})\n" } ?: ""
     }
+
+fun getShareIntent(text: CharSequence, title: CharSequence): Intent =
+    Intent.createChooser(
+        Intent(Intent.ACTION_SEND).apply {
+            type = ClipDescription.MIMETYPE_TEXT_PLAIN
+            putExtra(Intent.EXTRA_TEXT, text)
+        },
+        title
+    )

@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
@@ -41,7 +42,6 @@ import app.fyreplace.client.ui.fragments.BackHandlingFragment
 import app.fyreplace.client.ui.fragments.FailureHandlingFragment
 import app.fyreplace.client.ui.fragments.ToolbarUsingFragment
 import app.fyreplace.client.viewmodels.MainActivityViewModel
-import app.fyreplace.client.viewmodels.lazyViewModel
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -57,7 +57,7 @@ import java.io.ByteArrayInputStream
  */
 class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChangedListener,
     DrawerLayout.DrawerListener, ImageSelector {
-    override val viewModel by lazyViewModel<MainActivityViewModel>()
+    override val viewModel by viewModels<MainActivityViewModel>()
     override val contextWrapper = this
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val toolbarChangeListener by lazy { OnToolbarChangeListener(toolbar) }

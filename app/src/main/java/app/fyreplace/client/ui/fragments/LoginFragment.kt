@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -17,8 +19,6 @@ import app.fyreplace.client.databinding.FragmentLoginBinding
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.viewmodels.LoginFragmentViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
-import app.fyreplace.client.viewmodels.lazyActivityViewModel
-import app.fyreplace.client.viewmodels.lazyViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 import retrofit2.HttpException
 
@@ -27,8 +27,8 @@ import retrofit2.HttpException
  */
 class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
-    override val viewModel by lazyViewModel<LoginFragmentViewModel>()
-    private val mainViewModel by lazyActivityViewModel<MainActivityViewModel>()
+    override val viewModel by viewModels<LoginFragmentViewModel>()
+    private val mainViewModel by activityViewModels<MainActivityViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
