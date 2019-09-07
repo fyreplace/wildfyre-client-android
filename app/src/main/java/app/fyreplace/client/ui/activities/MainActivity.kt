@@ -38,7 +38,6 @@ import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.databinding.*
 import app.fyreplace.client.ui.ImageSelector
-import app.fyreplace.client.ui.fragments.BackHandlingFragment
 import app.fyreplace.client.ui.fragments.FailureHandlingFragment
 import app.fyreplace.client.ui.fragments.ToolbarUsingFragment
 import app.fyreplace.client.viewmodels.MainActivityViewModel
@@ -200,14 +199,14 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
     override fun onBackPressed() = when {
         drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
-        currentFragmentAs<BackHandlingFragment>()?.onGoBack() == false -> Unit
         else -> super.onBackPressed()
     }
 
-    override fun onSupportNavigateUp() = when {
-        currentFragmentAs<BackHandlingFragment>()?.onGoBack() == false -> false
-        findNavController(R.id.navigation_host).navigateUp(appBarConfiguration) -> true
-        else -> super.onSupportNavigateUp()
+    override fun onSupportNavigateUp() = if (onBackPressedDispatcher.hasEnabledCallbacks()) {
+        onBackPressedDispatcher.onBackPressed()
+        false
+    } else {
+        findNavController(R.id.navigation_host).navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

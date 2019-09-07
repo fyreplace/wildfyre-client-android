@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
@@ -25,14 +26,20 @@ import kotlinx.android.synthetic.main.draft_editor.*
 import kotlinx.android.synthetic.main.fragment_draft.*
 import ru.noties.markwon.recycler.MarkwonAdapter
 
-class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
+class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft),
     Toolbar.OnMenuItemClickListener {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by viewModels<DraftFragmentViewModel>()
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
+    private val onBackPressedCallback = BackPressedCallback()
     private val markdown by lazyMarkdown()
     private val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
     private var allowDirtyingDraft = false
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,8 +73,14 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         super.onDestroyView()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(SAVE_DRAFT_DIRTY, onBackPressedCallback.isEnabled)
+    }
+
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
+        onBackPressedCallback.isEnabled = savedInstanceState?.getBoolean(SAVE_DRAFT_DIRTY) ?: false
         allowDirtyingDraft = true
     }
 
@@ -116,25 +129,6 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onGoBack(): Boolean {
-        if (viewModel.saved) {
-            return true
-        }
-
-        AlertDialog.Builder(requireContext())
-            .setTitle(R.string.draft_back_dialog_title)
-            .setNegativeButton(R.string.no) { _, _ -> findNavController().navigateUp() }
-            .setPositiveButton(R.string.yes) { _, _ ->
-                launch {
-                    saveDraft(true)
-                    findNavController().navigateUp()
-                }
-            }
-            .show()
-
-        return false
-    }
-
     override fun onMenuItemClick(item: MenuItem) = when (item.itemId) {
         R.id.action_title -> addTitle().let { true }
         R.id.action_list_bulleted -> addList(false).let { true }
@@ -157,6 +151,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     private suspend fun saveDraft(showConfirmation: Boolean) {
         viewModel.saveDraft(editor.text.toString())
+        onBackPressedCallback.isEnabled = false
 
         if (showConfirmation) {
             Toast.makeText(context, R.string.draft_action_save_toast, Toast.LENGTH_SHORT).show()
@@ -205,7 +200,23 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private companion object {
+        const val SAVE_DRAFT_DIRTY = "save.drat.dirty"
         const val PREVIEW_DELAY = 1500L
+    }
+
+    private inner class BackPressedCallback : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            AlertDialog.Builder(requireContext())
+                .setTitle(R.string.draft_back_dialog_title)
+                .setNegativeButton(R.string.no) { _, _ -> findNavController().navigateUp() }
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    launch {
+                        saveDraft(true)
+                        findNavController().navigateUp()
+                    }
+                }
+                .show()
+        }
     }
 
     private inner class EditorWatcher : TextWatcher {
@@ -229,7 +240,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
         override fun afterTextChanged(s: Editable) {
             if (allowDirtyingDraft) {
-                viewModel.dirtyDraft()
+                onBackPressedCallback.isEnabled = true
             }
 
             if (preview != null) {
