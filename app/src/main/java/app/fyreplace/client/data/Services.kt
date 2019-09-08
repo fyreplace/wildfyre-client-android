@@ -2,6 +2,7 @@ package app.fyreplace.client.data
 
 import app.fyreplace.client.Constants
 import app.fyreplace.client.data.models.*
+import com.google.gson.GsonBuilder
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -18,7 +19,7 @@ object Services {
      */
     val webService: WebService = Retrofit.Builder()
         .baseUrl(Constants.Api.BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().serializeNulls().create()))
         .build()
         .create(WebService::class.java)
 }
@@ -275,6 +276,15 @@ interface WebService {
         @Part text: MultipartBody.Part
     ): Post
 
+    @PUT("/areas/{areaName}/drafts/{postId}/")
+    @Headers("Content-Type: application/json")
+    suspend fun putEmptyImage(
+        @Header("Authorization") authorization: String,
+        @Path("areaName") areaName: String,
+        @Path("postId") postId: Long,
+        @Body text: DraftNoImageContent
+    ): Post
+
     @PUT("/areas/{areaName}/drafts/{postId}/img/{slot}/")
     @Multipart
     suspend fun putImage(
@@ -297,13 +307,6 @@ interface WebService {
 
     @DELETE("/areas/{areaName}/drafts/{postId}/")
     suspend fun deleteDraft(
-        @Header("Authorization") authorization: String,
-        @Path("areaName") areaName: String,
-        @Path("postId") postId: Long
-    ): Response<Unit>
-
-    @DELETE("/areas/{areaName}/drafts/{postId}/")
-    suspend fun deleteImage(
         @Header("Authorization") authorization: String,
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long

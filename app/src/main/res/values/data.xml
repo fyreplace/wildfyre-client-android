@@ -10,4 +10,8 @@
     <bool name="home_show_full_menu">false</bool>
     <integer name="post_preview_span_count">2</integer>
     <integer name="post_preview_load_page_size">16</integer>
+    <string-array name="draft_image_sources">
+        <item>@string/draft_bottom_actions_images_dialog_file</item>
+        <item>@string/draft_bottom_actions_images_dialog_photo</item>
+    </string-array>
 </resources>

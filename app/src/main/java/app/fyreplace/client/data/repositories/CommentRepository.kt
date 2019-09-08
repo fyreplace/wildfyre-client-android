@@ -5,9 +5,7 @@ import app.fyreplace.client.data.models.CommentText
 import app.fyreplace.client.data.models.ImageData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.MultipartBody.Part.createFormData
 
 object CommentRepository {
     suspend fun sendComment(areaName: String, postId: Long, comment: String, image: ImageData?) =
@@ -24,12 +22,8 @@ object CommentRepository {
                     AuthRepository.authToken,
                     areaName,
                     postId,
-                    MultipartBody.Part.createFormData(
-                        "image",
-                        image.fileName,
-                        RequestBody.create(MediaType.parse(image.mimeType), image.bytes)
-                    ),
-                    MultipartBody.Part.createFormData("text", comment)
+                    createFormData("image", image),
+                    createFormData("text", comment)
                 )
             }
         }

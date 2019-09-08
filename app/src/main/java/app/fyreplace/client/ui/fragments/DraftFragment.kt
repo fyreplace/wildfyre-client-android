@@ -1,5 +1,6 @@
 package app.fyreplace.client.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -18,17 +19,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.R
+import app.fyreplace.client.data.models.ImageData
+import app.fyreplace.client.ui.ImageSelector
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.ui.lazyMarkdown
+import app.fyreplace.client.ui.toMarkdown
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
 import kotlinx.android.synthetic.main.draft_editor.*
 import kotlinx.android.synthetic.main.fragment_draft.*
 import ru.noties.markwon.recycler.MarkwonAdapter
 
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
-    Toolbar.OnMenuItemClickListener {
+    Toolbar.OnMenuItemClickListener, ImageSelector {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by viewModels<DraftFragmentViewModel>()
+    override val contextWrapper by lazy { requireActivity() }
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
     private val markdown by lazyMarkdown()
     private val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
@@ -69,6 +74,11 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         allowDirtyingDraft = true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super<FailureHandlingFragment>.onActivityResult(requestCode, resultCode, data)
+        super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -150,8 +160,18 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         else -> false
     }
 
+    override fun onImage(image: ImageData) {
+        launch {
+            viewModel.addImage(image)
+
+            if (viewModel.nextImageSlot != -1) {
+                editor?.editableText?.append("[img: ${viewModel.nextImageSlot}]")
+            }
+        }
+    }
+
     private fun updatePreview() {
-        markdownAdapter.setMarkdown(markdown, editor.text.toString())
+        markdownAdapter.setMarkdown(markdown, viewModel.draft.toMarkdown(editor.text.toString()))
         markdownAdapter.notifyDataSetChanged()
     }
 
@@ -177,7 +197,27 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private fun addImage(main: Boolean) {
-        // TODO
+        viewModel.pushImageIdentifier(main)
+        var items = resources.getStringArray(R.array.draft_image_sources)
+
+        if (main && viewModel.draft.image != null) {
+            items += getString(R.string.draft_bottom_actions_images_dialog_remove)
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setItems(items) { _, i ->
+                if (i == 2) {
+                    launch { viewModel.removeImage() }
+                } else {
+                    selectImage(
+                        resources.getInteger(
+                            if (i == 0) R.integer.request_image_file
+                            else R.integer.request_image_photo
+                        )
+                    )
+                }
+            }
+            .show()
     }
 
     private fun addYoutubeLink() {

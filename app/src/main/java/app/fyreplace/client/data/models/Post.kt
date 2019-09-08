@@ -10,6 +10,12 @@ data class Draft(
     val anonymous: Boolean
 ) : Serializable
 
+data class DraftNoImageContent(
+    val text: String
+) {
+    val image = null
+}
+
 data class Image(
     val num: Int,
     val image: String,
@@ -27,7 +33,7 @@ data class Post(
     val active: Boolean,
     val image: String? = null,
     @SerializedName("additional_images")
-    val additionalImages: List<Image>? = null,
+    val additionalImages: MutableList<Image> = mutableListOf(),
     val comments: List<Comment>
 ) : Serializable
 

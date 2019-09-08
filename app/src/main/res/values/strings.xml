@@ -102,6 +102,9 @@
     <string name="draft_bottom_actions_list_numbered">Numbered list</string>
     <string name="draft_bottom_actions_main_image">Main image</string>
     <string name="draft_bottom_actions_images">Images</string>
+    <string name="draft_bottom_actions_images_dialog_file">File</string>
+    <string name="draft_bottom_actions_images_dialog_photo">Photo</string>
+    <string name="draft_bottom_actions_images_dialog_remove">Remove</string>
     <string name="draft_bottom_actions_youtube">Youtube video</string>
     <string name="draft_bottom_app_bar_title">Tools</string>
     <string name="draft_back_dialog_title">Save changes?</string>

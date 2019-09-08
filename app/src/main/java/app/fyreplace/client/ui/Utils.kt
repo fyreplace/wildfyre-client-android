@@ -33,11 +33,11 @@ fun Fragment.lazyMarkdown() = lazy {
     }
 }
 
-fun Post.toMarkdown() =
-    (image?.let { "![]($it)\n\n" } ?: "") + text?.replace(Constants.Api.IMAGE_REGEX) {
-        val imageNum = it.groups[1]?.value?.toInt() ?: 0
-        val image = additionalImages?.firstOrNull { img -> img.num == imageNum }
-        return@replace image?.run { "\n![${image.comment}](${image.image})\n" } ?: ""
+fun Post.toMarkdown(content: String? = text) =
+    (image?.let { "![]($it)\n\n" } ?: "") + content?.replace(Constants.Api.IMAGE_REGEX) {
+        val imageNum = it.groupValues[1].toInt()
+        val image = additionalImages.firstOrNull { img -> img.num == imageNum }
+        return@replace image?.run { "\n![${image.comment}](${image.image})\n" } ?: it.groupValues[0]
     }
 
 fun getShareIntent(text: CharSequence, title: CharSequence): Intent =
