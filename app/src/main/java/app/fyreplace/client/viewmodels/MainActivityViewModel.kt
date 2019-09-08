@@ -124,8 +124,8 @@ class MainActivityViewModel : ViewModel() {
             R.id.wildfyre_website to Constants.Links.WildFyre.WEBSITE,
             R.id.wildfyre_open_source to Constants.Links.WildFyre.OPEN_SOURCE,
             R.id.wildfyre_faq to Constants.Links.WildFyre.FAQ,
-            R.id.wildfyre_terms_and_conditions to Constants.Links.WildFyre.TERMS_AND_CONDITIONS,
-            R.id.wildfyre_privacy_policy to Constants.Links.WildFyre.PRIVACY_POLICY
+            R.id.wildfyre_terms_and_conditions to Constants.Links.WildFyre.TERMS,
+            R.id.wildfyre_privacy_policy to Constants.Links.WildFyre.PRIVACY
         )
     }
 

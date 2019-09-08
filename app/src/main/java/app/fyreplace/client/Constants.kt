@@ -27,8 +27,8 @@ object Constants {
     }
 
     /**
-     * Simplified constants for day/night mode, merging [AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM] and
-     * [AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY].
+     * Simplified constants for day/night mode, merging [AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM]
+     * and [AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY].
      */
     object Themes {
         val AUTOMATIC =
@@ -61,13 +61,13 @@ object Constants {
         }
 
         object WildFyre {
-            private const val MAIN_ADDRESS = "https://wildfyre.net"
-            const val WEBSITE = MAIN_ADDRESS
-            const val OPEN_SOURCE = "$MAIN_ADDRESS/open-source"
-            const val FAQ = "$MAIN_ADDRESS/frequently-asked-questions"
-            const val TERMS_AND_CONDITIONS = "$MAIN_ADDRESS/terms-and-conditions"
-            const val PRIVACY_POLICY = "$MAIN_ADDRESS/privacy-policy"
-            const val REGISTER = "https://client.wildfyre.net/register"
+            private const val DOMAIN = "wildfyre.net"
+            const val WEBSITE = "https://$DOMAIN"
+            const val OPEN_SOURCE = "https://phabricator.$DOMAIN"
+            const val FAQ = "$WEBSITE#home-faq"
+            const val TERMS = "$WEBSITE/pages/terms-of-service"
+            const val PRIVACY = "$WEBSITE/pages/privacy-policy"
+            const val REGISTER = "https://client.$DOMAIN/register"
         }
     }
 }
