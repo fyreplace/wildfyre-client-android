@@ -26,7 +26,7 @@ class DraftFragmentViewModel : ViewModel() {
         saved = false
     }
 
-    suspend fun saveDraft(content: String) {
+    suspend fun saveDraft(content: String, anonymous: Boolean) {
         val usedSlots = mutableSetOf<Int>()
 
         for (match in Constants.Api.IMAGE_REGEX.findAll(content)) {
@@ -39,7 +39,7 @@ class DraftFragmentViewModel : ViewModel() {
             }
         }
 
-        setDraft(DraftRepository.saveDraft(draft.id, content))
+        setDraft(DraftRepository.saveDraft(draft.id, content, anonymous))
         saved = true
     }
 

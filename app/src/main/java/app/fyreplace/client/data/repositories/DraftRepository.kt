@@ -28,12 +28,13 @@ object DraftRepository {
         )
     }
 
-    suspend fun saveDraft(id: Long, content: String) = withContext(Dispatchers.IO) {
+    suspend fun saveDraft(id: Long, content: String, anonymous: Boolean) =
+        withContext(Dispatchers.IO) {
         Services.webService.patchDraft(
             AuthRepository.authToken,
             AreaRepository.preferredAreaName,
             id,
-            Draft(content, false)
+            Draft(content, anonymous)
         )
     }
 

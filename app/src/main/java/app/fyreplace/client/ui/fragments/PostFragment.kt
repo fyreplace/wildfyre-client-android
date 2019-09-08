@@ -328,11 +328,11 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         val dialog = AlertDialog.Builder(contextWrapper)
             .setView(R.layout.post_dialog_comment_image)
             .setTitle(R.string.post_comment_attach_file_dialog_title)
-            .setPositiveButton(R.string.post_comment_attach_file_dialog_positive) { _, _ ->
-                selectImage(ImageSelector.REQUEST_IMAGE_FILE)
-            }
             .setNegativeButton(R.string.post_comment_attach_file_dialog_negative) { _, _ ->
                 selectImage(ImageSelector.REQUEST_IMAGE_PHOTO)
+            }
+            .setPositiveButton(R.string.post_comment_attach_file_dialog_positive) { _, _ ->
+                selectImage(ImageSelector.REQUEST_IMAGE_FILE)
             }
             .setNeutralButton(R.string.post_comment_attach_file_dialog_neutral) { _, _ -> viewModel.resetCommentImage() }
             .show()

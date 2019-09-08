@@ -103,17 +103,34 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                     .findViewById<RecyclerView>(R.id.preview)?.adapter = markdownAdapter
                 updatePreview()
             }
-            R.id.action_publish -> launch {
-                saveDraft(false)
-                viewModel.publishDraft()
-                Toast.makeText(
-                    context,
-                    R.string.draft_action_publish_toast,
-                    Toast.LENGTH_SHORT
-                ).show()
-                findNavController().navigateUp()
+            R.id.action_publish -> {
+                var anon: Boolean? = null
+                AlertDialog.Builder(contextWrapper)
+                    .setTitle(R.string.draft_action_publish_dialog_title)
+                    .setNegativeButton(R.string.draft_action_publish_dialog_negative) { _, _ ->
+                        anon = true
+                    }
+                    .setPositiveButton(R.string.draft_action_publish_dialog_positive) { _, _ ->
+                        anon = false
+                    }
+                    .setNeutralButton(R.string.cancel, null)
+                    .show()
+                    .setOnDismissListener {
+                        anon?.let {
+                            launch {
+                                saveDraft(it)
+                                viewModel.publishDraft()
+                                Toast.makeText(
+                                    context,
+                                    R.string.draft_action_publish_toast,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                findNavController().navigateUp()
+                            }
+                        }
+                    }
             }
-            R.id.action_save -> launch { saveDraft(true) }
+            R.id.action_save -> launch { saveDraft() }
             R.id.action_delete -> AlertDialog.Builder(contextWrapper)
                 .setTitle(R.string.draft_action_delete_dialog_title)
                 .setNegativeButton(R.string.no, null)
@@ -139,7 +156,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             .setNegativeButton(R.string.no) { _, _ -> findNavController().navigateUp() }
             .setPositiveButton(R.string.yes) { _, _ ->
                 launch {
-                    saveDraft(true)
+                    saveDraft(showConfirmation = true)
                     findNavController().navigateUp()
                 }
             }
@@ -183,8 +200,8 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         markdownAdapter.notifyDataSetChanged()
     }
 
-    private suspend fun saveDraft(showConfirmation: Boolean) {
-        viewModel.saveDraft(editor.text.toString())
+    private suspend fun saveDraft(anonymous: Boolean = false, showConfirmation: Boolean = false) {
+        viewModel.saveDraft(editor.text.toString(), anonymous)
 
         if (showConfirmation) {
             Toast.makeText(context, R.string.draft_action_save_toast, Toast.LENGTH_SHORT).show()

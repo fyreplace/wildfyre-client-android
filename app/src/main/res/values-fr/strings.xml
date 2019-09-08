@@ -71,8 +71,8 @@
     <string name="post_comment_author">Auteur</string>
     <string name="post_comment_new_comment">Ajouter un commentaire</string>
     <string name="post_comment_attach_file_dialog_title">Joindre…</string>
-    <string name="post_comment_attach_file_dialog_positive">Fichier</string>
     <string name="post_comment_attach_file_dialog_negative">Photo</string>
+    <string name="post_comment_attach_file_dialog_positive">Fichier</string>
     <string name="post_comment_attach_file_dialog_neutral">Rien</string>
     <string name="post_comment_menu_copy">Copier</string>
     <string name="post_comment_menu_share">Partager</string>
@@ -84,6 +84,9 @@
     <string name="home_empty">Plus de posts dans cette zone</string>
     <string name="draft_action_preview">Prévisualiser</string>
     <string name="draft_action_publish">Publier</string>
+    <string name="draft_action_publish_dialog_title">Publier en tant que…</string>
+    <string name="draft_action_publish_dialog_negative">Anonyme</string>
+    <string name="draft_action_publish_dialog_positive">Moi-même</string>
     <string name="draft_action_publish_toast">Post publié !</string>
     <string name="draft_action_save">Sauvegarder</string>
     <string name="draft_action_save_toast">Brouillon enregistré avec succès</string>
