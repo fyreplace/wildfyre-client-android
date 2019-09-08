@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.R
@@ -22,9 +23,6 @@ interface ImageSelector {
         if (resultCode != AppCompatActivity.RESULT_OK || data == null) {
             return
         }
-
-        fun useBytes(bytes: ByteArray, mimeType: String, extension: String) =
-            onImage(ImageData("image.$extension", mimeType, bytes))
 
         when (requestCode) {
             REQUEST_IMAGE_FILE -> {
@@ -82,7 +80,17 @@ interface ImageSelector {
         )
     }
 
+    private fun useBytes(bytes: ByteArray, mimeType: String, extension: String) {
+        if (bytes.size <= IMAGE_MAX_SIZE) {
+            onImage(ImageData("image.$extension", mimeType, bytes))
+        } else {
+            Toast.makeText(contextWrapper, R.string.image_selector_error_toast, Toast.LENGTH_LONG)
+                .show()
+        }
+    }
+
     companion object {
+        private const val IMAGE_MAX_SIZE = 512 * 1024
         val REQUEST_IMAGE_FILE = FyreplaceApplication.context.resources
             .getInteger(R.integer.request_image_file)
         val REQUEST_IMAGE_PHOTO = FyreplaceApplication.context.resources

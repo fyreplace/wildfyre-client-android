@@ -28,6 +28,7 @@
     <string name="main_profile_editor_bio">Your bio</string>
     <string name="main_author_anonymous">Anonymous</string>
     <string name="image_selector_chooser">Image source</string>
+    <string name="image_selector_error_toast">Maximum image size: 512k</string>
     <string name="area_selecting_action_area_selector">Area: %1$s</string>
     <string name="area_selecting_action_area_spread">Spread</string>
     <string name="area_selecting_action_area_reputation">Reputation</string>
