@@ -209,6 +209,10 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         }
 
         AlertDialog.Builder(contextWrapper)
+            .setTitle(
+                if (main) R.string.draft_bottom_actions_main_image_dialog_title
+                else R.string.draft_bottom_actions_images_dialog_title
+            )
             .setItems(items) { _, i ->
                 if (i == 2) {
                     launch { viewModel.removeImage() }
