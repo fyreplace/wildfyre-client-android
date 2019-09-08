@@ -101,7 +101,7 @@
     <string name="draft_bottom_actions_list_numbered">Liste numérotée</string>
     <string name="draft_bottom_actions_main_image">Image principale</string>
     <string name="draft_bottom_actions_images">Images</string>
-    <string name="draft_bottom_actions_youtube">Video Youtube</string>
+    <string name="draft_bottom_actions_youtube">Vidéo Youtube</string>
     <string name="draft_bottom_app_bar_title">Outils</string>
     <string name="draft_back_dialog_title">Sauvegarder les changements ?</string>
     <string name="draft_hint_toast">Brouillon créé dans la zone actuelle (%1$s)</string>
