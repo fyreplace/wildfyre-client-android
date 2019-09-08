@@ -13,7 +13,7 @@
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/draft_bottom_actions_selection_link_dialog_hint"
+            android:hint="@string/draft_link_dialog_hint"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 </FrameLayout>

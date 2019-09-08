@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
+import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.ui.ImageSelector
@@ -163,7 +164,10 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             viewModel.addImage(image)
 
             if (viewModel.nextImageSlot != -1) {
-                editor?.editableText?.append("[img: ${viewModel.nextImageSlot}]")
+                editor?.editableText?.insert(
+                    editor.selectionStart,
+                    "[img: ${viewModel.nextImageSlot}]"
+                )
             }
         }
     }
@@ -219,7 +223,29 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private fun addYoutubeLink() {
-        // TODO
+        var link: EditText? = null
+        link = AlertDialog.Builder(contextWrapper)
+            .setTitle(R.string.draft_bottom_actions_youtube_dialog_title)
+            .setView(R.layout.draft_dialog_link)
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                link?.text?.let {
+                    Constants.Api.YOUTUBE_REGEX.matchEntire(it.toString())?.run {
+                        val videoId = groupValues[1]
+                        val thumbnail = Constants.Api.youtubeThumbnail(videoId)
+                        editor.editableText.insert(
+                            editor.selectionStart,
+                            "[![YouTube link]($thumbnail)](https://www.youtube.com/watch?v=$videoId)"
+                        )
+                    } ?: Toast.makeText(
+                        contextWrapper,
+                        R.string.draft_bottom_actions_youtube_toast,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            .show()
+            .findViewById(R.id.text)
     }
 
     private fun editorLineStart(cursorPos: Int = editor.selectionStart) =

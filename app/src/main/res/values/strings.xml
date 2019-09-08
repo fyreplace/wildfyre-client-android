@@ -96,7 +96,6 @@
     <string name="draft_bottom_actions_selection_code"><tt>Code</tt></string>
     <string name="draft_bottom_actions_selection_link"><u><font color="#E64A19">Link</font></u></string>
     <string name="draft_bottom_actions_selection_link_dialog_title">Add a link</string>
-    <string name="draft_bottom_actions_selection_link_dialog_hint">Paste a link here</string>
     <string name="draft_bottom_actions_title">Title</string>
     <string name="draft_bottom_actions_title_dialog_title">Title level</string>
     <string name="draft_bottom_actions_list_bulleted">Bulleted list</string>
@@ -107,8 +106,11 @@
     <string name="draft_bottom_actions_images_dialog_photo">Photo</string>
     <string name="draft_bottom_actions_images_dialog_remove">Remove</string>
     <string name="draft_bottom_actions_youtube">Youtube video</string>
+    <string name="draft_bottom_actions_youtube_dialog_title">Add a YouTube link</string>
+    <string name="draft_bottom_actions_youtube_toast">This is not a YouTube link</string>
     <string name="draft_bottom_app_bar_title">Tools</string>
     <string name="draft_back_dialog_title">Save changes?</string>
+    <string name="draft_link_dialog_hint">Paste the link here</string>
     <string name="draft_hint_toast">Draft created in current area (%1$s)</string>
     <string name="user_action_share_title">Share user profile</string>
     <string name="image_desc_profile_editor_change_image">Select an image</string>

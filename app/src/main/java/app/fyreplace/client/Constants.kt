@@ -10,6 +10,8 @@ object Constants {
     object Api {
         const val BASE_URL = "https://api.wildfyre.net"
         val IMAGE_REGEX = Regex("\n*\\[img:\\s*(\\d+)]\n*", RegexOption.MULTILINE)
+        val YOUTUBE_REGEX =
+            Regex("(?:https?://)?(?:www\\.)?youtu(?:be\\.(?:\\w+)/watch\\?v=|\\.be/)(\\w+)")
 
         fun postShareUrl(areaName: String, postId: Long) =
             "https://client.wildfyre.net/areas/$areaName/$postId"
@@ -19,6 +21,9 @@ object Constants {
 
         fun userShareUrl(userId: Long) =
             "https://client.wildfyre.net/user/$userId"
+
+        fun youtubeThumbnail(videoId: String) =
+            "https://img.youtube.com/vi/$videoId/0.jpg"
     }
 
     /**

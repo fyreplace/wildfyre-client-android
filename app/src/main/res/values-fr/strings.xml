@@ -95,7 +95,6 @@
     <string name="draft_bottom_actions_selection_code"><tt>Code</tt></string>
     <string name="draft_bottom_actions_selection_link"><u><font color="#E64A19">Lien</font></u></string>
     <string name="draft_bottom_actions_selection_link_dialog_title">Ajouter un lien</string>
-    <string name="draft_bottom_actions_selection_link_dialog_hint">Copier un lien ici</string>
     <string name="draft_bottom_actions_title">Titre</string>
     <string name="draft_bottom_actions_title_dialog_title">Niveau de titre</string>
     <string name="draft_bottom_actions_list_bulleted">Liste à puces</string>
@@ -106,8 +105,11 @@
     <string name="draft_bottom_actions_images_dialog_photo">Photo</string>
     <string name="draft_bottom_actions_images_dialog_remove">Retirer</string>
     <string name="draft_bottom_actions_youtube">Vidéo Youtube</string>
+    <string name="draft_bottom_actions_youtube_dialog_title">Ajouter un lien YouTube</string>
+    <string name="draft_bottom_actions_youtube_toast">Ceci n\'est pas un lien YouTube</string>
     <string name="draft_bottom_app_bar_title">Outils</string>
     <string name="draft_back_dialog_title">Sauvegarder les changements ?</string>
+    <string name="draft_link_dialog_hint">Copier le lien ici</string>
     <string name="draft_hint_toast">Brouillon créé dans la zone actuelle (%1$s)</string>
     <string name="user_action_share_title">Partager ce profil</string>
     <string name="image_desc_profile_editor_change_image">Choisir une image</string>
