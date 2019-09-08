@@ -45,14 +45,18 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         viewModel.setDraft(fragmentArgs.draft)
 
         preview?.adapter = markdownAdapter
+        bottom_app_bar.setTag(R.menu.bottom_actions_fragment_draft_selection, false)
         bottom_app_bar.setOnMenuItemClickListener(this)
         editor.addTextChangedListener(EditorWatcher())
         editor.setText(fragmentArgs.draft.text)
         editor.onSelectionChangedListener = { hasSelection ->
-            bottom_app_bar.replaceMenu(
-                if (hasSelection) R.menu.bottom_actions_fragment_draft_selection
-                else R.menu.bottom_actions_fragment_draft
-            )
+            if (bottom_app_bar.getTag(R.menu.bottom_actions_fragment_draft_selection) != hasSelection) {
+                bottom_app_bar.setTag(R.menu.bottom_actions_fragment_draft_selection, hasSelection)
+                bottom_app_bar.replaceMenu(
+                    if (hasSelection) R.menu.bottom_actions_fragment_draft_selection
+                    else R.menu.bottom_actions_fragment_draft
+                )
+            }
         }
 
         if (fragmentArgs.showHint) launch {
