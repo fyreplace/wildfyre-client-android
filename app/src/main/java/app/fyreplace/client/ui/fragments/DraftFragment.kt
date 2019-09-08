@@ -163,7 +163,9 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         launch {
             viewModel.addImage(image)
 
-            if (viewModel.nextImageSlot != -1) {
+            if (viewModel.nextImageSlot == -1) {
+                updatePreview()
+            } else {
                 editor?.editableText?.insert(
                     editor.selectionStart,
                     "[img: ${viewModel.nextImageSlot}]"
