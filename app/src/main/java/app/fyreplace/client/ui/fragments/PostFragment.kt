@@ -254,7 +254,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_subscribe -> launch { viewModel.changeSubscription() }
-            R.id.action_delete -> AlertDialog.Builder(requireContext())
+            R.id.action_delete -> AlertDialog.Builder(contextWrapper)
                 .setTitle(R.string.post_action_delete_dialog_title)
                 .setNegativeButton(R.string.no, null)
                 .setPositiveButton(R.string.yes) { _, _ ->
@@ -325,7 +325,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     }
 
     private fun requestImage() {
-        val dialog = AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(contextWrapper)
             .setView(R.layout.post_dialog_comment_image)
             .setTitle(R.string.post_comment_attach_file_dialog_title)
             .setPositiveButton(R.string.post_comment_attach_file_dialog_positive) { _, _ ->
@@ -350,7 +350,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     }
 
     private fun copyComment(comment: Comment) {
-        getSystemService(requireContext(), ClipboardManager::class.java)?.setPrimaryClip(
+        getSystemService(contextWrapper, ClipboardManager::class.java)?.setPrimaryClip(
             ClipData.newPlainText(
                 getString(R.string.post_comment_copy_label),
                 comment.text
@@ -369,7 +369,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     )
 
     private fun deleteComment(position: Int, comment: Comment) {
-        AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(contextWrapper)
             .setTitle(R.string.post_comment_delete_dialog_title)
             .setNegativeButton(R.string.no, null)
             .setPositiveButton(R.string.yes) { _, _ ->

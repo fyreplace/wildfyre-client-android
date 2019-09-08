@@ -89,12 +89,10 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val context = requireContext()
-
         when (item.itemId) {
             R.id.action_preview -> {
                 hideSoftKeyboard(editor)
-                AlertDialog.Builder(context)
+                AlertDialog.Builder(contextWrapper)
                     .setView(R.layout.draft_dialog_preview)
                     .show()
                     .findViewById<RecyclerView>(R.id.preview)?.adapter = markdownAdapter
@@ -111,7 +109,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                 findNavController().navigateUp()
             }
             R.id.action_save -> launch { saveDraft(true) }
-            R.id.action_delete -> AlertDialog.Builder(context)
+            R.id.action_delete -> AlertDialog.Builder(contextWrapper)
                 .setTitle(R.string.draft_action_delete_dialog_title)
                 .setNegativeButton(R.string.no, null)
                 .setPositiveButton(R.string.yes) { _, _ ->
@@ -131,7 +129,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             return true
         }
 
-        AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(contextWrapper)
             .setTitle(R.string.draft_back_dialog_title)
             .setNegativeButton(R.string.no) { _, _ -> findNavController().navigateUp() }
             .setPositiveButton(R.string.yes) { _, _ ->
@@ -184,7 +182,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private fun addTitle() {
-        AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(contextWrapper)
             .setTitle(R.string.draft_bottom_actions_title_dialog_title)
             .setItems((1..6).map { it.toString() }.toTypedArray()) { _, i ->
                 editor.editableText.insert(editorLineStart(), "#".repeat(i + 1) + ' ')
@@ -204,7 +202,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             items += getString(R.string.draft_bottom_actions_images_dialog_remove)
         }
 
-        AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(contextWrapper)
             .setItems(items) { _, i ->
                 if (i == 2) {
                     launch { viewModel.removeImage() }
@@ -229,7 +227,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     private fun surroundSelectionWithLink() {
         var link: EditText? = null
-        link = AlertDialog.Builder(requireContext())
+        link = AlertDialog.Builder(contextWrapper)
             .setTitle(R.string.draft_bottom_actions_selection_link_dialog_title)
             .setView(R.layout.draft_dialog_link)
             .setNegativeButton(R.string.cancel, null)
