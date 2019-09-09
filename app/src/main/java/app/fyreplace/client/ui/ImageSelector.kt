@@ -3,6 +3,8 @@ package app.fyreplace.client.ui
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
+import android.graphics.BitmapFactory
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 import android.widget.Toast
@@ -10,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 
-interface ImageSelector {
+interface ImageSelector : FailureHandler {
     val contextWrapper: ContextWrapper
 
     fun startActivityForResult(intent: Intent?, requestCode: Int)
@@ -45,22 +49,17 @@ interface ImageSelector {
                 } ?: return
 
                 contextWrapper.contentResolver.openInputStream(data.data!!).use {
-                    it?.run {
-                        useBytes(
-                            readBytes(),
-                            mimeType,
-                            MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)!!
-                        )
-                    }
+                    it?.run { useBytes(readBytes(), mimeType) }
                 }
             }
             REQUEST_IMAGE_PHOTO -> {
                 val bitmap = data.extras?.get("data") as? Bitmap
-                val extension = "png"
-                val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
                 val buffer = ByteArrayOutputStream()
-                bitmap?.compress(Bitmap.CompressFormat.PNG, 100, buffer)
-                useBytes(buffer.toByteArray(), mimeType!!, extension)
+                bitmap?.compress(CompressFormat.PNG, 100, buffer)
+                useBytes(
+                    buffer.toByteArray(),
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension("png")!!
+                )
             }
         }
     }
@@ -80,12 +79,32 @@ interface ImageSelector {
         )
     }
 
-    private fun useBytes(bytes: ByteArray, mimeType: String, extension: String) {
-        if (bytes.size <= IMAGE_MAX_SIZE) {
-            onImage(ImageData("image.$extension", mimeType, bytes))
-        } else {
-            Toast.makeText(contextWrapper, R.string.image_selector_error_toast, Toast.LENGTH_LONG)
-                .show()
+    private fun useBytes(bytes: ByteArray, mimeType: String) {
+        launch(Dispatchers.Default) {
+            var compressedBytes = bytes
+            var compressedMimeType = mimeType
+
+            if (compressedBytes.size >= IMAGE_MAX_SIZE) {
+                val bitmap = BitmapFactory.decodeByteArray(compressedBytes, 0, compressedBytes.size)
+                val os = ByteArrayOutputStream()
+                bitmap.compress(CompressFormat.JPEG, 30, os)
+                compressedBytes = os.toByteArray()
+                compressedMimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension("jpg")!!
+            }
+
+            withContext(Dispatchers.Main) {
+                if (compressedBytes.size <= IMAGE_MAX_SIZE) {
+                    val extension = MimeTypeMap.getSingleton()
+                        .getExtensionFromMimeType(compressedMimeType)
+                    onImage(ImageData("image.${extension}", compressedMimeType, compressedBytes))
+                } else {
+                    Toast.makeText(
+                        contextWrapper,
+                        R.string.image_selector_error_toast,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
         }
     }
 

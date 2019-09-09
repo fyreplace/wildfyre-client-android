@@ -27,7 +27,7 @@
     <string name="main_profile_editor_bio">Ta bio</string>
     <string name="main_author_anonymous">Anonyme</string>
     <string name="image_selector_chooser">Source de l\'image</string>
-    <string name="image_selector_error_toast">Taille maximum de l\'image : 512k</string>
+    <string name="image_selector_error_toast">Taille de fichier trop élevée</string>
     <string name="area_selecting_action_area_selector">Zone: %1$s</string>
     <string name="area_selecting_action_area_spread">Propagation</string>
     <string name="area_selecting_action_area_reputation">Réputation</string>
