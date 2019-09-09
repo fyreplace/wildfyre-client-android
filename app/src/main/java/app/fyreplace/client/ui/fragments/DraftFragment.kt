@@ -130,7 +130,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                         }
                     }
             }
-            R.id.action_save -> launch { saveDraft() }
+            R.id.action_save -> launch { saveDraft(showConfirmation = true) }
             R.id.action_delete -> AlertDialog.Builder(contextWrapper)
                 .setTitle(R.string.draft_action_delete_dialog_title)
                 .setNegativeButton(R.string.no, null)
