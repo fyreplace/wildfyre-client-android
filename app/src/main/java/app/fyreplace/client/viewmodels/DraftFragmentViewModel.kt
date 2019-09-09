@@ -39,7 +39,7 @@ class DraftFragmentViewModel : ViewModel() {
             }
         }
 
-        setDraft(DraftRepository.saveDraft(draft.id, content, anonymous))
+        draft = DraftRepository.saveDraft(draft.id, content, anonymous)
         saved = true
     }
 

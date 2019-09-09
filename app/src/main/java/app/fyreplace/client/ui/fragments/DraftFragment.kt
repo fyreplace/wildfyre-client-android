@@ -42,7 +42,10 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setDraft(fragmentArgs.draft)
+
+        if (savedInstanceState == null) {
+            viewModel.setDraft(fragmentArgs.draft)
+        }
 
         preview?.adapter = markdownAdapter
         bottom_app_bar.setTag(R.menu.bottom_actions_fragment_draft_selection, false)
