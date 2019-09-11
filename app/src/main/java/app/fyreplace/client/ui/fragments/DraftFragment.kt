@@ -204,6 +204,8 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private suspend fun saveDraft(anonymous: Boolean = false, showConfirmation: Boolean = false) {
+        check(!editor.text.isNullOrBlank()) { getString(R.string.draft_action_save_empty_toast) }
+
         viewModel.saveDraft(editor.text.toString(), anonymous)
 
         if (showConfirmation) {
