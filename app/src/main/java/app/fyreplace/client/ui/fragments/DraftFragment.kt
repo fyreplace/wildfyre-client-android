@@ -42,7 +42,10 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setDraft(fragmentArgs.draft)
+
+        if (savedInstanceState == null) {
+            viewModel.setDraft(fragmentArgs.draft)
+        }
 
         preview?.adapter = markdownAdapter
         bottom_app_bar.setTag(R.menu.bottom_actions_fragment_draft_selection, false)
@@ -130,7 +133,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                         }
                     }
             }
-            R.id.action_save -> launch { saveDraft() }
+            R.id.action_save -> launch { saveDraft(showConfirmation = true) }
             R.id.action_delete -> AlertDialog.Builder(contextWrapper)
                 .setTitle(R.string.draft_action_delete_dialog_title)
                 .setNegativeButton(R.string.no, null)
@@ -201,6 +204,8 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private suspend fun saveDraft(anonymous: Boolean = false, showConfirmation: Boolean = false) {
+        check(!editor.text.isNullOrBlank()) { getString(R.string.draft_action_save_empty_toast) }
+
         viewModel.saveDraft(editor.text.toString(), anonymous)
 
         if (showConfirmation) {

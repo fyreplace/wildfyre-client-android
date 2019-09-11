@@ -52,17 +52,13 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
         viewModel.dataSource.observe(viewLifecycleOwner) {
             onRefreshListener = SwipeRefreshLayout.OnRefreshListener(it::invalidate)
             swipeRefresh.setOnRefreshListener(onRefreshListener)
+
+            if (viewModel.popRefresh()) {
+                onRefreshListener?.onRefresh()
+            }
         }
 
         return root
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-
-        if (viewModel.popRefresh()) {
-            onRefreshListener?.onRefresh()
-        }
     }
 
     override fun onFailure(failure: Throwable) {
