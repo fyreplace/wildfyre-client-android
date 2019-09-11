@@ -22,7 +22,7 @@ interface FailureHandler : LifecycleOwner {
     fun onFailure(failure: Throwable) {
         Log.e(FyreplaceApplication.context.getString(R.string.app_name), failure.message.orEmpty())
         getContext()?.let {
-            Toast.makeText(it, failure.localizedMessage, Toast.LENGTH_SHORT).show()
+            Toast.makeText(it, failure.localizedMessage, Toast.LENGTH_LONG).show()
         }
     }
 
