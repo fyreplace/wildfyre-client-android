@@ -15,6 +15,7 @@ import app.fyreplace.client.data.models.ImageData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import kotlin.math.sqrt
 
 interface ImageSelector : FailureHandler {
     val contextWrapper: ContextWrapper
@@ -84,16 +85,17 @@ interface ImageSelector : FailureHandler {
             var compressedBytes = bytes
             var compressedMimeType = mimeType
 
-            if (compressedBytes.size >= IMAGE_MAX_SIZE) {
+            if (compressedBytes.size > IMAGE_MAX_FILE_SIZE) {
                 val bitmap = BitmapFactory.decodeByteArray(compressedBytes, 0, compressedBytes.size)
                 val os = ByteArrayOutputStream()
-                bitmap.compress(CompressFormat.JPEG, 30, os)
+                val correctSizeBitmap = downscaleBitmap(bitmap)
+                correctSizeBitmap.compress(CompressFormat.JPEG, 50, os)
                 compressedBytes = os.toByteArray()
                 compressedMimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension("jpg")!!
             }
 
             withContext(Dispatchers.Main) {
-                if (compressedBytes.size <= IMAGE_MAX_SIZE) {
+                if (compressedBytes.size <= IMAGE_MAX_FILE_SIZE) {
                     val extension = MimeTypeMap.getSingleton()
                         .getExtensionFromMimeType(compressedMimeType)
                     onImage(ImageData("image.${extension}", compressedMimeType, compressedBytes))
@@ -108,8 +110,25 @@ interface ImageSelector : FailureHandler {
         }
     }
 
+    private fun downscaleBitmap(bitmap: Bitmap): Bitmap {
+        val areaFactor = (bitmap.width * bitmap.height).toFloat() / IMAGE_MAX_AREA
+
+        if (areaFactor > 1) {
+            val sideFactor = sqrt(areaFactor)
+            return Bitmap.createScaledBitmap(
+                bitmap,
+                (bitmap.width / sideFactor).toInt(),
+                (bitmap.height / sideFactor).toInt(),
+                true
+            )
+        }
+
+        return bitmap
+    }
+
     companion object {
-        private const val IMAGE_MAX_SIZE = 512 * 1024
+        private const val IMAGE_MAX_FILE_SIZE = 512 * 1024
+        private const val IMAGE_MAX_AREA = 1920 * 1080
         val REQUEST_IMAGE_FILE = FyreplaceApplication.context.resources
             .getInteger(R.integer.request_image_file)
         val REQUEST_IMAGE_PHOTO = FyreplaceApplication.context.resources
