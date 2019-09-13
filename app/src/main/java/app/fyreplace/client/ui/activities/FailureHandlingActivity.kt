@@ -6,7 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import app.fyreplace.client.ui.FailureHandler
 import kotlinx.coroutines.cancel
 
-abstract class FailureHandlingActivity : AppCompatActivity(),
+abstract class FailureHandlingActivity(contentLayoutId: Int) : AppCompatActivity(contentLayoutId),
     FailureHandler {
     protected abstract val viewModel: ViewModel
 

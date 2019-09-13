@@ -55,7 +55,8 @@ import java.io.ByteArrayInputStream
 /**
  * The central activity that hosts the different fragments.
  */
-class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChangedListener,
+class MainActivity : FailureHandlingActivity(R.layout.activity_main),
+    NavController.OnDestinationChangedListener,
     DrawerLayout.DrawerListener, ImageSelector {
     override val viewModel by viewModels<MainActivityViewModel>()
     override val viewModelStoreOwner by lazy { this }
@@ -66,7 +67,6 @@ class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChang
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         window.setBackgroundDrawable(null)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
