@@ -54,6 +54,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     ToolbarUsingFragment, ImageSelector {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by viewModels<PostFragmentViewModel>()
+    override val viewModelStoreOwner by lazy { this }
     override val contextWrapper by lazy { requireActivity() }
     private val mainViewModel by activityViewModels<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()

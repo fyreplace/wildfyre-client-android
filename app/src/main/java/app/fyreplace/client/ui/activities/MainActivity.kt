@@ -58,10 +58,11 @@ import java.io.ByteArrayInputStream
 class MainActivity : FailureHandlingActivity(), NavController.OnDestinationChangedListener,
     DrawerLayout.DrawerListener, ImageSelector {
     override val viewModel by viewModels<MainActivityViewModel>()
+    override val viewModelStoreOwner by lazy { this }
     override val contextWrapper = this
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val toolbarChangeListener by lazy { OnToolbarChangeListener(toolbar) }
-    private var toolbarInset: Int = 0
+    private var toolbarInset = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

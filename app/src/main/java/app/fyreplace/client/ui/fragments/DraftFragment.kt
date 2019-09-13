@@ -34,6 +34,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     Toolbar.OnMenuItemClickListener, ImageSelector {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by viewModels<DraftFragmentViewModel>()
+    override val viewModelStoreOwner by lazy { this }
     override val contextWrapper by lazy { requireActivity() }
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
     private val markdown by lazyMarkdown()

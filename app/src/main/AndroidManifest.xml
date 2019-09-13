@@ -27,6 +27,14 @@
             </intent-filter>
             <nav-graph android:value="@navigation/navigation_main" />
         </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="@string/file_provider_authority"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths_images" />
+        </provider>
     </application>
-
 </manifest>
