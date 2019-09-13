@@ -99,6 +99,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
 
         mainViewModel.userId.observe(viewLifecycleOwner) { commentsAdapter.selfId = it }
         viewModel.post.observe(viewLifecycleOwner) { mainViewModel.setPost(it) }
+        viewModel.contentLoaded.observe(viewLifecycleOwner) { comment_new.isEnabled = it }
         viewModel.authorId.observe(viewLifecycleOwner) { commentsAdapter.authorId = it }
         viewModel.markdownContent.observe(viewLifecycleOwner) {
             lifecycleScope.launch(Dispatchers.Default) {
