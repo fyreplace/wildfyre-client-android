@@ -27,7 +27,7 @@ interface WildFyreService {
 
     @GET("/bans/")
     suspend fun getBans(
-        @Header("Authorization/") authorization: String,
+        @Header("Authorization") authorization: String,
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
     ): SuperBan
