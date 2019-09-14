@@ -1,56 +1,61 @@
 package app.fyreplace.client.data.repositories
 
-import app.fyreplace.client.FyreplaceApplication
+import android.content.Context
 import app.fyreplace.client.R
-import app.fyreplace.client.data.Services
 import app.fyreplace.client.data.models.Draft
 import app.fyreplace.client.data.models.DraftNoImageContent
 import app.fyreplace.client.data.models.ImageData
+import app.fyreplace.client.data.services.WildFyreService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody.Part.createFormData
 
-object DraftRepository {
+class DraftRepository(
+    private val context: Context,
+    private val wildFyre: WildFyreService,
+    private val areas: AreaRepository,
+    private val auth: AuthRepository
+) {
     suspend fun getDrafts(offset: Int, size: Int) = withContext(Dispatchers.IO) {
-        Services.webService.getDrafts(
-            AuthRepository.authToken,
-            AreaRepository.preferredAreaName,
+        wildFyre.getDrafts(
+            auth.authToken,
+            areas.preferredAreaName,
             size,
             offset
         )
     }
 
     suspend fun createDraft() = withContext(Dispatchers.IO) {
-        Services.webService.postDraft(
-            AuthRepository.authToken,
-            AreaRepository.preferredAreaName,
-            Draft(FyreplaceApplication.context.getString(R.string.drafts_created_text), false)
+        wildFyre.postDraft(
+            auth.authToken,
+            areas.preferredAreaName,
+            Draft(context.getString(R.string.drafts_created_text), false)
         )
     }
 
     suspend fun saveDraft(id: Long, content: String, anonymous: Boolean) =
         withContext(Dispatchers.IO) {
-        Services.webService.patchDraft(
-            AuthRepository.authToken,
-            AreaRepository.preferredAreaName,
-            id,
-            Draft(content, anonymous)
-        )
-    }
+            wildFyre.patchDraft(
+                auth.authToken,
+                areas.preferredAreaName,
+                id,
+                Draft(content, anonymous)
+            )
+        }
 
     suspend fun deleteDraft(id: Long) = withContext(Dispatchers.IO) {
-        Services.webService.deleteDraft(
-            AuthRepository.authToken,
-            AreaRepository.preferredAreaName,
+        wildFyre.deleteDraft(
+            auth.authToken,
+            areas.preferredAreaName,
             id
         )
         return@withContext
     }
 
     suspend fun publishDraft(id: Long) = withContext(Dispatchers.IO) {
-        Services.webService.postDraftPublication(
-            AuthRepository.authToken,
-            AreaRepository.preferredAreaName,
+        wildFyre.postDraftPublication(
+            auth.authToken,
+            areas.preferredAreaName,
             id
         )
         return@withContext
@@ -58,9 +63,9 @@ object DraftRepository {
 
     suspend fun setImage(id: Long, content: String, image: ImageData) =
         withContext(Dispatchers.IO) {
-            Services.webService.putImage(
-                AuthRepository.authToken,
-                AreaRepository.preferredAreaName,
+            wildFyre.putImage(
+                auth.authToken,
+                areas.preferredAreaName,
                 id,
                 createFormData("image", image),
                 createFormData("text", content)
@@ -68,9 +73,9 @@ object DraftRepository {
         }
 
     suspend fun addImage(id: Long, image: ImageData, slot: Int) = withContext(Dispatchers.IO) {
-        Services.webService.putImage(
-            AuthRepository.authToken,
-            AreaRepository.preferredAreaName,
+        wildFyre.putImage(
+            auth.authToken,
+            areas.preferredAreaName,
             id,
             slot,
             createFormData("image", image),
@@ -79,18 +84,18 @@ object DraftRepository {
     }
 
     suspend fun removeImage(id: Long, content: String) = withContext(Dispatchers.IO) {
-        Services.webService.putEmptyImage(
-            AuthRepository.authToken,
-            AreaRepository.preferredAreaName,
+        wildFyre.putEmptyImage(
+            auth.authToken,
+            areas.preferredAreaName,
             id,
             DraftNoImageContent(content)
         )
     }
 
     suspend fun removeImage(id: Long, slot: Int = -1) = withContext(Dispatchers.IO) {
-        Services.webService.deleteImage(
-            AuthRepository.authToken,
-            AreaRepository.preferredAreaName,
+        wildFyre.deleteImage(
+            auth.authToken,
+            areas.preferredAreaName,
             id,
             slot
         )

@@ -24,6 +24,9 @@ object Constants {
 
         fun youtubeThumbnail(videoId: String) =
             "https://img.youtube.com/vi/$videoId/0.jpg"
+
+        const val IMAGE_MAX_FILE_SIZE = 512 * 1024
+        const val IMAGE_MAX_AREA = 1920 * 1080
     }
 
     /**

@@ -47,19 +47,25 @@ abstract class ItemsDataSource<I>(private val listener: DataLoadingListener) :
     }
 }
 
-class NotificationsDataSource(listener: DataLoadingListener) :
+class NotificationsDataSource(
+    listener: DataLoadingListener,
+    notificationRepository: NotificationRepository
+) :
     ItemsDataSource<Notification>(listener) {
-    override val fetcher = NotificationRepository::getNotifications
+    override val fetcher = notificationRepository::getNotifications
 }
 
-class ArchiveDataSource(listener: DataLoadingListener) : ItemsDataSource<Post>(listener) {
-    override val fetcher = PostRepository::getArchive
+class ArchiveDataSource(listener: DataLoadingListener, postRepository: PostRepository) :
+    ItemsDataSource<Post>(listener) {
+    override val fetcher = postRepository::getArchive
 }
 
-class OwnPostsDataSource(listener: DataLoadingListener) : ItemsDataSource<Post>(listener) {
-    override val fetcher = PostRepository::getOwnPosts
+class OwnPostsDataSource(listener: DataLoadingListener, postRepository: PostRepository) :
+    ItemsDataSource<Post>(listener) {
+    override val fetcher = postRepository::getOwnPosts
 }
 
-class DraftsDataSource(listener: DataLoadingListener) : ItemsDataSource<Post>(listener) {
-    override val fetcher = DraftRepository::getDrafts
+class DraftsDataSource(listener: DataLoadingListener, draftRepository: DraftRepository) :
+    ItemsDataSource<Post>(listener) {
+    override val fetcher = draftRepository::getDrafts
 }

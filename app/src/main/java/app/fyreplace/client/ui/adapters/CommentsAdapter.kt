@@ -17,7 +17,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.AppGlide
-import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Comment
@@ -85,8 +84,13 @@ class CommentsAdapter(private val fragment: Fragment, private val markdown: Mark
             AppGlide.with(context)
                 .load(author.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
-                .transition(AVATAR_TRANSITION)
-                .transform(AVATAR_TRANSFORM)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .transform(
+                    MultiTransformation(
+                        CenterCrop(),
+                        RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.comment_author_picture_rounding))
+                    )
+                )
                 .into(holder.authorPicture)
 
             holder.authorPicture.setOnClickListener {
@@ -145,11 +149,6 @@ class CommentsAdapter(private val fragment: Fragment, private val markdown: Mark
 
     private companion object {
         val DATE_FORMAT: DateFormat = SimpleDateFormat.getDateTimeInstance()
-        val AVATAR_TRANSITION = DrawableTransitionOptions.withCrossFade()
-        val AVATAR_TRANSFORM = MultiTransformation(
-            CenterCrop(),
-            RoundedCorners(FyreplaceApplication.context.resources.getDimensionPixelOffset(R.dimen.comment_author_picture_rounding))
-        )
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

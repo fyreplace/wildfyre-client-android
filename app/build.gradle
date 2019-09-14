@@ -44,6 +44,7 @@ android {
 dependencies {
     ext {
         version_glide = '4.9.0'
+        version_koin = '2.0.1'
         version_lifecycle = '2.2.0-alpha04'
         version_markwon = '3.1.0'
         version_retrofit = '2.6.1'
@@ -76,6 +77,9 @@ dependencies {
     implementation "com.github.bumptech.glide:okhttp3-integration:$version_glide"
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$version_retrofit"
+    implementation "org.koin:koin-android:$version_koin"
+    implementation "org.koin:koin-androidx-scope:$version_koin"
+    implementation "org.koin:koin-androidx-viewmodel:$version_koin"
     implementation "ru.noties.markwon:core:$version_markwon"
     implementation "ru.noties.markwon:ext-strikethrough:$version_markwon"
     implementation "ru.noties.markwon:image-okhttp:$version_markwon"

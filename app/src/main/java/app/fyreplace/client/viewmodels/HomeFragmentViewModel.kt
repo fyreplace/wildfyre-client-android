@@ -2,6 +2,8 @@ package app.fyreplace.client.viewmodels
 
 import androidx.lifecycle.viewModelScope
 import app.fyreplace.client.data.models.Post
+import app.fyreplace.client.data.repositories.AreaRepository
+import app.fyreplace.client.data.repositories.CommentRepository
 import app.fyreplace.client.data.repositories.PostRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -9,7 +11,11 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
 
-class HomeFragmentViewModel : PostFragmentViewModel() {
+class HomeFragmentViewModel(
+    areaRepository: AreaRepository,
+    commentRepository: CommentRepository,
+    private val postRepository: PostRepository
+) : PostFragmentViewModel(areaRepository, commentRepository, postRepository) {
     private val postReserve: MutableList<Post> = mutableListOf()
     private var fetchJob: Job? = null
     private var endOfPosts = false
@@ -55,7 +61,7 @@ class HomeFragmentViewModel : PostFragmentViewModel() {
         if (doSpread) {
             doSpread = false
             delay(SPREAD_DELAY)
-            PostRepository.spread(postAreaName, postId, spread)
+            postRepository.spread(postAreaName, postId, spread)
             nextPost()
         }
     }
@@ -70,7 +76,7 @@ class HomeFragmentViewModel : PostFragmentViewModel() {
     }
 
     private suspend fun fetchPosts() {
-        val superPost = PostRepository.getNextPosts(RESERVE_SIZE)
+        val superPost = postRepository.getNextPosts(RESERVE_SIZE)
 
         if (superPost.count == 0) {
             mHasContent.postValue(false)

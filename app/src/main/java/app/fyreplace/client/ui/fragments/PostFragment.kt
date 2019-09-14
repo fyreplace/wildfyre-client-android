@@ -17,8 +17,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
@@ -47,16 +45,18 @@ import kotlinx.android.synthetic.main.post_comments.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.noties.markwon.recycler.MarkwonAdapter
 import kotlin.math.max
 
 open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackHandlingFragment,
     ToolbarUsingFragment, ImageSelector {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
-    override val viewModel by viewModels<PostFragmentViewModel>()
+    override val viewModel by viewModel<PostFragmentViewModel>()
     override val viewModelStoreOwner by lazy { this }
     override val contextWrapper by lazy { requireActivity() }
-    private val mainViewModel by activityViewModels<MainActivityViewModel>()
+    private val mainViewModel by sharedViewModel<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()
     private val markdown by lazyMarkdown()
     private val highlightedCommentIds by lazy {
@@ -331,10 +331,10 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
             .setView(R.layout.post_dialog_comment_image)
             .setTitle(R.string.post_comment_attach_file_dialog_title)
             .setNegativeButton(R.string.post_comment_attach_file_dialog_negative) { _, _ ->
-                selectImage(ImageSelector.REQUEST_IMAGE_PHOTO)
+                selectImage(requestImagePhoto)
             }
             .setPositiveButton(R.string.post_comment_attach_file_dialog_positive) { _, _ ->
-                selectImage(ImageSelector.REQUEST_IMAGE_FILE)
+                selectImage(requestImageFile)
             }
             .setNeutralButton(R.string.post_comment_attach_file_dialog_neutral) { _, _ -> viewModel.resetCommentImage() }
             .show()

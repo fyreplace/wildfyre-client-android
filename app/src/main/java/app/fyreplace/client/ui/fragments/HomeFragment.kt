@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import app.fyreplace.client.R
@@ -18,14 +16,16 @@ import app.fyreplace.client.viewmodels.MainActivityViewModel
 import kotlinx.android.synthetic.main.fragment_post.*
 import kotlinx.android.synthetic.main.post_buttons.*
 import kotlinx.android.synthetic.main.post_comments.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * [androidx.fragment.app.Fragment] for showing new posts to the user.
  */
 class HomeFragment : PostFragment(), AreaSelectingFragment {
     override val viewModels: List<ViewModel> by lazy { super.viewModels + areaSelectingViewModel }
-    override val viewModel by viewModels<HomeFragmentViewModel>()
-    override val areaSelectingViewModel by activityViewModels<AreaSelectingFragmentViewModel>()
+    override val viewModel by viewModel<HomeFragmentViewModel>()
+    override val areaSelectingViewModel by sharedViewModel<AreaSelectingFragmentViewModel>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -68,7 +68,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         menu.findItem(R.id.action_area_selector)?.actionView
             ?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                 private val areaStuff = listOf(R.id.action_area_spread, R.id.action_area_reputation)
-                private val mainViewModel by activityViewModels<MainActivityViewModel>()
+                private val mainViewModel by sharedViewModel<MainActivityViewModel>()
 
                 override fun onViewAttachedToWindow(v: View?) = switchItems(true)
 

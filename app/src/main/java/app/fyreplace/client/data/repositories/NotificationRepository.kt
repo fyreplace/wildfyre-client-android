@@ -1,28 +1,23 @@
 package app.fyreplace.client.data.repositories
 
-import app.fyreplace.client.data.Services
+import app.fyreplace.client.data.services.WildFyreService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-object NotificationRepository {
+class NotificationRepository(
+    private val wildFyre: WildFyreService,
+    private val auth: AuthRepository
+) {
     suspend fun getNotifications(offset: Int, size: Int) = withContext(Dispatchers.IO) {
-        Services.webService.getNotifications(
-            AuthRepository.authToken,
-            size,
-            offset
-        )
+        wildFyre.getNotifications(auth.authToken, size, offset)
     }
 
     suspend fun getNotificationCount() = withContext(Dispatchers.IO) {
-        Services.webService.getNotifications(
-            AuthRepository.authToken,
-            1,
-            0
-        ).count
+        wildFyre.getNotifications(auth.authToken, 1, 0).count
     }
 
     suspend fun clearNotifications() = withContext(Dispatchers.IO) {
-        Services.webService.deleteNotifications(AuthRepository.authToken)
+        wildFyre.deleteNotifications(auth.authToken)
         return@withContext
     }
 }

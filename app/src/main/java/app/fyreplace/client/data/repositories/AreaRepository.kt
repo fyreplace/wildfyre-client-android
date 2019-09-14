@@ -1,24 +1,26 @@
 package app.fyreplace.client.data.repositories
 
+import android.content.SharedPreferences
 import androidx.core.content.edit
 import app.fyreplace.client.Constants
-import app.fyreplace.client.FyreplaceApplication
-import app.fyreplace.client.data.Services
+import app.fyreplace.client.data.services.WildFyreService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-object AreaRepository {
+class AreaRepository(
+    private val wildFyre: WildFyreService,
+    private val preferences: SharedPreferences,
+    private val auth: AuthRepository
+) {
     var preferredAreaName: String
-        get() = FyreplaceApplication.preferences
-            .getString(Constants.Preferences.AREA_PREFERRED, "").orEmpty()
-        set(value) = FyreplaceApplication.preferences
-            .edit { putString(Constants.Preferences.AREA_PREFERRED, value) }
+        get() = preferences.getString(Constants.Preferences.AREA_PREFERRED, "").orEmpty()
+        set(value) = preferences.edit { putString(Constants.Preferences.AREA_PREFERRED, value) }
 
     suspend fun getAreas() = withContext(Dispatchers.IO) {
-        Services.webService.getAreas(AuthRepository.authToken)
+        wildFyre.getAreas(auth.authToken)
     }
 
     suspend fun getAreaReputation() = withContext(Dispatchers.IO) {
-        Services.webService.getAreaRep(AuthRepository.authToken, preferredAreaName)
+        wildFyre.getAreaRep(auth.authToken, preferredAreaName)
     }
 }

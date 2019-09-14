@@ -6,12 +6,12 @@ import androidx.lifecycle.ViewModel
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.repositories.AuthorRepository
 
-class UserFragmentViewModel : ViewModel() {
+class UserFragmentViewModel(private val authorRepository: AuthorRepository) : ViewModel() {
     private val mAuthor = MutableLiveData<Author>()
 
     val author: LiveData<Author> = mAuthor
 
     fun setAuthor(a: Author) = mAuthor.postValue(a)
 
-    suspend fun setUserId(id: Long) = mAuthor.postValue(AuthorRepository.getUser(id))
+    suspend fun setUserId(id: Long) = mAuthor.postValue(authorRepository.getUser(id))
 }

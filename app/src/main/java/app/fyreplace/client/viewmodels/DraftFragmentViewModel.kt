@@ -7,7 +7,10 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.AreaRepository
 import app.fyreplace.client.data.repositories.DraftRepository
 
-class DraftFragmentViewModel : ViewModel() {
+class DraftFragmentViewModel(
+    private val draftRepository: DraftRepository,
+    private val areaRepository: AreaRepository
+) : ViewModel() {
     lateinit var draft: Post
         private set
     var nextImageSlot = -1
@@ -16,7 +19,7 @@ class DraftFragmentViewModel : ViewModel() {
         private set
 
     suspend fun getPreferredArea() =
-        AreaRepository.getAreas().firstOrNull { it.name == AreaRepository.preferredAreaName }
+        areaRepository.getAreas().firstOrNull { it.name == areaRepository.preferredAreaName }
 
     fun setDraft(d: Post) {
         draft = d
@@ -35,17 +38,17 @@ class DraftFragmentViewModel : ViewModel() {
 
         for (slot in draft.additionalImages.map { it.num }) {
             if (slot !in usedSlots) {
-                DraftRepository.removeImage(draft.id, slot)
+                draftRepository.removeImage(draft.id, slot)
             }
         }
 
-        draft = DraftRepository.saveDraft(draft.id, content, anonymous)
+        draft = draftRepository.saveDraft(draft.id, content, anonymous)
         saved = true
     }
 
-    suspend fun deleteDraft() = DraftRepository.deleteDraft(draft.id)
+    suspend fun deleteDraft() = draftRepository.deleteDraft(draft.id)
 
-    suspend fun publishDraft() = DraftRepository.publishDraft(draft.id)
+    suspend fun publishDraft() = draftRepository.publishDraft(draft.id)
 
     fun pushImageIdentifier(main: Boolean) {
         nextImageSlot = if (main) -1 else findNextImageSlot()
@@ -53,10 +56,10 @@ class DraftFragmentViewModel : ViewModel() {
 
     suspend fun addImage(image: ImageData) {
         if (nextImageSlot == -1) {
-            draft = DraftRepository.setImage(draft.id, draft.text.orEmpty(), image)
+            draft = draftRepository.setImage(draft.id, draft.text.orEmpty(), image)
         } else {
             draft.additionalImages.add(
-                DraftRepository.addImage(
+                draftRepository.addImage(
                     draft.id,
                     image,
                     nextImageSlot
@@ -66,7 +69,7 @@ class DraftFragmentViewModel : ViewModel() {
     }
 
     suspend fun removeImage() {
-        draft = DraftRepository.removeImage(draft.id, draft.text.orEmpty())
+        draft = draftRepository.removeImage(draft.id, draft.text.orEmpty())
     }
 
     private fun findNextImageSlot() = draft.additionalImages.map { it.num }

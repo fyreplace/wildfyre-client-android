@@ -1,28 +1,25 @@
 package app.fyreplace.client.data.repositories
 
-import app.fyreplace.client.data.Services
 import app.fyreplace.client.data.models.AuthorPatch
 import app.fyreplace.client.data.models.ImageData
+import app.fyreplace.client.data.services.WildFyreService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-object AuthorRepository {
+class AuthorRepository(private val wildFyre: WildFyreService, private val auth: AuthRepository) {
     suspend fun getSelf() = withContext(Dispatchers.IO) {
-        Services.webService.getSelf(AuthRepository.authToken)
+        wildFyre.getSelf(auth.authToken)
     }
 
     suspend fun getUser(userId: Long) = withContext(Dispatchers.IO) {
-        Services.webService.getUser(AuthRepository.authToken, userId)
+        wildFyre.getUser(auth.authToken, userId)
     }
 
     suspend fun updateSelfBio(bio: String) = withContext(Dispatchers.IO) {
-        Services.webService.patchBio(AuthRepository.authToken, AuthorPatch(bio))
+        wildFyre.patchBio(auth.authToken, AuthorPatch(bio))
     }
 
     suspend fun updateSelfAvatar(image: ImageData) = withContext(Dispatchers.IO) {
-        Services.webService.putAvatar(
-            AuthRepository.authToken,
-            createFormData("avatar", image)
-        )
+        wildFyre.putAvatar(auth.authToken, createFormData("avatar", image))
     }
 }

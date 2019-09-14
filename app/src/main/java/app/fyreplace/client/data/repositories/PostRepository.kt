@@ -1,41 +1,45 @@
 package app.fyreplace.client.data.repositories
 
-import app.fyreplace.client.data.Services
 import app.fyreplace.client.data.models.Spread
 import app.fyreplace.client.data.models.Subscription
+import app.fyreplace.client.data.services.WildFyreService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-object PostRepository {
+class PostRepository(
+    private val wildFyre: WildFyreService,
+    private val auth: AuthRepository,
+    private val areas: AreaRepository
+) {
     suspend fun getArchive(offset: Int, size: Int) = withContext(Dispatchers.IO) {
-        Services.webService.getPosts(
-            AuthRepository.authToken,
-            AreaRepository.preferredAreaName,
+        wildFyre.getPosts(
+            auth.authToken,
+            areas.preferredAreaName,
             size,
             offset
         )
     }
 
     suspend fun getOwnPosts(offset: Int, size: Int) = withContext(Dispatchers.IO) {
-        Services.webService.getOwnPosts(
-            AuthRepository.authToken,
-            AreaRepository.preferredAreaName,
+        wildFyre.getOwnPosts(
+            auth.authToken,
+            areas.preferredAreaName,
             size,
             offset
         )
     }
 
     suspend fun getNextPosts(limit: Int) = withContext(Dispatchers.IO) {
-        Services.webService.getNextPosts(
-            AuthRepository.authToken,
-            AreaRepository.preferredAreaName,
+        wildFyre.getNextPosts(
+            auth.authToken,
+            areas.preferredAreaName,
             limit
         )
     }
 
     suspend fun getPost(areaName: String, id: Long) = withContext(Dispatchers.IO) {
-        Services.webService.getPost(
-            AuthRepository.authToken,
+        wildFyre.getPost(
+            auth.authToken,
             areaName,
             id
         )
@@ -43,8 +47,8 @@ object PostRepository {
 
     suspend fun setSubscription(areaName: String, id: Long, sub: Boolean) =
         withContext(Dispatchers.IO) {
-            Services.webService.putSubscription(
-                AuthRepository.authToken,
+            wildFyre.putSubscription(
+                auth.authToken,
                 areaName,
                 id,
                 Subscription(sub)
@@ -52,8 +56,8 @@ object PostRepository {
         }
 
     suspend fun spread(areaName: String, id: Long, spread: Boolean) = withContext(Dispatchers.IO) {
-        Services.webService.postSpread(
-            AuthRepository.authToken,
+        wildFyre.postSpread(
+            auth.authToken,
             areaName,
             id,
             Spread(spread)
@@ -62,9 +66,9 @@ object PostRepository {
     }
 
     suspend fun deletePost(areaName: String?, id: Long) = withContext(Dispatchers.IO) {
-        Services.webService.deletePost(
-            AuthRepository.authToken,
-            areaName ?: AreaRepository.preferredAreaName,
+        wildFyre.deletePost(
+            auth.authToken,
+            areaName ?: areas.preferredAreaName,
             id
         )
         return@withContext

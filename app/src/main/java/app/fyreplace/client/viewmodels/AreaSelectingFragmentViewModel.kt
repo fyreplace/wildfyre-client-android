@@ -7,7 +7,7 @@ import app.fyreplace.client.data.repositories.AreaRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class AreaSelectingFragmentViewModel : ViewModel() {
+class AreaSelectingFragmentViewModel(private val areaRepository: AreaRepository) : ViewModel() {
     private val mAreas = MutableLiveData<List<Area>>()
     private val mPreferredAreaName = MutableLiveData<String>()
     private val mPreferredArea = MediatorLiveData<Area?>()
@@ -18,7 +18,7 @@ class AreaSelectingFragmentViewModel : ViewModel() {
     val preferredAreaName: LiveData<String> = mPreferredAreaName.distinctUntilChanged()
     val preferredArea: LiveData<Area?> = mPreferredArea.distinctUntilChanged()
     val preferredAreaIndex: LiveData<Int> = areas
-        .map { areas -> areas.indexOfFirst { it.name == AreaRepository.preferredAreaName } }
+        .map { areas -> areas.indexOfFirst { it.name == areaRepository.preferredAreaName } }
     val currentAreaSpread: LiveData<Int> = mPreferredAreaReputationInfo.map { it.spread }
     val currentAreaReputation: LiveData<Int> = mPreferredAreaReputationInfo.map { it.reputation }
 
@@ -28,25 +28,25 @@ class AreaSelectingFragmentViewModel : ViewModel() {
     }
 
     suspend fun updateAreas() {
-        val fetchedAreas = AreaRepository.getAreas()
+        val fetchedAreas = areaRepository.getAreas()
         withContext(Dispatchers.Main) { mAreas.value = fetchedAreas }
 
         if (preferredAreaName.value.isNullOrEmpty()) {
-            val name = AreaRepository.preferredAreaName
+            val name = areaRepository.preferredAreaName
             updatePreferredAreaInfo(if (name.isNotEmpty()) name else fetchedAreas.first().name)
         }
     }
 
     suspend fun setPreferredAreaName(areaName: String) {
-        if (areaName != AreaRepository.preferredAreaName) {
+        if (areaName != areaRepository.preferredAreaName) {
             updatePreferredAreaInfo(areaName)
         }
     }
 
     private suspend fun updatePreferredAreaInfo(areaName: String) {
-        AreaRepository.preferredAreaName = areaName
+        areaRepository.preferredAreaName = areaName
         mPreferredAreaName.postValue(areaName)
-        mPreferredAreaReputationInfo.postValue(AreaRepository.getAreaReputation())
+        mPreferredAreaReputationInfo.postValue(areaRepository.getAreaReputation())
     }
 
     private fun updatePreferredArea(areas: List<Area>?, areaName: String?) =

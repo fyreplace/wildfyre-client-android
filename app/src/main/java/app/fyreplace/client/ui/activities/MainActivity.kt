@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
@@ -32,7 +31,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import app.fyreplace.client.AppGlide
-import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
@@ -50,6 +48,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_app_bar.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.ByteArrayInputStream
 
 /**
@@ -58,7 +57,7 @@ import java.io.ByteArrayInputStream
 class MainActivity : FailureHandlingActivity(R.layout.activity_main),
     NavController.OnDestinationChangedListener,
     DrawerLayout.DrawerListener, ImageSelector {
-    override val viewModel by viewModels<MainActivityViewModel>()
+    override val viewModel by viewModel<MainActivityViewModel>()
     override val viewModelStoreOwner by lazy { this }
     override val contextWrapper = this
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -306,8 +305,13 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             AppGlide.with(this)
                 .load(info.author.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
-                .transition(IMAGE_TRANSITION)
-                .transform(LOGO_TRANSFORM)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .transform(
+                    MultiTransformation(
+                        CenterCrop(),
+                        RoundedCorners(resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_rounding))
+                    )
+                )
                 .into(object : CustomTarget<Drawable>(size, size) {
                     override fun onLoadCleared(placeholder: Drawable?) = Unit
 
@@ -357,19 +361,24 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             .apply { show() }
 
         val avatar = dialog.findViewById<ImageView>(R.id.user_picture)!!
+        val avatarTransform = MultiTransformation(
+            CenterCrop(),
+            RoundedCorners(resources.getDimensionPixelOffset(R.dimen.dialog_user_picture_rounding))
+        )
+        val imageTransition = DrawableTransitionOptions.withCrossFade()
 
         AppGlide.with(this)
             .load(viewModel.userAvatar.value)
-            .transition(IMAGE_TRANSITION)
-            .transform(AVATAR_TRANSFORM)
+            .transition(imageTransition)
+            .transform(avatarTransform)
             .into(avatar)
 
         viewModel.newUserAvatar.observe(this) {
             it?.run {
                 AppGlide.with(this@MainActivity)
                     .load(Drawable.createFromStream(ByteArrayInputStream(bytes), "avatar"))
-                    .transition(IMAGE_TRANSITION)
-                    .transform(AVATAR_TRANSFORM)
+                    .transition(imageTransition)
+                    .transform(avatarTransform)
                     .into(avatar)
             }
         }
@@ -416,16 +425,6 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             R.id.fragment_post,
             R.id.fragment_user,
             R.id.fragment_draft
-        )
-
-        val IMAGE_TRANSITION = DrawableTransitionOptions.withCrossFade()
-        val AVATAR_TRANSFORM = MultiTransformation(
-            CenterCrop(),
-            RoundedCorners(FyreplaceApplication.context.resources.getDimensionPixelOffset(R.dimen.dialog_user_picture_rounding))
-        )
-        val LOGO_TRANSFORM = MultiTransformation(
-            CenterCrop(),
-            RoundedCorners(FyreplaceApplication.context.resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_rounding))
         )
     }
 

@@ -11,8 +11,12 @@ import app.fyreplace.client.ui.toMarkdown
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-open class PostFragmentViewModel : ViewModel() {
-    var postAreaName = AreaRepository.preferredAreaName
+open class PostFragmentViewModel(
+    private val areaRepository: AreaRepository,
+    private val commentRepository: CommentRepository,
+    private val postRepository: PostRepository
+) : ViewModel() {
+    var postAreaName = areaRepository.preferredAreaName
         private set
     var postId = -1L
         private set
@@ -56,13 +60,13 @@ open class PostFragmentViewModel : ViewModel() {
     }
 
     suspend fun setPostData(areaName: String?, id: Long) = areaName?.let {
-        setPost(PostRepository.getPost(it, id))
+        setPost(postRepository.getPost(it, id))
         postAreaName = it
     }
 
     fun setPost(post: Post?) {
         if (post?.id != postId) {
-            postAreaName = AreaRepository.preferredAreaName
+            postAreaName = areaRepository.preferredAreaName
             postId = post?.id ?: -1
             mPost.postValue(post)
             resetNewComment()
@@ -72,14 +76,14 @@ open class PostFragmentViewModel : ViewModel() {
     fun setIsOwnPost(ownPost: Boolean) = mIsOwnPost.postValue(ownPost)
 
     suspend fun changeSubscription() = mSubscribed.postValue(
-        PostRepository.setSubscription(
+        postRepository.setSubscription(
             postAreaName,
             postId,
             !(subscribed.value ?: false)
         ).subscribed
     )
 
-    suspend fun deletePost() = PostRepository.deletePost(postAreaName, postId)
+    suspend fun deletePost() = postRepository.deletePost(postAreaName, postId)
 
     fun setCommentImage(image: ImageData) = mNewCommentImage.postValue(image)
 
@@ -90,7 +94,7 @@ open class PostFragmentViewModel : ViewModel() {
             try {
                 mCanSendNewComment.postValue(false)
                 commentsData.add(
-                    CommentRepository.sendComment(
+                    commentRepository.sendComment(
                         postAreaName,
                         postId,
                         commentData,
@@ -110,7 +114,7 @@ open class PostFragmentViewModel : ViewModel() {
 
     suspend fun deleteComment(position: Int, comment: Comment) {
         if (postId != -1L) {
-            CommentRepository.deleteComment(postAreaName, postId, comment.id)
+            commentRepository.deleteComment(postAreaName, postId, comment.id)
             commentsData.removeAt(position)
             mComments.postValue(commentsData)
         }

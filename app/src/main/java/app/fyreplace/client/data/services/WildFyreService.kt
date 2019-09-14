@@ -1,33 +1,14 @@
-package app.fyreplace.client.data
+package app.fyreplace.client.data.services
 
-import app.fyreplace.client.Constants
 import app.fyreplace.client.data.models.*
-import com.google.gson.GsonBuilder
 import okhttp3.MultipartBody
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-
 /**
- * Object containing services used by the different repositories.
+ * Retrofit interface of the WildFyre API.
  */
-object Services {
-    /**
-     * Service connecting to the WildFyre API.
-     */
-    val webService: WebService = Retrofit.Builder()
-        .baseUrl(Constants.Api.BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().serializeNulls().create()))
-        .build()
-        .create(WebService::class.java)
-}
-
-/**
- * Retrofit implementation of the WildFyre API.
- */
-interface WebService {
+interface WildFyreService {
     // Authentication
 
     @POST("/account/auth/")

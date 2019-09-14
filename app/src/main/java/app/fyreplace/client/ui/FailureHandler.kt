@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.R
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -20,8 +19,8 @@ interface FailureHandler : LifecycleOwner {
     fun getContext(): Context?
 
     fun onFailure(failure: Throwable) {
-        Log.e(FyreplaceApplication.context.getString(R.string.app_name), failure.message.orEmpty())
         getContext()?.let {
+            Log.e(it.getString(R.string.app_name), failure.message.orEmpty())
             Toast.makeText(it, failure.localizedMessage, Toast.LENGTH_LONG).show()
         }
     }

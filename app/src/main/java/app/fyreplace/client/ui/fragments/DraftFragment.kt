@@ -13,7 +13,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -28,12 +27,13 @@ import app.fyreplace.client.ui.toMarkdown
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
 import kotlinx.android.synthetic.main.draft_editor.*
 import kotlinx.android.synthetic.main.fragment_draft.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.noties.markwon.recycler.MarkwonAdapter
 
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
     Toolbar.OnMenuItemClickListener, ImageSelector {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
-    override val viewModel by viewModels<DraftFragmentViewModel>()
+    override val viewModel by viewModel<DraftFragmentViewModel>()
     override val viewModelStoreOwner by lazy { this }
     override val contextWrapper by lazy { requireActivity() }
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
@@ -244,12 +244,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                 if (i == 2) {
                     launch { viewModel.removeImage() }
                 } else {
-                    selectImage(
-                        resources.getInteger(
-                            if (i == 0) R.integer.request_image_file
-                            else R.integer.request_image_photo
-                        )
-                    )
+                    selectImage(if (i == 0) requestImageFile else requestImagePhoto)
                 }
             }
             .show()

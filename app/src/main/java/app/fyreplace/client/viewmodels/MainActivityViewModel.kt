@@ -12,7 +12,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
-class MainActivityViewModel : ViewModel() {
+class MainActivityViewModel(
+    private val settingsRepository: SettingsRepository,
+    private val authRepository: AuthRepository,
+    private val authorRepository: AuthorRepository,
+    private val notificationRepository: NotificationRepository,
+    private val draftRepository: DraftRepository
+) : ViewModel() {
     private var uiRefreshTickerJob: Job? = null
     private val mUiRefreshTick = MutableLiveData<Unit>()
     private val mIsLogged = MutableLiveData<Boolean>()
@@ -42,16 +48,16 @@ class MainActivityViewModel : ViewModel() {
     val shouldShowNotificationBadge = MutableLiveData<Boolean>()
 
     init {
-        if (AuthRepository.authToken.isNotEmpty()) {
+        if (authRepository.authToken.isNotEmpty()) {
             login()
         } else {
             mIsLogged.value = false
         }
 
-        selectedThemeIndex.value = THEMES.indexOfFirst { it == SettingsRepository.theme }
-        selectedThemeIndex.observeForever { SettingsRepository.theme = getTheme(it) }
-        shouldShowNotificationBadge.value = SettingsRepository.showBadge
-        shouldShowNotificationBadge.observeForever { SettingsRepository.showBadge = it }
+        selectedThemeIndex.value = THEMES.indexOfFirst { it == settingsRepository.theme }
+        selectedThemeIndex.observeForever { settingsRepository.theme = getTheme(it) }
+        shouldShowNotificationBadge.value = settingsRepository.showBadge
+        shouldShowNotificationBadge.observeForever { settingsRepository.showBadge = it }
         setAllowDraftCreation(true)
     }
 
@@ -73,20 +79,20 @@ class MainActivityViewModel : ViewModel() {
         mIsLogged.value = false
         mSelf.value = null
         uiRefreshTickerJob?.cancel()
-        AuthRepository.clearAuthToken()
+        authRepository.clearAuthToken()
     }
 
     suspend fun updateNotificationCount() =
-        mNotificationCount.postValue(NotificationRepository.getNotificationCount())
+        mNotificationCount.postValue(notificationRepository.getNotificationCount())
 
     fun forceNotificationCount(count: Int) = mNotificationCount.postValue(count)
 
     suspend fun sendProfile(bio: String) {
         if (bio != userBio.value) {
-            mSelf.postValue(AuthorRepository.updateSelfBio(bio))
+            mSelf.postValue(authorRepository.updateSelfBio(bio))
         }
 
-        newUserAvatar.value?.let { mSelf.postValue(AuthorRepository.updateSelfAvatar(it)) }
+        newUserAvatar.value?.let { mSelf.postValue(authorRepository.updateSelfAvatar(it)) }
         resetPendingProfileAvatar()
     }
 
@@ -101,11 +107,11 @@ class MainActivityViewModel : ViewModel() {
 
     fun setAllowDraftCreation(allow: Boolean) = mAllowDraftCreation.postValue(allow)
 
-    suspend fun createDraft() = DraftRepository.createDraft()
+    suspend fun createDraft() = draftRepository.createDraft()
 
     private suspend fun updateProfileInfo() {
         updateNotificationCount()
-        mSelf.postValue(AuthorRepository.getSelf())
+        mSelf.postValue(authorRepository.getSelf())
     }
 
     companion object {

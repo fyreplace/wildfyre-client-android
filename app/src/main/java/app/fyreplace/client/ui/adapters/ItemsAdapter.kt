@@ -13,7 +13,6 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.AppGlide
-import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.ui.PostPlugin
@@ -88,6 +87,8 @@ abstract class ItemsAdapter<I>(
             }
         }
 
+        val imageTransition = DrawableTransitionOptions.withCrossFade()
+
         if (holder.authorName.isVisible) {
             holder.authorName.text =
                 if (showAuthors) itemData.author?.name
@@ -101,8 +102,13 @@ abstract class ItemsAdapter<I>(
                     )
                 )
                 .placeholder(android.R.color.transparent)
-                .transition(IMAGE_TRANSITION)
-                .transform(IMAGE_TRANSFORM)
+                .transition(imageTransition)
+                .transform(
+                    MultiTransformation(
+                        CenterCrop(),
+                        RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.list_item_author_picture_rounding))
+                    )
+                )
                 .into(holder.authorPicture)
         }
 
@@ -111,7 +117,7 @@ abstract class ItemsAdapter<I>(
             AppGlide.with(context)
                 .load(itemData.image)
                 .placeholder(android.R.color.transparent)
-                .transition(IMAGE_TRANSITION)
+                .transition(imageTransition)
                 .into(holder.image)
         } else {
             holder.text.text = markdown.toMarkdown(itemData.text.orEmpty())
@@ -119,14 +125,6 @@ abstract class ItemsAdapter<I>(
     }
 
     abstract fun getItemData(item: I): ItemDataHolder
-
-    private companion object {
-        val IMAGE_TRANSITION = DrawableTransitionOptions.withCrossFade()
-        val IMAGE_TRANSFORM = MultiTransformation(
-            CenterCrop(),
-            RoundedCorners(FyreplaceApplication.context.resources.getDimensionPixelOffset(R.dimen.list_item_author_picture_rounding))
-        )
-    }
 
     class ViewHolder(approxWidth: Int, itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val container: View = itemView.findViewById(R.id.container)

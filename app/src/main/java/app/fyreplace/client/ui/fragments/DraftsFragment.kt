@@ -7,8 +7,6 @@ import android.view.MenuInflater
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
@@ -16,14 +14,16 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.DraftsFragmentViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * [androidx.fragment.app.Fragment] listing the user's drafts.
  */
 class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
-    override val viewModel by viewModels<DraftsFragmentViewModel>()
+    override val viewModel by viewModel<DraftsFragmentViewModel>()
     override val itemsAdapter = PostsAdapter(false)
-    private val mainViewModel by activityViewModels<MainActivityViewModel>()
+    private val mainViewModel by sharedViewModel<MainActivityViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

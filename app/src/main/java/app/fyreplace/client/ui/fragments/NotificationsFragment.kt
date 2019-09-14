@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -17,6 +15,8 @@ import app.fyreplace.client.databinding.ActionNotificationsClearBinding
 import app.fyreplace.client.ui.adapters.NotificationsAdapter
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import app.fyreplace.client.viewmodels.NotificationsFragmentViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * [androidx.fragment.app.Fragment] listing the user's notifications.
@@ -24,9 +24,9 @@ import app.fyreplace.client.viewmodels.NotificationsFragmentViewModel
 class NotificationsFragment :
     ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>() {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
-    override val viewModel by viewModels<NotificationsFragmentViewModel>()
-    override val itemsAdapter = NotificationsAdapter()
-    private val mainViewModel by activityViewModels<MainActivityViewModel>()
+    override val viewModel by viewModel<NotificationsFragmentViewModel>()
+    override val itemsAdapter by lazy { NotificationsAdapter(requireContext()) }
+    private val mainViewModel by sharedViewModel<MainActivityViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

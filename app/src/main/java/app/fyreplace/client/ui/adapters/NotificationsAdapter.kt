@@ -1,20 +1,21 @@
 package app.fyreplace.client.ui.adapters
 
+import android.content.Context
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.FyreplaceApplication
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Notification
 
 /**
  * Adapter for displaying notifications in [app.fyreplace.client.ui.fragments.NotificationsFragment].
  */
-class NotificationsAdapter : ItemsAdapter<Notification>(NotificationCallback(), true) {
+class NotificationsAdapter(private val context: Context) :
+    ItemsAdapter<Notification>(NotificationCallback(), true) {
     override fun getItemData(item: Notification) = ItemDataHolder(
         item.post.text,
         null,
         item.post.author,
-        FyreplaceApplication.context.resources.getQuantityString(
+        context.resources.getQuantityString(
             R.plurals.notifications_item_comment_count,
             item.comments.size,
             item.comments.size
