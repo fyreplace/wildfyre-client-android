@@ -111,7 +111,9 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         viewModel.uiRefreshTick.observe(this) { launch { viewModel.updateNotificationCount() } }
 
         viewModel.isLogged.observe(this) {
-            if (!it && navController.currentDestination?.id != R.id.fragment_login) {
+            if (it) {
+                launch { viewModel.updateProfileInfo() }
+            } else if (navController.currentDestination?.id != R.id.fragment_login) {
                 navController.navigate(
                     if (viewModel.startupLogin)
                         NavigationMainDirections.actionGlobalFragmentLoginStartup()

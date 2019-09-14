@@ -71,7 +71,6 @@ class MainActivityViewModel(
             }
         }
         mIsLogged.value = true
-        viewModelScope.launch { updateProfileInfo() }
     }
 
     fun logout() {
@@ -80,6 +79,11 @@ class MainActivityViewModel(
         mSelf.value = null
         uiRefreshTickerJob?.cancel()
         authRepository.clearAuthToken()
+    }
+
+    suspend fun updateProfileInfo() {
+        updateNotificationCount()
+        mSelf.postValue(authorRepository.getSelf())
     }
 
     suspend fun updateNotificationCount() =
@@ -108,11 +112,6 @@ class MainActivityViewModel(
     fun setAllowDraftCreation(allow: Boolean) = mAllowDraftCreation.postValue(allow)
 
     suspend fun createDraft() = draftRepository.createDraft()
-
-    private suspend fun updateProfileInfo() {
-        updateNotificationCount()
-        mSelf.postValue(authorRepository.getSelf())
-    }
 
     companion object {
         private const val UI_UPDATE_MILLIS = 10_000L
