@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="file_provider_authority" translatable="false">app.fyreplace.client.dev.provider</string>
+</resources>
