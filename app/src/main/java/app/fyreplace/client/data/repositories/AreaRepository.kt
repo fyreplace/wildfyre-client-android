@@ -9,18 +9,14 @@ import kotlinx.coroutines.withContext
 
 class AreaRepository(
     private val wildFyre: WildFyreService,
-    private val preferences: SharedPreferences,
-    private val auth: AuthRepository
+    private val preferences: SharedPreferences
 ) {
     var preferredAreaName: String
         get() = preferences.getString(Constants.Preferences.AREA_PREFERRED, "").orEmpty()
         set(value) = preferences.edit { putString(Constants.Preferences.AREA_PREFERRED, value) }
 
-    suspend fun getAreas() = withContext(Dispatchers.IO) {
-        wildFyre.getAreas(auth.authToken)
-    }
+    suspend fun getAreas() = withContext(Dispatchers.IO) { wildFyre.getAreas() }
 
-    suspend fun getAreaReputation() = withContext(Dispatchers.IO) {
-        wildFyre.getAreaRep(auth.authToken, preferredAreaName)
-    }
+    suspend fun getAreaReputation() =
+        withContext(Dispatchers.IO) { wildFyre.getAreaRep(preferredAreaName) }
 }
