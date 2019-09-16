@@ -28,6 +28,8 @@ class MarkdownRecyclerView : RecyclerView, CoroutineScope {
         super.onAttachedToWindow()
         mCoroutineContext = SupervisorJob() + Dispatchers.Main
         launch {
+            delay(REFRESH_DELAY_INITIAL)
+
             while (true) {
                 children.map { extractText(it) }
                     .forEach { it?.post { AsyncDrawableScheduler.schedule(it) } }
@@ -43,6 +45,7 @@ class MarkdownRecyclerView : RecyclerView, CoroutineScope {
         ?: view.findViewById(R.id.text) as? TextView
 
     private companion object {
+        const val REFRESH_DELAY_INITIAL = 1000L
         const val REFRESH_DELAY = 5000L
     }
 }
