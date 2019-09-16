@@ -192,8 +192,17 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
-        if (intent != null) {
-            findNavController(R.id.navigation_host).handleDeepLink(intent)
+        if (intent == null) {
+            return
+        }
+
+        val uri = intent.data?.path.orEmpty()
+
+        for (pair in REGEX_TO_DIRECTIONS) {
+            pair.key.matchEntire(uri)?.let {
+                findNavController(R.id.navigation_host).navigate(pair.value(it))
+                return
+            }
         }
     }
 
@@ -427,6 +436,26 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             R.id.fragment_post,
             R.id.fragment_user,
             R.id.fragment_draft
+        )
+
+        val POST_REGEX = Regex("/areas/(\\w+)/(\\d+)(?:/(\\d+))?")
+        val USER_REGEX = Regex("/user/(\\d+)")
+        val REGEX_TO_DIRECTIONS = mapOf(
+            POST_REGEX to { result: MatchResult ->
+                NavigationMainDirections.actionGlobalFragmentPost(
+                    areaName = result.groupValues[1],
+                    postId = result.groupValues[2].toLong(),
+                    selectedCommentId = result.groupValues[3]
+                        .takeIf { it.isNotEmpty() }
+                        ?.toLong()
+                        ?: -1
+                )
+            },
+            USER_REGEX to { result: MatchResult ->
+                NavigationMainDirections.actionGlobalFragmentUser(
+                    userId = result.groupValues[1].toLong()
+                )
+            }
         )
     }
 
