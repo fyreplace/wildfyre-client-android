@@ -20,7 +20,6 @@ import app.fyreplace.client.AppGlide
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Comment
-import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -85,10 +84,8 @@ class CommentsAdapter(private val fragment: Fragment, private val markdown: Mark
                 .load(author.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
                 .transform(
-                    MultiTransformation(
-                        CenterCrop(),
-                        RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.comment_author_picture_rounding))
-                    )
+                    CenterCrop(),
+                    RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.comment_author_picture_rounding))
                 )
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(holder.authorPicture)

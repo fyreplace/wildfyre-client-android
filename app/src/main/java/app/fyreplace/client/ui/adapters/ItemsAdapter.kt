@@ -16,7 +16,6 @@ import app.fyreplace.client.AppGlide
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.ui.PostPlugin
-import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -103,10 +102,8 @@ abstract class ItemsAdapter<I>(
                 )
                 .placeholder(android.R.color.transparent)
                 .transform(
-                    MultiTransformation(
-                        CenterCrop(),
-                        RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.list_item_author_picture_rounding))
-                    )
+                    CenterCrop(),
+                    RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.list_item_author_picture_rounding))
                 )
                 .transition(imageTransition)
                 .into(holder.authorPicture)

@@ -317,10 +317,8 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
                 .load(info.author.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
                 .transform(
-                    MultiTransformation(
-                        CenterCrop(),
-                        RoundedCorners(resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_rounding))
-                    )
+                    CenterCrop(),
+                    RoundedCorners(resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_rounding))
                 )
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(object : CustomTarget<Drawable>(size, size) {
