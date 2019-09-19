@@ -84,13 +84,13 @@ class CommentsAdapter(private val fragment: Fragment, private val markdown: Mark
             AppGlide.with(context)
                 .load(author.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
-                .transition(DrawableTransitionOptions.withCrossFade())
                 .transform(
                     MultiTransformation(
                         CenterCrop(),
                         RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.comment_author_picture_rounding))
                     )
                 )
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .into(holder.authorPicture)
 
             holder.authorPicture.setOnClickListener {

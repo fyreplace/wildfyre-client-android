@@ -84,7 +84,7 @@ dependencies {
     implementation "ru.noties.markwon:ext-strikethrough:$version_markwon"
     implementation "ru.noties.markwon:image-okhttp:$version_markwon"
     implementation "ru.noties.markwon:recycler:$version_markwon"
-    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    kapt "com.github.bumptech.glide:compiler:$version_glide"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

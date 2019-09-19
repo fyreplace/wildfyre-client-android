@@ -316,13 +316,13 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             AppGlide.with(this)
                 .load(info.author.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
-                .transition(DrawableTransitionOptions.withCrossFade())
                 .transform(
                     MultiTransformation(
                         CenterCrop(),
                         RoundedCorners(resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_rounding))
                     )
                 )
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .into(object : CustomTarget<Drawable>(size, size) {
                     override fun onLoadCleared(placeholder: Drawable?) = Unit
 
@@ -388,8 +388,8 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             it?.run {
                 AppGlide.with(this@MainActivity)
                     .load(Drawable.createFromStream(ByteArrayInputStream(bytes), "avatar"))
-                    .transition(imageTransition)
                     .transform(avatarTransform)
+                    .transition(imageTransition)
                     .into(avatar)
             }
         }

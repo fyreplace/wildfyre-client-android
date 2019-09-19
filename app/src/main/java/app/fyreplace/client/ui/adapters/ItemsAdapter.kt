@@ -102,13 +102,13 @@ abstract class ItemsAdapter<I>(
                     )
                 )
                 .placeholder(android.R.color.transparent)
-                .transition(imageTransition)
                 .transform(
                     MultiTransformation(
                         CenterCrop(),
                         RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.list_item_author_picture_rounding))
                     )
                 )
+                .transition(imageTransition)
                 .into(holder.authorPicture)
         }
 
