@@ -17,7 +17,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -52,9 +51,7 @@ import kotlin.math.max
 
 open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackHandlingFragment,
     ToolbarUsingFragment, ImageSelector {
-    override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by viewModel<PostFragmentViewModel>()
-    override val viewModelStoreOwner by lazy { this }
     override val contextWrapper by lazy { requireActivity() }
     private val mainViewModel by sharedViewModel<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.ActionAreaSelectingAreaReputationBinding
@@ -23,9 +22,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * [androidx.fragment.app.Fragment] for showing new posts to the user.
  */
 class HomeFragment : PostFragment(), AreaSelectingFragment {
-    override val viewModels: List<ViewModel> by lazy { super.viewModels + areaSelectingViewModel }
     override val viewModel by viewModel<HomeFragmentViewModel>()
-    override val areaSelectingViewModel by sharedViewModel<AreaSelectingFragmentViewModel>()
+    private val areaSelectingViewModel by sharedViewModel<AreaSelectingFragmentViewModel>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

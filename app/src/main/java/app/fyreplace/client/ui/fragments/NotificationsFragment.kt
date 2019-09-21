@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
@@ -23,7 +22,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class NotificationsFragment :
     ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>() {
-    override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by viewModel<NotificationsFragmentViewModel>()
     override val itemsAdapter by lazy { NotificationsAdapter(requireContext()) }
     private val mainViewModel by sharedViewModel<MainActivityViewModel>()

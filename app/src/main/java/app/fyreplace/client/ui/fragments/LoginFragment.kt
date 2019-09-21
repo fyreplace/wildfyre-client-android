@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.Constants
@@ -26,7 +25,6 @@ import retrofit2.HttpException
  * [androidx.fragment.app.Fragment] showing a login screen to the user.
  */
 class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
-    override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by viewModel<LoginFragmentViewModel>()
     private val mainViewModel by sharedViewModel<MainActivityViewModel>()
 

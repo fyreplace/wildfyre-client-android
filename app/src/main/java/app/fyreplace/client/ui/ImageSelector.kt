@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.documentfile.provider.DocumentFile
-import androidx.lifecycle.ViewModelStoreOwner
 import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
@@ -26,7 +25,6 @@ import java.nio.file.Paths
 import kotlin.math.sqrt
 
 interface ImageSelector : FailureHandler {
-    val viewModelStoreOwner: ViewModelStoreOwner
     val contextWrapper: ContextWrapper
     private val viewModel
         get() = getViewModel<ImageSelectorViewModel>()

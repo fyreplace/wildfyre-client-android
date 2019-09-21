@@ -6,7 +6,6 @@ import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
@@ -26,8 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  */
 abstract class PostsFragment<VM : PostsFragmentViewModel> :
     ItemsListFragment<Post, VM, PostsAdapter>(), AreaSelectingFragment, ActionMode.Callback {
-    override val viewModels: List<ViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
-    override val areaSelectingViewModel by sharedViewModel<AreaSelectingFragmentViewModel>()
+    private val areaSelectingViewModel by sharedViewModel<AreaSelectingFragmentViewModel>()
     private var settingUp = true
     private var selectionObserver: SelectionObserver? = null
 

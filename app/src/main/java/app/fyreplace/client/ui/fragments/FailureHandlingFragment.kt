@@ -9,7 +9,6 @@ import kotlinx.coroutines.cancel
 
 abstract class FailureHandlingFragment(contentLayoutId: Int) : Fragment(contentLayoutId),
     FailureHandler {
-    protected abstract val viewModels: List<ViewModel>
     protected abstract val viewModel: ViewModel
 
     override fun onAttach(context: Context) {

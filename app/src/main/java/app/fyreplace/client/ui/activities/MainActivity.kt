@@ -58,7 +58,6 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
     NavController.OnDestinationChangedListener,
     DrawerLayout.DrawerListener, ImageSelector {
     override val viewModel by viewModel<MainActivityViewModel>()
-    override val viewModelStoreOwner by lazy { this }
     override val contextWrapper = this
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val toolbarChangeListener by lazy { OnToolbarChangeListener(toolbar) }

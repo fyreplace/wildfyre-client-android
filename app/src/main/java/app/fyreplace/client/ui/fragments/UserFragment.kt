@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import app.fyreplace.client.AppGlide
@@ -21,7 +20,6 @@ import kotlinx.android.synthetic.main.fragment_user.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
-    override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by viewModel<UserFragmentViewModel>()
     private val fragmentArgs by navArgs<UserFragmentArgs>()
     private val markdown by lazyMarkdown()

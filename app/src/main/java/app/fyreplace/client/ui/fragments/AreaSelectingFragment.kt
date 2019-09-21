@@ -11,14 +11,14 @@ import app.fyreplace.client.R
 import app.fyreplace.client.databinding.ActionAreaSelectingAreaSpinnerBinding
 import app.fyreplace.client.ui.FailureHandler
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
+import org.koin.androidx.viewmodel.ext.android.getSharedViewModel
 
 /**
  * Interface for fragments displaying an area selector in their menu.
  */
 interface AreaSelectingFragment : FailureHandler {
-    val areaSelectingViewModel: AreaSelectingFragmentViewModel
-
     fun onCreateOptionsMenu(fragment: Fragment, menu: Menu, inflater: MenuInflater) {
+        val areaSelectingViewModel = fragment.getSharedViewModel<AreaSelectingFragmentViewModel>()
         val areaSelectorMenuItem = menu.findItem(R.id.action_area_selector)
         val areaSpinner = areaSelectorMenuItem?.actionView as Spinner
 

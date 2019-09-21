@@ -13,7 +13,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -32,9 +31,7 @@ import ru.noties.markwon.recycler.MarkwonAdapter
 
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
     Toolbar.OnMenuItemClickListener, ImageSelector {
-    override val viewModels: List<ViewModel> by lazy { listOf(viewModel) }
     override val viewModel by viewModel<DraftFragmentViewModel>()
-    override val viewModelStoreOwner by lazy { this }
     override val contextWrapper by lazy { requireActivity() }
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
     private val markdown by lazyMarkdown()
