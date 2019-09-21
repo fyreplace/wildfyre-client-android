@@ -28,30 +28,27 @@ interface AreaSelectingFragment : FailureHandler {
         }
 
         areaSelectingViewModel.preferredArea.observe(fragment.viewLifecycleOwner) {
-            if (it != null) {
-                areaSelectorMenuItem.title = fragment.getString(
-                    R.string.area_selecting_action_area_selector,
-                    it.displayName
-                )
-            }
+            areaSelectorMenuItem.title = fragment.getString(
+                R.string.area_selecting_action_area_selector,
+                it.displayName
+            )
         }
 
-        launch {
-            areaSelectingViewModel.updateAreas()
-            areaSelectingViewModel.areas.observe(fragment.viewLifecycleOwner) { areas ->
-                areaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        areaSelectingViewModel.areas.observe(fragment.viewLifecycleOwner) { areas ->
+            areaSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) = Unit
 
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        launch { areaSelectingViewModel.setPreferredAreaName(areas[position].name) }
-                    }
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    launch { areaSelectingViewModel.setPreferredAreaName(areas[position].name) }
                 }
             }
         }
+
+        launch { areaSelectingViewModel.updateAreas() }
     }
 }
