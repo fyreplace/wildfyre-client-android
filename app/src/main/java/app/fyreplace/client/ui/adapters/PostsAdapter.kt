@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat
 /**
  * Adapter for displaying posts with [app.fyreplace.client.ui.fragments.PostsFragment] implementations.
  */
-open class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(), showAuthors) {
+class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(), showAuthors) {
     override fun getItemId(position: Int) = getItem(position)?.id ?: RecyclerView.NO_ID
 
     override fun getItemData(item: Post) = ItemDataHolder(
