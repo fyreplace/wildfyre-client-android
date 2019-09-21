@@ -26,10 +26,12 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val author = fragmentArgs.author
+        val userId = fragmentArgs.userId
 
         when {
-            fragmentArgs.author != null -> viewModel.setAuthor(fragmentArgs.author!!)
-            fragmentArgs.userId != -1L -> launch { viewModel.setUserId(fragmentArgs.userId) }
+            author != null -> viewModel.setAuthor(author)
+            userId != -1L -> launch { viewModel.setUserId(userId) }
             else -> throw IllegalStateException("Cannot start UserFragment without a user to show")
         }
     }
