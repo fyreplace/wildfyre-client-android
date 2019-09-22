@@ -80,6 +80,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
         content.adapter = markdownAdapter
         val commentsAdapter = CommentsAdapter(this, markdown)
+        comments_list.setHasFixedSize(true)
         comments_list.adapter = commentsAdapter
         comments_list.addItemDecoration(
             DividerItemDecoration(
