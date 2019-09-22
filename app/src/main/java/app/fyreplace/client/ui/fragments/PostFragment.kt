@@ -318,9 +318,9 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         }
     }
 
-    private fun clearCommentInput() = comment_new?.let {
-        hideSoftKeyboard(it)
-        it.clearFocus()
+    private fun clearCommentInput() {
+        hideSoftKeyboard(comment_new)
+        comment_new?.clearFocus()
     }
 
     private fun requestImage() {

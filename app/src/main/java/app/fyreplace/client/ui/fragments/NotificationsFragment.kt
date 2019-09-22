@@ -23,7 +23,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class NotificationsFragment :
     ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>() {
     override val viewModel by viewModel<NotificationsFragmentViewModel>()
-    override val itemsAdapter by lazy { NotificationsAdapter(requireContext()) }
     private val mainViewModel by sharedViewModel<MainActivityViewModel>()
 
     override fun onCreateView(
@@ -69,4 +68,6 @@ class NotificationsFragment :
             )
         )
     }
+
+    override fun createAdapter() = NotificationsAdapter(requireContext())
 }

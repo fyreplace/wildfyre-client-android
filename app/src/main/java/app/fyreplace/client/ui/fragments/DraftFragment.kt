@@ -51,9 +51,9 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         editor.addTextChangedListener(EditorWatcher())
         editor.setText(fragmentArgs.draft.text)
         editor.onSelectionChangedListener = { hasSelection ->
-            if (bottom_app_bar.getTag(R.menu.bottom_actions_fragment_draft_selection) != hasSelection) {
-                bottom_app_bar.setTag(R.menu.bottom_actions_fragment_draft_selection, hasSelection)
-                bottom_app_bar.replaceMenu(
+            if (bottom_app_bar?.getTag(R.menu.bottom_actions_fragment_draft_selection) != hasSelection) {
+                bottom_app_bar?.setTag(R.menu.bottom_actions_fragment_draft_selection, hasSelection)
+                bottom_app_bar?.replaceMenu(
                     if (hasSelection) R.menu.bottom_actions_fragment_draft_selection
                     else R.menu.bottom_actions_fragment_draft
                 )
@@ -202,7 +202,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private suspend fun saveDraft(anonymous: Boolean = false, showConfirmation: Boolean = false) {
-        check(!editor.text.isNullOrBlank()) { getString(R.string.draft_action_save_empty_toast) }
+        check(!editor?.text.isNullOrBlank()) { getString(R.string.draft_action_save_empty_toast) }
 
         viewModel.saveDraft(editor.text.toString(), anonymous)
 
@@ -215,13 +215,13 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         AlertDialog.Builder(contextWrapper)
             .setTitle(R.string.draft_bottom_actions_title_dialog_title)
             .setItems((1..6).map { it.toString() }.toTypedArray()) { _, i ->
-                editor.editableText.insert(editorLineStart(), "#".repeat(i + 1) + ' ')
+                editor?.editableText?.insert(editorLineStart(), "#".repeat(i + 1) + ' ')
             }
             .show()
     }
 
     private fun addList(numbered: Boolean) {
-        editor.editableText.insert(editorLineStart(), if (numbered) "1. " else "- ")
+        editor?.editableText?.insert(editorLineStart(), if (numbered) "1. " else "- ")
     }
 
     private fun addImage(main: Boolean) {
@@ -258,7 +258,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                     Constants.Api.YOUTUBE_REGEX.matchEntire(it.toString())?.run {
                         val videoId = groupValues[1]
                         val thumbnail = Constants.Api.youtubeThumbnail(videoId)
-                        editor.editableText.insert(
+                        editor?.editableText?.insert(
                             editor.selectionStart,
                             "[![YouTube link]($thumbnail)](https://www.youtube.com/watch?v=$videoId)"
                         )
@@ -274,7 +274,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private fun editorLineStart(cursorPos: Int = editor.selectionStart) =
-        editor.editableText.subSequence(0, cursorPos).indexOfLast { it == '\n' } + 1
+        editor?.editableText?.subSequence(0, cursorPos)?.indexOfLast { it == '\n' }?.plus(1) ?: -1
 
     private fun surroundSelectionWithLink() {
         var link: EditText? = null
@@ -290,7 +290,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private fun surroundSelectionWith(start: String, end: String) {
-        editor.editableText.insert(editor.selectionStart, start).insert(editor.selectionEnd, end)
+        editor?.editableText?.insert(editor.selectionStart, start)?.insert(editor.selectionEnd, end)
     }
 
     private companion object {
@@ -327,7 +327,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             }
 
             newText?.let {
-                editor.editableText.append(it)
+                editor?.editableText?.append(it)
             }
         }
     }

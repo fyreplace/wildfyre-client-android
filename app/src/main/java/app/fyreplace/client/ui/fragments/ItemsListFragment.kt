@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.FragmentItemsListBinding
 import app.fyreplace.client.ui.adapters.ItemsAdapter
@@ -19,46 +18,47 @@ import kotlinx.android.synthetic.main.fragment_items_list.*
 abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : ItemsAdapter<I>> :
     FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemClickedListener<I> {
     abstract override val viewModel: VM
-    protected abstract val itemsAdapter: A
-    protected var onRefreshListener: SwipeRefreshLayout.OnRefreshListener? = null
+    @Suppress("UNCHECKED_CAST")
+    protected val itemsAdapter: A?
+        get() = items_list?.adapter as? A
+    private var itemsRefreshCallback: ((Boolean) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = FragmentItemsListBinding.inflate(inflater, container, false).run {
+        val binding = FragmentItemsListBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             loading = viewModel.loading
             hasData = viewModel.hasData
-            return@run root
         }
 
-        val itemsList = root.findViewById<RecyclerView>(R.id.items_list)
-        val swipeRefresh = root.findViewById<SwipeRefreshLayout>(R.id.refresher)
-
-        itemsList.setHasFixedSize(true)
-        itemsList.adapter = itemsAdapter.apply {
-            onItemClickedListener = this@ItemsListFragment
-            viewModel.itemsPagedList.observe(viewLifecycleOwner) {
-                submitList(it)
-                viewModel.setHasData(it.size > 0)
-            }
-        }
-
-        swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
-        swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.colorBackground)
-        viewModel.loading.observe(viewLifecycleOwner) { swipeRefresh?.isRefreshing = it }
+        binding.itemsList.setHasFixedSize(true)
+        binding.itemsList.setupAdapter()
+        binding.refresher.setColorSchemeResources(R.color.colorPrimary)
+        binding.refresher.setProgressBackgroundColorSchemeResource(R.color.colorBackground)
+        binding.refresher.setOnRefreshListener { refreshItems(false) }
+        viewModel.loading.observe(viewLifecycleOwner) { binding.refresher.isRefreshing = it }
         viewModel.dataSource.observe(viewLifecycleOwner) {
-            onRefreshListener = SwipeRefreshLayout.OnRefreshListener(it::invalidate)
-            swipeRefresh?.setOnRefreshListener(onRefreshListener)
+            itemsRefreshCallback = { clear ->
+                if (clear) {
+                    items_list?.setupAdapter()
+                }
+
+                it.invalidate()
+            }
 
             if (viewModel.popRefresh()) {
-                onRefreshListener?.onRefresh()
+                refreshItems(false)
             }
         }
+        viewModel.itemsPagedList.observe(viewLifecycleOwner) {
+            itemsAdapter?.submitList(it)
+            viewModel.setHasData(it.size > 0)
+        }
 
-        return root
+        return binding.root
     }
 
     override fun onFailure(failure: Throwable) {
@@ -67,4 +67,18 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
     }
 
     override fun onItemClicked(item: I) = viewModel.pushRefresh()
+
+    abstract fun createAdapter(): A
+
+    fun refreshItems(clear: Boolean) = itemsRefreshCallback?.let {
+        if (clear) {
+            refresher?.isRefreshing = true
+        }
+
+        it(clear)
+    }
+
+    private fun RecyclerView.setupAdapter() {
+        adapter = createAdapter().apply { onItemClickedListener = this@ItemsListFragment }
+    }
 }

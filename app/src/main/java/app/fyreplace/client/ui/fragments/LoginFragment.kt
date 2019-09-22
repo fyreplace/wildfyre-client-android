@@ -62,7 +62,7 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
 
         password.setOnEditorActionListener { _, id, _ ->
             // Allow the user to use the keyboard "done" button to trigger a login attempt
-            if (id == EditorInfo.IME_ACTION_DONE) true.also { login.callOnClick() } else false
+            if (id == EditorInfo.IME_ACTION_DONE) true.also { login?.callOnClick() } else false
         }
 
         login.setOnClickListener { attemptLogin() }

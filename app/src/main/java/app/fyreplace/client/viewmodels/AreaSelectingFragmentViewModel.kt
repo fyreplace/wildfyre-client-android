@@ -4,21 +4,19 @@ import androidx.lifecycle.*
 import app.fyreplace.client.data.models.Area
 import app.fyreplace.client.data.models.Reputation
 import app.fyreplace.client.data.repositories.AreaRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class AreaSelectingFragmentViewModel(private val areaRepository: AreaRepository) : ViewModel() {
     private val mAreas = MutableLiveData<List<Area>>()
     private val mPreferredAreaName = MutableLiveData<String>()
-    private val mPreferredArea = MediatorLiveData<Area?>()
+    private val mPreferredArea = MediatorLiveData<Area>()
+    private val mPreferredAreaIndex = MutableLiveData<Int>()
     private val mPreferredAreaReputationInfo = MutableLiveData<Reputation>()
 
     val areas: LiveData<List<Area>> = mAreas
     val areasDisplayNames: LiveData<List<String>> = areas.map { it.map { a -> a.displayName } }
     val preferredAreaName: LiveData<String> = mPreferredAreaName.distinctUntilChanged()
-    val preferredArea: LiveData<Area?> = mPreferredArea.distinctUntilChanged()
-    val preferredAreaIndex: LiveData<Int> = areas
-        .map { areas -> areas.indexOfFirst { it.name == areaRepository.preferredAreaName } }
+    val preferredArea: LiveData<Area> = mPreferredArea.distinctUntilChanged()
+    val preferredAreaIndex: LiveData<Int> = mPreferredAreaIndex
     val currentAreaSpread: LiveData<Int> = mPreferredAreaReputationInfo.map { it.spread }
     val currentAreaReputation: LiveData<Int> = mPreferredAreaReputationInfo.map { it.reputation }
 
@@ -29,7 +27,7 @@ class AreaSelectingFragmentViewModel(private val areaRepository: AreaRepository)
 
     suspend fun updateAreas() {
         val fetchedAreas = areaRepository.getAreas()
-        withContext(Dispatchers.Main) { mAreas.value = fetchedAreas }
+        mAreas.postValue(fetchedAreas)
 
         if (preferredAreaName.value.isNullOrEmpty()) {
             val name = areaRepository.preferredAreaName
@@ -50,5 +48,8 @@ class AreaSelectingFragmentViewModel(private val areaRepository: AreaRepository)
     }
 
     private fun updatePreferredArea(areas: List<Area>?, areaName: String?) =
-        areas?.firstOrNull { it.name == areaName }?.let { mPreferredArea.postValue(it) }
+        areas?.withIndex()?.firstOrNull { it.value.name == areaName }?.let {
+            mPreferredArea.postValue(it.value)
+            mPreferredAreaIndex.postValue(it.index)
+        }
 }
