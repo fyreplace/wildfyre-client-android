@@ -31,8 +31,7 @@ import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
 abstract class ItemsAdapter<I>(
     diffCallback: DiffUtil.ItemCallback<I>,
     private val showAuthors: Boolean
-) :
-    PagedListAdapter<I, ItemsAdapter.ViewHolder>(diffCallback) {
+) : PagedListAdapter<I, ItemsAdapter.ViewHolder>(diffCallback) {
     private lateinit var markdown: Markwon
     var onItemClickedListener: OnItemClickedListener<I>? = null
     var selectionTracker: SelectionTracker<Long>? = null

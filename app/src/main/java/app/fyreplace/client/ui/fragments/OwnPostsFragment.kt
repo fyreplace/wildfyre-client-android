@@ -17,7 +17,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>() {
     override val viewModel by viewModel<OwnPostsFragmentViewModel>()
-    override val itemsAdapter = PostsAdapter(false)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,4 +34,6 @@ class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>() {
             )
         )
     }
+
+    override fun createAdapter() = PostsAdapter(false)
 }
