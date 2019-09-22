@@ -6,7 +6,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
@@ -14,6 +13,7 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.DraftsFragmentViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
+import kotlinx.android.synthetic.main.items_list_item.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -30,7 +30,7 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
         savedInstanceState: Bundle?
     ) = super.onCreateView(inflater, container, savedInstanceState).apply {
         mainViewModel.setAllowDraftCreation(false)
-        findViewById<TextView>(R.id.text).setText(R.string.drafts_empty)
+        text.setText(R.string.drafts_empty)
     }
 
     override fun onDestroyView() = super.onDestroyView()

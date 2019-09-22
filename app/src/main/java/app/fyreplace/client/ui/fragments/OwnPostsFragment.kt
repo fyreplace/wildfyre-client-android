@@ -3,13 +3,13 @@ package app.fyreplace.client.ui.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.NavigationMainDirections
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.OwnPostsFragmentViewModel
+import kotlinx.android.synthetic.main.fragment_items_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -23,7 +23,7 @@ class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = super.onCreateView(inflater, container, savedInstanceState)
-        .apply { findViewById<TextView>(R.id.text).setText(R.string.own_posts_empty) }
+        .apply { text.setText(R.string.own_posts_empty) }
 
     override fun onItemClicked(item: Post) {
         super.onItemClicked(item)

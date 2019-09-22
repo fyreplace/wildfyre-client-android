@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.FragmentItemsListBinding
 import app.fyreplace.client.ui.adapters.ItemsAdapter
@@ -29,23 +28,18 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = FragmentItemsListBinding.inflate(inflater, container, false).run {
+        val binding = FragmentItemsListBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             loading = viewModel.loading
             hasData = viewModel.hasData
-            return@run root
         }
 
-        val itemsList = root.findViewById<RecyclerView>(R.id.items_list)
-        val swipeRefresh = root.findViewById<SwipeRefreshLayout>(R.id.refresher)
-
-        itemsList.setHasFixedSize(true)
-        itemsList.setupAdapter()
-        swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
-        swipeRefresh.setProgressBackgroundColorSchemeResource(R.color.colorBackground)
-        swipeRefresh.setOnRefreshListener { refreshItems(false) }
-
-        viewModel.loading.observe(viewLifecycleOwner) { swipeRefresh?.isRefreshing = it }
+        binding.itemsList.setHasFixedSize(true)
+        binding.itemsList.setupAdapter()
+        binding.refresher.setColorSchemeResources(R.color.colorPrimary)
+        binding.refresher.setProgressBackgroundColorSchemeResource(R.color.colorBackground)
+        binding.refresher.setOnRefreshListener { refreshItems(false) }
+        viewModel.loading.observe(viewLifecycleOwner) { binding.refresher.isRefreshing = it }
         viewModel.dataSource.observe(viewLifecycleOwner) {
             itemsRefreshCallback = { clear ->
                 if (clear) {
@@ -64,7 +58,7 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
             viewModel.setHasData(it.size > 0)
         }
 
-        return root
+        return binding.root
     }
 
     override fun onFailure(failure: Throwable) {

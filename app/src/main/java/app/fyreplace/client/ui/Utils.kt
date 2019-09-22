@@ -15,9 +15,11 @@ import ru.noties.markwon.image.ImagesPlugin
 import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin
 import ru.noties.markwon.movement.MovementMethodPlugin
 
-fun hideSoftKeyboard(view: View) {
-    ContextCompat.getSystemService(view.context, InputMethodManager::class.java)
-        ?.hideSoftInputFromWindow(view.windowToken, 0)
+fun hideSoftKeyboard(view: View?) {
+    view?.let {
+        ContextCompat.getSystemService(it.context, InputMethodManager::class.java)
+            ?.hideSoftInputFromWindow(it.windowToken, 0)
+    }
 }
 
 fun Fragment.lazyMarkdown() = lazy {
