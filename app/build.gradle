@@ -72,7 +72,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_lifecycle"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$version_lifecycle"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
-    implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
     implementation 'androidx.paging:paging-runtime-ktx:2.1.0'
@@ -93,6 +92,7 @@ dependencies {
     implementation "ru.noties.markwon:ext-strikethrough:$version_markwon"
     implementation "ru.noties.markwon:image-okhttp:$version_markwon"
     implementation "ru.noties.markwon:recycler:$version_markwon"
+    vanillaImplementation 'androidx.multidex:multidex:2.0.1'
     vanillaImplementation 'com.google.android.gms:play-services-base:17.1.0'
     kapt "com.github.bumptech.glide:compiler:$version_glide"
     testImplementation 'junit:junit:4.12'

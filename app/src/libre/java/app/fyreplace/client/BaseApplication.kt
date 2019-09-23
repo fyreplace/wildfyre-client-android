@@ -1,5 +1,5 @@
 package app.fyreplace.client
 
-import androidx.multidex.MultiDexApplication
+import android.app.Application
 
-typealias BaseApplication = MultiDexApplication
+typealias BaseApplication = Application
