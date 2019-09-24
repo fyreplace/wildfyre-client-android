@@ -19,6 +19,8 @@
     <string name="main_nav_fyreplace_website">Site web</string>
     <string name="main_nav_fyreplace_open_source">Open source</string>
     <string name="main_nav_fyreplace_logout">Déconnexion</string>
+    <string name="main_nav_fyreplace_licenses">Licenses</string>
+    <string name="main_nav_fyreplace_licenses_dialog_title">Licenses des bibliothèques utilisés</string>
     <string name="main_nav_wildfyre_website">Site web</string>
     <string name="main_nav_wildfyre_open_source">Open source</string>
     <string name="main_nav_wildfyre_faq">FAQ</string>

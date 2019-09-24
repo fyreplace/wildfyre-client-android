@@ -164,6 +164,11 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             }
         }
 
+        navigation_view.menu.findItem(R.id.fyreplace_licenses).setOnMenuItemClickListener {
+            showLicenses()
+            return@setOnMenuItemClickListener true
+        }
+
         navigation_view.menu.findItem(R.id.fyreplace_logout).setOnMenuItemClickListener {
             viewModel.logout()
             return@setOnMenuItemClickListener true
@@ -402,6 +407,20 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         }
     }
 
+    private fun showLicenses() {
+        val licenses = resources.getStringArray(R.array.dependencies_names_base) +
+            resources.getStringArray(R.array.dependencies_names_additional)
+        val links = resources.getStringArray(R.array.dependencies_links_base) +
+            resources.getStringArray(R.array.dependencies_links_additional)
+        AlertDialog.Builder(this)
+            .setItems(licenses) { _, i ->
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(links[i])))
+            }
+            .setTitle(R.string.main_nav_fyreplace_licenses_dialog_title)
+            .setPositiveButton(R.string.ok, null)
+            .show()
+    }
+
     private inline fun <reified T> currentFragmentAs(): T? {
         val destinationFragments = supportFragmentManager.fragments
             .firstOrNull { it is NavHostFragment }
@@ -415,7 +434,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             if (it.isNotEmpty() && last as? T != null) {
                 return last
             }
-        } ?: return null
+        }
 
         return null
     }
