@@ -6,7 +6,7 @@ apply plugin: 'androidx.navigation.safeargs.kotlin'
 apply plugin: 'org.jetbrains.dokka-android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion configuration.compileSdkVersion
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -19,8 +19,8 @@ android {
     }
     defaultConfig {
         applicationId "app.fyreplace.client"
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion configuration.minSdkVersion
+        targetSdkVersion configuration.targetSdkVersion
         multiDexEnabled true
         versionCode 3002
         versionName "0.3.2"
