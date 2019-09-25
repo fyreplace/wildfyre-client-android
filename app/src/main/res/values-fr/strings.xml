@@ -26,7 +26,7 @@
     <string name="main_nav_wildfyre_faq">FAQ</string>
     <string name="main_nav_wildfyre_terms">Conditions d\'utilisation</string>
     <string name="main_nav_wildfyre_privacy">Politique de confidentialité</string>
-    <string name="main_profile_editor_bio">Ta bio</string>
+    <string name="main_profile_editor_bio">Bio de profil</string>
     <string name="main_author_anonymous">Anonyme</string>
     <string name="image_selector_chooser">Source de l\'image</string>
     <string name="image_selector_error_toast">Taille de fichier trop élevée</string>
