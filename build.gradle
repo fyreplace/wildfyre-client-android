@@ -4,8 +4,8 @@ buildscript {
     ext {
         configuration = [
             compileSdkVersion: 29,
-            targetSdkVersion: 29,
-            minSdkVersion: 16,
+            targetSdkVersion : 29,
+            minSdkVersion    : 16,
         ]
         versions = [
             androidx         : [
@@ -17,7 +17,7 @@ buildscript {
                 lifecycle            : '2.2.0-alpha05',
                 multidex             : '2.0.1',
                 navigation           : '2.1.0',
-                pagingRuntimeKtx     : '2.1.0',
+                paging               : '2.1.0',
                 recyclerView         : '1.1.0-beta04',
                 recyclerViewSelection: '1.0.0',
                 swipeRefreshLayout   : '1.0.0',
@@ -34,6 +34,47 @@ buildscript {
             material         : '1.1.0-alpha10',
             playServices     : '17.1.0',
             retrofit         : '2.6.1',
+        ]
+        libraries = [
+            androidx               : [
+                appCompat            : "androidx.appcompat:appcompat:$versions.androidx.appCompat",
+                constraintLayout     : "androidx.constraintlayout:constraintlayout:$versions.androidx.constraintLayout",
+                coreKtx              : "androidx.core:core-ktx:$versions.androidx.coreKtx",
+                dynamicAnimation     : "androidx.dynamicanimation:dynamicanimation:$versions.androidx.dynamicAnimation",
+                fragmentKtx          : "androidx.fragment:fragment-ktx:$versions.androidx.fragmentKtx",
+                lifecycleCommon      : "androidx.lifecycle:lifecycle-common-java8:$versions.androidx.lifecycle",
+                lifecycleExtensions  : "androidx.lifecycle:lifecycle-extensions:$versions.androidx.lifecycle",
+                lifecycleLiveDataKtx : "androidx.lifecycle:lifecycle-livedata-ktx:$versions.androidx.lifecycle",
+                lifecycleRuntimeKtx  : "androidx.lifecycle:lifecycle-runtime-ktx:$versions.androidx.lifecycle",
+                lifecycleViewModelKtx: "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidx.lifecycle",
+                multidex             : "androidx.multidex:multidex:$versions.androidx.multidex",
+                navigationFragmentKtx: "androidx.navigation:navigation-fragment-ktx:$versions.androidx.navigation",
+                navigationUiKtx      : "androidx.navigation:navigation-ui-ktx:$versions.androidx.navigation",
+                paging               : "androidx.paging:paging-runtime-ktx:$versions.androidx.paging",
+                recyclerView         : "androidx.recyclerview:recyclerview:$versions.androidx.recyclerView",
+                recyclerViewSelection: "androidx.recyclerview:recyclerview-selection:$versions.androidx.recyclerViewSelection",
+                swipeRefreshLayout   : "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidx.swipeRefreshLayout",
+                vectorDrawable       : "androidx.vectordrawable:vectordrawable:$versions.androidx.vectorDrawable",
+            ],
+            kotlin                 : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin",
+            kotlinxCoroutines      : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinxCoroutines",
+            material               : "com.google.android.material:material:$versions.material",
+            gson                   : "com.google.code.gson:gson:$versions.gson",
+            glide                  : "com.github.bumptech.glide:glide:$versions.glide",
+            glideOkHttp            : "com.github.bumptech.glide:okhttp3-integration:$versions.glide",
+            retrofit               : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+            retrofitGson           : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+            koin                   : "org.koin:koin-android:$versions.koin",
+            koinAndroidxScope      : "org.koin:koin-androidx-scope:$versions.koin",
+            koinAndroidxViewModel  : "org.koin:koin-androidx-viewmodel:$versions.koin",
+            markwon                : "ru.noties.markwon:core:$versions.markwon",
+            markwonExtStrikethrough: "ru.noties.markwon:ext-strikethrough:$versions.markwon",
+            markwonImageOkHttp     : "ru.noties.markwon:image-okhttp:$versions.markwon",
+            markwonRecycler        : "ru.noties.markwon:recycler:$versions.markwon",
+            playServices           : "com.google.android.gms:play-services-base:$versions.playServices",
+        ]
+        processors = [
+            glide: "com.github.bumptech.glide:compiler:$versions.glide",
         ]
     }
     repositories {

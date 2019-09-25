@@ -53,41 +53,41 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinxCoroutines"
-    implementation "androidx.appcompat:appcompat:$versions.androidx.appCompat"
-    implementation "androidx.constraintlayout:constraintlayout:$versions.androidx.constraintLayout"
-    implementation "androidx.core:core-ktx:$versions.androidx.coreKtx"
-    implementation "androidx.dynamicanimation:dynamicanimation:$versions.androidx.dynamicAnimation"
-    implementation "androidx.fragment:fragment-ktx:$versions.androidx.fragmentKtx"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$versions.androidx.lifecycle"
-    implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidx.lifecycle"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.androidx.lifecycle"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.androidx.lifecycle"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidx.lifecycle"
-    implementation "androidx.navigation:navigation-fragment-ktx:$versions.androidx.navigation"
-    implementation "androidx.navigation:navigation-ui-ktx:$versions.androidx.navigation"
-    implementation "androidx.paging:paging-runtime-ktx:$versions.androidx.pagingRuntimeKtx"
-    implementation "androidx.recyclerview:recyclerview:$versions.androidx.recyclerView"
-    implementation "androidx.recyclerview:recyclerview-selection:$versions.androidx.recyclerViewSelection"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidx.swipeRefreshLayout"
-    implementation "androidx.vectordrawable:vectordrawable:$versions.androidx.vectorDrawable"
-    implementation "com.google.android.material:material:$versions.material"
-    implementation "com.google.code.gson:gson:$versions.gson"
-    implementation "com.github.bumptech.glide:glide:$versions.glide"
-    implementation "com.github.bumptech.glide:okhttp3-integration:$versions.glide"
-    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
-    implementation "org.koin:koin-android:$versions.koin"
-    implementation "org.koin:koin-androidx-scope:$versions.koin"
-    implementation "org.koin:koin-androidx-viewmodel:$versions.koin"
-    implementation "ru.noties.markwon:core:$versions.markwon"
-    implementation "ru.noties.markwon:ext-strikethrough:$versions.markwon"
-    implementation "ru.noties.markwon:image-okhttp:$versions.markwon"
-    implementation "ru.noties.markwon:recycler:$versions.markwon"
-    vanillaImplementation "androidx.multidex:multidex:$versions.androidx.multidex"
-    vanillaImplementation "com.google.android.gms:play-services-base:$versions.playServices"
-    kapt "com.github.bumptech.glide:compiler:$versions.glide"
+    implementation libraries.kotlin
+    implementation libraries.kotlinxCoroutines
+    implementation libraries.androidx.appCompat
+    implementation libraries.androidx.constraintLayout
+    implementation libraries.androidx.coreKtx
+    implementation libraries.androidx.dynamicAnimation
+    implementation libraries.androidx.fragmentKtx
+    implementation libraries.androidx.lifecycleCommon
+    implementation libraries.androidx.lifecycleExtensions
+    implementation libraries.androidx.lifecycleLiveDataKtx
+    implementation libraries.androidx.lifecycleRuntimeKtx
+    implementation libraries.androidx.lifecycleViewModelKtx
+    implementation libraries.androidx.navigationFragmentKtx
+    implementation libraries.androidx.navigationUiKtx
+    implementation libraries.androidx.paging
+    implementation libraries.androidx.recyclerView
+    implementation libraries.androidx.recyclerViewSelection
+    implementation libraries.androidx.swipeRefreshLayout
+    implementation libraries.androidx.vectorDrawable
+    implementation libraries.material
+    implementation libraries.gson
+    implementation libraries.glide
+    implementation libraries.glideOkHttp
+    implementation libraries.retrofit
+    implementation libraries.retrofitGson
+    implementation libraries.koin
+    implementation libraries.koinAndroidxScope
+    implementation libraries.koinAndroidxViewModel
+    implementation libraries.markwon
+    implementation libraries.markwonExtStrikethrough
+    implementation libraries.markwonImageOkHttp
+    implementation libraries.markwonRecycler
+    vanillaImplementation libraries.androidx.multidex
+    vanillaImplementation libraries.playServices
+    kapt processors.glide
 }
 
 dokka {
