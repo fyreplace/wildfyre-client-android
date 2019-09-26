@@ -9,7 +9,7 @@ import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.OwnPostsFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_items_list.*
+import kotlinx.android.synthetic.main.fragment_items_list.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**

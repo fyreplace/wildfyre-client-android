@@ -43,6 +43,17 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
         if (savedInstanceState == null) {
             viewModel.setDraft(fragmentArgs.draft)
+
+            if (fragmentArgs.showHint) launch {
+                Toast.makeText(
+                    context,
+                    getString(
+                        R.string.draft_hint_toast,
+                        viewModel.getPreferredArea()?.displayName
+                    ),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         preview?.adapter = markdownAdapter
@@ -58,17 +69,6 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                     else R.menu.bottom_actions_fragment_draft
                 )
             }
-        }
-
-        if (fragmentArgs.showHint) launch {
-            Toast.makeText(
-                context,
-                getString(
-                    R.string.draft_hint_toast,
-                    viewModel.getPreferredArea()?.displayName
-                ),
-                Toast.LENGTH_SHORT
-            ).show()
         }
     }
 

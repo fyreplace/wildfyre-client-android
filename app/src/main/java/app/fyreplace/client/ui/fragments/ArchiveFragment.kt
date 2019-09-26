@@ -22,9 +22,8 @@ class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) =
-        super.onCreateView(inflater, container, savedInstanceState)
-            .apply { text.setText(R.string.archive_empty) }
+    ) = super.onCreateView(inflater, container, savedInstanceState)
+        .apply { text.setText(R.string.archive_empty) }
 
     override fun onItemClicked(item: Post) {
         super.onItemClicked(item)
