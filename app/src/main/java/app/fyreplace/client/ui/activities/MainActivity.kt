@@ -159,7 +159,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
 
         MainActivityViewModel.NAVIGATION_LINKS.forEach { pair ->
             navigation_view.menu.findItem(pair.key).setOnMenuItemClickListener {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(pair.value)))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(pair.value))))
                 return@setOnMenuItemClickListener true
             }
         }

@@ -124,13 +124,13 @@ class MainActivityViewModel(
         )
 
         val NAVIGATION_LINKS = mapOf(
-            R.id.fyreplace_website to Constants.Links.Fyreplace.WEBSITE,
-            R.id.fyreplace_open_source to Constants.Links.Fyreplace.OPEN_SOURCE,
-            R.id.wildfyre_website to Constants.Links.WildFyre.WEBSITE,
-            R.id.wildfyre_open_source to Constants.Links.WildFyre.OPEN_SOURCE,
-            R.id.wildfyre_faq to Constants.Links.WildFyre.FAQ,
-            R.id.wildfyre_terms_and_conditions to Constants.Links.WildFyre.TERMS,
-            R.id.wildfyre_privacy_policy to Constants.Links.WildFyre.PRIVACY
+            R.id.fyreplace_website to R.string.main_nav_fyreplace_website_link,
+            R.id.fyreplace_open_source to R.string.main_nav_fyreplace_open_source_link,
+            R.id.wildfyre_website to R.string.main_nav_wildfyre_website_link,
+            R.id.wildfyre_open_source to R.string.main_nav_wildfyre_open_source_link,
+            R.id.wildfyre_faq to R.string.main_nav_wildfyre_faq_link,
+            R.id.wildfyre_terms_and_conditions to R.string.main_nav_wildfyre_terms_link,
+            R.id.wildfyre_privacy_policy to R.string.main_nav_wildfyre_privacy_link
         )
     }
 

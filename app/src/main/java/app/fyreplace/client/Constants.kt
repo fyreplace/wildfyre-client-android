@@ -42,35 +42,4 @@ object Constants {
         const val LIGHT = AppCompatDelegate.MODE_NIGHT_NO
         const val DARK = AppCompatDelegate.MODE_NIGHT_YES
     }
-
-    /**
-     * Keys used for storing user preferences.
-     */
-    object Preferences {
-        const val UI_THEME = "ui.theme"
-        const val UI_BADGE = "ui.badge"
-        const val AUTH_TOKEN = "auth.token"
-        const val AREA_PREFERRED = "area.preferred"
-    }
-
-    /**
-     * Links used in the navigation panel.
-     */
-    object Links {
-        object Fyreplace {
-            private const val MAIN_ADDRESS = "https://github.com/fyreplace"
-            const val WEBSITE = MAIN_ADDRESS
-            const val OPEN_SOURCE = "$MAIN_ADDRESS/fyreplace-client-android"
-        }
-
-        object WildFyre {
-            private const val DOMAIN = "wildfyre.net"
-            const val WEBSITE = "https://$DOMAIN"
-            const val OPEN_SOURCE = "https://phabricator.$DOMAIN"
-            const val FAQ = "$WEBSITE#home-faq"
-            const val TERMS = "$WEBSITE/pages/terms-of-service"
-            const val PRIVACY = "$WEBSITE/pages/privacy-policy"
-            const val REGISTER = "https://client.$DOMAIN/register"
-        }
-    }
 }

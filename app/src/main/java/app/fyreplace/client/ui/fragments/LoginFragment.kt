@@ -10,7 +10,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.FragmentLoginBinding
 import app.fyreplace.client.ui.hideSoftKeyboard
@@ -67,7 +66,12 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
 
         login.setOnClickListener { attemptLogin() }
         register.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.Links.WildFyre.REGISTER)))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.login_register_link))
+                )
+            )
         }
     }
 
