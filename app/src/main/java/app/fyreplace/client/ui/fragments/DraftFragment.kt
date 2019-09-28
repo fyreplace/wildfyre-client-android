@@ -16,13 +16,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
-import app.fyreplace.client.ui.ImageSelector
-import app.fyreplace.client.ui.hideSoftKeyboard
-import app.fyreplace.client.ui.lazyMarkdown
-import app.fyreplace.client.ui.toMarkdown
+import app.fyreplace.client.ui.*
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
 import kotlinx.android.synthetic.main.draft_editor.*
 import kotlinx.android.synthetic.main.fragment_draft.*
@@ -255,9 +251,9 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             .setNegativeButton(R.string.cancel, null)
             .setPositiveButton(R.string.ok) { _, _ ->
                 link?.text?.let {
-                    Constants.Api.YOUTUBE_REGEX.matchEntire(it.toString())?.run {
+                    YOUTUBE_REGEX.matchEntire(it.toString())?.run {
                         val videoId = groupValues[1]
-                        val thumbnail = Constants.Api.youtubeThumbnail(videoId)
+                        val thumbnail = youtubeThumbnail(videoId)
                         editor?.editableText?.insert(
                             editor.selectionStart,
                             "[![YouTube link]($thumbnail)](https://www.youtube.com/watch?v=$videoId)"

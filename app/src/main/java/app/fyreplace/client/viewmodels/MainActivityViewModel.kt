@@ -1,7 +1,6 @@
 package app.fyreplace.client.viewmodels
 
 import androidx.lifecycle.*
-import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.ImageData
@@ -61,7 +60,7 @@ class MainActivityViewModel(
         setAllowDraftCreation(true)
     }
 
-    fun getTheme(which: Int) = if (which in THEMES) THEMES[which] else Constants.Themes.AUTOMATIC
+    fun getTheme(which: Int) = THEMES.getOrElse(which) { SettingsRepository.Themes.AUTOMATIC }
 
     fun login() {
         uiRefreshTickerJob = viewModelScope.launch {
@@ -118,9 +117,9 @@ class MainActivityViewModel(
         private val DATE_FORMAT = SimpleDateFormat.getDateInstance()
 
         val THEMES = arrayOf(
-            Constants.Themes.AUTOMATIC,
-            Constants.Themes.LIGHT,
-            Constants.Themes.DARK
+            SettingsRepository.Themes.AUTOMATIC,
+            SettingsRepository.Themes.LIGHT,
+            SettingsRepository.Themes.DARK
         )
 
         val NAVIGATION_LINKS = mapOf(

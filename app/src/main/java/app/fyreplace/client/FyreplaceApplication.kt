@@ -14,6 +14,7 @@ class FyreplaceApplication : BaseApplication() {
 
         val koinApp = startKoin {
             androidContext(this@FyreplaceApplication)
+            properties(mapOf("data.api.base_url" to getString(R.string.api_base_url)))
             modules(applicationModule + servicesModule + repositoriesModule + viewModelsModule)
         }
 

@@ -8,10 +8,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
 import app.fyreplace.client.AppGlide
-import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.ui.getShareIntent
 import app.fyreplace.client.ui.lazyMarkdown
+import app.fyreplace.client.ui.userShareUrl
 import app.fyreplace.client.viewmodels.UserFragmentViewModel
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -40,7 +40,7 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
         inflater.inflate(R.menu.actions_fragment_sharing, menu)
         viewModel.author.observe(viewLifecycleOwner) {
             menu.findItem(R.id.action_share).intent = getShareIntent(
-                Constants.Api.userShareUrl(it.user),
+                userShareUrl(it.user),
                 getString(R.string.user_action_share_title)
             )
         }

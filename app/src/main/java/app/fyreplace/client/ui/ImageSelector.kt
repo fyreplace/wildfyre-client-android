@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.documentfile.provider.DocumentFile
-import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.viewmodels.ImageSelectorViewModel
@@ -69,7 +68,7 @@ interface ImageSelector : FailureHandler {
                         )
                         Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
                             putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                            putExtra(MediaStore.EXTRA_SIZE_LIMIT, Constants.Api.IMAGE_MAX_FILE_SIZE)
+                            putExtra(MediaStore.EXTRA_SIZE_LIMIT, IMAGE_MAX_FILE_SIZE)
                             imageUri?.let { viewModel.push(it) } ?: return
                         }
                     }
@@ -93,7 +92,7 @@ interface ImageSelector : FailureHandler {
         var compressedBytes = bytes
         var compressedMimeType = mimeType
 
-        if (compressedBytes.size > Constants.Api.IMAGE_MAX_FILE_SIZE) {
+        if (compressedBytes.size > IMAGE_MAX_FILE_SIZE) {
             val bitmap = BitmapFactory.decodeByteArray(compressedBytes, 0, compressedBytes.size)
             val os = ByteArrayOutputStream()
             val correctSizeBitmap = downscaleBitmap(bitmap)
@@ -103,7 +102,7 @@ interface ImageSelector : FailureHandler {
         }
 
         withContext(Dispatchers.Main) {
-            if (compressedBytes.size <= Constants.Api.IMAGE_MAX_FILE_SIZE) {
+            if (compressedBytes.size <= IMAGE_MAX_FILE_SIZE) {
                 val extension = MimeTypeMap.getSingleton()
                     .getExtensionFromMimeType(compressedMimeType)
                 onImage(ImageData("image.${extension}", compressedMimeType, compressedBytes))
@@ -118,7 +117,7 @@ interface ImageSelector : FailureHandler {
     }
 
     private fun downscaleBitmap(bitmap: Bitmap): Bitmap {
-        val areaFactor = (bitmap.width * bitmap.height).toFloat() / Constants.Api.IMAGE_MAX_AREA
+        val areaFactor = (bitmap.width * bitmap.height).toFloat() / IMAGE_MAX_AREA
 
         if (areaFactor > 1) {
             val sideFactor = sqrt(areaFactor)
@@ -131,5 +130,10 @@ interface ImageSelector : FailureHandler {
         }
 
         return bitmap
+    }
+
+    private companion object {
+        const val IMAGE_MAX_FILE_SIZE = 512 * 1024
+        const val IMAGE_MAX_AREA = 1920 * 1080
     }
 }

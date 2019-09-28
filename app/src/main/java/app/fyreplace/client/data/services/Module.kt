@@ -1,6 +1,5 @@
 package app.fyreplace.client.data.services
 
-import app.fyreplace.client.Constants
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
@@ -18,7 +17,7 @@ val servicesModule = module {
 
     single {
         Retrofit.Builder()
-            .baseUrl(Constants.Api.BASE_URL)
+            .baseUrl(getProperty<String>("data.api.base_url"))
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().serializeNulls().create()))
             .client(get())
             .build()

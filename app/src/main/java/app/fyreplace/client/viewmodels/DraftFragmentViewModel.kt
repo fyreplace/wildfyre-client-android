@@ -1,11 +1,11 @@
 package app.fyreplace.client.viewmodels
 
 import androidx.lifecycle.ViewModel
-import app.fyreplace.client.Constants
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.AreaRepository
 import app.fyreplace.client.data.repositories.DraftRepository
+import app.fyreplace.client.ui.IMAGE_REGEX
 
 class DraftFragmentViewModel(
     private val draftRepository: DraftRepository,
@@ -32,7 +32,7 @@ class DraftFragmentViewModel(
     suspend fun saveDraft(content: String, anonymous: Boolean) {
         val usedSlots = mutableSetOf<Int>()
 
-        for (match in Constants.Api.IMAGE_REGEX.findAll(content)) {
+        for (match in IMAGE_REGEX.findAll(content)) {
             usedSlots.add(match.groupValues[1].toInt())
         }
 

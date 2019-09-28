@@ -24,17 +24,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.Constants
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Comment
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.databinding.FragmentPostBinding
-import app.fyreplace.client.ui.ImageSelector
+import app.fyreplace.client.ui.*
 import app.fyreplace.client.ui.adapters.CommentsAdapter
 import app.fyreplace.client.ui.drawables.BottomSheetArrowDrawableWrapper
-import app.fyreplace.client.ui.getShareIntent
-import app.fyreplace.client.ui.hideSoftKeyboard
-import app.fyreplace.client.ui.lazyMarkdown
 import app.fyreplace.client.ui.widgets.CommentSheetBehavior
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import app.fyreplace.client.viewmodels.PostFragmentViewModel
@@ -223,7 +219,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         viewModel.post.observe(viewLifecycleOwner) {
             menu.findItem(R.id.action_share).intent = it?.let {
                 getShareIntent(
-                    Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId),
+                    postShareUrl(viewModel.postAreaName, viewModel.postId),
                     getString(R.string.post_action_share_title)
                 )
             }
@@ -354,7 +350,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
 
     private fun shareComment(comment: Comment) = startActivity(
         getShareIntent(
-            Constants.Api.postShareUrl(viewModel.postAreaName, viewModel.postId, comment.id),
+            postShareUrl(viewModel.postAreaName, viewModel.postId, comment.id),
             getString(R.string.post_comment_share_title)
         )
     )

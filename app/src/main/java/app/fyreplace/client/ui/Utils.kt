@@ -6,7 +6,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import app.fyreplace.client.Constants
 import app.fyreplace.client.data.models.Post
 import ru.noties.markwon.Markwon
 import ru.noties.markwon.core.CorePlugin
@@ -14,6 +13,9 @@ import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import ru.noties.markwon.image.ImagesPlugin
 import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin
 import ru.noties.markwon.movement.MovementMethodPlugin
+
+val IMAGE_REGEX = Regex("\n*\\[img:\\s*(\\d+)]\n*", RegexOption.MULTILINE)
+val YOUTUBE_REGEX = Regex("(?:https?://)?(?:www\\.)?youtu(?:be\\.(?:\\w+)/watch\\?v=|\\.be/)(\\w+)")
 
 fun hideSoftKeyboard(view: View?) {
     view?.let {
@@ -36,7 +38,7 @@ fun Fragment.lazyMarkdown() = lazy {
 }
 
 fun Post.toMarkdown(content: String? = text) =
-    (image?.let { "![]($it)\n\n" } ?: "") + content?.replace(Constants.Api.IMAGE_REGEX) {
+    (image?.let { "![]($it)\n\n" } ?: "") + content?.replace(IMAGE_REGEX) {
         val imageNum = it.groupValues[1].toInt()
         val image = additionalImages.firstOrNull { img -> img.num == imageNum }
         return@replace image?.run { "\n![${image.comment}](${image.image})\n" } ?: it.groupValues[0]
@@ -50,3 +52,15 @@ fun getShareIntent(text: CharSequence, title: CharSequence): Intent =
         },
         title
     )
+
+fun postShareUrl(areaName: String, postId: Long) =
+    "https://client.wildfyre.net/areas/$areaName/$postId"
+
+fun postShareUrl(areaName: String, postId: Long, selectedCommentId: Long) =
+    "https://client.wildfyre.net/areas/$areaName/$postId/$selectedCommentId"
+
+fun userShareUrl(userId: Long) =
+    "https://client.wildfyre.net/user/$userId"
+
+fun youtubeThumbnail(videoId: String) =
+    "https://img.youtube.com/vi/$videoId/0.jpg"
