@@ -28,12 +28,9 @@
     <string name="main_nav_wildfyre_privacy">Politique de confidentialité</string>
     <string name="main_profile_editor_bio">Bio de profil</string>
     <string name="main_author_anonymous">Anonyme</string>
-    <string name="image_selector_chooser">Source de l\'image</string>
-    <string name="image_selector_error_toast">Taille de fichier trop élevée</string>
     <string name="area_selecting_action_area_selector">Zone: %1$s</string>
     <string name="area_selecting_action_area_spread">Propagation</string>
     <string name="area_selecting_action_area_reputation">Réputation</string>
-    <string name="sharing_action_share">Partager</string>
     <string name="deletion_action_delete">Supprimer</string>
     <string name="login_username">Nom d\'utilisateur</string>
     <string name="login_password">Mot de passe</string>
@@ -119,10 +116,8 @@
     <string name="draft_back_dialog_title">Sauvegarder les changements ?</string>
     <string name="draft_link_dialog_hint">Copier le lien ici</string>
     <string name="draft_hint_toast">Brouillon créé dans la zone actuelle (%1$s)</string>
-    <string name="user_action_share_title">Partager ce profil</string>
     <string name="image_desc_profile_editor_change_image">Choisir une image</string>
     <string name="image_desc_profile_editor_change_photo">Prendre une photo</string>
-    <string name="image_desc_user_picture">Image de profile</string>
     <string name="image_desc_author_picture">Image de l\'auteur</string>
     <string name="image_desc_post_picture">Image du post</string>
     <string name="image_desc_comment_picture">Image du commentaire</string>

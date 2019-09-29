@@ -4,6 +4,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ic_splash_screen_foreground" />
+            android:src="@drawable/logo_fyreplace" />
     </item>
 </layer-list>

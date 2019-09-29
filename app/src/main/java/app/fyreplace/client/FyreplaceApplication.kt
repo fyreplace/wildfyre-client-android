@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import app.fyreplace.client.data.repositories.SettingsRepository
 import app.fyreplace.client.data.repositories.repositoriesModule
 import app.fyreplace.client.data.services.servicesModule
+import app.fyreplace.client.ui.fragments.fragmentArgsModule
 import app.fyreplace.client.viewmodels.viewModelsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -20,7 +21,8 @@ class FyreplaceApplication : BaseApplication() {
                     libWildFyreModule +
                     servicesModule +
                     repositoriesModule +
-                    viewModelsModule
+                    viewModelsModule +
+                    fragmentArgsModule
             )
         }
 

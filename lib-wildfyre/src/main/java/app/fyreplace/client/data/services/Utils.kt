@@ -1,4 +1,4 @@
-package app.fyreplace.client.data.repositories
+package app.fyreplace.client.data.services
 
 import app.fyreplace.client.data.models.ImageData
 import okhttp3.MediaType

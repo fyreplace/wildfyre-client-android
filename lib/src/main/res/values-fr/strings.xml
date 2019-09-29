@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="image_selector_chooser">Source de l\'image</string>
+    <string name="image_selector_error_toast">Taille de fichier trop élevée</string>
+    <string name="sharing_action_share">Partager</string>
+</resources>

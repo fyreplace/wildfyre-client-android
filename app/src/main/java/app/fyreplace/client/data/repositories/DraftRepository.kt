@@ -6,6 +6,7 @@ import app.fyreplace.client.data.models.Draft
 import app.fyreplace.client.data.models.DraftNoImageContent
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.services.WildFyreService
+import app.fyreplace.client.data.services.createFormData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody.Part.createFormData

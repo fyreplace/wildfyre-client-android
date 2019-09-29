@@ -52,6 +52,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':app-user')
+    implementation project(':lib')
     implementation project(':lib-wildfyre')
     implementation libraries.androidx.appCompat
     implementation libraries.androidx.constraintLayout
@@ -70,8 +72,6 @@ dependencies {
     implementation libraries.androidx.recyclerViewSelection
     implementation libraries.androidx.swipeRefreshLayout
     implementation libraries.androidx.vectorDrawable
-    implementation libraries.glide
-    implementation libraries.glideOkHttp
     implementation libraries.koin
     implementation libraries.koinAndroidxScope
     implementation libraries.koinAndroidxViewModel
@@ -81,11 +81,9 @@ dependencies {
     implementation libraries.markwonExtStrikethrough
     implementation libraries.markwonImageOkHttp
     implementation libraries.markwonRecycler
-    implementation libraries.material
     implementation libraries.retrofit
     vanillaImplementation libraries.androidx.multidex
     vanillaImplementation libraries.playServices
-    kapt processors.glide
 }
 
 dokka {

@@ -16,8 +16,8 @@
 
             <ImageView
                 android:id="@+id/user_picture"
-                android:layout_width="@dimen/dialog_user_picture_size"
-                android:layout_height="@dimen/dialog_user_picture_size"
+                android:layout_width="@dimen/user_picture_size"
+                android:layout_height="@dimen/user_picture_size"
                 android:contentDescription="@string/image_desc_user_picture" />
 
             <TextView

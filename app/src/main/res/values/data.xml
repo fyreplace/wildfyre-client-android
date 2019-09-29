@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="request_image_file">0</integer>
-    <integer name="request_image_photo">1</integer>
     <string-array name="settings_themes">
         <item>@string/main_nav_settings_theme_automatic</item>
         <item>@string/main_nav_settings_theme_light</item>

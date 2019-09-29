@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF7043</color>
+    <color name="colorPrimaryVariant">#FF5722</color>
+    <color name="colorPrimaryDark">@android:color/black</color>
+    <color name="colorBackground">@android:color/black</color>
+    <color name="colorOnBackground">@android:color/white</color>
+    <color name="colorSurface">@android:color/black</color>
+    <color name="colorOnSurface">@android:color/white</color>
+    <color name="colorControlActivatedNeutral">#BFBFBF</color>
+    <color name="colorSwitchThumbNormalNeutral">#3F3F3F</color>
+</resources>
