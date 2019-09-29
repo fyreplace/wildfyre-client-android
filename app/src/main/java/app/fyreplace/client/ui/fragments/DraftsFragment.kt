@@ -7,7 +7,7 @@ import android.view.MenuInflater
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
-import app.fyreplace.client.NavigationMainDirections
+import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentDraft
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
@@ -45,6 +45,6 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>(true) {
 
     override fun onItemClicked(item: Post) {
         super.onItemClicked(item)
-        findNavController().navigate(NavigationMainDirections.actionGlobalFragmentDraft(draft = item))
+        findNavController().navigate(actionGlobalFragmentDraft(draft = item))
     }
 }

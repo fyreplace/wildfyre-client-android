@@ -31,7 +31,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import app.fyreplace.client.AppGlide
-import app.fyreplace.client.NavigationMainDirections
+import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentDraft
+import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentLogin
+import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentLoginStartup
+import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentPost
+import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentUser
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.databinding.*
@@ -99,7 +103,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             .setOnClickListener {
                 launch {
                     navController.navigate(
-                        NavigationMainDirections.actionGlobalFragmentDraft(
+                        actionGlobalFragmentDraft(
                             draft = viewModel.createDraft(),
                             showHint = true
                         )
@@ -115,9 +119,9 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             } else if (navController.currentDestination?.id != R.id.fragment_login) {
                 navController.navigate(
                     if (viewModel.startupLogin)
-                        NavigationMainDirections.actionGlobalFragmentLoginStartup()
+                        actionGlobalFragmentLoginStartup()
                     else
-                        NavigationMainDirections.actionGlobalFragmentLogin()
+                        actionGlobalFragmentLogin()
                 )
             }
         }
@@ -351,11 +355,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
                             .find { it.drawable == resource }
                             ?.setOnClickListener {
                                 findNavController(R.id.navigation_host)
-                                    .navigate(
-                                        NavigationMainDirections.actionGlobalFragmentUser(
-                                            author = info.author
-                                        )
-                                    )
+                                    .navigate(actionGlobalFragmentUser(author = info.author))
                             }
                     }
                 })
@@ -471,7 +471,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         val USER_REGEX = Regex("/user/(\\d+)")
         val REGEX_TO_DIRECTIONS = mapOf(
             POST_REGEX to { result: MatchResult ->
-                NavigationMainDirections.actionGlobalFragmentPost(
+                actionGlobalFragmentPost(
                     areaName = result.groupValues[1],
                     postId = result.groupValues[2].toLong(),
                     selectedCommentId = result.groupValues[3]
@@ -481,7 +481,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
                 )
             },
             USER_REGEX to { result: MatchResult ->
-                NavigationMainDirections.actionGlobalFragmentUser(
+                actionGlobalFragmentUser(
                     userId = result.groupValues[1].toLong()
                 )
             }

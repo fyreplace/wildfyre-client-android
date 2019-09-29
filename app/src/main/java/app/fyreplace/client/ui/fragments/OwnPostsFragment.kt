@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import app.fyreplace.client.NavigationMainDirections
+import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentPost
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
@@ -28,7 +28,7 @@ class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>(true) {
     override fun onItemClicked(item: Post) {
         super.onItemClicked(item)
         findNavController().navigate(
-            NavigationMainDirections.actionGlobalFragmentPost(
+            actionGlobalFragmentPost(
                 post = item,
                 ownPost = true
             )

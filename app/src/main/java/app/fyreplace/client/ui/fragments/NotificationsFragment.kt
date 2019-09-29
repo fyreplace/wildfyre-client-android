@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import app.fyreplace.client.NavigationMainDirections
+import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentPost
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Notification
 import app.fyreplace.client.databinding.ActionNotificationsClearBinding
@@ -62,7 +62,7 @@ class NotificationsFragment :
     override fun onItemClicked(item: Notification) {
         super.onItemClicked(item)
         findNavController().navigate(
-            NavigationMainDirections.actionGlobalFragmentPost(
+            actionGlobalFragmentPost(
                 areaName = item.area,
                 postId = item.post.id,
                 newCommentsIds = item.comments.toLongArray()

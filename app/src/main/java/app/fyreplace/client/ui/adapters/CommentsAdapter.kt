@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.AppGlide
-import app.fyreplace.client.NavigationMainDirections
+import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentUser
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Comment
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -87,8 +87,7 @@ class CommentsAdapter(private val fragment: Fragment, private val markdown: Mark
                 .into(holder.authorPicture)
 
             holder.authorPicture.setOnClickListener {
-                fragment.findNavController()
-                    .navigate(NavigationMainDirections.actionGlobalFragmentUser(author = author))
+                fragment.findNavController().navigate(actionGlobalFragmentUser(author = author))
             }
         }
 
