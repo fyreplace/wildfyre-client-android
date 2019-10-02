@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinator"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottom_app_bar"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:menu="@menu/bottom_actions_fragment_draft"
-            app:title="@string/draft_bottom_app_bar_title" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:animateLayoutChanges="true"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/margin_small"
-        app:layout_constraintBottom_toTopOf="@id/coordinator"
-        app:layout_constraintTop_toTopOf="parent">
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/bottom_app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:menu="@menu/bottom_actions_fragment_draft"
+                app:title="@string/draft_bottom_app_bar_title" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <app.fyreplace.client.ui.widgets.MarkdownEditText
-            android:id="@+id/editor"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="start|top"
-            android:imeOptions="actionDone"
-            android:inputType="textMultiLine|textLongMessage" />
-    </com.google.android.material.textfield.TextInputLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/margin_small"
+            app:layout_constraintBottom_toTopOf="@id/coordinator"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <app.fyreplace.client.ui.widgets.MarkdownEditText
+                android:id="@+id/editor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start|top"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine|textLongMessage" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

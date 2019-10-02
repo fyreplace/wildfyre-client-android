@@ -12,9 +12,6 @@ import app.fyreplace.client.databinding.ActionAreaSelectingAreaSpreadBinding
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 import app.fyreplace.client.viewmodels.HomeFragmentViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
-import kotlinx.android.synthetic.main.fragment_post.*
-import kotlinx.android.synthetic.main.post_buttons.*
-import kotlinx.android.synthetic.main.post_comments.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -36,15 +33,14 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) =
-        super.onCreateView(inflater, container, savedInstanceState)
-            .apply { findViewById<View>(R.id.buttons).isVisible = true }
+    ) = super.onCreateView(inflater, container, savedInstanceState)
+        .apply { findViewById<View>(R.id.buttons).isVisible = true }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        text.setText(R.string.home_empty)
-        extinguish.setOnClickListener { launch { viewModel.spread(false); resetHomeView() } }
-        ignite.setOnClickListener { launch { viewModel.spread(true); resetHomeView() } }
+        bd.text.setText(R.string.home_empty)
+        bd.buttons.extinguish.setOnClickListener { launch { viewModel.spread(false); resetHomeView() } }
+        bd.buttons.ignite.setOnClickListener { launch { viewModel.spread(true); resetHomeView() } }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -97,9 +93,9 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
     override fun canUseFragmentArgs() = false
 
     private fun resetHomeView() {
-        content?.scrollToPosition(0)
-        comments_list?.scrollToPosition(0)
-        go_up?.isVisible = false
-        go_down?.isVisible = false
+        bd.content.scrollToPosition(0)
+        cbd.commentsList.scrollToPosition(0)
+        cbd.goUp.isVisible = false
+        cbd.goDown.isVisible = false
     }
 }

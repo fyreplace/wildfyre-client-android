@@ -9,7 +9,6 @@ import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.OwnPostsFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_items_list.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -24,7 +23,7 @@ class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>(true) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = super.onCreateView(inflater, container, savedInstanceState)
-        .apply { text.setText(R.string.own_posts_empty) }
+        .apply { bd.text.setText(R.string.own_posts_empty) }
 
     override fun onItemClicked(item: Post) {
         super.onItemClicked(item)

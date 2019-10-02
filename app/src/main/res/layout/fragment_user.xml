@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="@dimen/margin_medium">
+        android:layout_gravity="center">
 
-        <ImageView
-            android:id="@+id/user_picture"
-            android:layout_width="@dimen/dialog_user_picture_size"
-            android:layout_height="@dimen/dialog_user_picture_size"
-            android:contentDescription="@string/image_desc_user_picture" />
-
-        <TextView
-            android:id="@+id/user_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:animateLayoutChanges="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_medium">
 
-        <TextView
-            android:id="@+id/user_bio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
-            android:autoLink="web"
-            android:textAppearance="?attr/textAppearanceBody1"
-            android:visibility="gone" />
-    </LinearLayout>
-</ScrollView>
+            <ImageView
+                android:id="@+id/user_picture"
+                android:layout_width="@dimen/dialog_user_picture_size"
+                android:layout_height="@dimen/dialog_user_picture_size"
+                android:contentDescription="@string/image_desc_user_picture" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:textAppearance="?attr/textAppearanceHeadline6" />
+
+            <TextView
+                android:id="@+id/user_bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:autoLink="web"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

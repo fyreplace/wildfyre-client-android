@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:baselineAligned="false"
-    android:orientation="horizontal">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include
-        layout="@layout/draft_editor"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
-    <app.fyreplace.client.ui.widgets.MarkdownRecyclerView
-        android:id="@+id/preview"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:clipToPadding="true"
-        android:orientation="vertical"
-        android:padding="@dimen/margin_medium"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-</LinearLayout>
+        <include
+            android:id="@+id/editor"
+            layout="@layout/draft_editor"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <app.fyreplace.client.ui.widgets.MarkdownRecyclerView
+            android:id="@+id/preview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clipToPadding="true"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_medium"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </LinearLayout>
+</layout>

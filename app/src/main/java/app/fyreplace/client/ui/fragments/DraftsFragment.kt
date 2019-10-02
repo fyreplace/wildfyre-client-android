@@ -13,7 +13,6 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.DraftsFragmentViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
-import kotlinx.android.synthetic.main.items_list_item.view.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -31,7 +30,7 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>(true) {
         savedInstanceState: Bundle?
     ) = super.onCreateView(inflater, container, savedInstanceState).apply {
         mainViewModel.setAllowDraftCreation(false)
-        text.setText(R.string.drafts_empty)
+        bd.text.setText(R.string.drafts_empty)
     }
 
     override fun onDestroyView() = super.onDestroyView()

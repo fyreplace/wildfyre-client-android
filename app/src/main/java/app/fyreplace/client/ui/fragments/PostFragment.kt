@@ -35,8 +35,6 @@ import app.fyreplace.client.ui.widgets.CommentSheetBehavior
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import app.fyreplace.client.viewmodels.PostFragmentViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.fragment_post.*
-import kotlinx.android.synthetic.main.post_comments.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -48,7 +46,11 @@ import kotlin.math.max
 open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackHandlingFragment,
     ToolbarUsingFragment, ImageSelector {
     override val viewModel by viewModel<PostFragmentViewModel>()
+    override lateinit var bd: FragmentPostBinding
     override val contextWrapper by lazy { requireActivity() }
+    protected val cbd by lazy {
+        bd.collapsibleComments ?: bd.staticComments ?: throw IllegalStateException()
+    }
     private val mainViewModel by sharedViewModel<MainActivityViewModel>()
     private val fragmentArgs by navArgs<PostFragmentArgs>()
     private val markdown by lazyMarkdown()
@@ -65,24 +67,25 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) =
-        FragmentPostBinding.inflate(inflater, container, false).run {
-            lifecycleOwner = viewLifecycleOwner
-            model = viewModel
-            return@run root
-        }
+    ) = FragmentPostBinding.inflate(inflater, container, false).run {
+        lifecycleOwner = viewLifecycleOwner
+        model = viewModel
+        bd = this
+        return@run root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
-        content.adapter = markdownAdapter
         val commentsAdapter = CommentsAdapter(this, markdown)
-        comments_list.setHasFixedSize(true)
-        comments_list.adapter = commentsAdapter
-        comments_list.addItemDecoration(
+
+        bd.content.adapter = markdownAdapter
+        cbd.commentsList.setHasFixedSize(true)
+        cbd.commentsList.adapter = commentsAdapter
+        cbd.commentsList.addItemDecoration(
             DividerItemDecoration(
                 view.context,
-                (comments_list.layoutManager as LinearLayoutManager).orientation
+                (cbd.commentsList.layoutManager as LinearLayoutManager).orientation
             )
         )
 
@@ -94,7 +97,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
 
         mainViewModel.userId.observe(viewLifecycleOwner) { commentsAdapter.selfId = it }
         viewModel.post.observe(viewLifecycleOwner) { mainViewModel.setPost(it) }
-        viewModel.contentLoaded.observe(viewLifecycleOwner) { comment_new.isEnabled = it }
+        viewModel.contentLoaded.observe(viewLifecycleOwner) { cbd.commentNew.isEnabled = it }
         viewModel.authorId.observe(viewLifecycleOwner) { commentsAdapter.authorId = it }
         viewModel.markdownContent.observe(viewLifecycleOwner) {
             lifecycleScope.launch(Dispatchers.Default) {
@@ -110,27 +113,27 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         }
         viewModel.newCommentImage.observe(viewLifecycleOwner) { image ->
             if (image != null) {
-                comment_new.startIconDrawable?.let {
+                cbd.commentNew.startIconDrawable?.let {
                     DrawableCompat.setTint(
                         it,
                         ContextCompat.getColor(view.context, R.color.colorPrimary)
                     )
                 }
             } else {
-                comment_new.setStartIconDrawable(R.drawable.ic_attach_file_black)
+                cbd.commentNew.setStartIconDrawable(R.drawable.ic_attach_file_black)
             }
         }
         viewModel.canSendNewComment.observe(viewLifecycleOwner) {
-            comment_new.isEndIconVisible = it
+            cbd.commentNew.isEndIconVisible = it
         }
 
-        comments_list.addOnScrollListener(CommentsScrollListener())
-        go_up.setOnClickListener { comments_list.smoothScrollToPosition(0) }
-        go_down.setOnClickListener {
-            comments_list.smoothScrollToPosition(max(commentsAdapter.itemCount - 1, 0))
+        cbd.commentsList.addOnScrollListener(CommentsScrollListener())
+        cbd.goUp.setOnClickListener { cbd.commentsList.smoothScrollToPosition(0) }
+        cbd.goDown.setOnClickListener {
+            cbd.commentsList.smoothScrollToPosition(max(commentsAdapter.itemCount - 1, 0))
         }
 
-        for (button in listOf(go_up, go_down)) {
+        for (button in listOf(cbd.goUp, cbd.goDown)) {
             button.setTag(
                 R.id.anim_scale_x,
                 SpringAnimation(button, SpringAnimation.SCALE_X).setSpring(BUTTON_ANIM_SPRING)
@@ -148,23 +151,23 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
             )
         }
 
-        comment_new.setEndIconOnClickListener {
+        cbd.commentNew.setEndIconOnClickListener {
             clearCommentInput()
             launch {
                 viewModel.sendNewComment()
-                commentsAdapter.doOnCommentsChanged { go_down.callOnClick() }
+                commentsAdapter.doOnCommentsChanged { cbd.goDown.callOnClick() }
             }
         }
-        comment_new.setStartIconOnClickListener { requestImage() }
+        cbd.commentNew.setStartIconOnClickListener { requestImage() }
 
-        collapsible_comments?.let {
-            comment_count.setOnClickListener { toggleComments() }
+        bd.collapsibleComments?.let {
+            cbd.commentCount.setOnClickListener { toggleComments() }
 
             val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED)
                 ?: (highlightedCommentIds != null)
-            val behavior = CommentSheetBehavior.from(it)
+            val behavior = CommentSheetBehavior.from(it.root)
 
-            commentsSheetCallback = CommentsSheetCallback(behavior, arrow, commentsExpanded)
+            commentsSheetCallback = CommentsSheetCallback(behavior, cbd.arrow, commentsExpanded)
                 .apply { behavior.addBottomSheetCallback(this) }
 
             if (commentsExpanded) {
@@ -174,10 +177,10 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     }
 
     override fun onDestroyView() {
-        comments_list.clearOnScrollListeners()
+        cbd.commentsList.clearOnScrollListeners()
 
         commentsSheetCallback?.let {
-            CommentSheetBehavior.from(collapsible_comments).removeBottomSheetCallback(it)
+            CommentSheetBehavior.from(cbd.root).removeBottomSheetCallback(it)
         }
 
         clearCommentInput()
@@ -186,11 +189,13 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        collapsible_comments?.let {
-            outState.putBoolean(
-                SAVE_COMMENTS_EXPANDED,
-                BottomSheetBehavior.from(it).state == BottomSheetBehavior.STATE_EXPANDED
-            )
+        if (view != null) {
+            bd.collapsibleComments?.let {
+                outState.putBoolean(
+                    SAVE_COMMENTS_EXPANDED,
+                    BottomSheetBehavior.from(it.root).state == BottomSheetBehavior.STATE_EXPANDED
+                )
+            }
         }
     }
 
@@ -265,7 +270,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         requireActivity().menuInflater.inflate(R.menu.context_fragment_post_comment, menu)
 
         val position = v.tag as Int
-        val comment = (comments_list.adapter as CommentsAdapter).getComment(position)
+        val comment = (cbd.commentsList.adapter as CommentsAdapter).getComment(position)
 
         menu.findItem(R.id.action_copy).setOnMenuItemClickListener { copyComment(comment); true }
         menu.findItem(R.id.action_share).setOnMenuItemClickListener { shareComment(comment); true }
@@ -281,8 +286,8 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     }
 
     override fun onGoBack(method: BackHandlingFragment.Method) =
-        method == BackHandlingFragment.Method.UP_BUTTON || collapsible_comments?.let { view ->
-            (BottomSheetBehavior.from(view).state != BottomSheetBehavior.STATE_EXPANDED)
+        method == BackHandlingFragment.Method.UP_BUTTON || bd.collapsibleComments?.let { binding ->
+            (BottomSheetBehavior.from(binding.root).state != BottomSheetBehavior.STATE_EXPANDED)
                 .apply { takeUnless { it }?.run { toggleComments() } }
         } ?: true
 
@@ -291,8 +296,8 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     open fun canUseFragmentArgs() = arguments != null
 
     private fun toggleComments() {
-        collapsible_comments?.let {
-            val commentsBehavior = BottomSheetBehavior.from(it)
+        bd.collapsibleComments?.let {
+            val commentsBehavior = BottomSheetBehavior.from(it.root)
 
             when {
                 commentsBehavior.state in setOf(
@@ -307,8 +312,8 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     }
 
     private fun clearCommentInput() {
-        hideSoftKeyboard(comment_new)
-        comment_new?.clearFocus()
+        hideSoftKeyboard(cbd.commentNew)
+        cbd.commentNew.clearFocus()
     }
 
     private fun requestImage() {
@@ -379,13 +384,9 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         }
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            if (go_up == null || go_down == null) {
-                return
-            }
-
             for (pair in mapOf(
-                go_up to (recyclerView.canScrollVertically(-1) && dy < 0),
-                go_down to (recyclerView.canScrollVertically(1) && dy > 0)
+                cbd.goUp to (recyclerView.canScrollVertically(-1) && dy < 0),
+                cbd.goDown to (recyclerView.canScrollVertically(1) && dy > 0)
             )) {
                 val button = pair.key
                 val visible = pair.value
@@ -412,7 +413,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
 
         @SuppressLint("SwitchIntDef")
         override fun onStateChanged(bottomSheet: View, newState: Int) {
-            content?.isVisible = newState != BottomSheetBehavior.STATE_EXPANDED
+            bd.content.isVisible = newState != BottomSheetBehavior.STATE_EXPANDED
             behavior.canDrag = newState != BottomSheetBehavior.STATE_EXPANDED
 
             when (newState) {

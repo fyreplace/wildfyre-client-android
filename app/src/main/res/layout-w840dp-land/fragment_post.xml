@@ -81,6 +81,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <include
+            android:id="@+id/static_comments"
             layout="@layout/post_comments"
             android:layout_width="0dp"
             android:layout_height="match_parent"

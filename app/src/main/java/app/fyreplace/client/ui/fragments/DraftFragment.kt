@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -18,21 +15,31 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
+import app.fyreplace.client.databinding.FragmentDraftBinding
 import app.fyreplace.client.ui.*
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
-import kotlinx.android.synthetic.main.draft_editor.*
-import kotlinx.android.synthetic.main.fragment_draft.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.noties.markwon.recycler.MarkwonAdapter
 
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
     Toolbar.OnMenuItemClickListener, ImageSelector {
     override val viewModel by viewModel<DraftFragmentViewModel>()
+    override lateinit var bd: FragmentDraftBinding
     override val contextWrapper by lazy { requireActivity() }
     private val fragmentArgs by navArgs<DraftFragmentArgs>()
     private val markdown by lazyMarkdown()
     private val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
     private var allowDirtyingDraft = false
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = FragmentDraftBinding.inflate(inflater).run {
+        lifecycleOwner = viewLifecycleOwner
+        bd = this
+        return@run root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,24 +59,30 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             }
         }
 
-        preview?.adapter = markdownAdapter
-        bottom_app_bar.setTag(R.menu.bottom_actions_fragment_draft_selection, false)
-        bottom_app_bar.setOnMenuItemClickListener(this)
-        editor.addTextChangedListener(EditorWatcher())
-        editor.setText(fragmentArgs.draft.text)
-        editor.onSelectionChangedListener = { hasSelection ->
-            if (bottom_app_bar?.getTag(R.menu.bottom_actions_fragment_draft_selection) != hasSelection) {
-                bottom_app_bar?.setTag(R.menu.bottom_actions_fragment_draft_selection, hasSelection)
-                bottom_app_bar?.replaceMenu(
-                    if (hasSelection) R.menu.bottom_actions_fragment_draft_selection
-                    else R.menu.bottom_actions_fragment_draft
-                )
+        bd.preview?.adapter = markdownAdapter
+
+        with(bd.editor) {
+            bottomAppBar.setTag(R.menu.bottom_actions_fragment_draft_selection, false)
+            bottomAppBar.setOnMenuItemClickListener(this@DraftFragment)
+            editor.addTextChangedListener(EditorWatcher())
+            editor.setText(fragmentArgs.draft.text)
+            editor.onSelectionChangedListener = { hasSelection ->
+                if (bottomAppBar.getTag(R.menu.bottom_actions_fragment_draft_selection) != hasSelection) {
+                    bottomAppBar.setTag(
+                        R.menu.bottom_actions_fragment_draft_selection,
+                        hasSelection
+                    )
+                    bottomAppBar.replaceMenu(
+                        if (hasSelection) R.menu.bottom_actions_fragment_draft_selection
+                        else R.menu.bottom_actions_fragment_draft
+                    )
+                }
             }
         }
     }
 
     override fun onDestroyView() {
-        hideSoftKeyboard(editor)
+        hideSoftKeyboard(bd.editor.editor)
         super.onDestroyView()
     }
 
@@ -86,14 +99,14 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_fragment_draft, menu)
         inflater.inflate(R.menu.actions_fragment_deletion, menu)
-        menu.findItem(R.id.action_preview).isVisible = preview == null
+        menu.findItem(R.id.action_preview).isVisible = bd.preview == null
         menu.findItem(R.id.action_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_preview -> {
-                hideSoftKeyboard(editor)
+                hideSoftKeyboard(bd.editor.editor)
                 AlertDialog.Builder(contextWrapper)
                     .setView(R.layout.draft_dialog_preview)
                     .show()
@@ -184,8 +197,8 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             if (viewModel.nextImageSlot == -1) {
                 updatePreview()
             } else {
-                editor?.editableText?.insert(
-                    editor.selectionStart,
+                bd.editor.editor.editableText?.insert(
+                    bd.editor.editor.selectionStart,
                     "[img: ${viewModel.nextImageSlot}]"
                 )
             }
@@ -193,14 +206,17 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private fun updatePreview() {
-        markdownAdapter.setMarkdown(markdown, viewModel.draft.toMarkdown(editor.text.toString()))
+        markdownAdapter.setMarkdown(
+            markdown,
+            viewModel.draft.toMarkdown(bd.editor.editor.text.toString())
+        )
         markdownAdapter.notifyDataSetChanged()
     }
 
     private suspend fun saveDraft(anonymous: Boolean = false, showConfirmation: Boolean = false) {
-        check(!editor?.text.isNullOrBlank()) { getString(R.string.draft_action_save_empty_toast) }
+        check(!bd.editor.editor.text.isNullOrBlank()) { getString(R.string.draft_action_save_empty_toast) }
 
-        viewModel.saveDraft(editor.text.toString(), anonymous)
+        viewModel.saveDraft(bd.editor.editor.text.toString(), anonymous)
 
         if (showConfirmation) {
             Toast.makeText(context, R.string.draft_action_save_toast, Toast.LENGTH_SHORT).show()
@@ -211,13 +227,13 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         AlertDialog.Builder(contextWrapper)
             .setTitle(R.string.draft_bottom_actions_title_dialog_title)
             .setItems((1..6).map { it.toString() }.toTypedArray()) { _, i ->
-                editor?.editableText?.insert(editorLineStart(), "#".repeat(i + 1) + ' ')
+                bd.editor.editor.editableText?.insert(editorLineStart(), "#".repeat(i + 1) + ' ')
             }
             .show()
     }
 
     private fun addList(numbered: Boolean) {
-        editor?.editableText?.insert(editorLineStart(), if (numbered) "1. " else "- ")
+        bd.editor.editor.editableText?.insert(editorLineStart(), if (numbered) "1. " else "- ")
     }
 
     private fun addImage(main: Boolean) {
@@ -254,8 +270,8 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                     YOUTUBE_REGEX.matchEntire(it.toString())?.run {
                         val videoId = groupValues[1]
                         val thumbnail = youtubeThumbnail(videoId)
-                        editor?.editableText?.insert(
-                            editor.selectionStart,
+                        bd.editor.editor.editableText?.insert(
+                            bd.editor.editor.selectionStart,
                             "[![YouTube link]($thumbnail)](https://www.youtube.com/watch?v=$videoId)"
                         )
                     } ?: Toast.makeText(
@@ -269,8 +285,9 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             .findViewById(R.id.text)
     }
 
-    private fun editorLineStart(cursorPos: Int = editor.selectionStart) =
-        editor?.editableText?.subSequence(0, cursorPos)?.indexOfLast { it == '\n' }?.plus(1) ?: -1
+    private fun editorLineStart(cursorPos: Int = bd.editor.editor.selectionStart) =
+        bd.editor.editor.editableText?.subSequence(0, cursorPos)
+            ?.indexOfLast { it == '\n' }?.plus(1) ?: -1
 
     private fun surroundSelectionWithLink() {
         var link: EditText? = null
@@ -286,7 +303,9 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private fun surroundSelectionWith(start: String, end: String) {
-        editor?.editableText?.insert(editor.selectionStart, start)?.insert(editor.selectionEnd, end)
+        bd.editor.editor.run {
+            editableText?.insert(selectionStart, start)?.insert(selectionEnd, end)
+        }
     }
 
     private companion object {
@@ -317,13 +336,13 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                 viewModel.dirtyDraft()
             }
 
-            if (preview != null) {
+            if (bd.preview != null) {
                 countDownTimer?.cancel()
                 countDownTimer = Timer().apply { start() }
             }
 
             newText?.let {
-                editor?.editableText?.append(it)
+                bd.editor.editor.editableText?.append(it)
             }
         }
     }

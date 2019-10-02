@@ -46,8 +46,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.main_app_bar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.ByteArrayInputStream
 
@@ -55,17 +53,21 @@ import java.io.ByteArrayInputStream
  * The central activity that hosts the different fragments.
  */
 class MainActivity : FailureHandlingActivity(R.layout.activity_main),
-    NavController.OnDestinationChangedListener,
-    DrawerLayout.DrawerListener, ImageSelector {
+    NavController.OnDestinationChangedListener, DrawerLayout.DrawerListener, ImageSelector {
     override val viewModel by viewModel<MainActivityViewModel>()
     override val contextWrapper = this
+    override lateinit var bd: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private val toolbarChangeListener by lazy { OnToolbarChangeListener(toolbar) }
+    private val toolbarChangeListener by lazy { OnToolbarChangeListener(bd.content.toolbar) }
     private var toolbarInset = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setBackgroundDrawable(null)
+        bd = ActivityMainBinding.bind(findViewById(R.id.drawer_layout)).apply {
+            lifecycleOwner = this@MainActivity
+            content.model = viewModel
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.navigationBarColor = ActivityCompat.getColor(this, R.color.navigation)
@@ -75,26 +77,24 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             val nightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
 
             if (nightMode == Configuration.UI_MODE_NIGHT_NO) {
-                drawer_layout.systemUiVisibility =
-                    drawer_layout.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                bd.drawerLayout.systemUiVisibility =
+                    bd.drawerLayout.systemUiVisibility or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
             }
         }
 
         val navController = findNavController(R.id.navigation_host)
-        val navHeaderBinding = MainNavHeaderBinding.bind(navigation_view.getHeaderView(0))
+        val navHeaderBinding = MainNavHeaderBinding.bind(bd.navigationView.getHeaderView(0))
             .apply { lifecycleOwner = this@MainActivity; model = viewModel }
-        ActionMainNavFragmentNotificationsBinding.bind(navigation_view.menu.findItem(R.id.fragment_notifications).actionView)
+        ActionMainNavFragmentNotificationsBinding.bind(bd.navigationView.menu.findItem(R.id.fragment_notifications).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
-        ActionMainNavFragmentDraftsBinding.bind(navigation_view.menu.findItem(R.id.fragment_drafts).actionView)
+        ActionMainNavFragmentDraftsBinding.bind(bd.navigationView.menu.findItem(R.id.fragment_drafts).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
-        ActionMainNavSettingsThemeSelectorBinding.bind(navigation_view.menu.findItem(R.id.settings_theme_selector).actionView)
+        ActionMainNavSettingsThemeSelectorBinding.bind(bd.navigationView.menu.findItem(R.id.settings_theme_selector).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
-        ActionMainNavSettingsBadgeToggleBinding.bind(navigation_view.menu.findItem(R.id.settings_badge_toggle).actionView)
-            .run { lifecycleOwner = this@MainActivity; model = viewModel }
-        MainAppBarBinding.bind(content)
+        ActionMainNavSettingsBadgeToggleBinding.bind(bd.navigationView.menu.findItem(R.id.settings_badge_toggle).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
 
-        navigation_view.menu.findItem(R.id.fragment_drafts).actionView
+        bd.navigationView.menu.findItem(R.id.fragment_drafts).actionView
             .findViewById<View>(R.id.button)
             .setOnClickListener {
                 launch {
@@ -147,49 +147,49 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             }
         }
 
-        setSupportActionBar(toolbar)
-        drawer_layout.addDrawerListener(this)
+        setSupportActionBar(bd.content.toolbar)
+        bd.drawerLayout.addDrawerListener(this)
 
-        appBarConfiguration = AppBarConfiguration(TOP_LEVEL_DESTINATIONS, drawer_layout)
-        toolbarInset = toolbar.contentInsetStartWithNavigation
+        appBarConfiguration = AppBarConfiguration(TOP_LEVEL_DESTINATIONS, bd.drawerLayout)
+        toolbarInset = bd.content.toolbar.contentInsetStartWithNavigation
 
         setupActionBarWithNavController(hostFragment.navController, appBarConfiguration)
-        navigation_view.setupWithNavController(hostFragment.navController)
+        bd.navigationView.setupWithNavController(hostFragment.navController)
         hostFragment.navController.addOnDestinationChangedListener(this)
 
         MainActivityViewModel.NAVIGATION_LINKS.forEach { pair ->
-            navigation_view.menu.findItem(pair.key).setOnMenuItemClickListener {
+            bd.navigationView.menu.findItem(pair.key).setOnMenuItemClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(pair.value))))
                 return@setOnMenuItemClickListener true
             }
         }
 
-        navigation_view.menu.findItem(R.id.fyreplace_licenses).setOnMenuItemClickListener {
+        bd.navigationView.menu.findItem(R.id.fyreplace_licenses).setOnMenuItemClickListener {
             showLicenses()
             return@setOnMenuItemClickListener true
         }
 
-        navigation_view.menu.findItem(R.id.fyreplace_logout).setOnMenuItemClickListener {
+        bd.navigationView.menu.findItem(R.id.fyreplace_logout).setOnMenuItemClickListener {
             viewModel.logout()
             return@setOnMenuItemClickListener true
         }
 
-        navigation_view.doOnLayout {
-            navigation_view.findViewById<View>(R.id.edit)?.setOnClickListener { editProfile() }
+        bd.navigationView.doOnLayout {
+            bd.navigationView.findViewById<View>(R.id.edit)?.setOnClickListener { editProfile() }
         }
 
-        toolbar.addOnLayoutChangeListener(toolbarChangeListener)
-        toolbar.doOnLayout {
-            badge.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                leftMargin = toolbar.height / 2
-                topMargin = toolbar.height / 2 -
+        bd.content.toolbar.addOnLayoutChangeListener(toolbarChangeListener)
+        bd.content.toolbar.doOnLayout {
+            bd.content.badge.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                leftMargin = bd.content.toolbar.height / 2
+                topMargin = bd.content.toolbar.height / 2 -
                     resources.getDimensionPixelOffset(R.dimen.margin_medium)
             }
         }
     }
 
     override fun onDestroy() {
-        toolbar.removeOnLayoutChangeListener(toolbarChangeListener)
+        bd.content.toolbar.removeOnLayoutChangeListener(toolbarChangeListener)
         super.onDestroy()
     }
 
@@ -214,7 +214,9 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         item.onNavDestinationSelected(findNavController(R.id.navigation_host))
 
     override fun onBackPressed() = when {
-        drawer_layout.isDrawerOpen(GravityCompat.START) -> drawer_layout.closeDrawer(GravityCompat.START)
+        bd.drawerLayout.isDrawerOpen(GravityCompat.START) -> bd.drawerLayout.closeDrawer(
+            GravityCompat.START
+        )
         currentFragmentAs<BackHandlingFragment>()?.onGoBack(BackHandlingFragment.Method.BACK_BUTTON) == false -> Unit
         else -> super.onBackPressed()
     }
@@ -238,8 +240,8 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         updateDrawer(destination)
 
         when {
-            destination.id == R.id.fragment_login -> toolbar.navigationIcon = null
-            toolbar.navigationIcon == null -> toolbar.navigationIcon =
+            destination.id == R.id.fragment_login -> bd.content.toolbar.navigationIcon = null
+            bd.content.toolbar.navigationIcon == null -> bd.content.toolbar.navigationIcon =
                 DrawerArrowDrawable(this).apply { isSpinEnabled = true }
         }
 
@@ -248,19 +250,26 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
                 && destination.id in TOP_LEVEL_DESTINATIONS
         )
 
-        if (destination.id in NO_TITLE_DESTINATIONS && toolbar.title.toString() == getString(R.string.app_name)) {
-            toolbar.title = ""
+        if (destination.id in NO_TITLE_DESTINATIONS
+            && bd.content.toolbar.title.toString() == getString(R.string.app_name)
+        ) {
+            bd.content.toolbar.title = ""
         }
 
-        toolbar.subtitle = ""
-        toolbar.logo = null
-        toolbar.contentInsetStartWithNavigation = toolbarInset
-        toolbar.setTitleTextAppearance(this, R.style.AppTheme_TextAppearance_ActionBar_Title)
+        bd.content.toolbar.run {
+            subtitle = ""
+            logo = null
+            contentInsetStartWithNavigation = toolbarInset
+            setTitleTextAppearance(
+                this@MainActivity,
+                R.style.AppTheme_TextAppearance_ActionBar_Title
+            )
+        }
     }
 
     override fun onSupportActionModeStarted(mode: ActionMode) {
         super.onSupportActionModeStarted(mode)
-        drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        bd.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
     override fun onSupportActionModeFinished(mode: ActionMode) {
@@ -285,7 +294,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
     }
 
     private fun updateDrawer(destination: NavDestination) {
-        drawer_layout.setDrawerLockMode(
+        bd.drawerLayout.setDrawerLockMode(
             if (destination.id in TOP_LEVEL_DESTINATIONS)
                 DrawerLayout.LOCK_MODE_UNLOCKED
             else
@@ -299,20 +308,24 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         }
 
         if (info == null) {
-            toolbar.title = ""
-            toolbar.subtitle = ""
-            toolbar.logo = null
-            return
+            bd.content.toolbar.run {
+                title = ""
+                subtitle = ""
+                logo = null
+                return
+            }
         }
 
-        toolbar.collapseActionView()
-        toolbar.title = " " + (info.author?.name ?: getString(R.string.main_author_anonymous))
-        toolbar.subtitle = " " + info.date
-        toolbar.contentInsetStartWithNavigation = 0
-        toolbar.setTitleTextAppearance(
-            this,
-            R.style.AppTheme_TextAppearance_ActionBar_Title_Condensed
-        )
+        bd.content.toolbar.run {
+            collapseActionView()
+            title = " " + (info.author?.name ?: getString(R.string.main_author_anonymous))
+            subtitle = " " + info.date
+            contentInsetStartWithNavigation = 0
+            setTitleTextAppearance(
+                this@MainActivity,
+                R.style.AppTheme_TextAppearance_ActionBar_Title_Condensed
+            )
+        }
 
         val size = resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_size)
 
@@ -332,8 +345,8 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
                         resource: Drawable,
                         transition: Transition<in Drawable>?
                     ) {
-                        toolbar.logo = resource
-                        toolbar.children
+                        bd.content.toolbar.logo = resource
+                        bd.content.toolbar.children
                             .filterIsInstance<ImageView>()
                             .find { it.drawable == resource }
                             ?.setOnClickListener {
@@ -347,7 +360,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
                     }
                 })
         } else {
-            toolbar.logo = null
+            bd.content.toolbar.logo = null
         }
     }
 
