@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.FragmentItemsListBinding
 import app.fyreplace.client.ui.adapters.ItemsAdapter
@@ -18,10 +19,8 @@ import kotlinx.android.synthetic.main.fragment_items_list.*
 abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : ItemsAdapter<I>> :
     FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemClickedListener<I> {
     abstract override val viewModel: VM
-    @Suppress("UNCHECKED_CAST")
-    val itemsAdapter: A?
-        get() = items_list?.adapter as? A
-    private var itemsRefreshCallback: ((Boolean) -> Unit)? = null
+    abstract val itemsAdapter: A
+    private var itemsRefreshCallback: (() -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,27 +34,24 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
         }
 
         binding.itemsList.setHasFixedSize(true)
-        binding.itemsList.setupAdapter()
+        binding.itemsList.adapter = itemsAdapter.apply {
+            onItemClickedListener = this@ItemsListFragment
+            viewModel.itemsPagedList.observe(viewLifecycleOwner) {
+                submitList(it)
+                viewModel.setHasData(it.size > 0)
+            }
+        }
+
         binding.refresher.setColorSchemeResources(R.color.colorPrimary)
         binding.refresher.setProgressBackgroundColorSchemeResource(R.color.colorBackground)
         binding.refresher.setOnRefreshListener { refreshItems(false) }
-        viewModel.loading.observe(viewLifecycleOwner) { binding.refresher.isRefreshing = it }
+        viewModel.loading.observe(viewLifecycleOwner) { binding.refresher?.isRefreshing = it }
         viewModel.dataSource.observe(viewLifecycleOwner) {
-            itemsRefreshCallback = { clear ->
-                if (clear) {
-                    items_list?.setupAdapter()
-                }
-
-                it.invalidate()
-            }
+            itemsRefreshCallback = { -> it.invalidate() }
 
             if (viewModel.popRefresh()) {
                 refreshItems(false)
             }
-        }
-        viewModel.itemsPagedList.observe(viewLifecycleOwner) {
-            itemsAdapter?.submitList(it)
-            viewModel.setHasData(it.size > 0)
         }
 
         return binding.root
@@ -68,17 +64,11 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
 
     override fun onItemClicked(item: I) = viewModel.pushRefresh()
 
-    abstract fun createAdapter(): A
-
     fun refreshItems(clear: Boolean) = itemsRefreshCallback?.let {
         if (clear) {
             refresher?.isRefreshing = true
         }
 
-        it(clear)
-    }
-
-    private fun RecyclerView.setupAdapter() {
-        adapter = createAdapter().apply { onItemClickedListener = this@ItemsListFragment }
+        it()
     }
 }

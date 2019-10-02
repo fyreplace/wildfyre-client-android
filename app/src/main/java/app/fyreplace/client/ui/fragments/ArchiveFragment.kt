@@ -17,6 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>() {
     override val viewModel by viewModel<ArchiveFragmentViewModel>()
+    override val itemsAdapter = PostsAdapter(true)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +30,4 @@ class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>() {
         super.onItemClicked(item)
         findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(post = item))
     }
-
-    override fun createAdapter() = PostsAdapter(true)
 }

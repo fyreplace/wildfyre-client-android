@@ -22,6 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
     override val viewModel by viewModel<DraftsFragmentViewModel>()
+    override val itemsAdapter = PostsAdapter(false)
     private val mainViewModel by sharedViewModel<MainActivityViewModel>()
 
     override fun onCreateView(
@@ -47,6 +48,4 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>() {
         super.onItemClicked(item)
         findNavController().navigate(NavigationMainDirections.actionGlobalFragmentDraft(draft = item))
     }
-
-    override fun createAdapter() = PostsAdapter(false)
 }
