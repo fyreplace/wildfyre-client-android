@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.FragmentItemsListBinding
+import app.fyreplace.client.ui.adapters.EmptyItemsAdapter
 import app.fyreplace.client.ui.adapters.ItemsAdapter
 import app.fyreplace.client.viewmodels.ItemsListFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_items_list.*
@@ -17,10 +16,11 @@ import kotlinx.android.synthetic.main.fragment_items_list.*
  * Base class for fragments displaying a list of items.
  */
 abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : ItemsAdapter<I>> :
-    FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemClickedListener<I> {
+    FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemsChangedListener,
+    ItemsAdapter.OnItemClickedListener<I> {
     abstract override val viewModel: VM
     abstract val itemsAdapter: A
-    private var itemsRefreshCallback: (() -> Unit)? = null
+    private var itemsRefreshCallback: ((Refresh) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +35,7 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
 
         binding.itemsList.setHasFixedSize(true)
         binding.itemsList.adapter = itemsAdapter.apply {
+            onItemsChangedListener = this@ItemsListFragment
             onItemClickedListener = this@ItemsListFragment
             viewModel.itemsPagedList.observe(viewLifecycleOwner) {
                 submitList(it)
@@ -44,13 +45,19 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
 
         binding.refresher.setColorSchemeResources(R.color.colorPrimary)
         binding.refresher.setProgressBackgroundColorSchemeResource(R.color.colorBackground)
-        binding.refresher.setOnRefreshListener { refreshItems(false) }
-        viewModel.loading.observe(viewLifecycleOwner) { binding.refresher?.isRefreshing = it }
+        binding.refresher.setOnRefreshListener { refreshItems(Refresh.NORMAL) }
+        viewModel.loading.observe(viewLifecycleOwner) { binding.refresher.isRefreshing = it }
         viewModel.dataSource.observe(viewLifecycleOwner) {
-            itemsRefreshCallback = { -> it.invalidate() }
+            itemsRefreshCallback = { mode ->
+                if (mode == Refresh.FULL) {
+                    binding.itemsList.swapAdapter(EmptyItemsAdapter<I>(), false)
+                }
+
+                it.invalidate()
+            }
 
             if (viewModel.popRefresh()) {
-                refreshItems(false)
+                refreshItems(Refresh.BACKGROUND)
             }
         }
 
@@ -62,13 +69,25 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
         refresher?.isRefreshing = false
     }
 
+    override fun onItemsChanged() {
+        if (items_list.adapter != itemsAdapter) {
+            items_list.swapAdapter(itemsAdapter, false)
+        }
+    }
+
     override fun onItemClicked(item: I) = viewModel.pushRefresh()
 
-    fun refreshItems(clear: Boolean) = itemsRefreshCallback?.let {
-        if (clear) {
+    fun refreshItems(mode: Refresh) = itemsRefreshCallback?.let {
+        if (mode != Refresh.BACKGROUND) {
             refresher?.isRefreshing = true
         }
 
-        it()
+        it(mode)
+    }
+
+    enum class Refresh {
+        BACKGROUND,
+        NORMAL,
+        FULL
     }
 }

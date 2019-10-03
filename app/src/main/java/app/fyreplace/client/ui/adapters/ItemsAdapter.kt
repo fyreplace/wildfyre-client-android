@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
+import androidx.paging.PagedList
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
@@ -33,6 +34,7 @@ abstract class ItemsAdapter<I>(
     private val showAuthors: Boolean
 ) : PagedListAdapter<I, ItemsAdapter.ViewHolder>(diffCallback) {
     private lateinit var markdown: Markwon
+    var onItemsChangedListener: OnItemsChangedListener? = null
     var onItemClickedListener: OnItemClickedListener<I>? = null
     var selectionTracker: SelectionTracker<Long>? = null
 
@@ -123,6 +125,10 @@ abstract class ItemsAdapter<I>(
         }
     }
 
+    override fun onCurrentListChanged(previousList: PagedList<I>?, currentList: PagedList<I>?) {
+        onItemsChangedListener?.onItemsChanged()
+    }
+
     abstract fun getItemData(item: I): ItemDataHolder
 
     class ViewHolder(approxWidth: Int, itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -159,6 +165,10 @@ abstract class ItemsAdapter<I>(
         val author: Author?,
         val subtitle: String
     )
+
+    interface OnItemsChangedListener {
+        fun onItemsChanged()
+    }
 
     interface OnItemClickedListener<I> {
         fun onItemClicked(item: I)

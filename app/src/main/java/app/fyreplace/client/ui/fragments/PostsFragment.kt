@@ -37,7 +37,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
             if (settingUp) {
                 settingUp = false
             } else {
-                refreshItems(true)
+                refreshItems(Refresh.FULL)
             }
         }
     }
@@ -112,7 +112,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
                 launch {
                     itemsAdapter.selectionTracker?.selection?.forEach { viewModel.delete(it) }
                     mode.finish()
-                    refreshItems(false)
+                    refreshItems(Refresh.BACKGROUND)
                 }
             }
             .show()
