@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 /**
  * [androidx.fragment.app.Fragment] listing the user's own posts.
  */
-class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>() {
+class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>(true) {
     override val viewModel by viewModel<OwnPostsFragmentViewModel>()
     override val itemsAdapter = PostsAdapter(false)
 

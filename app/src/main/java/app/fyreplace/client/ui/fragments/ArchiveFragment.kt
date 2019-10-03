@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 /**
  * [androidx.fragment.app.Fragment] listing the user's subscribed posts.
  */
-class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>() {
+class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>(false) {
     override val viewModel by viewModel<ArchiveFragmentViewModel>()
     override val itemsAdapter = PostsAdapter(true)
 

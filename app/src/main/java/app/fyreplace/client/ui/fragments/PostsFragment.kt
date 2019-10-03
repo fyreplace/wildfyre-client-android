@@ -24,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 /**
  * [androidx.fragment.app.Fragment] listing posts.
  */
-abstract class PostsFragment<VM : PostsFragmentViewModel> :
+abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelection: Boolean) :
     ItemsListFragment<Post, VM, PostsAdapter>(), AreaSelectingFragment, ActionMode.Callback {
     override val viewModels: List<ViewModel> by lazy { listOf(viewModel, areaSelectingViewModel) }
     override val areaSelectingViewModel by sharedViewModel<AreaSelectingFragmentViewModel>()
@@ -47,6 +47,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = super.onCreateView(inflater, container, savedInstanceState).also {
+        if (hasSelection) {
             val itemsList = it.findViewById<RecyclerView>(R.id.items_list)
             itemsAdapter.selectionTracker = SelectionTracker.Builder(
                 SELECTION_TRACKER_ID,
@@ -60,6 +61,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel> :
                 addObserver(selectionObserver)
             }
         }
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
