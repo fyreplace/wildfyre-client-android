@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
-import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.R
 import app.fyreplace.client.databinding.FragmentItemsListBinding
+import app.fyreplace.client.ui.adapters.EmptyItemsAdapter
 import app.fyreplace.client.ui.adapters.ItemsAdapter
 import app.fyreplace.client.viewmodels.ItemsListFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_items_list.*
@@ -16,12 +16,11 @@ import kotlinx.android.synthetic.main.fragment_items_list.*
  * Base class for fragments displaying a list of items.
  */
 abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : ItemsAdapter<I>> :
-    FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemClickedListener<I> {
+    FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemsChangedListener,
+    ItemsAdapter.OnItemClickedListener<I> {
     abstract override val viewModel: VM
-    @Suppress("UNCHECKED_CAST")
-    protected val itemsAdapter: A?
-        get() = items_list?.adapter as? A
-    private var itemsRefreshCallback: ((Boolean) -> Unit)? = null
+    protected abstract val itemsAdapter: A
+    private var itemsRefreshCallback: ((Refresh) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,27 +34,31 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
         }
 
         binding.itemsList.setHasFixedSize(true)
-        binding.itemsList.setupAdapter()
+        binding.itemsList.adapter = itemsAdapter.apply {
+            onItemsChangedListener = this@ItemsListFragment
+            onItemClickedListener = this@ItemsListFragment
+            viewModel.itemsPagedList.observe(viewLifecycleOwner) {
+                submitList(it)
+                viewModel.setHasData(it.size > 0)
+            }
+        }
+
         binding.refresher.setColorSchemeResources(R.color.colorPrimary)
         binding.refresher.setProgressBackgroundColorSchemeResource(R.color.colorBackground)
-        binding.refresher.setOnRefreshListener { refreshItems(false) }
+        binding.refresher.setOnRefreshListener { refreshItems(Refresh.NORMAL) }
         viewModel.loading.observe(viewLifecycleOwner) { binding.refresher.isRefreshing = it }
         viewModel.dataSource.observe(viewLifecycleOwner) {
-            itemsRefreshCallback = { clear ->
-                if (clear) {
-                    items_list?.setupAdapter()
+            itemsRefreshCallback = { mode ->
+                if (mode == Refresh.FULL) {
+                    binding.itemsList.swapAdapter(EmptyItemsAdapter<I>(), false)
                 }
 
                 it.invalidate()
             }
 
             if (viewModel.popRefresh()) {
-                refreshItems(false)
+                refreshItems(Refresh.BACKGROUND)
             }
-        }
-        viewModel.itemsPagedList.observe(viewLifecycleOwner) {
-            itemsAdapter?.submitList(it)
-            viewModel.setHasData(it.size > 0)
         }
 
         return binding.root
@@ -66,19 +69,25 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
         refresher?.isRefreshing = false
     }
 
+    override fun onItemsChanged() {
+        if (items_list.adapter != itemsAdapter) {
+            items_list.swapAdapter(itemsAdapter, false)
+        }
+    }
+
     override fun onItemClicked(item: I) = viewModel.pushRefresh()
 
-    abstract fun createAdapter(): A
-
-    fun refreshItems(clear: Boolean) = itemsRefreshCallback?.let {
-        if (clear) {
+    fun refreshItems(mode: Refresh) = itemsRefreshCallback?.let {
+        if (mode != Refresh.BACKGROUND) {
             refresher?.isRefreshing = true
         }
 
-        it(clear)
+        it(mode)
     }
 
-    private fun RecyclerView.setupAdapter() {
-        adapter = createAdapter().apply { onItemClickedListener = this@ItemsListFragment }
+    enum class Refresh {
+        BACKGROUND,
+        NORMAL,
+        FULL
     }
 }

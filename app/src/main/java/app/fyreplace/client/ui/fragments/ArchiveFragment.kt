@@ -15,8 +15,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 /**
  * [androidx.fragment.app.Fragment] listing the user's subscribed posts.
  */
-class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>() {
+class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>(false) {
     override val viewModel by viewModel<ArchiveFragmentViewModel>()
+    override val itemsAdapter = PostsAdapter(true)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +30,4 @@ class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>() {
         super.onItemClicked(item)
         findNavController().navigate(NavigationMainDirections.actionGlobalFragmentPost(post = item))
     }
-
-    override fun createAdapter() = PostsAdapter(true)
 }
