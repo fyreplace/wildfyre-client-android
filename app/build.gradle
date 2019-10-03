@@ -47,7 +47,7 @@ dependencies {
         version_koin = '2.0.1'
         version_lifecycle = '2.2.0-alpha05'
         version_markwon = '3.1.0'
-        version_retrofit = '2.6.1'
+        version_retrofit = '2.6.2'
     }
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
