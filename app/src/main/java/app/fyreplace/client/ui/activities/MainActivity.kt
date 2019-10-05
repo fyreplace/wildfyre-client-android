@@ -86,6 +86,14 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             }
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                reportFullyDrawn()
+            } catch (e: SecurityException) {
+                // Happens on KitKat
+            }
+        }
+
         val navController = findNavController(R.id.navigation_host)
         val navHeaderBinding = MainNavHeaderBinding.bind(bd.navigationView.getHeaderView(0))
             .apply { lifecycleOwner = this@MainActivity; model = viewModel }
