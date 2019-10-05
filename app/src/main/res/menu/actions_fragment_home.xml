@@ -5,7 +5,7 @@
     tools:context=".ui.fragments.HomeFragment"
     tools:ignore="AlwaysShowAction">
     <item
-        android:id="@+id/action_area_selector"
+        android:id="@id/action_area_selector"
         android:title=""
         app:actionLayout="@layout/action_area_selecting_area_spinner"
         app:showAsAction="never|collapseActionView" />

@@ -29,7 +29,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib-wildfyre')
     implementation libraries.androidx.appCompat
+    implementation libraries.androidx.coreKtx
     implementation libraries.androidx.documentFile
+    implementation libraries.androidx.lifecycleLiveDataKtx
     implementation libraries.androidx.lifecycleRuntimeKtx
     implementation libraries.glideOkHttp
     implementation libraries.koinAndroidxViewModel

@@ -36,7 +36,6 @@
     <string name="main_nav_wildfyre_privacy_link" translatable="false">https://wildfyre.net/pages/privacy-policy</string>
     <string name="main_profile_editor_bio">Profile bio</string>
     <string name="main_author_anonymous">Anonymous</string>
-    <string name="area_selecting_action_area_selector">Area: %1$s</string>
     <string name="area_selecting_action_area_spread">Spread</string>
     <string name="area_selecting_action_area_reputation">Reputation</string>
     <string name="deletion_action_delete">Delete</string>

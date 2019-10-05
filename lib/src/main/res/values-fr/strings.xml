@@ -2,5 +2,6 @@
 <resources>
     <string name="image_selector_chooser">Source de l\'image</string>
     <string name="image_selector_error_toast">Taille de fichier trop élevée</string>
+    <string name="area_selecting_action_area_selector">Zone: %1$s</string>
     <string name="sharing_action_share">Partager</string>
 </resources>
