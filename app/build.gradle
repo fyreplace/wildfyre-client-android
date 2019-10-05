@@ -54,6 +54,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app-user')
     implementation project(':lib')
+    implementation project(':lib-items-list')
     implementation project(':lib-wildfyre')
     implementation libraries.androidx.appCompat
     implementation libraries.androidx.constraintLayout
@@ -69,7 +70,6 @@ dependencies {
     implementation libraries.androidx.navigationUiKtx
     implementation libraries.androidx.paging
     implementation libraries.androidx.recyclerView
-    implementation libraries.androidx.recyclerViewSelection
     implementation libraries.androidx.swipeRefreshLayout
     implementation libraries.androidx.vectorDrawable
     implementation libraries.koin

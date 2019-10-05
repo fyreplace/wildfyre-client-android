@@ -2,7 +2,6 @@
 <resources>
     <color name="backgroundSplash">@color/colorBackground</color>
     <color name="backgroundHighlight">#3FFF7043</color>
-    <color name="backgroundHighlightNeutral">#3F3F3F</color>
     <color name="navigation">@color/colorBackground</color>
     <color name="loginLogo">@android:color/white</color>
     <color name="badgeBackground">#D50000</color>

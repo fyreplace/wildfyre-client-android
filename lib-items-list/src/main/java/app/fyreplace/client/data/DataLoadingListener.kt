@@ -1,4 +1,4 @@
-package app.fyreplace.client.data.sources
+package app.fyreplace.client.data
 
 interface DataLoadingListener {
     fun onLoadingStart()

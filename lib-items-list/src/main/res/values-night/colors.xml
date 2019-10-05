@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="home_show_full_menu">true</bool>
+    <color name="backgroundHighlightNeutral">#3F3F3F</color>
 </resources>

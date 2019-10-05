@@ -1,23 +1,11 @@
 package app.fyreplace.client.data.sources
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.paging.DataSource
+import app.fyreplace.client.data.DataLoadingListener
 import app.fyreplace.client.data.models.Notification
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.DraftRepository
 import app.fyreplace.client.data.repositories.NotificationRepository
 import app.fyreplace.client.data.repositories.PostRepository
-
-abstract class ItemsDataSourceFactory<I> : DataSource.Factory<Int, I>() {
-    private val mDataSource = MutableLiveData<DataSource<Int, I>>()
-
-    val dataSource: LiveData<DataSource<Int, I>> = mDataSource
-
-    override fun create(): DataSource<Int, I> = newSource().also { mDataSource.postValue(it) }
-
-    protected abstract fun newSource(): ItemsDataSource<I>
-}
 
 class NotificationsDataSourceFactory(
     private val listener: DataLoadingListener,

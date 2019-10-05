@@ -14,8 +14,8 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.AppGlide
-import app.fyreplace.client.R
 import app.fyreplace.client.data.models.Author
+import app.fyreplace.client.lib.items_list.R
 import app.fyreplace.client.ui.PostPlugin
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners

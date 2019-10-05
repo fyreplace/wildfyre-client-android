@@ -8,7 +8,8 @@ class EmptyItemsAdapter<I> : ItemsAdapter<I>(EmptyDiffCallback(), false) {
 
     override fun getItemId(position: Int) = RecyclerView.NO_ID
 
-    override fun getItemData(item: I) = ItemDataHolder(null, null, null, "")
+    override fun getItemData(item: I) =
+        ItemDataHolder(null, null, null, "")
 
     class EmptyDiffCallback<I> : DiffUtil.ItemCallback<I>() {
         override fun areItemsTheSame(oldItem: I, newItem: I) = false

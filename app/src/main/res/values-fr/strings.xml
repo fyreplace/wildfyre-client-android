@@ -38,7 +38,6 @@
     <string name="login_register">S\'enregistrer</string>
     <string name="login_error_field_required">Ce champ est obligatoire</string>
     <string name="login_failure_login">La connexion a échoué</string>
-    <string name="items_author_anonymous">Anonyme</string>
     <string name="notifications_action_clear">Effacer</string>
     <string name="notifications_action_clear_dialog_title">Effacer toutes les notifications ?</string>
     <string name="notifications_empty">Aucune notification</string>
@@ -119,7 +118,6 @@
     <string name="image_desc_profile_editor_change_image">Choisir une image</string>
     <string name="image_desc_profile_editor_change_photo">Prendre une photo</string>
     <string name="image_desc_author_picture">Image de l\'auteur</string>
-    <string name="image_desc_post_picture">Image du post</string>
     <string name="image_desc_comment_picture">Image du commentaire</string>
     <string name="image_desc_comments_toggle">Afficher les commentaires</string>
     <string name="image_desc_comments_send_comment">Envoyer le commentaire</string>

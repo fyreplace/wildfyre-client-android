@@ -8,11 +8,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-    }
     dataBinding {
         enabled = true
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
     }
     defaultConfig {
         minSdkVersion configuration.minSdkVersion
@@ -23,18 +23,17 @@ android {
 }
 
 dependencies {
-    api libraries.glide
-    api libraries.markwon
-    api libraries.markwonExtStrikethrough
+    api libraries.androidx.recyclerView
+    api libraries.androidx.recyclerViewSelection
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':lib')
     implementation project(':lib-wildfyre')
     implementation libraries.androidx.appCompat
-    implementation libraries.androidx.documentFile
-    implementation libraries.androidx.lifecycleRuntimeKtx
-    implementation libraries.glideOkHttp
-    implementation libraries.koinAndroidxViewModel
+    implementation libraries.androidx.constraintLayout
+    implementation libraries.androidx.coreKtx
+    implementation libraries.androidx.lifecycleLiveDataKtx
+    implementation libraries.androidx.paging
+    implementation libraries.androidx.swipeRefreshLayout
     implementation libraries.kotlin
-    implementation libraries.kotlinxCoroutines
-    implementation libraries.markwonImageOkHttp
-    kapt processors.glide
+    implementation libraries.material
 }

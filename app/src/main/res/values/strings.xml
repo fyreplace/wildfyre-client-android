@@ -47,7 +47,6 @@
     <string name="login_register_link" translatable="false">https://client.wildfyre.net/register</string>
     <string name="login_error_field_required">This field is required</string>
     <string name="login_failure_login">Login failed</string>
-    <string name="items_author_anonymous">Anonymous</string>
     <string name="notifications_action_clear">Clear</string>
     <string name="notifications_action_clear_dialog_title">Clear all notifications?</string>
     <string name="notifications_empty">No notifications</string>
@@ -128,7 +127,6 @@
     <string name="image_desc_profile_editor_change_image">Select an image</string>
     <string name="image_desc_profile_editor_change_photo">Take a picture</string>
     <string name="image_desc_author_picture">Author picture</string>
-    <string name="image_desc_post_picture">Post picture</string>
     <string name="image_desc_comment_picture">Comment picture</string>
     <string name="image_desc_comments_toggle">Toggle comments</string>
     <string name="image_desc_comments_send_comment">Send comment</string>
