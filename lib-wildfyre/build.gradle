@@ -21,10 +21,10 @@ compileKotlin {
 }
 
 dependencies {
+    api libraries.retrofit
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation libraries.gson
     implementation libraries.koin
     implementation libraries.kotlin
-    implementation libraries.retrofit
     implementation libraries.retrofitGson
 }

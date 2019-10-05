@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notifications_action_clear">Effacer</string>
+    <string name="notifications_action_clear_dialog_title">Effacer toutes les notifications ?</string>
+    <string name="notifications_empty">Aucune notification</string>
+    <plurals name="notifications_item_comment_count">
+        <item quantity="one">%1$d commentaire</item>
+        <item quantity="other">%1$d commentaires</item>
+    </plurals>
+</resources>

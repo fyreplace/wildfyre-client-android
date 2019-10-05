@@ -18,26 +18,18 @@ android {
         minSdkVersion configuration.minSdkVersion
         targetSdkVersion configuration.targetSdkVersion
         consumerProguardFiles 'consumer-rules.pro'
-        vectorDrawables.useSupportLibrary = true
     }
 }
 
 dependencies {
-    api libraries.glide
-    api libraries.markwon
-    api libraries.markwonExtStrikethrough
-    api libraries.material
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':lib')
+    implementation project(':lib-items-list')
     implementation project(':lib-wildfyre')
     implementation libraries.androidx.appCompat
-    implementation libraries.androidx.coreKtx
-    implementation libraries.androidx.documentFile
     implementation libraries.androidx.lifecycleLiveDataKtx
-    implementation libraries.androidx.lifecycleRuntimeKtx
-    implementation libraries.glideOkHttp
+    implementation libraries.androidx.navigationFragmentKtx
     implementation libraries.koinAndroidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinxCoroutines
-    implementation libraries.markwonImageOkHttp
-    kapt processors.glide
 }

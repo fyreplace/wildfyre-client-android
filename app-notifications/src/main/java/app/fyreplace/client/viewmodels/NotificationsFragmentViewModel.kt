@@ -10,8 +10,7 @@ import kotlinx.coroutines.withContext
 class NotificationsFragmentViewModel(
     context: Context,
     private val notificationRepository: NotificationRepository
-) :
-    ItemsListFragmentViewModel<Notification>(context) {
+) : ItemsListFragmentViewModel<Notification>(context) {
     override val factory = NotificationsDataSourceFactory(this, notificationRepository)
 
     suspend fun clearNotifications() {

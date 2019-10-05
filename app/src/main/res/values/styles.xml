@@ -54,20 +54,6 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
-    <style name="AppTheme.AppBar.Button.NeutralButtonOverlay" parent="ThemeOverlay.MaterialComponents">
-        <item name="colorPrimary">@android:color/white</item>
-        <item name="colorOnPrimary">@android:color/black</item>
-        <item name="colorSecondary">@android:color/black</item>
-        <item name="colorOnSecondary">@android:color/white</item>
-    </style>
-
-    <style name="AppTheme.Button.NeutralButtonOverlay" parent="ThemeOverlay.MaterialComponents">
-        <item name="colorPrimary">@color/colorOnBackground</item>
-        <item name="colorOnPrimary">@color/colorBackground</item>
-        <item name="colorSecondary">@color/colorBackground</item>
-        <item name="colorOnSecondary">@color/colorOnBackground</item>
-    </style>
-
     <style name="AppTheme.Button.HighlightButtonOverlay" parent="ThemeOverlay.MaterialComponents">
         <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>

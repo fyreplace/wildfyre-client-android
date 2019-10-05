@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.AppBar.Button.NeutralButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorOnPrimary">@android:color/black</item>
+        <item name="colorSecondary">@android:color/black</item>
+        <item name="colorOnSecondary">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.Button.NeutralButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="colorPrimary">@color/colorOnBackground</item>
+        <item name="colorOnPrimary">@color/colorBackground</item>
+        <item name="colorSecondary">@color/colorBackground</item>
+        <item name="colorOnSecondary">@color/colorOnBackground</item>
+    </style>
+</resources>

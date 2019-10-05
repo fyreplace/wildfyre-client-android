@@ -3,8 +3,8 @@ package app.fyreplace.client.ui.adapters
 import android.content.Context
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.app.R
 import app.fyreplace.client.data.models.Notification
+import app.fyreplace.client.lib.notifications.R
 
 /**
  * Adapter for displaying notifications in [app.fyreplace.client.ui.fragments.NotificationsFragment].

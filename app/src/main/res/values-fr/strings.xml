@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="yes">Oui</string>
-    <string name="no">Non</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Annuler</string>
     <string name="main_nav_fragment_login">Connexion</string>
     <string name="main_nav_fragment_home">Accueil</string>
     <string name="main_nav_fragment_notifications">Notifications</string>
@@ -37,13 +33,6 @@
     <string name="login_register">S\'enregistrer</string>
     <string name="login_error_field_required">Ce champ est obligatoire</string>
     <string name="login_failure_login">La connexion a échoué</string>
-    <string name="notifications_action_clear">Effacer</string>
-    <string name="notifications_action_clear_dialog_title">Effacer toutes les notifications ?</string>
-    <string name="notifications_empty">Aucune notification</string>
-    <plurals name="notifications_item_comment_count">
-        <item quantity="one">%1$d commentaire</item>
-        <item quantity="other">%1$d commentaires</item>
-    </plurals>
     <string name="posts_action_delete_dialog_title">Supprimer ces éléments ? Cette action est irréversible</string>
     <plurals name="posts_action_mode_selection_title">
         <item quantity="one">%1$d élément sélectionné</item>

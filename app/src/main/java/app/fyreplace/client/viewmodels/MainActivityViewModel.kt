@@ -1,6 +1,9 @@
 package app.fyreplace.client.viewmodels
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import app.fyreplace.client.app.R
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.ImageData
@@ -17,7 +20,7 @@ class MainActivityViewModel(
     private val authorRepository: AuthorRepository,
     private val notificationRepository: NotificationRepository,
     private val draftRepository: DraftRepository
-) : ViewModel() {
+) : CentralViewModel() {
     private var uiRefreshTickerJob: Job? = null
     private val mUiRefreshTick = MutableLiveData<Unit>()
     private val mIsLogged = MutableLiveData<Boolean>()
@@ -60,6 +63,8 @@ class MainActivityViewModel(
         setAllowDraftCreation(true)
     }
 
+    override fun forceNotificationCount(count: Int) = mNotificationCount.postValue(count)
+
     fun getTheme(which: Int) = THEMES.getOrElse(which) { SettingsRepository.Themes.AUTOMATIC }
 
     fun login() {
@@ -87,8 +92,6 @@ class MainActivityViewModel(
 
     suspend fun updateNotificationCount() =
         mNotificationCount.postValue(notificationRepository.getNotificationCount())
-
-    fun forceNotificationCount(count: Int) = mNotificationCount.postValue(count)
 
     suspend fun sendProfile(bio: String) {
         if (bio != userBio.value) {

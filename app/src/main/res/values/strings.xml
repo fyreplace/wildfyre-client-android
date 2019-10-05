@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="api_base_url" translatable="false">https://api.wildfyre.net</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
     <string name="main_nav_fragment_login">Login</string>
     <string name="main_nav_fragment_home">Home</string>
     <string name="main_nav_fragment_notifications">Notifications</string>
@@ -46,13 +42,6 @@
     <string name="login_register_link" translatable="false">https://client.wildfyre.net/register</string>
     <string name="login_error_field_required">This field is required</string>
     <string name="login_failure_login">Login failed</string>
-    <string name="notifications_action_clear">Clear</string>
-    <string name="notifications_action_clear_dialog_title">Clear all notifications?</string>
-    <string name="notifications_empty">No notifications</string>
-    <plurals name="notifications_item_comment_count">
-        <item quantity="one">%1$d comment</item>
-        <item quantity="other">%1$d comments</item>
-    </plurals>
     <string name="posts_action_delete_dialog_title">Delete these items? This action cannot be undone</string>
     <plurals name="posts_action_mode_selection_title">
         <item quantity="one">%1$d item selected</item>

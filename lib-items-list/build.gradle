@@ -23,6 +23,7 @@ android {
 }
 
 dependencies {
+    api libraries.androidx.paging
     api libraries.androidx.recyclerView
     api libraries.androidx.recyclerViewSelection
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -32,7 +33,6 @@ dependencies {
     implementation libraries.androidx.constraintLayout
     implementation libraries.androidx.coreKtx
     implementation libraries.androidx.lifecycleLiveDataKtx
-    implementation libraries.androidx.paging
     implementation libraries.androidx.swipeRefreshLayout
     implementation libraries.kotlin
     implementation libraries.material

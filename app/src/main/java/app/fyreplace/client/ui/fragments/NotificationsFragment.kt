@@ -9,10 +9,10 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentPost
 import app.fyreplace.client.app.R
-import app.fyreplace.client.app.databinding.ActionNotificationsClearBinding
 import app.fyreplace.client.data.models.Notification
+import app.fyreplace.client.lib.notifications.databinding.ActionNotificationsClearBinding
 import app.fyreplace.client.ui.adapters.NotificationsAdapter
-import app.fyreplace.client.viewmodels.MainActivityViewModel
+import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.NotificationsFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,7 +24,7 @@ class NotificationsFragment :
     ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>() {
     override val viewModel by viewModel<NotificationsFragmentViewModel>()
     override val itemsAdapter by lazy { NotificationsAdapter(requireContext()) }
-    private val mainViewModel by sharedViewModel<MainActivityViewModel>()
+    private val mainViewModel by sharedViewModel<CentralViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
