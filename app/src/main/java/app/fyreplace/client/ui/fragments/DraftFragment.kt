@@ -13,9 +13,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.R
+import app.fyreplace.client.app.R
+import app.fyreplace.client.app.databinding.FragmentDraftBinding
 import app.fyreplace.client.data.models.ImageData
-import app.fyreplace.client.databinding.FragmentDraftBinding
 import app.fyreplace.client.ui.*
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

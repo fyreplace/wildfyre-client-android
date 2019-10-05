@@ -1,6 +1,7 @@
 package app.fyreplace.client
 
 import androidx.appcompat.app.AppCompatDelegate
+import app.fyreplace.client.app.R
 import app.fyreplace.client.data.repositories.SettingsRepository
 import app.fyreplace.client.data.repositories.repositoriesModule
 import app.fyreplace.client.data.services.servicesModule

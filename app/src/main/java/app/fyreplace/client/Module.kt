@@ -1,6 +1,7 @@
 package app.fyreplace.client
 
 import android.content.Context
+import app.fyreplace.client.app.R
 import org.koin.dsl.module
 
 val applicationModule = module {

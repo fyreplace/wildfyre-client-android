@@ -3,7 +3,7 @@ package app.fyreplace.client.ui.adapters
 import android.content.Context
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.R
+import app.fyreplace.client.app.R
 import app.fyreplace.client.data.models.Notification
 
 /**

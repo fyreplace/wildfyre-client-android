@@ -1,7 +1,7 @@
 package app.fyreplace.client.viewmodels
 
 import androidx.lifecycle.*
-import app.fyreplace.client.R
+import app.fyreplace.client.app.R
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.models.Post

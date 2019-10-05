@@ -5,9 +5,9 @@ import android.view.*
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import app.fyreplace.client.AppGlide
-import app.fyreplace.client.R
+import app.fyreplace.client.app.user.R
+import app.fyreplace.client.app.user.databinding.FragmentUserBinding
 import app.fyreplace.client.data.models.Author
-import app.fyreplace.client.databinding.FragmentUserBinding
 import app.fyreplace.client.ui.getShareIntent
 import app.fyreplace.client.ui.lazyMarkdown
 import app.fyreplace.client.ui.userShareUrl

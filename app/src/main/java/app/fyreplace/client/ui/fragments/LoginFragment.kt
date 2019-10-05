@@ -10,8 +10,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import app.fyreplace.client.R
-import app.fyreplace.client.databinding.FragmentLoginBinding
+import app.fyreplace.client.app.R
+import app.fyreplace.client.app.databinding.FragmentLoginBinding
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.viewmodels.LoginFragmentViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel

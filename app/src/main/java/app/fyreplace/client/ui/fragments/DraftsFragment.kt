@@ -7,8 +7,8 @@ import android.view.MenuInflater
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
-import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentDraft
-import app.fyreplace.client.R
+import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentDraft
+import app.fyreplace.client.app.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.DraftsFragmentViewModel

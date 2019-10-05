@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.util.LinkifyCompat
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
-import app.fyreplace.client.R
+import app.fyreplace.client.lib.R
 import org.commonmark.node.SoftLineBreak
 import org.commonmark.node.Text
 import ru.noties.markwon.AbstractMarkwonPlugin

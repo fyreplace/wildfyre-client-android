@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
-import app.fyreplace.client.R
+import app.fyreplace.client.app.R
 
 class BottomSheetArrowDrawableWrapper(
     private val image: ImageView,

@@ -12,8 +12,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.documentfile.provider.DocumentFile
-import app.fyreplace.client.R
 import app.fyreplace.client.data.models.ImageData
+import app.fyreplace.client.lib.R
 import app.fyreplace.client.viewmodels.ImageSelectorViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -132,7 +132,7 @@ interface ImageSelector : FailureHandler {
         return bitmap
     }
 
-    private companion object {
+    companion object {
         const val IMAGE_MAX_FILE_SIZE = 512 * 1024
         const val IMAGE_MAX_AREA = 1920 * 1080
     }

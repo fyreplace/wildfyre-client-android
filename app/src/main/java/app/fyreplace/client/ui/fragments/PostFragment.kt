@@ -24,10 +24,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.R
+import app.fyreplace.client.app.R
+import app.fyreplace.client.app.databinding.FragmentPostBinding
 import app.fyreplace.client.data.models.Comment
 import app.fyreplace.client.data.models.ImageData
-import app.fyreplace.client.databinding.FragmentPostBinding
 import app.fyreplace.client.ui.*
 import app.fyreplace.client.ui.adapters.CommentsAdapter
 import app.fyreplace.client.ui.drawables.BottomSheetArrowDrawableWrapper

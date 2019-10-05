@@ -1,7 +1,7 @@
 package app.fyreplace.client.data.repositories
 
 import android.content.Context
-import app.fyreplace.client.R
+import app.fyreplace.client.app.R
 import app.fyreplace.client.data.models.Draft
 import app.fyreplace.client.data.models.DraftNoImageContent
 import app.fyreplace.client.data.models.ImageData

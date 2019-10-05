@@ -7,10 +7,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentPost
-import app.fyreplace.client.R
+import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentPost
+import app.fyreplace.client.app.R
+import app.fyreplace.client.app.databinding.ActionNotificationsClearBinding
 import app.fyreplace.client.data.models.Notification
-import app.fyreplace.client.databinding.ActionNotificationsClearBinding
 import app.fyreplace.client.ui.adapters.NotificationsAdapter
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import app.fyreplace.client.viewmodels.NotificationsFragmentViewModel

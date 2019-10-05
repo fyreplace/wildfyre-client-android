@@ -7,8 +7,8 @@ import android.widget.AdapterView
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
-import app.fyreplace.client.R
-import app.fyreplace.client.databinding.ActionAreaSelectingAreaSpinnerBinding
+import app.fyreplace.client.app.R
+import app.fyreplace.client.app.databinding.ActionAreaSelectingAreaSpinnerBinding
 import app.fyreplace.client.ui.FailureHandler
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.getSharedViewModel

@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import app.fyreplace.client.NavigationMainDirections.Companion.actionGlobalFragmentPost
-import app.fyreplace.client.R
+import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentPost
+import app.fyreplace.client.app.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.OwnPostsFragmentViewModel
