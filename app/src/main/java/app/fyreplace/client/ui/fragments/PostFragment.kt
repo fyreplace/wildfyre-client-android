@@ -63,6 +63,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         else
             null
     }
+    private var commentsSheetCallback: CommentsSheetCallback<View>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -165,26 +166,10 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
 
             val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED)
                 ?: (highlightedCommentIds != null)
-            val arrowWrapper = BottomSheetArrowDrawableWrapper(arrow, !commentsExpanded)
             val behavior = CommentSheetBehavior.from(it)
 
-            behavior.bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
-                @SuppressLint("SwitchIntDef")
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    content?.isVisible = newState != BottomSheetBehavior.STATE_EXPANDED
-                    behavior.canDrag = newState != BottomSheetBehavior.STATE_EXPANDED
-
-                    when (newState) {
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            clearCommentInput()
-                            arrowWrapper.setPointingUp(true)
-                        }
-                        BottomSheetBehavior.STATE_EXPANDED -> arrowWrapper.setPointingUp(false)
-                    }
-                }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
-            }
+            commentsSheetCallback = CommentsSheetCallback(behavior, arrow, commentsExpanded)
+                .apply { behavior.addBottomSheetCallback(this) }
 
             if (commentsExpanded) {
                 toggleComments()
@@ -193,6 +178,12 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     }
 
     override fun onDestroyView() {
+        comments_list.clearOnScrollListeners()
+
+        commentsSheetCallback?.let {
+            CommentSheetBehavior.from(collapsible_comments).removeBottomSheetCallback(it)
+        }
+
         clearCommentInput()
         super.onDestroyView()
     }
@@ -414,5 +405,29 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
                 }
             }
         }
+    }
+
+    private inner class CommentsSheetCallback<V : View>(
+        private val behavior: CommentSheetBehavior<V>,
+        arrow: ImageView,
+        commentsExpanded: Boolean
+    ) : BottomSheetBehavior.BottomSheetCallback() {
+        private val arrowWrapper = BottomSheetArrowDrawableWrapper(arrow, !commentsExpanded)
+
+        @SuppressLint("SwitchIntDef")
+        override fun onStateChanged(bottomSheet: View, newState: Int) {
+            content?.isVisible = newState != BottomSheetBehavior.STATE_EXPANDED
+            behavior.canDrag = newState != BottomSheetBehavior.STATE_EXPANDED
+
+            when (newState) {
+                BottomSheetBehavior.STATE_COLLAPSED -> {
+                    clearCommentInput()
+                    arrowWrapper.setPointingUp(true)
+                }
+                BottomSheetBehavior.STATE_EXPANDED -> arrowWrapper.setPointingUp(false)
+            }
+        }
+
+        override fun onSlide(bottomSheet: View, slideOffset: Float) = Unit
     }
 }

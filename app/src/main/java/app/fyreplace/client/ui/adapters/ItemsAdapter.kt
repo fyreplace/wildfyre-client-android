@@ -37,10 +37,6 @@ abstract class ItemsAdapter<I>(
     var onItemClickedListener: OnItemClickedListener<I>? = null
     var selectionTracker: SelectionTracker<Long>? = null
 
-    init {
-        setHasStableIds(true)
-    }
-
     final override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         markdown = Markwon.builder(recyclerView.context)

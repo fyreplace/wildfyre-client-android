@@ -37,10 +37,6 @@ class CommentsAdapter(private val fragment: Fragment, private val markdown: Mark
     var selfId: Long = -1
     var authorId: Long = -1
 
-    init {
-        setHasStableIds(true)
-    }
-
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         recyclers.add(recyclerView)
