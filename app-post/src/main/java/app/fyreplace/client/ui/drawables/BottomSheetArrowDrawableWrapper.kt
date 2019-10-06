@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
-import app.fyreplace.client.app.R
+import app.fyreplace.client.app.post.R
 
 class BottomSheetArrowDrawableWrapper(
     private val image: ImageView,
@@ -40,7 +40,7 @@ class BottomSheetArrowDrawableWrapper(
     }
 
     private companion object {
-        const val DRAWABLE_UP = R.drawable.ic_arrow_drop_up_down_anim_black
-        const val DRAWABLE_DOWN = R.drawable.ic_arrow_drop_down_up_anim_black
+        val DRAWABLE_UP = R.drawable.ic_arrow_drop_up_down_anim_black
+        val DRAWABLE_DOWN = R.drawable.ic_arrow_drop_down_up_anim_black
     }
 }

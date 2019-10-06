@@ -53,6 +53,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app-notifications')
+    implementation project(':app-post')
     implementation project(':app-user')
     implementation project(':lib')
     implementation project(':lib-items-list')
@@ -60,7 +61,6 @@ dependencies {
     implementation libraries.androidx.appCompat
     implementation libraries.androidx.constraintLayout
     implementation libraries.androidx.coreKtx
-    implementation libraries.androidx.dynamicAnimation
     implementation libraries.androidx.fragmentKtx
     implementation libraries.androidx.lifecycleCommon
     implementation libraries.androidx.lifecycleExtensions
@@ -70,7 +70,6 @@ dependencies {
     implementation libraries.androidx.navigationFragmentKtx
     implementation libraries.androidx.navigationUiKtx
     implementation libraries.androidx.paging
-    implementation libraries.androidx.recyclerView
     implementation libraries.androidx.swipeRefreshLayout
     implementation libraries.androidx.vectorDrawable
     implementation libraries.koin

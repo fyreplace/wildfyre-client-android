@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="post_entry_text_size">20sp</dimen>
+    <dimen name="post_button_size">40dp</dimen>
+    <dimen name="post_button_text_size">16sp</dimen>
+    <dimen name="comments_header_height">32dp</dimen>
+    <dimen name="comments_header_height_inverse">-32dp</dimen>
+    <dimen name="comments_button_translation">32dp</dimen>
+    <dimen name="comment_author_picture_size">48dp</dimen>
+    <dimen name="comment_author_picture_rounding">5dp</dimen>
+</resources>

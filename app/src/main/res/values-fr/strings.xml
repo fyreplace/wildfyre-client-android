@@ -26,7 +26,6 @@
     <string name="main_author_anonymous">Anonyme</string>
     <string name="area_selecting_action_area_spread">Propagation</string>
     <string name="area_selecting_action_area_reputation">Réputation</string>
-    <string name="deletion_action_delete">Supprimer</string>
     <string name="login_username">Nom d\'utilisateur</string>
     <string name="login_password">Mot de passe</string>
     <string name="login_login">Connexion</string>
@@ -43,30 +42,6 @@
     <string name="drafts_action_create">Créer</string>
     <string name="drafts_empty">Aucun brouillon dans cette zone</string>
     <string name="drafts_created_text">Écris ton post ici</string>
-    <string name="post_action_subscribe">S\'inscrire</string>
-    <string name="post_action_unsubscribe">Se désinscrire</string>
-    <string name="post_action_share_title">Partager ce post</string>
-    <string name="post_action_delete_dialog_title">Supprimer ce post ? Cette action est irréversible</string>
-    <string name="post_extinguish">Éteindre</string>
-    <string name="post_ignite">Enflammer</string>
-    <string name="post_comments_empty">Aucun commentaire</string>
-    <plurals name="post_comment_count">
-        <item quantity="one">%1$d commentaire</item>
-        <item quantity="other">%1$d commentaires</item>
-    </plurals>
-    <string name="post_comment_author">Auteur</string>
-    <string name="post_comment_new_comment">Ajouter un commentaire</string>
-    <string name="post_comment_attach_file_dialog_title">Joindre…</string>
-    <string name="post_comment_attach_file_dialog_negative">Photo</string>
-    <string name="post_comment_attach_file_dialog_positive">Fichier</string>
-    <string name="post_comment_attach_file_dialog_neutral">Rien</string>
-    <string name="post_comment_menu_copy">Copier</string>
-    <string name="post_comment_menu_share">Partager</string>
-    <string name="post_comment_menu_delete">Supprimer</string>
-    <string name="post_comment_copy_label">Commentaire</string>
-    <string name="post_comment_copy_toast">Commentaire copié dans le presse-papier</string>
-    <string name="post_comment_share_title">Partager ce commentaire</string>
-    <string name="post_comment_delete_dialog_title">Supprimer ce commentaire ? Cette action est irréversible</string>
     <string name="home_empty">Plus de posts dans cette zone</string>
     <string name="draft_action_preview">Prévisualiser</string>
     <string name="draft_action_publish">Publier</string>
@@ -105,9 +80,4 @@
     <string name="draft_hint_toast">Brouillon créé dans la zone actuelle (%1$s)</string>
     <string name="image_desc_profile_editor_change_image">Choisir une image</string>
     <string name="image_desc_profile_editor_change_photo">Prendre une photo</string>
-    <string name="image_desc_author_picture">Image de l\'auteur</string>
-    <string name="image_desc_comment_picture">Image du commentaire</string>
-    <string name="image_desc_comments_toggle">Afficher les commentaires</string>
-    <string name="image_desc_comments_send_comment">Envoyer le commentaire</string>
-    <string name="image_desc_comments_attach_file">Joindre un fichier</string>
 </resources>

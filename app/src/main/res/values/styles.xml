@@ -54,18 +54,4 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
-    <style name="AppTheme.Button.HighlightButtonOverlay" parent="ThemeOverlay.MaterialComponents">
-        <item name="colorControlHighlight">@color/colorPrimary</item>
-    </style>
-
-    <style name="AppTheme.ExtinguishButtonOverlay" parent="ThemeOverlay.MaterialComponents">
-        <item name="android:textColor">@drawable/button_text_extinguish</item>
-        <item name="colorControlHighlight">@color/extinguish</item>
-    </style>
-
-    <style name="AppTheme.IgniteButtonOverlay" parent="ThemeOverlay.MaterialComponents">
-        <item name="android:textColor">@drawable/button_text_ignite</item>
-        <item name="colorControlHighlight">@color/ignite</item>
-    </style>
-
 </resources>

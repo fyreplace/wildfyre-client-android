@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.ExtinguishButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="android:textColor">@drawable/button_text_extinguish</item>
+        <item name="colorControlHighlight">@color/extinguish</item>
+    </style>
+
+    <style name="AppTheme.IgniteButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="android:textColor">@drawable/button_text_ignite</item>
+        <item name="colorControlHighlight">@color/ignite</item>
+    </style>
+
+</resources>

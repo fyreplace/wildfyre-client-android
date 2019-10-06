@@ -12,14 +12,13 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.text.set
 import androidx.core.text.toSpanned
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.AppGlide
-import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentUser
-import app.fyreplace.client.app.R
+import app.fyreplace.client.app.post.R
 import app.fyreplace.client.data.models.Comment
+import app.fyreplace.client.ui.fragments.FailureHandlingFragment
+import app.fyreplace.client.ui.fragments.UserFragment
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -29,8 +28,10 @@ import ru.noties.markwon.Markwon
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
-class CommentsAdapter(private val fragment: Fragment, private val markdown: Markwon) :
-    RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
+class CommentsAdapter(
+    private val fragment: FailureHandlingFragment,
+    private val markdown: Markwon
+) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     private var data: List<CommentWrapper> = listOf()
     private val recyclers: MutableList<RecyclerView> = mutableListOf()
     private var onCommentsChangedAction: (suspend () -> Unit)? = null
@@ -87,7 +88,7 @@ class CommentsAdapter(private val fragment: Fragment, private val markdown: Mark
                 .into(holder.authorPicture)
 
             holder.authorPicture.setOnClickListener {
-                fragment.findNavController().navigate(actionGlobalFragmentUser(author = author))
+                fragment.navigate(UserFragment.navigationUri(author.user))
             }
         }
 

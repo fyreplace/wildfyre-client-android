@@ -31,11 +31,11 @@ class MainActivityViewModel(
     private val mPostInfo = MutableLiveData<PostInfo?>()
     private val mAllowDraftCreation = MutableLiveData<Boolean>()
 
+    override val userId: LiveData<Long> = mSelf.map { it?.user ?: -1 }
     val uiRefreshTick: LiveData<Unit> = mUiRefreshTick
     var startupLogin = true
         private set
     val isLogged: LiveData<Boolean> = mIsLogged
-    val userId: LiveData<Long> = mSelf.map { it?.user ?: -1 }
     val userName: LiveData<String> = mSelf.map { it?.name.orEmpty() }
     val userBio: LiveData<String> = mSelf.map { it?.bio.orEmpty() }
     val userAvatar: LiveData<String> = mSelf.map { it?.avatar.orEmpty() }
@@ -64,6 +64,9 @@ class MainActivityViewModel(
     }
 
     override fun forceNotificationCount(count: Int) = mNotificationCount.postValue(count)
+
+    override fun setPost(post: Post?) =
+        mPostInfo.postValue(post?.let { PostInfo(it.author, DATE_FORMAT.format(it.created)) })
 
     fun getTheme(which: Int) = THEMES.getOrElse(which) { SettingsRepository.Themes.AUTOMATIC }
 
@@ -107,9 +110,6 @@ class MainActivityViewModel(
     fun resetPendingProfileAvatar() = mNewUserAvatar.postValue(null)
 
     fun setNotificationBadgeVisible(visible: Boolean) = mNotificationBadgeVisible.postValue(visible)
-
-    fun setPost(post: Post?) =
-        mPostInfo.postValue(post?.let { PostInfo(it.author, DATE_FORMAT.format(it.created)) })
 
     fun setAllowDraftCreation(allow: Boolean) = mAllowDraftCreation.postValue(allow)
 

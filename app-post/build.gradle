@@ -23,22 +23,19 @@ android {
 }
 
 dependencies {
-    api libraries.glide
-    api libraries.markwon
-    api libraries.markwonExtStrikethrough
-    api libraries.material
-    api libraries.androidx.recyclerView
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':app-user')
+    implementation project(':lib')
     implementation project(':lib-wildfyre')
-    implementation libraries.androidx.appCompat
+    implementation libraries.androidx.constraintLayout
     implementation libraries.androidx.coreKtx
-    implementation libraries.androidx.documentFile
+    implementation libraries.androidx.dynamicAnimation
     implementation libraries.androidx.lifecycleLiveDataKtx
     implementation libraries.androidx.lifecycleRuntimeKtx
-    implementation libraries.glideOkHttp
+    implementation libraries.androidx.lifecycleViewModelKtx
+    implementation libraries.androidx.navigationFragmentKtx
     implementation libraries.koinAndroidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinxCoroutines
-    implementation libraries.markwonImageOkHttp
-    kapt processors.glide
+    implementation libraries.markwonRecycler
 }

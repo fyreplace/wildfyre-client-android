@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="post_action_subscribe">Subscribe</string>
+    <string name="post_action_unsubscribe">Unsubscribe</string>
+    <string name="post_action_share_title">Share post</string>
+    <string name="post_action_delete_dialog_title">Delete this post? This action cannot be undone</string>
+    <string name="post_extinguish">Extinguish</string>
+    <string name="post_ignite">Ignite</string>
+    <string name="post_comments_empty">No comments</string>
+    <plurals name="post_comment_count">
+        <item quantity="one">%1$d comment</item>
+        <item quantity="other">%1$d comments</item>
+    </plurals>
+    <string name="post_comment_author">Author</string>
+    <string name="post_comment_new_comment">Add a comment</string>
+    <string name="post_comment_attach_file_dialog_title">Attach…</string>
+    <string name="post_comment_attach_file_dialog_negative">Photo</string>
+    <string name="post_comment_attach_file_dialog_positive">File</string>
+    <string name="post_comment_attach_file_dialog_neutral">Nothing</string>
+    <string name="post_comment_menu_copy">Copy</string>
+    <string name="post_comment_menu_share">Share</string>
+    <string name="post_comment_menu_delete">Delete</string>
+    <string name="post_comment_copy_label">Comment</string>
+    <string name="post_comment_copy_toast">Comment copied to clipboard</string>
+    <string name="post_comment_share_title">Share this comment</string>
+    <string name="post_comment_delete_dialog_title">Delete this comment? This action cannot be undone</string>
+    <string name="image_desc_author_picture">Author picture</string>
+    <string name="image_desc_comment_picture">Comment picture</string>
+    <string name="image_desc_comments_toggle">Toggle comments</string>
+    <string name="image_desc_comments_send_comment">Send comment</string>
+    <string name="image_desc_comments_attach_file">Attach a file</string>
+</resources>

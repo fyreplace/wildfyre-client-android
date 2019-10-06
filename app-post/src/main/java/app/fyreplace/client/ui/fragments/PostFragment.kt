@@ -20,26 +20,28 @@ import androidx.dynamicanimation.animation.SpringForce
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.app.R
-import app.fyreplace.client.app.databinding.FragmentPostBinding
+import app.fyreplace.client.app.post.R
+import app.fyreplace.client.app.post.databinding.FragmentPostBinding
 import app.fyreplace.client.data.models.Comment
 import app.fyreplace.client.data.models.ImageData
+import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.*
 import app.fyreplace.client.ui.adapters.CommentsAdapter
 import app.fyreplace.client.ui.drawables.BottomSheetArrowDrawableWrapper
 import app.fyreplace.client.ui.widgets.CommentSheetBehavior
-import app.fyreplace.client.viewmodels.MainActivityViewModel
+import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.PostFragmentViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.noties.markwon.recycler.MarkwonAdapter
 import kotlin.math.max
 
@@ -51,16 +53,10 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     protected val cbd by lazy {
         bd.collapsibleComments ?: bd.staticComments ?: throw IllegalStateException()
     }
-    private val mainViewModel by sharedViewModel<MainActivityViewModel>()
-    private val fragmentArgs by navArgs<PostFragmentArgs>()
+    private val centralViewModel by sharedViewModel<CentralViewModel>()
+    private val fragmentArgs by inject<Args> { parametersOf(this) }
     private val markdown by lazyMarkdown()
-    private val highlightedCommentIds by lazy {
-        if (canUseFragmentArgs())
-            fragmentArgs.newCommentsIds?.asList()
-                ?: (if (fragmentArgs.selectedCommentId >= 0) listOf(fragmentArgs.selectedCommentId) else null)
-        else
-            null
-    }
+    private val highlightedCommentIds by lazy { if (canUseFragmentArgs()) fragmentArgs.newCommentsIds else null }
     private var commentsSheetCallback: CommentsSheetCallback<View>? = null
 
     override fun onCreateView(
@@ -95,8 +91,10 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
             viewModel.setIsOwnPost(fragmentArgs.ownPost)
         }
 
-        mainViewModel.userId.observe(viewLifecycleOwner) { commentsAdapter.selfId = it }
-        viewModel.post.observe(viewLifecycleOwner) { mainViewModel.setPost(it) }
+        centralViewModel.userId.observe(viewLifecycleOwner) { commentsAdapter.selfId = it }
+        viewModel.post.observe(viewLifecycleOwner) {
+            centralViewModel.setPost(it)
+        }
         viewModel.contentLoaded.observe(viewLifecycleOwner) { cbd.commentNew.isEnabled = it }
         viewModel.authorId.observe(viewLifecycleOwner) { commentsAdapter.authorId = it }
         viewModel.markdownContent.observe(viewLifecycleOwner) {
@@ -233,7 +231,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         val deleteItem = menu.findItem(R.id.action_delete)
         viewModel.isOwnPost.observe(viewLifecycleOwner) { deleteItem.isVisible = it }
         viewModel.authorId.observe(viewLifecycleOwner) {
-            deleteItem.isVisible = it == mainViewModel.userId.value
+            deleteItem.isVisible = it == centralViewModel.userId.value
         }
 
         val postMenuItems = listOf(R.id.action_subscribe, R.id.action_share, R.id.action_delete)
@@ -275,7 +273,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         menu.findItem(R.id.action_copy).setOnMenuItemClickListener { copyComment(comment); true }
         menu.findItem(R.id.action_share).setOnMenuItemClickListener { shareComment(comment); true }
         menu.findItem(R.id.action_delete).run {
-            isVisible = comment.author?.user == mainViewModel.userId.value
+            isVisible = comment.author?.user == centralViewModel.userId.value
             setOnMenuItemClickListener { deleteComment(position, comment); true }
         }
     }
@@ -374,6 +372,14 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
         val BUTTON_ANIM_SPRING: SpringForce = SpringForce()
             .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
+    }
+
+    interface Args {
+        val post: Post?
+        val areaName: String?
+        val postId: Long
+        val ownPost: Boolean
+        val newCommentsIds: List<Long>?
     }
 
     private inner class CommentsScrollListener : RecyclerView.OnScrollListener() {

@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.app.R
+import app.fyreplace.client.lib.R
 import kotlinx.coroutines.*
 import ru.noties.markwon.image.AsyncDrawableScheduler
 import kotlin.coroutines.CoroutineContext

@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="backgroundSplash">@color/colorAccent</color>
-    <color name="backgroundHighlight">#3FE64A19</color>
     <color name="navigation">@android:color/black</color>
     <color name="loginLogo">@color/colorAccent</color>
     <color name="badgeBackground">#FFFF00</color>
-    <color name="extinguish">#0091EA</color>
-    <color name="ignite">#FF6D00</color>
 </resources>

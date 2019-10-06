@@ -34,7 +34,6 @@
     <string name="main_author_anonymous">Anonymous</string>
     <string name="area_selecting_action_area_spread">Spread</string>
     <string name="area_selecting_action_area_reputation">Reputation</string>
-    <string name="deletion_action_delete">Delete</string>
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_login">Login</string>
@@ -52,30 +51,6 @@
     <string name="drafts_action_create">Create</string>
     <string name="drafts_empty">No drafts in this area</string>
     <string name="drafts_created_text">Write your post here</string>
-    <string name="post_action_subscribe">Subscribe</string>
-    <string name="post_action_unsubscribe">Unsubscribe</string>
-    <string name="post_action_share_title">Share post</string>
-    <string name="post_action_delete_dialog_title">Delete this post? This action cannot be undone</string>
-    <string name="post_extinguish">Extinguish</string>
-    <string name="post_ignite">Ignite</string>
-    <string name="post_comments_empty">No comments</string>
-    <plurals name="post_comment_count">
-        <item quantity="one">%1$d comment</item>
-        <item quantity="other">%1$d comments</item>
-    </plurals>
-    <string name="post_comment_author">Author</string>
-    <string name="post_comment_new_comment">Add a comment</string>
-    <string name="post_comment_attach_file_dialog_title">Attach…</string>
-    <string name="post_comment_attach_file_dialog_negative">Photo</string>
-    <string name="post_comment_attach_file_dialog_positive">File</string>
-    <string name="post_comment_attach_file_dialog_neutral">Nothing</string>
-    <string name="post_comment_menu_copy">Copy</string>
-    <string name="post_comment_menu_share">Share</string>
-    <string name="post_comment_menu_delete">Delete</string>
-    <string name="post_comment_copy_label">Comment</string>
-    <string name="post_comment_copy_toast">Comment copied to clipboard</string>
-    <string name="post_comment_share_title">Share this comment</string>
-    <string name="post_comment_delete_dialog_title">Delete this comment? This action cannot be undone</string>
     <string name="home_empty">No posts left in this area</string>
     <string name="draft_action_preview">Preview</string>
     <string name="draft_action_publish">Publish</string>
@@ -114,11 +89,6 @@
     <string name="draft_hint_toast">Draft created in current area (%1$s)</string>
     <string name="image_desc_profile_editor_change_image">Select an image</string>
     <string name="image_desc_profile_editor_change_photo">Take a picture</string>
-    <string name="image_desc_author_picture">Author picture</string>
-    <string name="image_desc_comment_picture">Comment picture</string>
-    <string name="image_desc_comments_toggle">Toggle comments</string>
-    <string name="image_desc_comments_send_comment">Send comment</string>
-    <string name="image_desc_comments_attach_file">Attach a file</string>
     <string-array name="dependencies_names_base">
         <item>JetBrains - Kotlin - Apache 2.0</item>
         <item>JetBrains - KotlinX - Apache 2.0</item>
