@@ -32,8 +32,6 @@
     <string name="main_nav_wildfyre_privacy_link" translatable="false">https://wildfyre.net/pages/privacy-policy</string>
     <string name="main_profile_editor_bio">Profile bio</string>
     <string name="main_author_anonymous">Anonymous</string>
-    <string name="area_selecting_action_area_spread">Spread</string>
-    <string name="area_selecting_action_area_reputation">Reputation</string>
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="login_login">Login</string>
@@ -50,7 +48,6 @@
     <string name="own_posts_empty">No posts in this area</string>
     <string name="drafts_action_create">Create</string>
     <string name="drafts_empty">No drafts in this area</string>
-    <string name="home_empty">No posts left in this area</string>
     <string name="draft_action_preview">Preview</string>
     <string name="draft_action_publish">Publish</string>
     <string name="draft_action_publish_dialog_title">Publish as…</string>

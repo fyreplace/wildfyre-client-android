@@ -6,9 +6,9 @@ import android.view.*
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
-import app.fyreplace.client.app.R
-import app.fyreplace.client.app.databinding.ActionAreaSelectingAreaReputationBinding
-import app.fyreplace.client.app.databinding.ActionAreaSelectingAreaSpreadBinding
+import app.fyreplace.client.app.home.R
+import app.fyreplace.client.lib.databinding.ActionAreaSelectingAreaReputationBinding
+import app.fyreplace.client.lib.databinding.ActionAreaSelectingAreaSpreadBinding
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.HomeFragmentViewModel

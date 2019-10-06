@@ -24,8 +24,6 @@
     <string name="main_nav_wildfyre_privacy">Politique de confidentialité</string>
     <string name="main_profile_editor_bio">Bio de profil</string>
     <string name="main_author_anonymous">Anonyme</string>
-    <string name="area_selecting_action_area_spread">Propagation</string>
-    <string name="area_selecting_action_area_reputation">Réputation</string>
     <string name="login_username">Nom d\'utilisateur</string>
     <string name="login_password">Mot de passe</string>
     <string name="login_login">Connexion</string>
@@ -41,7 +39,6 @@
     <string name="own_posts_empty">Aucun post dans cette zone</string>
     <string name="drafts_action_create">Créer</string>
     <string name="drafts_empty">Aucun brouillon dans cette zone</string>
-    <string name="home_empty">Plus de posts dans cette zone</string>
     <string name="draft_action_preview">Prévisualiser</string>
     <string name="draft_action_publish">Publier</string>
     <string name="draft_action_publish_dialog_title">Publier en tant que…</string>

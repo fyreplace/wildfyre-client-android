@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion configuration.compileSdkVersion
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
+    }
+    defaultConfig {
+        minSdkVersion configuration.minSdkVersion
+        targetSdkVersion configuration.targetSdkVersion
+        consumerProguardFiles 'consumer-rules.pro'
+        vectorDrawables.useSupportLibrary = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':app-post')
+    implementation project(':lib')
+    implementation libraries.androidx.coreKtx
+    implementation libraries.androidx.lifecycleLiveDataKtx
+    implementation libraries.androidx.lifecycleViewModelKtx
+    implementation libraries.koinAndroidxViewModel
+    implementation libraries.kotlin
+    implementation libraries.kotlinxCoroutines
+}
