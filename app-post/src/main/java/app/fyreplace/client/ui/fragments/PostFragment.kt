@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.app.post.R
 import app.fyreplace.client.app.post.databinding.FragmentPostBinding
+import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.Comment
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.models.Post
@@ -55,6 +56,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     }
     private val centralViewModel by sharedViewModel<CentralViewModel>()
     private val fragmentArgs by inject<Args> { parametersOf(this) }
+    private val navigator by inject<Navigator> { parametersOf(this) }
     private val markdown by lazyMarkdown()
     private val highlightedCommentIds by lazy { if (canUseFragmentArgs()) fragmentArgs.newCommentsIds else null }
     private var commentsSheetCallback: CommentsSheetCallback<View>? = null
@@ -73,7 +75,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
-        val commentsAdapter = CommentsAdapter(this, markdown)
+        val commentsAdapter = CommentsAdapter(this, navigator, markdown)
 
         bd.content.adapter = markdownAdapter
         cbd.commentsList.setHasFixedSize(true)
@@ -380,6 +382,10 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         val postId: Long
         val ownPost: Boolean
         val newCommentsIds: List<Long>?
+    }
+
+    interface Navigator {
+        fun navigateToUser(author: Author)
     }
 
     private inner class CommentsScrollListener : RecyclerView.OnScrollListener() {

@@ -6,16 +6,16 @@ import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
-import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentPost
-import app.fyreplace.client.app.R
 import app.fyreplace.client.data.models.Notification
+import app.fyreplace.client.lib.notifications.R
 import app.fyreplace.client.lib.notifications.databinding.ActionNotificationsClearBinding
 import app.fyreplace.client.ui.adapters.NotificationsAdapter
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.NotificationsFragmentViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * [androidx.fragment.app.Fragment] listing the user's notifications.
@@ -25,6 +25,7 @@ class NotificationsFragment :
     override val viewModel by viewModel<NotificationsFragmentViewModel>()
     override val itemsAdapter by lazy { NotificationsAdapter(requireContext()) }
     private val centralViewModel by sharedViewModel<CentralViewModel>()
+    private val navigator by inject<Navigator> { parametersOf(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,12 +62,10 @@ class NotificationsFragment :
 
     override fun onItemClicked(item: Notification) {
         super.onItemClicked(item)
-        findNavController().navigate(
-            actionGlobalFragmentPost(
-                areaName = item.area,
-                postId = item.post.id,
-                newCommentsIds = item.comments.toLongArray()
-            )
-        )
+        navigator.navigateToPost(item.area, item.post.id, item.comments)
+    }
+
+    interface Navigator {
+        fun navigateToPost(areaName: String, postId: Long, newCommentsIds: List<Long>)
     }
 }

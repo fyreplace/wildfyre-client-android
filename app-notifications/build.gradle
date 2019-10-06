@@ -23,6 +23,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':app-post')
     implementation project(':lib')
     implementation project(':lib-items-list')
     implementation libraries.androidx.appCompat

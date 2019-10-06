@@ -1,6 +1,5 @@
 package app.fyreplace.client.ui.fragments
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.core.view.isVisible
@@ -78,12 +77,6 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
                 getString(R.string.user_action_share_title)
             )
         }
-    }
-
-    companion object {
-        fun navigationUri(userId: Long): Uri = Uri.parse(
-            globalContext.getString(R.string.navigation_deep_link_user, userId)
-        )
     }
 
     interface Args {

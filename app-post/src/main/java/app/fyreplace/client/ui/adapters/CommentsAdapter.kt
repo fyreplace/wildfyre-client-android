@@ -17,8 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.app.post.R
 import app.fyreplace.client.data.models.Comment
-import app.fyreplace.client.ui.fragments.FailureHandlingFragment
-import app.fyreplace.client.ui.fragments.UserFragment
+import app.fyreplace.client.ui.fragments.PostFragment
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -29,7 +28,8 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 class CommentsAdapter(
-    private val fragment: FailureHandlingFragment,
+    private val fragment: PostFragment,
+    private val navigator: PostFragment.Navigator,
     private val markdown: Markwon
 ) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     private var data: List<CommentWrapper> = listOf()
@@ -87,9 +87,7 @@ class CommentsAdapter(
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(holder.authorPicture)
 
-            holder.authorPicture.setOnClickListener {
-                fragment.navigate(UserFragment.navigationUri(author.user))
-            }
+            holder.authorPicture.setOnClickListener { navigator.navigateToUser(author) }
         }
 
         val markdownContent = StringBuilder()
