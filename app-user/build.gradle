@@ -24,7 +24,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib')
-    implementation project(':lib-wildfyre')
     implementation libraries.androidx.appCompat
     implementation libraries.androidx.coreKtx
     implementation libraries.androidx.lifecycleLiveDataKtx

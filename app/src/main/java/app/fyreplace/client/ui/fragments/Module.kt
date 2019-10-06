@@ -6,8 +6,8 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val fragmentArgsModule = module {
-    factory { parameters ->
-        val args = parameters.get<Fragment>(0).navArgs<PostFragmentArgs>().value
+    factory { (fragment: Fragment) ->
+        val args = fragment.navArgs<PostFragmentArgs>().value
         object : PostFragment.Args {
             override val post = args.post
             override val areaName = args.areaName
@@ -18,8 +18,8 @@ val fragmentArgsModule = module {
         }
     } bind PostFragment.Args::class
 
-    factory { parameters ->
-        val args = parameters.get<Fragment>(0).navArgs<UserFragmentArgs>().value
+    factory { (fragment: Fragment) ->
+        val args = fragment.navArgs<UserFragmentArgs>().value
         object : UserFragment.Args {
             override val author = args.author
             override val userId = args.userId

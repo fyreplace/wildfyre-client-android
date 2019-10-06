@@ -11,8 +11,8 @@ import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalF
 import app.fyreplace.client.app.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
+import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.DraftsFragmentViewModel
-import app.fyreplace.client.viewmodels.MainActivityViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,19 +22,19 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class DraftsFragment : PostsFragment<DraftsFragmentViewModel>(true) {
     override val viewModel by viewModel<DraftsFragmentViewModel>()
     override val itemsAdapter = PostsAdapter(false)
-    private val mainViewModel by sharedViewModel<MainActivityViewModel>()
+    private val centralViewModel by sharedViewModel<CentralViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = super.onCreateView(inflater, container, savedInstanceState).apply {
-        mainViewModel.setAllowDraftCreation(false)
+        centralViewModel.setAllowDraftCreation(false)
         bd.text.setText(R.string.drafts_empty)
     }
 
     override fun onDestroyView() = super.onDestroyView()
-        .also { mainViewModel.setAllowDraftCreation(true) }
+        .also { centralViewModel.setAllowDraftCreation(true) }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_fragment_drafts, menu)

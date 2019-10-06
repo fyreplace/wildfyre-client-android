@@ -10,6 +10,10 @@
         <variable
             name="model"
             type="app.fyreplace.client.viewmodels.MainActivityViewModel" />
+
+        <variable
+            name="centralModel"
+            type="app.fyreplace.client.viewmodels.CentralViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -42,10 +46,10 @@
                     android:clickable="false"
                     android:focusable="false"
                     android:gravity="center"
-                    android:text="@{model.notificationCountText}"
+                    android:text="@{centralModel.notificationCountText}"
                     android:textAppearance="?attr/textAppearanceCaption"
                     android:textColor="?attr/colorOnSurface"
-                    android:visibility="@{(safeUnbox(model.shouldShowNotificationBadge) &amp;&amp; safeUnbox(model.notificationBadgeVisible) &amp;&amp; safeUnbox(model.notificationCount) &gt; 0) ? View.VISIBLE : View.GONE}" />
+                    android:visibility="@{(safeUnbox(model.shouldShowNotificationBadge) &amp;&amp; safeUnbox(centralModel.notificationBadgeVisible) &amp;&amp; safeUnbox(centralModel.notificationCount) &gt; 0) ? View.VISIBLE : View.GONE}" />
             </FrameLayout>
         </com.google.android.material.appbar.AppBarLayout>
 

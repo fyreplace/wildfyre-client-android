@@ -13,8 +13,8 @@ import androidx.navigation.fragment.findNavController
 import app.fyreplace.client.app.R
 import app.fyreplace.client.app.databinding.FragmentLoginBinding
 import app.fyreplace.client.ui.hideSoftKeyboard
+import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.LoginFragmentViewModel
-import app.fyreplace.client.viewmodels.MainActivityViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import retrofit2.HttpException
@@ -25,13 +25,13 @@ import retrofit2.HttpException
 class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override val viewModel by viewModel<LoginFragmentViewModel>()
     override lateinit var bd: FragmentLoginBinding
-    private val mainViewModel by sharedViewModel<MainActivityViewModel>()
+    private val centralViewModel by sharedViewModel<CentralViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.authToken.observe(this) {
             if (it.isNotEmpty()) {
-                mainViewModel.login()
+                centralViewModel.login()
                 findNavController().navigate(LoginFragmentDirections.actionFragmentLoginToFragmentHome())
             }
         }

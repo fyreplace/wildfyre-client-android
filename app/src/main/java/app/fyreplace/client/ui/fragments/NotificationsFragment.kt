@@ -24,7 +24,7 @@ class NotificationsFragment :
     ItemsListFragment<Notification, NotificationsFragmentViewModel, NotificationsAdapter>() {
     override val viewModel by viewModel<NotificationsFragmentViewModel>()
     override val itemsAdapter by lazy { NotificationsAdapter(requireContext()) }
-    private val mainViewModel by sharedViewModel<CentralViewModel>()
+    private val centralViewModel by sharedViewModel<CentralViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +37,7 @@ class NotificationsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.itemsPagedList.observe(viewLifecycleOwner) {
-            mainViewModel.forceNotificationCount(it.size)
+            centralViewModel.forceNotificationCount(it.size)
         }
     }
 

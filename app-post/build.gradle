@@ -26,7 +26,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app-user')
     implementation project(':lib')
-    implementation project(':lib-wildfyre')
     implementation libraries.androidx.constraintLayout
     implementation libraries.androidx.coreKtx
     implementation libraries.androidx.dynamicAnimation

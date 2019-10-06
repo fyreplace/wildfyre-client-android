@@ -43,6 +43,7 @@ import app.fyreplace.client.ui.ImageSelector
 import app.fyreplace.client.ui.fragments.BackHandlingFragment
 import app.fyreplace.client.ui.fragments.FailureHandlingFragment
 import app.fyreplace.client.ui.fragments.ToolbarUsingFragment
+import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -61,6 +62,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
     override val viewModel by viewModel<MainActivityViewModel>()
     override val contextWrapper = this
     override lateinit var bd: ActivityMainBinding
+    private val centralViewModel by viewModel<CentralViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val toolbarChangeListener by lazy { OnToolbarChangeListener(bd.content.toolbar) }
     private var toolbarInset = 0
@@ -71,6 +73,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         bd = ActivityMainBinding.bind(findViewById(R.id.drawer_layout)).apply {
             lifecycleOwner = this@MainActivity
             content.model = viewModel
+            content.centralModel = centralViewModel
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -96,11 +99,11 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
 
         val navController = findNavController(R.id.navigation_host)
         val navHeaderBinding = MainNavHeaderBinding.bind(bd.navigationView.getHeaderView(0))
-            .apply { lifecycleOwner = this@MainActivity; model = viewModel }
+            .apply { lifecycleOwner = this@MainActivity; model = centralViewModel }
         ActionMainNavFragmentNotificationsBinding.bind(bd.navigationView.menu.findItem(R.id.fragment_notifications).actionView)
-            .run { lifecycleOwner = this@MainActivity; model = viewModel }
+            .run { lifecycleOwner = this@MainActivity; model = centralViewModel }
         ActionMainNavFragmentDraftsBinding.bind(bd.navigationView.menu.findItem(R.id.fragment_drafts).actionView)
-            .run { lifecycleOwner = this@MainActivity; model = viewModel }
+            .run { lifecycleOwner = this@MainActivity; model = centralViewModel }
         ActionMainNavSettingsThemeSelectorBinding.bind(bd.navigationView.menu.findItem(R.id.settings_theme_selector).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
         ActionMainNavSettingsBadgeToggleBinding.bind(bd.navigationView.menu.findItem(R.id.settings_badge_toggle).actionView)
@@ -119,12 +122,19 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
                 }
             }
 
-        viewModel.uiRefreshTick.observe(this) { launch { viewModel.updateNotificationCount() } }
+        viewModel.uiRefreshTick.observe(this) { launch { centralViewModel.updateNotificationCount() } }
 
-        viewModel.isLogged.observe(this) {
+        viewModel.selectedThemeIndex.observe(this) {
+            AppCompatDelegate.setDefaultNightMode(viewModel.getTheme(it))
+            delegate.applyDayNight()
+        }
+
+        centralViewModel.isLogged.observe(this) {
             if (it) {
-                launch { viewModel.updateProfileInfo() }
+                viewModel.login()
+                launch { centralViewModel.updateProfileInfo() }
             } else if (navController.currentDestination?.id != R.id.fragment_login) {
+                viewModel.logout()
                 navController.navigate(
                     if (viewModel.startupLogin)
                         actionGlobalFragmentLoginStartup()
@@ -134,12 +144,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             }
         }
 
-        viewModel.selectedThemeIndex.observe(this) {
-            AppCompatDelegate.setDefaultNightMode(viewModel.getTheme(it))
-            delegate.applyDayNight()
-        }
-
-        viewModel.userAvatar.observe(this) {
+        centralViewModel.userAvatar.observe(this) {
             AppGlide.with(this)
                 .load(it)
                 .transform(
@@ -153,7 +158,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         val hostFragment = supportFragmentManager
             .findFragmentById(R.id.navigation_host) as NavHostFragment
 
-        viewModel.postInfo.observe(this) { info ->
+        centralViewModel.postInfo.observe(this) { info ->
             if (hostFragment.navController.currentDestination?.id in NO_TITLE_DESTINATIONS) {
                 setTitleInfo(info)
             }
@@ -182,7 +187,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         }
 
         bd.navigationView.menu.findItem(R.id.fyreplace_logout).setOnMenuItemClickListener {
-            viewModel.logout()
+            centralViewModel.logout()
             return@setOnMenuItemClickListener true
         }
 
@@ -257,7 +262,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
                 DrawerArrowDrawable(this).apply { isSpinEnabled = true }
         }
 
-        viewModel.setNotificationBadgeVisible(
+        centralViewModel.setNotificationBadgeVisible(
             destination.id != R.id.fragment_notifications
                 && destination.id in TOP_LEVEL_DESTINATIONS
         )
@@ -292,14 +297,14 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
     override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
 
     override fun onDrawerOpened(drawerView: View) {
-        launch { viewModel.updateNotificationCount() }
+        launch { centralViewModel.updateNotificationCount() }
     }
 
     override fun onDrawerClosed(drawerView: View) = Unit
 
     override fun onDrawerStateChanged(newState: Int) = Unit
 
-    override fun onImage(image: ImageData) = viewModel.setPendingProfileAvatar(image)
+    override fun onImage(image: ImageData) = centralViewModel.setPendingProfileAvatar(image)
 
     fun onSelectAvatarImageClicked(view: View) {
         (view.tag as? String)?.toInt()?.let { selectImage(it) }
@@ -314,7 +319,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         )
     }
 
-    private fun setTitleInfo(info: MainActivityViewModel.PostInfo?) {
+    private fun setTitleInfo(info: CentralViewModel.PostInfo?) {
         if (currentFragmentAs<ToolbarUsingFragment>() == null) {
             return
         }
@@ -343,7 +348,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
 
         if (info.author != null) {
             AppGlide.with(this)
-                .load(info.author.avatar ?: R.drawable.default_avatar)
+                .load(info.author?.avatar ?: R.drawable.default_avatar)
                 .placeholder(android.R.color.transparent)
                 .transform(
                     CenterCrop(),
@@ -381,14 +386,14 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         dialog = AlertDialog.Builder(this)
             .setView(R.layout.main_profile_editor)
             .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
-                viewModel.newUserAvatar.removeObservers(this)
-                viewModel.resetPendingProfileAvatar()
+                centralViewModel.newUserAvatar.removeObservers(this)
+                centralViewModel.resetPendingProfileAvatar()
             }
             .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
-                viewModel.newUserAvatar.removeObservers(this)
+                centralViewModel.newUserAvatar.removeObservers(this)
                 launch {
                     val bio = dialog.findViewById<TextView>(R.id.user_bio)?.text ?: ""
-                    viewModel.sendProfile(bio.toString())
+                    centralViewModel.sendProfile(bio.toString())
                 }
             }
             .create()
@@ -402,12 +407,12 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         val imageTransition = DrawableTransitionOptions.withCrossFade()
 
         AppGlide.with(this)
-            .load(viewModel.userAvatar.value)
+            .load(centralViewModel.userAvatar.value)
             .transition(imageTransition)
             .transform(avatarTransform)
             .into(avatar)
 
-        viewModel.newUserAvatar.observe(this) {
+        centralViewModel.newUserAvatar.observe(this) {
             it?.run {
                 AppGlide.with(this@MainActivity)
                     .load(Drawable.createFromStream(ByteArrayInputStream(bytes), "avatar"))
@@ -417,7 +422,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             }
         }
 
-        viewModel.userBio.value?.let {
+        centralViewModel.userBio.value?.let {
             dialog.findViewById<EditText>(R.id.user_bio)?.run {
                 setText(it)
 

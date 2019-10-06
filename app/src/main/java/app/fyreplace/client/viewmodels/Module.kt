@@ -1,12 +1,11 @@
 package app.fyreplace.client.viewmodels
 
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val viewModelsModule = module {
-    viewModel { MainActivityViewModel(get(), get(), get(), get(), get()) } bind
-        CentralViewModel::class
+    viewModel { CentralViewModel(get(), get(), get()) }
+    viewModel { MainActivityViewModel(get(), get()) }
     viewModel { ArchiveFragmentViewModel(get(), get()) }
     viewModel { AreaSelectingFragmentViewModel(get()) }
     viewModel { DraftFragmentViewModel(get(), get()) }

@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient
 import org.koin.dsl.module
 
 val servicesModule = module {
-    single { TokenHandler(get()) }
+    single<TokenHandler> { SettingsTokenHandler(get()) }
 
     single {
         OkHttpClient.Builder()

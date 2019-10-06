@@ -10,8 +10,8 @@ import app.fyreplace.client.app.R
 import app.fyreplace.client.app.databinding.ActionAreaSelectingAreaReputationBinding
 import app.fyreplace.client.app.databinding.ActionAreaSelectingAreaSpreadBinding
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
+import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.HomeFragmentViewModel
-import app.fyreplace.client.viewmodels.MainActivityViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -62,14 +62,14 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         menu.findItem(R.id.action_area_selector)?.actionView
             ?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                 private val areaStuff = listOf(R.id.action_area_spread, R.id.action_area_reputation)
-                private val mainViewModel by sharedViewModel<MainActivityViewModel>()
+                private val centralViewModel by sharedViewModel<CentralViewModel>()
 
                 override fun onViewAttachedToWindow(v: View?) = switchItems(true)
 
                 override fun onViewDetachedFromWindow(v: View?) = switchItems(false)
 
                 private fun switchItems(showAreaStuff: Boolean) {
-                    mainViewModel.setNotificationBadgeVisible(!showAreaStuff)
+                    centralViewModel.setNotificationBadgeVisible(!showAreaStuff)
                     menu.forEach {
                         it.isVisible = it.itemId != R.id.action_delete
                             && areaStuff.contains(it.itemId) == showAreaStuff
