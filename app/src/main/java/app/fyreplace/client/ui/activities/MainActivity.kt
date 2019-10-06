@@ -494,9 +494,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
                 )
             },
             USER_REGEX to { result: MatchResult ->
-                actionGlobalFragmentUser(
-                    userId = result.groupValues[1].toLong()
-                )
+                actionGlobalFragmentUser(userId = result.groupValues[1].toLong())
             }
         )
     }

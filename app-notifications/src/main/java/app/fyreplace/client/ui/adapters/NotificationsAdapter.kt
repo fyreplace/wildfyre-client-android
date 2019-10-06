@@ -24,13 +24,11 @@ class NotificationsAdapter(private val context: Context) :
 
     override fun getItemId(position: Int) = getItem(position)?.post?.id ?: RecyclerView.NO_ID
 
-    companion object {
-        class NotificationCallback : DiffUtil.ItemCallback<Notification>() {
-            override fun areItemsTheSame(oldItem: Notification, newItem: Notification) =
-                oldItem.area == newItem.area && oldItem.post.id == newItem.post.id
+    class NotificationCallback : DiffUtil.ItemCallback<Notification>() {
+        override fun areItemsTheSame(oldItem: Notification, newItem: Notification) =
+            oldItem.area == newItem.area && oldItem.post.id == newItem.post.id
 
-            override fun areContentsTheSame(oldItem: Notification, newItem: Notification) =
-                oldItem.comments == newItem.comments
-        }
+        override fun areContentsTheSame(oldItem: Notification, newItem: Notification) =
+            oldItem.comments == newItem.comments
     }
 }
