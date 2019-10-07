@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_login">Login</string>
+    <string name="login_register">Register</string>
+    <string name="login_register_link" translatable="false">https://client.wildfyre.net/register</string>
+    <string name="login_error_field_required">This field is required</string>
+    <string name="login_failure_login">Login failed</string>
+</resources>

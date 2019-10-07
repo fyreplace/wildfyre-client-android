@@ -24,12 +24,6 @@
     <string name="main_nav_wildfyre_privacy">Politique de confidentialité</string>
     <string name="main_profile_editor_bio">Bio de profil</string>
     <string name="main_author_anonymous">Anonyme</string>
-    <string name="login_username">Nom d\'utilisateur</string>
-    <string name="login_password">Mot de passe</string>
-    <string name="login_login">Connexion</string>
-    <string name="login_register">S\'enregistrer</string>
-    <string name="login_error_field_required">Ce champ est obligatoire</string>
-    <string name="login_failure_login">La connexion a échoué</string>
     <string name="posts_action_delete_dialog_title">Supprimer ces éléments ? Cette action est irréversible</string>
     <plurals name="posts_action_mode_selection_title">
         <item quantity="one">%1$d élément sélectionné</item>

@@ -2,6 +2,5 @@
 <resources>
     <color name="backgroundSplash">@color/colorAccent</color>
     <color name="navigation">@android:color/black</color>
-    <color name="loginLogo">@color/colorAccent</color>
     <color name="badgeBackground">#FFFF00</color>
 </resources>

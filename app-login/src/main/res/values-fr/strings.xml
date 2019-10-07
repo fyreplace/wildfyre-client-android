@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_username">Nom d\'utilisateur</string>
+    <string name="login_password">Mot de passe</string>
+    <string name="login_login">Connexion</string>
+    <string name="login_register">S\'enregistrer</string>
+    <string name="login_error_field_required">Ce champ est obligatoire</string>
+    <string name="login_failure_login">La connexion a échoué</string>
+</resources>

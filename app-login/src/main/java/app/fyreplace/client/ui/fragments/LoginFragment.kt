@@ -9,14 +9,15 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
-import app.fyreplace.client.app.R
-import app.fyreplace.client.app.databinding.FragmentLoginBinding
+import app.fyreplace.client.app.login.R
+import app.fyreplace.client.app.login.databinding.FragmentLoginBinding
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.LoginFragmentViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import retrofit2.HttpException
 
 /**
@@ -26,13 +27,14 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override val viewModel by viewModel<LoginFragmentViewModel>()
     override lateinit var bd: FragmentLoginBinding
     private val centralViewModel by sharedViewModel<CentralViewModel>()
+    private val navigator by inject<Navigator> { parametersOf(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.authToken.observe(this) {
             if (it.isNotEmpty()) {
                 centralViewModel.login()
-                findNavController().navigate(LoginFragmentDirections.actionFragmentLoginToFragmentHome())
+                navigator.navigateToHome()
             }
         }
     }
@@ -109,5 +111,9 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
                 viewModel.setLoginAllowed(true)
             }
         }
+    }
+
+    interface Navigator {
+        fun navigateToHome()
     }
 }

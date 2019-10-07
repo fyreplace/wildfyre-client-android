@@ -1,6 +1,5 @@
 package app.fyreplace.client.ui.fragments
 
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import app.fyreplace.client.app.NavigationMainDirections
@@ -8,7 +7,16 @@ import app.fyreplace.client.data.models.Author
 import org.koin.dsl.module
 
 val fragmentsModule = module {
-    factory<NotificationsFragment.Navigator> { (fragment: Fragment) ->
+    factory<LoginFragment.Navigator> { (fragment: LoginFragment) ->
+        object : LoginFragment.Navigator {
+            override fun navigateToHome() {
+                fragment.findNavController()
+                    .navigate(LoginFragmentDirections.actionFragmentLoginToFragmentHome())
+            }
+        }
+    }
+
+    factory<NotificationsFragment.Navigator> { (fragment: NotificationsFragment) ->
         object : NotificationsFragment.Navigator {
             override fun navigateToPost(
                 areaName: String,
@@ -26,17 +34,16 @@ val fragmentsModule = module {
         }
     }
 
-    factory<PostFragment.Navigator> { (fragment: Fragment) ->
+    factory<PostFragment.Navigator> { (fragment: PostFragment) ->
         object : PostFragment.Navigator {
             override fun navigateToUser(author: Author) {
-                fragment.findNavController().navigate(
-                    NavigationMainDirections.actionGlobalFragmentUser(author = author)
-                )
+                fragment.findNavController()
+                    .navigate(NavigationMainDirections.actionGlobalFragmentUser(author = author))
             }
         }
     }
 
-    factory<PostFragment.Args> { (fragment: Fragment) ->
+    factory<PostFragment.Args> { (fragment: PostFragment) ->
         val args = fragment.navArgs<PostFragmentArgs>().value
         object : PostFragment.Args {
             override val post = args.post
@@ -48,7 +55,7 @@ val fragmentsModule = module {
         }
     }
 
-    factory<UserFragment.Args> { (fragment: Fragment) ->
+    factory<UserFragment.Args> { (fragment: UserFragment) ->
         val args = fragment.navArgs<UserFragmentArgs>().value
         object : UserFragment.Args {
             override val author = args.author

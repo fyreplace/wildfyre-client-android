@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin_nav_header_top">0dp</dimen>
-    <dimen name="login_form_width">-1px</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="nav_header_user_picture_size">80dp</dimen>
     <dimen name="nav_header_user_picture_rounding">8dp</dimen>
