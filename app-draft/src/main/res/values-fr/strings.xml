@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="draft_action_preview">Prévisualiser</string>
+    <string name="draft_action_publish">Publier</string>
+    <string name="draft_action_publish_dialog_title">Publier en tant que…</string>
+    <string name="draft_action_publish_dialog_negative">Anonyme</string>
+    <string name="draft_action_publish_dialog_positive">Moi-même</string>
+    <string name="draft_action_publish_toast">Post publié !</string>
+    <string name="draft_action_save">Sauvegarder</string>
+    <string name="draft_action_save_toast">Brouillon enregistré avec succès</string>
+    <string name="draft_action_save_empty_toast">Un post ne peut pas être vide</string>
+    <string name="draft_action_delete">Supprimer</string>
+    <string name="draft_action_delete_dialog_title">Supprimer ce brouillon ?</string>
+    <string name="draft_bottom_actions_selection_bold"><b>Gras</b></string>
+    <string name="draft_bottom_actions_selection_italic"><i>Italique</i></string>
+    <string name="draft_bottom_actions_selection_strikethrough"><strike>Barré</strike></string>
+    <string name="draft_bottom_actions_selection_code"><tt>Code</tt></string>
+    <string name="draft_bottom_actions_selection_link"><u><font color="#E64A19">Lien</font></u></string>
+    <string name="draft_bottom_actions_selection_link_dialog_title">Ajouter un lien</string>
+    <string name="draft_bottom_actions_title">Titre</string>
+    <string name="draft_bottom_actions_title_dialog_title">Niveau de titre</string>
+    <string name="draft_bottom_actions_list_bulleted">Liste à puces</string>
+    <string name="draft_bottom_actions_list_numbered">Liste numérotée</string>
+    <string name="draft_bottom_actions_main_image">Image principale</string>
+    <string name="draft_bottom_actions_main_image_dialog_title">Image principale :</string>
+    <string name="draft_bottom_actions_images">Images</string>
+    <string name="draft_bottom_actions_images_dialog_title">Images supplémentaires :</string>
+    <string name="draft_bottom_actions_images_dialog_file">Fichier</string>
+    <string name="draft_bottom_actions_images_dialog_photo">Photo</string>
+    <string name="draft_bottom_actions_images_dialog_remove">Retirer</string>
+    <string name="draft_bottom_actions_youtube">Vidéo Youtube</string>
+    <string name="draft_bottom_actions_youtube_dialog_title">Ajouter un lien YouTube</string>
+    <string name="draft_bottom_actions_youtube_toast">Ceci n\'est pas un lien YouTube</string>
+    <string name="draft_bottom_app_bar_title">Outils</string>
+    <string name="draft_back_dialog_title">Sauvegarder les changements ?</string>
+    <string name="draft_link_dialog_hint">Copier le lien ici</string>
+    <string name="draft_hint_toast">Brouillon créé dans la zone actuelle (%1$s)</string>
+</resources>

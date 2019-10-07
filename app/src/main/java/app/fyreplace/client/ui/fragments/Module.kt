@@ -43,6 +43,14 @@ val fragmentsModule = module {
         }
     }
 
+    factory<DraftFragment.Args> { (fragment: DraftFragment) ->
+        val args = fragment.navArgs<DraftFragmentArgs>().value
+        object : DraftFragment.Args {
+            override val draft = args.draft
+            override val showHint = args.showHint
+        }
+    }
+
     factory<PostFragment.Args> { (fragment: PostFragment) ->
         val args = fragment.navArgs<PostFragmentArgs>().value
         object : PostFragment.Args {

@@ -11,14 +11,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.app.R
-import app.fyreplace.client.app.databinding.FragmentDraftBinding
+import app.fyreplace.client.app.draft.R
+import app.fyreplace.client.app.draft.databinding.FragmentDraftBinding
 import app.fyreplace.client.data.models.ImageData
+import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.*
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.noties.markwon.recycler.MarkwonAdapter
 
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
@@ -26,7 +28,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     override val viewModel by viewModel<DraftFragmentViewModel>()
     override lateinit var bd: FragmentDraftBinding
     override val contextWrapper by lazy { requireActivity() }
-    private val fragmentArgs by navArgs<DraftFragmentArgs>()
+    private val fragmentArgs by inject<Args> { parametersOf(this) }
     private val markdown by lazyMarkdown()
     private val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
     private var allowDirtyingDraft = false
@@ -310,6 +312,11 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     private companion object {
         const val PREVIEW_DELAY = 1500L
+    }
+
+    interface Args {
+        val draft: Post
+        val showHint: Boolean
     }
 
     private inner class EditorWatcher : TextWatcher {

@@ -5,8 +5,4 @@
         <item>@string/main_nav_settings_theme_light</item>
         <item>@string/main_nav_settings_theme_dark</item>
     </string-array>
-    <string-array name="draft_image_sources">
-        <item>@string/draft_bottom_actions_images_dialog_file</item>
-        <item>@string/draft_bottom_actions_images_dialog_photo</item>
-    </string-array>
 </resources>

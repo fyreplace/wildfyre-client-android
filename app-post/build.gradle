@@ -36,5 +36,4 @@ dependencies {
     implementation libraries.koinAndroidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinxCoroutines
-    implementation libraries.markwonRecycler
 }

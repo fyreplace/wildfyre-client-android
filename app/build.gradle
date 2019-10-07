@@ -52,6 +52,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':app-draft')
     implementation project(':app-home')
     implementation project(':app-login')
     implementation project(':app-notifications')
@@ -78,10 +79,6 @@ dependencies {
     implementation libraries.koinAndroidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinxCoroutines
-    implementation libraries.markwon
-    implementation libraries.markwonExtStrikethrough
-    implementation libraries.markwonImageOkHttp
-    implementation libraries.markwonRecycler
     implementation libraries.retrofit
     vanillaImplementation libraries.androidx.multidex
     vanillaImplementation libraries.playServices

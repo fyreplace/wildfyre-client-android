@@ -23,7 +23,7 @@ class DraftRepository(
     suspend fun createDraft() = withContext(Dispatchers.IO) {
         wildFyre.postDraft(
             areas.preferredAreaName,
-            Draft(context.getString(R.string.drafts_created_text), false)
+            Draft(context.getString(R.string.draft_created_text), false)
         )
     }
 
