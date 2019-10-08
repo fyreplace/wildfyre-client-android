@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:theme="@style/AppTheme.NoActionBar"
-        tools:context=".ui.activities.MainActivity">
+        tools:context="app.fyreplace.client.ui.presenters.MainActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"

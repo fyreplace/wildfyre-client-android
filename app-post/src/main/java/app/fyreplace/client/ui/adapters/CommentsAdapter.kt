@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.app.post.R
 import app.fyreplace.client.data.models.Comment
-import app.fyreplace.client.ui.fragments.PostFragment
+import app.fyreplace.client.ui.presenters.PostFragment
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions

@@ -7,7 +7,7 @@ import app.fyreplace.client.data.models.Notification
 import app.fyreplace.client.lib.notifications.R
 
 /**
- * Adapter for displaying notifications in [app.fyreplace.client.ui.fragments.NotificationsFragment].
+ * Adapter for displaying notifications in [app.fyreplace.client.ui.presenters.NotificationsFragment].
  */
 class NotificationsAdapter(private val context: Context) :
     ItemsAdapter<Notification>(NotificationCallback(), true) {

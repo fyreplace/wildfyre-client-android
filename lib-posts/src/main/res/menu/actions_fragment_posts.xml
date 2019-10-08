@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragments.PostsFragment">
+    tools:context="app.fyreplace.client.ui.presenters.PostsFragment">
     <item
         android:id="@id/action_area_selector"
         android:title=""

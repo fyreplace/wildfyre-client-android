@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragments.NotificationsFragment">
+    tools:context="app.fyreplace.client.ui.presenters.NotificationsFragment">
     <item
         android:id="@+id/action_clear"
         android:title="@string/notifications_action_clear"

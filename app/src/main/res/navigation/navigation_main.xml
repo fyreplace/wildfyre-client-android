@@ -6,7 +6,7 @@
     app:startDestination="@id/fragment_home">
     <fragment
         android:id="@+id/fragment_login"
-        android:name="app.fyreplace.client.ui.fragments.LoginFragment"
+        android:name="app.fyreplace.client.ui.presenters.LoginFragment"
         android:label="@string/main_nav_fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -21,32 +21,32 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_home"
-        android:name="app.fyreplace.client.ui.fragments.HomeFragment"
+        android:name="app.fyreplace.client.ui.presenters.HomeFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_post" />
     <fragment
         android:id="@+id/fragment_notifications"
-        android:name="app.fyreplace.client.ui.fragments.NotificationsFragment"
+        android:name="app.fyreplace.client.ui.presenters.NotificationsFragment"
         android:label="@string/main_nav_fragment_notifications"
         tools:layout="@layout/fragment_items_list" />
     <fragment
         android:id="@+id/fragment_archive"
-        android:name="app.fyreplace.client.ui.fragments.ArchiveFragment"
+        android:name="app.fyreplace.client.ui.presenters.ArchiveFragment"
         android:label="@string/main_nav_fragment_archive"
         tools:layout="@layout/fragment_items_list" />
     <fragment
         android:id="@+id/fragment_own_posts"
-        android:name="app.fyreplace.client.ui.fragments.OwnPostsFragment"
+        android:name="app.fyreplace.client.ui.presenters.OwnPostsFragment"
         android:label="@string/main_nav_fragment_own_posts"
         tools:layout="@layout/fragment_items_list" />
     <fragment
         android:id="@+id/fragment_drafts"
-        android:name="app.fyreplace.client.ui.fragments.DraftsFragment"
+        android:name="app.fyreplace.client.ui.presenters.DraftsFragment"
         android:label="@string/main_nav_fragment_drafts"
         tools:layout="@layout/fragment_items_list" />
     <fragment
         android:id="@+id/fragment_post"
-        android:name="app.fyreplace.client.ui.fragments.PostFragment"
+        android:name="app.fyreplace.client.ui.presenters.PostFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_post">
         <argument
@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_draft"
-        android:name="app.fyreplace.client.ui.fragments.DraftFragment"
+        android:name="app.fyreplace.client.ui.presenters.DraftFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_draft">
         <argument
@@ -94,7 +94,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_user"
-        android:name="app.fyreplace.client.ui.fragments.UserFragment"
+        android:name="app.fyreplace.client.ui.presenters.UserFragment"
         android:label="@string/app_name">
         <argument
             android:name="author"

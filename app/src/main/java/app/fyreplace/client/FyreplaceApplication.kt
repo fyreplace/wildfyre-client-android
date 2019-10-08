@@ -6,7 +6,7 @@ import app.fyreplace.client.data.repositories.SettingsRepository
 import app.fyreplace.client.data.repositories.repositoriesModule
 import app.fyreplace.client.data.services.servicesModule
 import app.fyreplace.client.data.services.wildFyreServiceModule
-import app.fyreplace.client.ui.fragments.fragmentsModule
+import app.fyreplace.client.ui.presenters.fragmentsModule
 import app.fyreplace.client.viewmodels.viewModelsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

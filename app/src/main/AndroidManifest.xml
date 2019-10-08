@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="app.fyreplace.client.ui.activities.MainActivity"
+            android:name="app.fyreplace.client.ui.presenters.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.Launcher"

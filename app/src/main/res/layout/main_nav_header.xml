@@ -15,7 +15,7 @@
         android:layout_height="@dimen/nav_header_height"
         android:background="@drawable/nav_header_main_background"
         android:orientation="vertical"
-        tools:context=".ui.activities.MainActivity">
+        tools:context="app.fyreplace.client.ui.presenters.MainActivity">
 
         <ImageView
             android:id="@+id/user_picture"
