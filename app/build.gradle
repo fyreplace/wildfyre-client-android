@@ -54,6 +54,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app-archive')
     implementation project(':app-draft')
+    implementation project(':app-drafts')
     implementation project(':app-home')
     implementation project(':app-login')
     implementation project(':app-notifications')
@@ -61,8 +62,6 @@ dependencies {
     implementation project(':app-post')
     implementation project(':app-user')
     implementation project(':lib')
-    implementation project(':lib-items-list')
-    implementation project(':lib-posts')
     implementation libraries.androidx.appCompat
     implementation libraries.androidx.constraintLayout
     implementation libraries.androidx.coreKtx

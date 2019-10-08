@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="drafts_action_create">Create</string>
+    <string name="drafts_empty">No drafts in this area</string>
+</resources>

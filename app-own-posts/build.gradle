@@ -23,9 +23,9 @@ android {
 }
 
 dependencies {
+    api project(':lib-posts')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib')
-    implementation project(':lib-posts')
     implementation libraries.koinAndroidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinxCoroutines

@@ -7,7 +7,6 @@ import app.fyreplace.client.data.repositories.DraftRepository
 class DraftsDataSourceFactory(
     private val listener: DataLoadingListener,
     private val postRepository: DraftRepository
-) :
-    ItemsDataSourceFactory<Post>() {
+) : ItemsDataSourceFactory<Post>() {
     override fun newSource() = DraftsDataSource(listener, postRepository)
 }

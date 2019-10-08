@@ -1,6 +1,7 @@
 include ':app'
 include ':app-archive'
 include ':app-draft'
+include ':app-drafts'
 include ':app-home'
 include ':app-login'
 include ':app-notifications'

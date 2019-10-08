@@ -2,6 +2,7 @@ package app.fyreplace.client.ui.fragments
 
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentDraft
 import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentPost
 import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentUser
 import app.fyreplace.client.data.models.Author
@@ -44,6 +45,13 @@ val fragmentsModule = module {
         object : OwnPostsFragment.Navigator {
             override fun navigateToPost(post: Post) = fragment.findNavController()
                 .navigate(actionGlobalFragmentPost(post = post, ownPost = true))
+        }
+    }
+
+    factory<DraftsFragment.Navigator> { (fragment: DraftsFragment) ->
+        object : DraftsFragment.Navigator {
+            override fun navigateToDraft(draft: Post) = fragment.findNavController()
+                .navigate(actionGlobalFragmentDraft(draft = draft))
         }
     }
 
