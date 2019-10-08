@@ -17,7 +17,6 @@ android {
     defaultConfig {
         minSdkVersion configuration.minSdkVersion
         targetSdkVersion configuration.targetSdkVersion
-        consumerProguardFiles 'consumer-rules.pro'
         vectorDrawables.useSupportLibrary = true
     }
 }
