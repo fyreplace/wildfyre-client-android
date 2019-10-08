@@ -24,12 +24,12 @@ android {
 
 dependencies {
     api project(':lib-wildfyre')
+    api libraries.androidx.recyclerView
     api libraries.glide
     api libraries.markwon
     api libraries.markwonExtStrikethrough
     api libraries.markwonRecycler
     api libraries.material
-    api libraries.androidx.recyclerView
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation libraries.androidx.appCompat
     implementation libraries.androidx.coreKtx

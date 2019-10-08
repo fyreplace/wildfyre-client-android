@@ -3,13 +3,13 @@ package app.fyreplace.client.ui.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
-import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentPost
-import app.fyreplace.client.app.R
+import app.fyreplace.client.app.archive.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.ArchiveFragmentViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * [androidx.fragment.app.Fragment] listing the user's subscribed posts.
@@ -17,6 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>(false) {
     override val viewModel by viewModel<ArchiveFragmentViewModel>()
     override val itemsAdapter = PostsAdapter(true)
+    private val navigator by inject<Navigator> { parametersOf(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +28,10 @@ class ArchiveFragment : PostsFragment<ArchiveFragmentViewModel>(false) {
 
     override fun onItemClicked(item: Post) {
         super.onItemClicked(item)
-        findNavController().navigate(actionGlobalFragmentPost(post = item))
+        navigator.navigateToPost(item)
+    }
+
+    interface Navigator {
+        fun navigateToPost(post: Post)
     }
 }

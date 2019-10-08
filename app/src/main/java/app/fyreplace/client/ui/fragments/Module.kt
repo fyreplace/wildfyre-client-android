@@ -4,15 +4,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import app.fyreplace.client.app.NavigationMainDirections
 import app.fyreplace.client.data.models.Author
+import app.fyreplace.client.data.models.Post
 import org.koin.dsl.module
 
 val fragmentsModule = module {
     factory<LoginFragment.Navigator> { (fragment: LoginFragment) ->
         object : LoginFragment.Navigator {
-            override fun navigateToHome() {
-                fragment.findNavController()
-                    .navigate(LoginFragmentDirections.actionFragmentLoginToFragmentHome())
-            }
+            override fun navigateToHome() = fragment.findNavController()
+                .navigate(LoginFragmentDirections.actionFragmentLoginToFragmentHome())
         }
     }
 
@@ -22,24 +21,27 @@ val fragmentsModule = module {
                 areaName: String,
                 postId: Long,
                 newCommentsIds: List<Long>
-            ) {
-                fragment.findNavController().navigate(
-                    NavigationMainDirections.actionGlobalFragmentPost(
-                        areaName = areaName,
-                        postId = postId,
-                        newCommentsIds = newCommentsIds.toLongArray()
-                    )
+            ) = fragment.findNavController().navigate(
+                NavigationMainDirections.actionGlobalFragmentPost(
+                    areaName = areaName,
+                    postId = postId,
+                    newCommentsIds = newCommentsIds.toLongArray()
                 )
-            }
+            )
+        }
+    }
+
+    factory<ArchiveFragment.Navigator> { (fragment: ArchiveFragment) ->
+        object : ArchiveFragment.Navigator {
+            override fun navigateToPost(post: Post) = fragment.findNavController()
+                .navigate(NavigationMainDirections.actionGlobalFragmentPost(post = post))
         }
     }
 
     factory<PostFragment.Navigator> { (fragment: PostFragment) ->
         object : PostFragment.Navigator {
-            override fun navigateToUser(author: Author) {
-                fragment.findNavController()
-                    .navigate(NavigationMainDirections.actionGlobalFragmentUser(author = author))
-            }
+            override fun navigateToUser(author: Author) = fragment.findNavController()
+                .navigate(NavigationMainDirections.actionGlobalFragmentUser(author = author))
         }
     }
 

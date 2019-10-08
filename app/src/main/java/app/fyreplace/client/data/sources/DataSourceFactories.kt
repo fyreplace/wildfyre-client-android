@@ -5,14 +5,6 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.DraftRepository
 import app.fyreplace.client.data.repositories.PostRepository
 
-class ArchiveDataSourceFactory(
-    private val listener: DataLoadingListener,
-    private val postRepository: PostRepository
-) :
-    ItemsDataSourceFactory<Post>() {
-    override fun newSource() = ArchiveDataSource(listener, postRepository)
-}
-
 class OwnPostsDataSourceFactory(
     private val listener: DataLoadingListener,
     private val postRepository: PostRepository
