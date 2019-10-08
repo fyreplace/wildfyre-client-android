@@ -37,10 +37,7 @@ abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : Item
         bd.itemsList.adapter = itemsAdapter.apply {
             onItemsChangedListener = this@ItemsListFragment
             onItemClickedListener = this@ItemsListFragment
-            viewModel.itemsPagedList.observe(viewLifecycleOwner) {
-                submitList(it)
-                viewModel.setHasData(it.size > 0)
-            }
+            viewModel.itemsPagedList.observe(viewLifecycleOwner) { submitList(it) }
         }
 
         bd.refresher.setColorSchemeResources(R.color.colorPrimary)

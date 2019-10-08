@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.map
 import androidx.paging.Config
 import androidx.paging.DataSource
 import androidx.paging.PagedList
@@ -20,23 +20,14 @@ abstract class ItemsListFragmentViewModel<I>(context: Context) : ViewModel(), Da
     private var firstLoading = true
     private var mShouldRefresh = false
     private val mLoading = MutableLiveData<Boolean>()
-    private val mHasData = MutableLiveData<Boolean>()
 
     abstract val factory: ItemsDataSourceFactory<I>
     val dataSource: LiveData<DataSource<Int, I>> by lazy { factory.dataSource }
     val itemsPagedList: LiveData<PagedList<I>> by lazy {
-        val pageSize = context.resources
-            .getInteger(R.integer.post_preview_load_page_size)
-        return@lazy factory.toLiveData(
-            Config(
-                enablePlaceholders = true,
-                pageSize = pageSize,
-                initialLoadSizeHint = pageSize
-            )
-        )
+        factory.toLiveData(Config(context.resources.getInteger(R.integer.post_preview_load_page_size)))
     }
     val loading: LiveData<Boolean> = mLoading
-    val hasData: LiveData<Boolean> = mHasData.distinctUntilChanged()
+    val hasData: LiveData<Boolean> by lazy { itemsPagedList.map { it.size > 0 } }
 
     override fun onLoadingStart() {
         if (firstLoading) {
@@ -52,6 +43,4 @@ abstract class ItemsListFragmentViewModel<I>(context: Context) : ViewModel(), Da
     }
 
     fun popRefresh() = mShouldRefresh.also { mShouldRefresh = false }
-
-    fun setHasData(hasSome: Boolean) = mHasData.postValue(hasSome)
 }
