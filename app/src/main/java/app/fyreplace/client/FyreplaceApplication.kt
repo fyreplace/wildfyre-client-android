@@ -5,6 +5,7 @@ import app.fyreplace.client.app.R
 import app.fyreplace.client.data.repositories.SettingsRepository
 import app.fyreplace.client.data.repositories.repositoriesModule
 import app.fyreplace.client.data.services.servicesModule
+import app.fyreplace.client.data.services.wildFyreServiceModule
 import app.fyreplace.client.ui.fragments.fragmentsModule
 import app.fyreplace.client.viewmodels.viewModelsModule
 import org.koin.android.ext.koin.androidContext
@@ -19,11 +20,11 @@ class FyreplaceApplication : BaseApplication() {
             properties(mapOf("data.api.base_url" to getString(R.string.api_base_url)))
             modules(
                 applicationModule +
-                    libWildFyreModule +
-                    servicesModule +
-                    repositoriesModule +
+                    fragmentsModule +
                     viewModelsModule +
-                    fragmentsModule
+                    repositoriesModule +
+                    servicesModule +
+                    wildFyreServiceModule
             )
         }
 

@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.lib.posts.R
 import app.fyreplace.client.ui.adapters.PostsAdapter
-import app.fyreplace.client.ui.widgets.ItemIdKeyProvider
 import app.fyreplace.client.ui.widgets.PostDetailsLookup
+import app.fyreplace.client.ui.widgets.PostIdKeyProvider
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 import app.fyreplace.client.viewmodels.PostsFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -23,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * [androidx.fragment.app.Fragment] listing posts.
  */
 abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelection: Boolean) :
-    ItemsListFragment<Post, VM, PostsAdapter>(), AreaSelectingFragment, ActionMode.Callback {
+    ItemsListFragment<Post, VM, PostsAdapter>(), AreaSelectionFragment, ActionMode.Callback {
     private val areaSelectingViewModel by sharedViewModel<AreaSelectingFragmentViewModel>()
     private var settingUp = true
     private var selectionObserver: SelectionObserver? = null
@@ -49,7 +49,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelecti
             itemsAdapter.selectionTracker = SelectionTracker.Builder(
                 SELECTION_TRACKER_ID,
                 itemsList,
-                ItemIdKeyProvider(itemsList),
+                PostIdKeyProvider(itemsList),
                 PostDetailsLookup(itemsList),
                 StorageStrategy.createLongStorage()
             ).build().apply {
