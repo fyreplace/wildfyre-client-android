@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="posts_action_delete_dialog_title">Delete these items? This action cannot be undone</string>
+    <plurals name="posts_action_mode_selection_title">
+        <item quantity="one">%1$d item selected</item>
+        <item quantity="other">%1$d items selected</item>
+    </plurals>
+</resources>

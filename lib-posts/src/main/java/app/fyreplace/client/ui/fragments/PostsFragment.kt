@@ -10,8 +10,8 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.RecyclerView
-import app.fyreplace.client.app.R
 import app.fyreplace.client.data.models.Post
+import app.fyreplace.client.lib.posts.R
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.ui.widgets.ItemIdKeyProvider
 import app.fyreplace.client.ui.widgets.PostDetailsLookup

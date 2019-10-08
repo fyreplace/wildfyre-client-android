@@ -32,11 +32,6 @@
     <string name="main_nav_wildfyre_privacy_link" translatable="false">https://wildfyre.net/pages/privacy-policy</string>
     <string name="main_profile_editor_bio">Profile bio</string>
     <string name="main_author_anonymous">Anonymous</string>
-    <string name="posts_action_delete_dialog_title">Delete these items? This action cannot be undone</string>
-    <plurals name="posts_action_mode_selection_title">
-        <item quantity="one">%1$d item selected</item>
-        <item quantity="other">%1$d items selected</item>
-    </plurals>
     <string name="archive_empty">No archived posts from this area</string>
     <string name="own_posts_empty">No posts in this area</string>
     <string name="drafts_action_create">Create</string>

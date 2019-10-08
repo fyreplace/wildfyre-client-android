@@ -60,6 +60,7 @@ dependencies {
     implementation project(':app-user')
     implementation project(':lib')
     implementation project(':lib-items-list')
+    implementation project(':lib-posts')
     implementation libraries.androidx.appCompat
     implementation libraries.androidx.constraintLayout
     implementation libraries.androidx.coreKtx

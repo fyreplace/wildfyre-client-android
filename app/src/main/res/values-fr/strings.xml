@@ -24,11 +24,6 @@
     <string name="main_nav_wildfyre_privacy">Politique de confidentialité</string>
     <string name="main_profile_editor_bio">Bio de profil</string>
     <string name="main_author_anonymous">Anonyme</string>
-    <string name="posts_action_delete_dialog_title">Supprimer ces éléments ? Cette action est irréversible</string>
-    <plurals name="posts_action_mode_selection_title">
-        <item quantity="one">%1$d élément sélectionné</item>
-        <item quantity="other">%1$d éléments sélectionnés</item>
-    </plurals>
     <string name="archive_empty">Aucun post archivé dans cette zone</string>
     <string name="own_posts_empty">Aucun post dans cette zone</string>
     <string name="drafts_action_create">Créer</string>
