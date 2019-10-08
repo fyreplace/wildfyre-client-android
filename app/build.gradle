@@ -62,26 +62,15 @@ dependencies {
     implementation project(':app-post')
     implementation project(':app-user')
     implementation project(':lib')
-    implementation libraries.androidx.appCompat
     implementation libraries.androidx.constraintLayout
     implementation libraries.androidx.coreKtx
-    implementation libraries.androidx.fragmentKtx
-    implementation libraries.androidx.lifecycleCommon
-    implementation libraries.androidx.lifecycleExtensions
     implementation libraries.androidx.lifecycleLiveDataKtx
-    implementation libraries.androidx.lifecycleRuntimeKtx
     implementation libraries.androidx.lifecycleViewModelKtx
     implementation libraries.androidx.navigationFragmentKtx
     implementation libraries.androidx.navigationUiKtx
-    implementation libraries.androidx.paging
-    implementation libraries.androidx.swipeRefreshLayout
-    implementation libraries.androidx.vectorDrawable
-    implementation libraries.koin
-    implementation libraries.koinAndroidxScope
     implementation libraries.koinAndroidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinxCoroutines
-    implementation libraries.retrofit
     vanillaImplementation libraries.androidx.multidex
     vanillaImplementation libraries.playServices
 }

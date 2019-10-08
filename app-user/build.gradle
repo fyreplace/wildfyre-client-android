@@ -25,14 +25,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib')
-    implementation libraries.androidx.appCompat
     implementation libraries.androidx.coreKtx
     implementation libraries.androidx.lifecycleLiveDataKtx
-    implementation libraries.androidx.navigationFragmentKtx
-    implementation libraries.androidx.navigationUiKtx
     implementation libraries.koinAndroidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinxCoroutines
-    implementation libraries.material
-    implementation libraries.retrofit
 }

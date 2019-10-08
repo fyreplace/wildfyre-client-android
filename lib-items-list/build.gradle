@@ -28,7 +28,6 @@ dependencies {
     api libraries.androidx.recyclerViewSelection
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib')
-    implementation libraries.androidx.appCompat
     implementation libraries.androidx.constraintLayout
     implementation libraries.androidx.coreKtx
     implementation libraries.androidx.lifecycleLiveDataKtx
