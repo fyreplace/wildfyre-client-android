@@ -57,6 +57,7 @@ dependencies {
     implementation project(':app-home')
     implementation project(':app-login')
     implementation project(':app-notifications')
+    implementation project(':app-own-posts')
     implementation project(':app-post')
     implementation project(':app-user')
     implementation project(':lib')

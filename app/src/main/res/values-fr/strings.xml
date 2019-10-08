@@ -24,7 +24,6 @@
     <string name="main_nav_wildfyre_privacy">Politique de confidentialité</string>
     <string name="main_profile_editor_bio">Bio de profil</string>
     <string name="main_author_anonymous">Anonyme</string>
-    <string name="own_posts_empty">Aucun post dans cette zone</string>
     <string name="drafts_action_create">Créer</string>
     <string name="drafts_empty">Aucun brouillon dans cette zone</string>
     <string name="image_desc_profile_editor_change_image">Choisir une image</string>

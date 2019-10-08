@@ -32,7 +32,6 @@
     <string name="main_nav_wildfyre_privacy_link" translatable="false">https://wildfyre.net/pages/privacy-policy</string>
     <string name="main_profile_editor_bio">Profile bio</string>
     <string name="main_author_anonymous">Anonymous</string>
-    <string name="own_posts_empty">No posts in this area</string>
     <string name="drafts_action_create">Create</string>
     <string name="drafts_empty">No drafts in this area</string>
     <string name="image_desc_profile_editor_change_image">Select an image</string>
