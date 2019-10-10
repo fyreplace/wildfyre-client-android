@@ -25,7 +25,7 @@
             </aapt:attr>
         </path>
         <path
-            android:fillColor="#FFFFFF"
+            android:fillColor="@android:color/white"
             android:pathData="M350,750Q250,750 250,650L250,300A50,50 180,0 1,350 300L350,450A50,50 150,0 0,450 450L450,300A50,50 180,0 1,550 300L550,450A50,50 180,0 0,650 450L650,300A50,50 180,0 1,750 300L750,650Q750,750 650,750Z" />
     </group>
 </vector>

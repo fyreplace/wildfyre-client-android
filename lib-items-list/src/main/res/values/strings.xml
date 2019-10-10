@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="items_author_anonymous">Anonymous</string>
-    <string name="image_desc_author_picture">Author picture</string>
     <string name="image_desc_post_picture">Post picture</string>
 </resources>

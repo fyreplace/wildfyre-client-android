@@ -15,4 +15,5 @@
     <string name="area_selecting_action_area_reputation">Reputation</string>
     <string name="deletion_action_delete">Delete</string>
     <string name="sharing_action_share">Share</string>
+    <string name="image_desc_author_picture">Author picture</string>
 </resources>

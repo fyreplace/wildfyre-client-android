@@ -131,15 +131,15 @@
         app:popEnterAnim="@anim/slide_in_reverse"
         app:popExitAnim="@anim/slide_out_reverse" />
     <action
-        android:id="@+id/action_global_fragment_user"
-        app:destination="@id/fragment_user"
+        android:id="@+id/action_global_fragment_draft"
+        app:destination="@id/fragment_draft"
         app:enterAnim="@anim/slide_in"
         app:exitAnim="@anim/slide_out"
         app:popEnterAnim="@anim/slide_in_reverse"
         app:popExitAnim="@anim/slide_out_reverse" />
     <action
-        android:id="@+id/action_global_fragment_draft"
-        app:destination="@id/fragment_draft"
+        android:id="@+id/action_global_fragment_user"
+        app:destination="@id/fragment_user"
         app:enterAnim="@anim/slide_in"
         app:exitAnim="@anim/slide_out"
         app:popEnterAnim="@anim/slide_in_reverse"
