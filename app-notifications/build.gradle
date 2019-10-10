@@ -23,12 +23,11 @@ android {
 
 dependencies {
     api project(':lib-items-list')
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app-post')
     implementation project(':lib')
     implementation libraries.androidx.appCompat
-    implementation libraries.androidx.lifecycleLiveDataKtx
-    implementation libraries.koinAndroidxViewModel
+    implementation libraries.androidx.lifecycle.liveDataKtx
+    implementation libraries.koin.androidxViewModel
     implementation libraries.kotlin
-    implementation libraries.kotlinxCoroutines
+    implementation libraries.kotlinx.coroutines
 }

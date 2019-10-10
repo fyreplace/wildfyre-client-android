@@ -22,10 +22,9 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib')
-    implementation libraries.androidx.lifecycleLiveDataKtx
-    implementation libraries.androidx.lifecycleViewModelKtx
-    implementation libraries.koinAndroidxViewModel
+    implementation libraries.androidx.lifecycle.liveDataKtx
+    implementation libraries.androidx.lifecycle.viewModelKtx
+    implementation libraries.koin.androidxViewModel
     implementation libraries.kotlin
 }

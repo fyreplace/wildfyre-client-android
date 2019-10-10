@@ -22,13 +22,12 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':app-post')
     implementation project(':lib')
     implementation libraries.androidx.constraintLayout
-    implementation libraries.androidx.lifecycleViewModelKtx
-    implementation libraries.androidx.navigationFragmentKtx
-    implementation libraries.koinAndroidxViewModel
+    implementation libraries.androidx.lifecycle.viewModelKtx
+    implementation libraries.androidx.navigation.fragmentKtx
+    implementation libraries.koin.androidxViewModel
     implementation libraries.kotlin
-    implementation libraries.kotlinxCoroutines
+    implementation libraries.kotlinx.coroutines
 }
