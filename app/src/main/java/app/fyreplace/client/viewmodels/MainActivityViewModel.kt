@@ -32,6 +32,7 @@ class MainActivityViewModel(
     }
 
     fun login() {
+        startupLogin = false
         uiRefreshTickerJob = viewModelScope.launch {
             while (true) {
                 mUiRefreshTick.postValue(Unit)
@@ -41,7 +42,6 @@ class MainActivityViewModel(
     }
 
     fun logout() {
-        startupLogin = false
         uiRefreshTickerJob?.cancel()
     }
 

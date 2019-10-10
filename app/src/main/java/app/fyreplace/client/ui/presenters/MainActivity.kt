@@ -135,12 +135,11 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
                 viewModel.login()
                 launch { centralViewModel.updateProfileInfo() }
             } else if (navController.currentDestination?.id != R.id.fragment_login) {
-                viewModel.logout()
                 navController.navigate(
                     if (viewModel.startupLogin)
                         actionGlobalFragmentLoginStartup()
                     else
-                        actionGlobalFragmentLogin()
+                        actionGlobalFragmentLogin().also { viewModel.logout() }
                 )
             }
         }

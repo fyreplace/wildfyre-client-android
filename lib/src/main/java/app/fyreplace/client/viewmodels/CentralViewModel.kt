@@ -42,7 +42,7 @@ class CentralViewModel(
         if (authRepository.authToken.isNotEmpty()) {
             login()
         } else {
-            mIsLogged.value = false
+            logout()
         }
 
         setAllowDraftCreation(true)
