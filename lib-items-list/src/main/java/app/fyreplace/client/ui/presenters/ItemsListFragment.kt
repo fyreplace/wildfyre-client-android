@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.observe
+import app.fyreplace.client.data.models.Model
 import app.fyreplace.client.lib.items_list.R
 import app.fyreplace.client.lib.items_list.databinding.FragmentItemsListBinding
 import app.fyreplace.client.ui.adapters.EmptyItemsAdapter
@@ -14,7 +15,7 @@ import app.fyreplace.client.viewmodels.ItemsListFragmentViewModel
 /**
  * Base class for fragments displaying a list of items.
  */
-abstract class ItemsListFragment<I, VM : ItemsListFragmentViewModel<I>, A : ItemsAdapter<I>> :
+abstract class ItemsListFragment<I : Model, VM : ItemsListFragmentViewModel<I>, A : ItemsAdapter<I>> :
     FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemsChangedListener,
     ItemsAdapter.OnItemClickedListener<I> {
     abstract override val viewModel: VM

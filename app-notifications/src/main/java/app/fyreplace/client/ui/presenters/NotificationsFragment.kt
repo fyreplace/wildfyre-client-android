@@ -66,6 +66,6 @@ class NotificationsFragment :
     }
 
     interface Navigator {
-        fun navigateToPost(areaName: String, postId: Long, newCommentsIds: List<Long>)
+        fun navigateToPost(areaName: String, postId: Long, newCommentsIds: LongArray)
     }
 }

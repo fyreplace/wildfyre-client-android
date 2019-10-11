@@ -2,10 +2,11 @@ package app.fyreplace.client.data.sources
 
 import androidx.paging.PositionalDataSource
 import app.fyreplace.client.data.DataLoadingListener
+import app.fyreplace.client.data.models.Model
 import app.fyreplace.client.data.models.SuperItem
 import kotlinx.coroutines.*
 
-abstract class ItemsDataSource<I>(private val listener: DataLoadingListener) :
+abstract class ItemsDataSource<I : Model>(private val listener: DataLoadingListener) :
     PositionalDataSource<I>(), CoroutineScope by CoroutineScope(
     SupervisorJob() + Dispatchers.IO
 ) {

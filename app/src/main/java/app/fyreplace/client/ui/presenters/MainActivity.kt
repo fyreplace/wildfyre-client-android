@@ -212,12 +212,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-
-        if (intent == null) {
-            return
-        }
-
-        val uri = intent.data?.path.orEmpty()
+        val uri = intent?.data?.path.orEmpty()
 
         for (pair in REGEX_TO_DIRECTIONS) {
             pair.key.matchEntire(uri)?.let {

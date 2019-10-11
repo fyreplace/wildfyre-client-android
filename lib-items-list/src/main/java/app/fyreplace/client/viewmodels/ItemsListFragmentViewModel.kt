@@ -10,13 +10,15 @@ import androidx.paging.DataSource
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import app.fyreplace.client.data.DataLoadingListener
+import app.fyreplace.client.data.models.Model
 import app.fyreplace.client.data.sources.ItemsDataSourceFactory
 import app.fyreplace.client.lib.items_list.R
 
 /**
  * Interface for ViewModels containing a list of items.
  */
-abstract class ItemsListFragmentViewModel<I>(context: Context) : ViewModel(), DataLoadingListener {
+abstract class ItemsListFragmentViewModel<I : Model>(context: Context) : ViewModel(),
+    DataLoadingListener {
     private var firstLoading = true
     private var mShouldRefresh = false
     private val mLoading = MutableLiveData<Boolean>()

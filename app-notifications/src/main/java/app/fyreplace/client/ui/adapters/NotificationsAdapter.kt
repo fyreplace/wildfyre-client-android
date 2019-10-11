@@ -29,6 +29,6 @@ class NotificationsAdapter(private val context: Context) :
             oldItem.area == newItem.area && oldItem.post.id == newItem.post.id
 
         override fun areContentsTheSame(oldItem: Notification, newItem: Notification) =
-            oldItem.comments == newItem.comments
+            oldItem.comments.contentEquals(newItem.comments)
     }
 }

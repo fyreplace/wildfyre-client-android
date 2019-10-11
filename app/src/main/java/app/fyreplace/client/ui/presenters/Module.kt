@@ -23,12 +23,12 @@ val fragmentsModule = module {
             override fun navigateToPost(
                 areaName: String,
                 postId: Long,
-                newCommentsIds: List<Long>
+                newCommentsIds: LongArray
             ) = fragment.findNavController().navigate(
                 actionGlobalFragmentPost(
                     areaName = areaName,
                     postId = postId,
-                    newCommentsIds = newCommentsIds.toLongArray()
+                    newCommentsIds = newCommentsIds
                 )
             )
         }
