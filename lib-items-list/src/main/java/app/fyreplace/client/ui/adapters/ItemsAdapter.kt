@@ -122,6 +122,9 @@ abstract class ItemsAdapter<I>(
         }
     }
 
+    override fun onViewDetachedFromWindow(holder: ViewHolder) =
+        holder.itemView.setOnClickListener(null)
+
     override fun onCurrentListChanged(previousList: PagedList<I>?, currentList: PagedList<I>?) {
         onItemsChangedListener?.onItemsChanged()
     }
