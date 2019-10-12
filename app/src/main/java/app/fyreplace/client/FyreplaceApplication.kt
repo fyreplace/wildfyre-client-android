@@ -5,7 +5,6 @@ import app.fyreplace.client.app.R
 import app.fyreplace.client.data.repositories.SettingsRepository
 import app.fyreplace.client.data.repositories.repositoriesModule
 import app.fyreplace.client.data.services.servicesModule
-import app.fyreplace.client.data.services.wildFyreServiceModule
 import app.fyreplace.client.data.sources.sourcesModule
 import app.fyreplace.client.ui.presenters.fragmentsModule
 import app.fyreplace.client.viewmodels.viewModelsModule
@@ -25,8 +24,7 @@ class FyreplaceApplication : BaseApplication() {
                     viewModelsModule +
                     repositoriesModule +
                     sourcesModule +
-                    servicesModule +
-                    wildFyreServiceModule
+                    servicesModule
             )
         }
 
