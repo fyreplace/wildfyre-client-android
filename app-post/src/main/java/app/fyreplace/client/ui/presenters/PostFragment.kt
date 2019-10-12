@@ -161,13 +161,13 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         cbd.commentNew.setStartIconOnClickListener { requestImage() }
 
         bd.collapsibleComments?.let {
-            cbd.commentCount.setOnClickListener { toggleComments() }
+            it.commentCount.setOnClickListener { toggleComments() }
 
             val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED)
                 ?: (highlightedCommentIds != null)
             val behavior = CommentSheetBehavior.from(it.root)
 
-            commentsSheetCallback = CommentsSheetCallback(behavior, cbd.arrow, commentsExpanded)
+            commentsSheetCallback = CommentsSheetCallback(behavior, it.arrow, commentsExpanded)
                 .apply { behavior.addBottomSheetCallback(this) }
 
             if (commentsExpanded) {
