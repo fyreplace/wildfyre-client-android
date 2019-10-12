@@ -253,7 +253,10 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             )
             .setItems(items) { _, i ->
                 if (i == 2) {
-                    launch { viewModel.removeImage() }
+                    launch {
+                        viewModel.removeImage()
+                        updatePreview()
+                    }
                 } else {
                     selectImage(if (i == 0) requestImageFile else requestImagePhoto)
                 }
