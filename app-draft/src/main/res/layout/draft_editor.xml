@@ -2,33 +2,28 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:animateLayoutChanges="true"
+        android:fitsSystemWindows="true"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/coordinator"
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <com.google.android.material.bottomappbar.BottomAppBar
-                android:id="@+id/bottom_app_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:menu="@menu/bottom_actions_fragment_draft"
-                app:title="@string/draft_bottom_app_bar_title" />
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:layout_gravity="bottom"
+            app:menu="@menu/bottom_actions_fragment_draft"
+            app:title="@string/draft_bottom_app_bar_title" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_small"
-            app:layout_constraintBottom_toTopOf="@id/coordinator"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_behavior="app.fyreplace.client.ui.widgets.BottomAppBarAvoidingBehavior">
 
             <app.fyreplace.client.ui.widgets.MarkdownEditText
                 android:id="@+id/editor"
@@ -38,5 +33,5 @@
                 android:imeOptions="actionDone"
                 android:inputType="textMultiLine|textLongMessage" />
         </com.google.android.material.textfield.TextInputLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

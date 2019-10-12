@@ -62,6 +62,7 @@ dependencies {
     implementation project(':app-user')
     implementation project(':lib')
     implementation libraries.androidx.constraintLayout
+    implementation libraries.androidx.coordinatorLayout
     implementation libraries.androidx.coreKtx
     implementation libraries.androidx.lifecycle.liveDataKtx
     implementation libraries.androidx.lifecycle.viewModelKtx

@@ -28,6 +28,7 @@
     <string name="draft_bottom_actions_images_dialog_file">Fichier</string>
     <string name="draft_bottom_actions_images_dialog_photo">Photo</string>
     <string name="draft_bottom_actions_images_dialog_remove">Retirer</string>
+    <string name="draft_bottom_actions_images_snackbar">Envoi de l\'image…</string>
     <string name="draft_bottom_actions_youtube">Vidéo Youtube</string>
     <string name="draft_bottom_actions_youtube_dialog_title">Ajouter un lien YouTube</string>
     <string name="draft_bottom_actions_youtube_toast">Ceci n\'est pas un lien YouTube</string>

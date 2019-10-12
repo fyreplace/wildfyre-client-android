@@ -18,6 +18,9 @@ import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.*
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.isActive
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -194,7 +197,25 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     override fun onImage(image: ImageData) {
         launch {
+            val snackbar = Snackbar
+                .make(
+                    bd.editor.bottomAppBar,
+                    R.string.draft_bottom_actions_images_snackbar,
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                .setAction(R.string.cancel) { cancel() }
+                .setAnchorView(bd.editor.bottomAppBar)
+                .apply {
+                    animationMode = Snackbar.ANIMATION_MODE_SLIDE
+                    show()
+                }
+
             viewModel.addImage(image)
+            snackbar.dismiss()
+
+            if (!isActive) {
+                return@launch
+            }
 
             if (viewModel.nextImageSlot == -1) {
                 updatePreview()

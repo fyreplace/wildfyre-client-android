@@ -28,6 +28,7 @@
     <string name="draft_bottom_actions_images_dialog_file">File</string>
     <string name="draft_bottom_actions_images_dialog_photo">Photo</string>
     <string name="draft_bottom_actions_images_dialog_remove">Remove</string>
+    <string name="draft_bottom_actions_images_snackbar">Uploading image…</string>
     <string name="draft_bottom_actions_youtube">Youtube video</string>
     <string name="draft_bottom_actions_youtube_dialog_title">Add a YouTube link</string>
     <string name="draft_bottom_actions_youtube_toast">This is not a YouTube link</string>

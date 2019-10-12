@@ -24,7 +24,8 @@ android {
 dependencies {
     implementation project(':app-post')
     implementation project(':lib')
-    implementation libraries.androidx.constraintLayout
+    implementation libraries.androidx.coordinatorLayout
+    implementation libraries.androidx.coreKtx
     implementation libraries.androidx.lifecycle.viewModelKtx
     implementation libraries.androidx.navigation.fragmentKtx
     implementation libraries.koin.androidxViewModel
