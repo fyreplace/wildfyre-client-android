@@ -5,6 +5,8 @@ import app.fyreplace.client.app.R
 import org.koin.dsl.module
 
 val applicationModule = module {
+    single { get<Context>().resources }
+
     single {
         get<Context>().run {
             getSharedPreferences(

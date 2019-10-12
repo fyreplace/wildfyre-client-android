@@ -1,10 +1,13 @@
 package app.fyreplace.client.viewmodels
 
-import android.content.Context
+import android.content.res.Resources
 import app.fyreplace.client.data.repositories.PostRepository
 import app.fyreplace.client.data.sources.OwnPostsDataSourceFactory
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 
-class OwnPostsFragmentViewModel(context: Context, postRepository: PostRepository) :
-    PostsFragmentViewModel(context, postRepository) {
-    override val factory = OwnPostsDataSourceFactory(this, postRepository)
+class OwnPostsFragmentViewModel(resources: Resources, postRepository: PostRepository) :
+    PostsFragmentViewModel(resources, postRepository), KoinComponent {
+    override val factory by inject<OwnPostsDataSourceFactory> { parametersOf(this) }
 }

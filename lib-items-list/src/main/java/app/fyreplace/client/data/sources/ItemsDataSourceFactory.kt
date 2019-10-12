@@ -6,8 +6,7 @@ import androidx.paging.DataSource
 import app.fyreplace.client.data.models.Model
 
 abstract class ItemsDataSourceFactory<I : Model> : DataSource.Factory<Int, I>() {
-    private val mDataSource =
-        MutableLiveData<DataSource<Int, I>>()
+    private val mDataSource = MutableLiveData<DataSource<Int, I>>()
 
     val dataSource: LiveData<DataSource<Int, I>> = mDataSource
 

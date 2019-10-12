@@ -1,6 +1,6 @@
 package app.fyreplace.client.viewmodels
 
-import android.content.Context
+import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +17,7 @@ import app.fyreplace.client.lib.items_list.R
 /**
  * Interface for ViewModels containing a list of items.
  */
-abstract class ItemsListFragmentViewModel<I : Model>(context: Context) : ViewModel(),
+abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources) : ViewModel(),
     DataLoadingListener {
     private var firstLoading = true
     private var mShouldRefresh = false
@@ -26,7 +26,7 @@ abstract class ItemsListFragmentViewModel<I : Model>(context: Context) : ViewMod
     abstract val factory: ItemsDataSourceFactory<I>
     val dataSource: LiveData<DataSource<Int, I>> by lazy { factory.dataSource }
     val itemsPagedList: LiveData<PagedList<I>> by lazy {
-        factory.toLiveData(Config(context.resources.getInteger(R.integer.post_preview_load_page_size)))
+        factory.toLiveData(Config(resources.getInteger(R.integer.post_preview_load_page_size)))
     }
     val loading: LiveData<Boolean> = mLoading
     val hasData: LiveData<Boolean> by lazy { itemsPagedList.map { it.size > 0 } }
