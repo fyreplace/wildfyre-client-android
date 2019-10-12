@@ -91,12 +91,19 @@ interface ImageSelector : FailureHandler {
     private suspend fun useBytes(bytes: ByteArray, mimeType: String) {
         var compressedBytes = bytes
         var compressedMimeType = mimeType
+        val isTooBig = compressedBytes.size > IMAGE_MAX_FILE_SIZE
+        val isUnknownMime = mimeType !in listOf("image/jpeg", "image/png")
 
-        if (compressedBytes.size > IMAGE_MAX_FILE_SIZE) {
+        if (isTooBig || isUnknownMime) {
             val bitmap = BitmapFactory.decodeByteArray(compressedBytes, 0, compressedBytes.size)
             val os = ByteArrayOutputStream()
-            val correctSizeBitmap = downscaleBitmap(bitmap)
-            correctSizeBitmap.compress(CompressFormat.JPEG, 50, os)
+
+            if (isTooBig) {
+                downscaleBitmap(bitmap).compress(CompressFormat.JPEG, 50, os)
+            } else {
+                bitmap.compress(CompressFormat.JPEG, 100, os)
+            }
+
             compressedBytes = os.toByteArray()
             compressedMimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension("jpg")!!
         }
