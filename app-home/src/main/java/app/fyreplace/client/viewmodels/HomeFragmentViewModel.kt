@@ -32,6 +32,8 @@ class HomeFragmentViewModel(
         }
 
         if (areaName != null) {
+            setPost(null)
+            mHasContent.postValue(true)
             lastAreaName = areaName
             fetchJob?.cancel()
             postReserve.clear()
@@ -43,11 +45,8 @@ class HomeFragmentViewModel(
         }
 
         if (endOfPosts) {
+            setPost(null)
             return
-        }
-
-        if (hasContent.value != true) {
-            mHasContent.postValue(true)
         }
 
         setPost(postReserve.removeAt(0))
@@ -82,6 +81,7 @@ class HomeFragmentViewModel(
             mHasContent.postValue(false)
             endOfPosts = true
         } else if (coroutineContext.isActive) {
+            mHasContent.postValue(true)
             postReserve.addAll(superPost.results.filter { p -> p.id != postId && postReserve.find { it.id == p.id } == null })
         }
     }

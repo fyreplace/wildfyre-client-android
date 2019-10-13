@@ -30,7 +30,7 @@ open class PostFragmentViewModel(
     private val mNewCommentImage = MutableLiveData<ImageData?>()
     private val mCanSendNewComment = MediatorLiveData<Boolean>()
 
-    val hasContent: LiveData<Boolean> = mHasContent
+    val hasContent: LiveData<Boolean> = mHasContent.distinctUntilChanged()
     val post: LiveData<Post?> = mPost
     val isOwnPost: LiveData<Boolean> = mIsOwnPost
     val contentLoaded: LiveData<Boolean> = post.map { it != null }
