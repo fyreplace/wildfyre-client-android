@@ -25,7 +25,6 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
-            android:id="@+id/loader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{safeUnbox(model.contentLoaded) || !safeUnbox(model.hasContent) ? View.GONE : View.VISIBLE}"

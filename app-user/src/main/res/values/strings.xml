@@ -1,5 +1,4 @@
 <resources>
-    <string name="navigation_deep_link_user" translatable="false">https://client.wildfyre.net/user/%1$d</string>
     <string name="user_action_share_title">Share user profile</string>
     <string name="image_desc_user_picture">Profile picture</string>
 </resources>
