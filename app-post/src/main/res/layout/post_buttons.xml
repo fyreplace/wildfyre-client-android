@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="contentLoaded"
-            type="androidx.lifecycle.LiveData&lt;Boolean&gt;" />
+            name="model"
+            type="app.fyreplace.client.viewmodels.PostFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,8 +38,8 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/post_button_size"
             android:background="?attr/selectableItemBackground"
-            android:clickable="@{safeUnbox(contentLoaded)}"
-            android:enabled="@{safeUnbox(contentLoaded)}"
+            android:clickable="@{safeUnbox(model.contentLoaded) &amp;&amp; safeUnbox(model.allowSpread)}"
+            android:enabled="@{safeUnbox(model.contentLoaded) &amp;&amp; safeUnbox(model.allowSpread)}"
             android:gravity="center"
             android:text="@string/post_extinguish"
             android:textAppearance="?attr/textAppearanceButton"
@@ -54,8 +54,8 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/post_button_size"
             android:background="?attr/selectableItemBackground"
-            android:clickable="@{safeUnbox(contentLoaded)}"
-            android:enabled="@{safeUnbox(contentLoaded)}"
+            android:clickable="@{safeUnbox(model.contentLoaded) &amp;&amp; safeUnbox(model.allowSpread)}"
+            android:enabled="@{safeUnbox(model.contentLoaded) &amp;&amp; safeUnbox(model.allowSpread)}"
             android:gravity="center"
             android:text="@string/post_ignite"
             android:textAppearance="?attr/textAppearanceButton"

@@ -5,10 +5,7 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.AreaRepository
 import app.fyreplace.client.data.repositories.CommentRepository
 import app.fyreplace.client.data.repositories.PostRepository
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.coroutines.coroutineContext
 
 class HomeFragmentViewModel(
@@ -20,11 +17,6 @@ class HomeFragmentViewModel(
     private var fetchJob: Job? = null
     private var endOfPosts = false
     private var lastAreaName: String? = null
-    private var doSpread = true
-
-    init {
-        post.observeForever { doSpread = it != null }
-    }
 
     suspend fun nextPost(areaName: String? = null) {
         if (areaName == lastAreaName) {
@@ -50,6 +42,10 @@ class HomeFragmentViewModel(
         }
 
         setPost(postReserve.removeAt(0))
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(SPREAD_DELAY)
+            mAllowSpread.postValue(contentLoaded.value)
+        }
 
         if (postReserve.size <= RESERVE_SIZE / 2) {
             fetchJob = viewModelScope.launch { fetchPosts() }
@@ -57,12 +53,16 @@ class HomeFragmentViewModel(
     }
 
     suspend fun spread(spread: Boolean) {
-        if (doSpread) {
-            doSpread = false
-            delay(SPREAD_DELAY)
+        mAllowSpread.postValue(false)
+
+        try {
             postRepository.spread(postAreaName, postId, spread)
-            nextPost()
+        } catch (e: Exception) {
+            mAllowSpread.postValue(true)
+            throw e
         }
+
+        nextPost()
     }
 
     private suspend fun fillReserve() {
@@ -88,6 +88,6 @@ class HomeFragmentViewModel(
 
     private companion object {
         const val RESERVE_SIZE = 10
-        const val SPREAD_DELAY = 300L
+        const val SPREAD_DELAY = 1000L
     }
 }

@@ -67,8 +67,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:contentLoaded="@{model.contentLoaded}"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:model="@{model}" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include

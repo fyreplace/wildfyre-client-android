@@ -74,10 +74,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:contentLoaded="@{model.contentLoaded}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/vertical_center"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:model="@{model}" />
 
         <include
             android:id="@+id/static_comments"
