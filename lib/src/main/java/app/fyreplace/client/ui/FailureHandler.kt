@@ -19,9 +19,13 @@ interface FailureHandler : LifecycleOwner {
     fun getContext(): Context?
 
     fun onFailure(failure: Throwable) {
-        getContext()?.let {
-            Log.e(it.getString(R.string.app_name), failure.message.orEmpty())
-            Toast.makeText(it, failure.localizedMessage, Toast.LENGTH_LONG).show()
+        getContext()?.run {
+            Log.e(getString(R.string.app_name), failure.message.orEmpty())
+            Toast.makeText(
+                this,
+                getString(R.string.failure_toast, failure.localizedMessage),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
