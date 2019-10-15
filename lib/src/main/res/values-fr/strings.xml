@@ -4,6 +4,7 @@
     <string name="no">Non</string>
     <string name="ok">OK</string>
     <string name="cancel">Annuler</string>
+    <string name="failure_toast">ERREUR: %1$s</string>
     <string name="draft_created_text">Écris ton post ici</string>
     <string name="image_selector_chooser">Source de l\'image</string>
     <string name="image_selector_error_toast">Taille de fichier trop élevée</string>

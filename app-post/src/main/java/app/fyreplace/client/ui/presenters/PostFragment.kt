@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.app.post.R
 import app.fyreplace.client.app.post.databinding.FragmentPostBinding
+import app.fyreplace.client.app.post.databinding.PostCommentsBinding
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.Comment
 import app.fyreplace.client.data.models.ImageData
@@ -51,9 +52,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     override val viewModel by viewModel<PostFragmentViewModel>()
     override lateinit var bd: FragmentPostBinding
     override val contextWrapper by lazy { requireActivity() }
-    protected val cbd by lazy {
-        bd.collapsibleComments ?: bd.staticComments ?: throw IllegalStateException()
-    }
+    protected lateinit var cbd: PostCommentsBinding
     private val centralViewModel by sharedViewModel<CentralViewModel>()
     private val fragmentArgs by inject<Args> { parametersOf(this) }
     private val navigator by inject<Navigator> { parametersOf(this) }
@@ -69,6 +68,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         lifecycleOwner = viewLifecycleOwner
         model = viewModel
         bd = this
+        cbd = collapsibleComments ?: staticComments ?: throw IllegalStateException()
         return@run root
     }
 

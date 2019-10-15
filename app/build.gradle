@@ -21,8 +21,8 @@ android {
         minSdkVersion configuration.minSdkVersion
         targetSdkVersion configuration.targetSdkVersion
         multiDexEnabled true
-        versionCode 4000
-        versionName "0.4.0"
+        versionCode 4001
+        versionName "0.4.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -30,7 +30,6 @@ android {
         debug {
             versionNameSuffix "-dev"
             applicationIdSuffix ".dev"
-
         }
         release {
             minifyEnabled true
