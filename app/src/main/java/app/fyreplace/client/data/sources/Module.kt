@@ -4,8 +4,8 @@ import app.fyreplace.client.data.DataLoadingListener
 import org.koin.dsl.module
 
 val sourcesModule = module {
-    single { (listener: DataLoadingListener) -> NotificationsDataSourceFactory(listener, get()) }
-    single { (listener: DataLoadingListener) -> ArchiveDataSourceFactory(listener, get()) }
-    single { (listener: DataLoadingListener) -> OwnPostsDataSourceFactory(listener, get()) }
-    single { (listener: DataLoadingListener) -> DraftsDataSourceFactory(listener, get()) }
+    factory { (listener: DataLoadingListener) -> NotificationsDataSourceFactory(listener, get()) }
+    factory { (listener: DataLoadingListener) -> ArchiveDataSourceFactory(listener, get()) }
+    factory { (listener: DataLoadingListener) -> OwnPostsDataSourceFactory(listener, get()) }
+    factory { (listener: DataLoadingListener) -> DraftsDataSourceFactory(listener, get()) }
 }
