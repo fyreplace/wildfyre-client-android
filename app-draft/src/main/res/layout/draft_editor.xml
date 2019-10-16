@@ -31,7 +31,7 @@
                 android:layout_height="match_parent"
                 android:gravity="start|top"
                 android:imeOptions="actionDone"
-                android:inputType="textMultiLine|textLongMessage" />
+                android:inputType="textMultiLine|textLongMessage|textCapSentences" />
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

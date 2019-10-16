@@ -100,7 +100,7 @@
                 android:hint="@string/post_comment_new_comment"
                 android:imeOptions="actionSend"
                 android:importantForAutofill="no"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="6"
                 android:text="@={model.newCommentData}"
                 tools:ignore="UnusedAttribute" />
