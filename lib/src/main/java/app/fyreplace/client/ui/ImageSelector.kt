@@ -20,7 +20,6 @@ import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.nio.file.Paths
 import kotlin.math.sqrt
 
 interface ImageSelector : FailureHandler {
@@ -80,7 +79,7 @@ interface ImageSelector : FailureHandler {
         )
     }
 
-    private fun imagesDirectory() = Paths.get(contextWrapper.filesDir.path, "images").toFile()
+    private fun imagesDirectory() = File(contextWrapper.filesDir.path, "images")
 
     private suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.Default) {
         contextWrapper.contentResolver.openInputStream(uri).use {
