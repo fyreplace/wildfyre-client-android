@@ -1,0 +1,1 @@
+An alternative client for the WildFyre social media, using a native UI and aiming for better integration with the Android platform.
