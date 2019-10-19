@@ -64,6 +64,7 @@ abstract class ItemsAdapter<I>(
 
         if (item == null) {
             holder.hide()
+            holder.itemView.setOnClickListener(null)
             return
         }
 
@@ -121,9 +122,6 @@ abstract class ItemsAdapter<I>(
             holder.text.text = markdown.toMarkdown(itemData.text.orEmpty())
         }
     }
-
-    override fun onViewDetachedFromWindow(holder: ViewHolder) =
-        holder.itemView.setOnClickListener(null)
 
     override fun onCurrentListChanged(previousList: PagedList<I>?, currentList: PagedList<I>?) {
         onItemsChangedListener?.onItemsChanged()
