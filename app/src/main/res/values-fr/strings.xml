@@ -5,7 +5,7 @@
     <string name="main_nav_fragment_notifications">Notifications</string>
     <string name="main_nav_fragment_archive">Archive</string>
     <string name="main_nav_fragment_own_posts">Mes posts</string>
-    <string name="main_nav_fragment_drafts">Drafts</string>
+    <string name="main_nav_fragment_drafts">Brouillons</string>
     <string name="main_nav_settings">Paramètres</string>
     <string name="main_nav_settings_theme_selector">Thème</string>
     <string name="main_nav_settings_theme_automatic">Auto</string>

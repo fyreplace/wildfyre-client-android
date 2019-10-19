@@ -36,6 +36,27 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     private val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
     private var allowDirtyingDraft = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (savedInstanceState?.getBoolean(SAVE_INIT, true) == false) {
+            return
+        }
+
+        viewModel.setDraft(fragmentArgs.draft)
+
+        if (fragmentArgs.showHint) launch {
+            Toast.makeText(
+                context,
+                getString(
+                    R.string.draft_hint_toast,
+                    viewModel.getPreferredArea()?.displayName
+                ),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,21 +69,6 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (savedInstanceState == null) {
-            viewModel.setDraft(fragmentArgs.draft)
-
-            if (fragmentArgs.showHint) launch {
-                Toast.makeText(
-                    context,
-                    getString(
-                        R.string.draft_hint_toast,
-                        viewModel.getPreferredArea()?.displayName
-                    ),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
 
         bd.preview?.adapter = markdownAdapter
 
@@ -89,6 +95,11 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     override fun onDestroyView() {
         hideSoftKeyboard(bd.editor.editor)
         super.onDestroyView()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(SAVE_INIT, false)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -335,6 +346,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private companion object {
+        const val SAVE_INIT = "save.init"
         const val PREVIEW_DELAY = 1500L
     }
 
