@@ -50,7 +50,7 @@ class MainActivityViewModel(
     suspend fun createDraft() = draftRepository.createDraft()
 
     companion object {
-        private const val UI_UPDATE_MILLIS = 10_000L
+        private const val UI_UPDATE_MILLIS = 60_000L
 
         val THEMES = arrayOf(
             SettingsRepository.Themes.AUTOMATIC,
