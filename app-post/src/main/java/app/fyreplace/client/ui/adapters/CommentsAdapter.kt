@@ -21,9 +21,9 @@ import app.fyreplace.client.ui.presenters.PostFragment
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import io.noties.markwon.Markwon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.noties.markwon.Markwon
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 

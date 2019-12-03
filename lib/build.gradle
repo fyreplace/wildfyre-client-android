@@ -40,7 +40,8 @@ dependencies {
     implementation libraries.koin.androidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinx.coroutines
-    implementation libraries.markwon.imageOkHttp
+    implementation libraries.markwon.image
+    implementation libraries.markwon.imageGlide
     implementation libraries.retrofit.gson
     kapt processors.glide
 }

@@ -7,8 +7,8 @@ import android.widget.TextView
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.lib.R
+import io.noties.markwon.image.AsyncDrawableScheduler
 import kotlinx.coroutines.*
-import ru.noties.markwon.image.AsyncDrawableScheduler
 import kotlin.coroutines.CoroutineContext
 
 class MarkdownRecyclerView : RecyclerView, CoroutineScope {

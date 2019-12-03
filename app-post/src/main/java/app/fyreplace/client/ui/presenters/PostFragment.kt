@@ -37,6 +37,7 @@ import app.fyreplace.client.ui.widgets.CommentSheetBehavior
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.PostFragmentViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -44,7 +45,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import ru.noties.markwon.recycler.MarkwonAdapter
 import kotlin.math.max
 
 open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackHandlingFragment,

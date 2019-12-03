@@ -21,9 +21,9 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.card.MaterialCardView
-import ru.noties.markwon.Markwon
-import ru.noties.markwon.core.CorePlugin
-import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.core.CorePlugin
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 
 /**
  * Standard adapter using a list of items as a data source.
@@ -46,7 +46,7 @@ abstract class ItemsAdapter<I>(
         markdown = Markwon.builder(recyclerView.context)
             .usePlugin(CorePlugin.create())
             .usePlugin(StrikethroughPlugin.create())
-            .usePlugin(PostPlugin.create(recyclerView.context))
+            .usePlugin(PostPlugin.create())
             .build()
     }
 

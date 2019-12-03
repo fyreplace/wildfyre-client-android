@@ -7,12 +7,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import app.fyreplace.client.data.models.Post
-import ru.noties.markwon.Markwon
-import ru.noties.markwon.core.CorePlugin
-import ru.noties.markwon.ext.strikethrough.StrikethroughPlugin
-import ru.noties.markwon.image.ImagesPlugin
-import ru.noties.markwon.image.okhttp.OkHttpImagesPlugin
-import ru.noties.markwon.movement.MovementMethodPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.core.CorePlugin
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
+import io.noties.markwon.image.ImagesPlugin
+import io.noties.markwon.image.glide.GlideImagesPlugin
+import io.noties.markwon.movement.MovementMethodPlugin
 
 val IMAGE_REGEX = Regex("\n*\\[img:\\s*(\\d+)]\n*", RegexOption.MULTILINE)
 val YOUTUBE_REGEX = Regex("(?:https?://)?(?:www\\.)?youtu(?:be\\.(?:\\w+)/watch\\?v=|\\.be/)(\\w+)")
@@ -29,10 +29,10 @@ fun Fragment.lazyMarkdown() = lazy {
         Markwon.builder(it)
             .usePlugin(CorePlugin.create())
             .usePlugin(MovementMethodPlugin.create())
-            .usePlugin(PostPlugin.create(it))
+            .usePlugin(PostPlugin.create())
             .usePlugin(StrikethroughPlugin.create())
-            .usePlugin(ImagesPlugin.create(it))
-            .usePlugin(OkHttpImagesPlugin.create())
+            .usePlugin(ImagesPlugin.create())
+            .usePlugin(GlideImagesPlugin.create(PostGlideStore(it)))
             .build()
     }
 }
