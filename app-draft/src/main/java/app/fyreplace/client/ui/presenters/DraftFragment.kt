@@ -19,12 +19,12 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.*
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
 import com.google.android.material.snackbar.Snackbar
+import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import ru.noties.markwon.recycler.MarkwonAdapter
 
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
     Toolbar.OnMenuItemClickListener, ImageSelector {
