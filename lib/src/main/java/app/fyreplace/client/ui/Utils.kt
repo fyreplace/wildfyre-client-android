@@ -15,7 +15,8 @@ import io.noties.markwon.image.glide.GlideImagesPlugin
 import io.noties.markwon.movement.MovementMethodPlugin
 
 val IMAGE_REGEX = Regex("\n*\\[img:\\s*(\\d+)]\n*", RegexOption.MULTILINE)
-val YOUTUBE_REGEX = Regex("(?:https?://)?(?:www\\.)?youtu(?:be\\.(?:\\w+)/watch\\?v=|\\.be/)(\\w+)")
+val YOUTUBE_REGEX =
+    Regex("(?:https?://)?(?:www\\.)?youtu(?:be\\.(?:\\w+)/watch\\?v=|\\.be/)([\\w\\-]+)")
 
 fun hideSoftKeyboard(view: View?) {
     view?.let {
