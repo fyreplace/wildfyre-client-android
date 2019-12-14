@@ -53,7 +53,7 @@ interface WildFyreService {
     @Headers("Content-Type: application/json")
     suspend fun patchAccount(
         @Body accountPatch: AccountPatch
-    ): Response<Unit>
+    ): Account
 
 
     // Registration
@@ -163,7 +163,7 @@ interface WildFyreService {
     @Headers("Content-Type: application/json")
     suspend fun postPost(
         @Path("areaName") areaName: String,
-        @Body post: Post
+        @Body draft: Draft
     ): Post
 
     @POST("/areas/{areaName}/{postId}/spread/")

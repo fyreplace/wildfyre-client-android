@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 data class PasswordRecoveryStep1(
     val email: String,
-    val password: String,
+    val username: String,
     val captcha: String
 ) : Model {
     private constructor(parcel: Parcel) : this(
@@ -17,7 +17,7 @@ data class PasswordRecoveryStep1(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(email)
-        parcel.writeString(password)
+        parcel.writeString(username)
         parcel.writeString(captcha)
     }
 
