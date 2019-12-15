@@ -2,6 +2,7 @@
 <resources>
     <string name="post_action_subscribe">S\'inscrire</string>
     <string name="post_action_unsubscribe">Se désinscrire</string>
+    <string name="post_action_flag">Signaler</string>
     <string name="post_action_share_title">Partager ce post</string>
     <string name="post_action_delete_dialog_title">Supprimer ce post ? Cette action est irréversible</string>
     <string name="post_extinguish">Éteindre</string>

@@ -203,6 +203,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         inflater.inflate(R.menu.actions_fragment_post, menu)
         inflater.inflate(R.menu.actions_fragment_sharing, menu)
         inflater.inflate(R.menu.actions_fragment_deletion, menu)
+        inflater.inflate(R.menu.actions_fragment_flagging, menu)
 
         viewModel.subscribed.observe(viewLifecycleOwner) {
             menu.findItem(R.id.action_subscribe).run {
@@ -230,14 +231,21 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
             }
         }
 
+        val flagItem = menu.findItem(R.id.action_flag)
         val deleteItem = menu.findItem(R.id.action_delete)
-        viewModel.isOwnPost.observe(viewLifecycleOwner) { deleteItem.isVisible = it }
+        viewModel.isOwnPost.observe(viewLifecycleOwner) {
+            deleteItem.isVisible = it
+            flagItem.isVisible = !it
+        }
         viewModel.authorId.observe(viewLifecycleOwner) {
-            deleteItem.isVisible = it == centralViewModel.userId.value
+            val isOwnPost = it == centralViewModel.userId.value
+            deleteItem.isVisible = isOwnPost
+            flagItem.isVisible = !isOwnPost
         }
 
-        val postMenuItems = listOf(R.id.action_subscribe, R.id.action_share, R.id.action_delete)
-            .map { menu.findItem(it) }
+        val postMenuItems =
+            listOf(R.id.action_subscribe, R.id.action_share, R.id.action_delete, R.id.action_flag)
+                .map { menu.findItem(it) }
         viewModel.contentLoaded.observe(viewLifecycleOwner) {
             postMenuItems.forEach { action -> action.isEnabled = it }
         }
@@ -267,16 +275,23 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        requireActivity().menuInflater.inflate(R.menu.context_fragment_post_comment, menu)
+        val menuInflater = requireActivity().menuInflater
+        menuInflater.inflate(R.menu.actions_fragment_post_comment, menu)
+        menuInflater.inflate(R.menu.actions_fragment_flagging, menu)
 
         val position = v.tag as Int
         val comment = (cbd.commentsList.adapter as CommentsAdapter).getComment(position)
+        val isOwnComment = comment.author?.user == centralViewModel.userId.value
 
         menu.findItem(R.id.action_copy).setOnMenuItemClickListener { copyComment(comment); true }
         menu.findItem(R.id.action_share).setOnMenuItemClickListener { shareComment(comment); true }
         menu.findItem(R.id.action_delete).run {
-            isVisible = comment.author?.user == centralViewModel.userId.value
+            isVisible = isOwnComment
             setOnMenuItemClickListener { deleteComment(position, comment); true }
+        }
+        menu.findItem(R.id.action_flag).run {
+            isVisible = !isOwnComment
+            setOnMenuItemClickListener { flagComment(comment); true }
         }
     }
 
@@ -368,6 +383,10 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
                 launch { viewModel.deleteComment(position, comment) }
             }
             .show()
+    }
+
+    private fun flagComment(comment: Comment) {
+        // TODO
     }
 
     private companion object {

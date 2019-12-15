@@ -2,6 +2,7 @@
 <resources>
     <string name="post_action_subscribe">Subscribe</string>
     <string name="post_action_unsubscribe">Unsubscribe</string>
+    <string name="post_action_flag">Flag</string>
     <string name="post_action_share_title">Share post</string>
     <string name="post_action_delete_dialog_title">Delete this post? This action cannot be undone</string>
     <string name="post_extinguish">Extinguish</string>

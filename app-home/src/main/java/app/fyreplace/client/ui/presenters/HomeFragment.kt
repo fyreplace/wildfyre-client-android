@@ -84,7 +84,12 @@ class HomeFragment : PostFragment(), AreaSelectionFragment {
             else
                 MenuItem.SHOW_AS_ACTION_NEVER
 
-        for (id in setOf(R.id.action_area_selector, R.id.action_share, R.id.action_delete)) {
+        for (id in setOf(
+            R.id.action_area_selector,
+            R.id.action_share,
+            R.id.action_delete,
+            R.id.action_flag
+        )) {
             menu.findItem(id)
                 .setShowAsAction(showAsAction or MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
         }
