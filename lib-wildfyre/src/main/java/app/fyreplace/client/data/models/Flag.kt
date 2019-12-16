@@ -4,16 +4,16 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class Flag(
-    val reason: String,
+    val reason: Long?,
     val comment: String? = null
 ) : Model {
     private constructor(parcel: Parcel) : this(
-        parcel.readString()!!,
+        parcel.readSerializable() as Long?,
         parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(reason)
+        parcel.writeSerializable(reason)
         parcel.writeString(comment)
     }
 
@@ -25,16 +25,16 @@ data class Flag(
 }
 
 data class Choice(
-    val key: Long,
+    val key: Long?,
     val value: String
 ) : Model {
     private constructor(parcel: Parcel) : this(
-        parcel.readLong(),
+        parcel.readSerializable() as Long?,
         parcel.readString()!!
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeLong(key)
+        parcel.writeSerializable(key)
         parcel.writeString(value)
     }
 

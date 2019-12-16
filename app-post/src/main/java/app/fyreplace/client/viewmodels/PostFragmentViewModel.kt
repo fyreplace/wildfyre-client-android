@@ -2,6 +2,7 @@ package app.fyreplace.client.viewmodels
 
 import androidx.lifecycle.*
 import app.fyreplace.client.data.models.Comment
+import app.fyreplace.client.data.models.Flag
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.AreaRepository
@@ -78,6 +79,17 @@ open class PostFragmentViewModel(
 
     fun setIsOwnPost(ownPost: Boolean) = mIsOwnPost.postValue(ownPost)
 
+    suspend fun getFlagChoices() = postRepository.getFlagChoices()
+        .sortedWith(Comparator { f1, f2 ->
+            when {
+                f1.key == null -> 1
+                f2.key == null -> -1
+                f1.key!! < f2.key!! -> -1
+                f1.key!! > f2.key!! -> 1
+                else -> 0
+            }
+        })
+
     suspend fun changeSubscription() = mSubscribed.postValue(
         postRepository.setSubscription(
             postAreaName,
@@ -87,6 +99,9 @@ open class PostFragmentViewModel(
     )
 
     suspend fun deletePost() = postRepository.deletePost(postAreaName, postId)
+
+    suspend fun flag(commentId: Long?, key: Long?, comment: String?) =
+        postRepository.flag(postAreaName, postId, commentId, Flag(key, comment))
 
     fun setCommentImage(image: ImageData) = mNewCommentImage.postValue(image)
 

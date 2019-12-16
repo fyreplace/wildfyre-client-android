@@ -1,5 +1,6 @@
 package app.fyreplace.client.data.repositories
 
+import app.fyreplace.client.data.models.Flag
 import app.fyreplace.client.data.models.Spread
 import app.fyreplace.client.data.models.Subscription
 import app.fyreplace.client.data.services.WildFyreService
@@ -23,6 +24,10 @@ class PostRepository(private val wildFyre: WildFyreService, private val areas: A
         wildFyre.getPost(areaName, id)
     }
 
+    suspend fun getFlagChoices() = withContext(Dispatchers.IO) {
+        wildFyre.getFlagReasons()
+    }
+
     suspend fun setSubscription(areaName: String, id: Long, sub: Boolean) =
         withContext(Dispatchers.IO) {
             wildFyre.putSubscription(areaName, id, Subscription(sub))
@@ -37,4 +42,15 @@ class PostRepository(private val wildFyre: WildFyreService, private val areas: A
         wildFyre.deletePost(areaName ?: areas.preferredAreaName, id)
         return@withContext
     }
+
+    suspend fun flag(areaName: String?, postId: Long, commentId: Long?, flag: Flag) =
+        withContext(Dispatchers.IO) {
+            val area = areaName ?: areas.preferredAreaName
+
+            if (commentId == null) {
+                wildFyre.postFlag(area, postId, flag)
+            } else {
+                wildFyre.postFlag(area, postId, commentId, flag)
+            }
+        }
 }

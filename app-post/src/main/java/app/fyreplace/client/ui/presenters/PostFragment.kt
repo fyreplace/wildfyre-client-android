@@ -3,12 +3,14 @@ package app.fyreplace.client.ui.presenters
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -45,6 +47,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import retrofit2.HttpException
 import kotlin.math.max
 
 open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackHandlingFragment,
@@ -254,16 +257,8 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_subscribe -> launch { viewModel.changeSubscription() }
-            R.id.action_delete -> AlertDialog.Builder(contextWrapper)
-                .setTitle(R.string.post_action_delete_dialog_title)
-                .setNegativeButton(R.string.no, null)
-                .setPositiveButton(R.string.yes) { _, _ ->
-                    launch {
-                        viewModel.deletePost()
-                        findNavController().navigateUp()
-                    }
-                }
-                .show()
+            R.id.action_delete -> deletePost()
+            R.id.action_flag -> showFlagChoices()
         }
 
         return super.onOptionsItemSelected(item)
@@ -291,7 +286,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         }
         menu.findItem(R.id.action_flag).run {
             isVisible = !isOwnComment
-            setOnMenuItemClickListener { flagComment(comment); true }
+            setOnMenuItemClickListener { showFlagChoices(comment); true }
         }
     }
 
@@ -313,14 +308,12 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     private fun toggleComments() {
         bd.collapsibleComments?.let {
             val commentsBehavior = BottomSheetBehavior.from(it.root)
-
-            when {
-                commentsBehavior.state in setOf(
+            when (commentsBehavior.state) {
+                in setOf(
                     BottomSheetBehavior.STATE_HIDDEN,
                     BottomSheetBehavior.STATE_COLLAPSED
-                ) ->
-                    commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                commentsBehavior.state == BottomSheetBehavior.STATE_EXPANDED ->
+                ) -> commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                BottomSheetBehavior.STATE_EXPANDED ->
                     commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
         }
@@ -356,6 +349,19 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         }
     }
 
+    private fun deletePost() {
+        AlertDialog.Builder(contextWrapper)
+            .setTitle(R.string.post_action_delete_dialog_title)
+            .setNegativeButton(R.string.no, null)
+            .setPositiveButton(R.string.yes) { _, _ ->
+                launch {
+                    viewModel.deletePost()
+                    findNavController().navigateUp()
+                }
+            }
+            .show()
+    }
+
     private fun copyComment(comment: Comment) {
         getSystemService(contextWrapper, ClipboardManager::class.java)?.setPrimaryClip(
             ClipData.newPlainText(
@@ -385,8 +391,63 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
             .show()
     }
 
-    private fun flagComment(comment: Comment) {
-        // TODO
+    private fun showFlagChoices(comment: Comment? = null) {
+        launch {
+            val choices = viewModel.getFlagChoices()
+            var key: Long? = null
+            val alert = AlertDialog.Builder(contextWrapper)
+                .setTitle(R.string.post_action_flag_dialog_title)
+                .setSingleChoiceItems(
+                    choices.map { it.value }.toTypedArray(),
+                    choices.indexOfFirst { it.key == null }
+                ) { _, i -> key = choices[i].key }
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.post_action_flag_dialog_positive, null)
+                .show()
+            alert.getButton(DialogInterface.BUTTON_POSITIVE)
+                .setOnClickListener { showFlagInfo(alert, comment, key) }
+        }
+    }
+
+    private fun showFlagInfo(alert: AlertDialog, comment: Comment?, key: Long?) {
+        val root = alert.listView.parent as ViewGroup
+        val editText = layoutInflater.inflate(R.layout.post_dialog_flag_info, root, false)
+            .findViewById<TextView>(R.id.text)
+
+        root.run {
+            removeView(alert.listView)
+            addView(editText)
+        }
+
+        alert.getButton(DialogInterface.BUTTON_POSITIVE).run {
+            setText(R.string.post_action_flag)
+            setOnClickListener {
+                alert.dismiss()
+                doFlag(comment, key, editText.text?.toString())
+            }
+        }
+    }
+
+    private fun doFlag(comment: Comment?, key: Long?, text: String?) = launch {
+        try {
+            viewModel.flag(comment?.id, key, text)
+            Toast.makeText(
+                contextWrapper,
+                if (comment == null) R.string.post_action_flag_post_toast
+                else R.string.post_action_flag_comment_toast,
+                Toast.LENGTH_SHORT
+            ).show()
+        } catch (e: HttpException) {
+            if (e.code() == 400) {
+                Toast.makeText(
+                    contextWrapper,
+                    R.string.post_failure_flag,
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                throw e
+            }
+        }
     }
 
     private companion object {

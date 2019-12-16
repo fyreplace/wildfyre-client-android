@@ -70,6 +70,5 @@
         android:minLines="3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_picture_change_image"
-        tools:ignore="UnusedAttribute" />
+        app:layout_constraintTop_toBottomOf="@+id/user_picture_change_image" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -95,7 +95,7 @@ interface WildFyreService {
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body flag: Flag
-    ): Response<Unit>
+    ): Flag
 
     @POST("/areas/{areaName}/{postId}/{commentId}/flag/")
     @Headers("Content-Type: application/json")
@@ -104,7 +104,7 @@ interface WildFyreService {
         @Path("postId") postId: Long,
         @Path("commentId") commentId: Long,
         @Body flag: Flag
-    ): Response<Unit>
+    ): Flag
 
 
     // Notifications
