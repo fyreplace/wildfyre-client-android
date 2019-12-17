@@ -14,7 +14,6 @@ class NotificationRepository(private val wildFyre: WildFyreService) {
     }
 
     suspend fun clearNotifications() = withContext(Dispatchers.IO) {
-        wildFyre.deleteNotifications()
-        return@withContext
+        wildFyre.deleteNotifications().throwIfFailed()
     }
 }

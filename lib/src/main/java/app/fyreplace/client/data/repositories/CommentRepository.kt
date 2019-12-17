@@ -25,7 +25,6 @@ class CommentRepository(private val wildFyre: WildFyreService) {
 
     suspend fun deleteComment(areaName: String, postId: Long, commentId: Long) =
         withContext(Dispatchers.IO) {
-            wildFyre.deleteComment(areaName, postId, commentId)
-            return@withContext
+            wildFyre.deleteComment(areaName, postId, commentId).throwIfFailed()
         }
 }

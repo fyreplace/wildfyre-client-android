@@ -37,13 +37,11 @@ class DraftRepository(
         }
 
     suspend fun deleteDraft(id: Long) = withContext(Dispatchers.IO) {
-        wildFyre.deleteDraft(areas.preferredAreaName, id)
-        return@withContext
+        wildFyre.deleteDraft(areas.preferredAreaName, id).throwIfFailed()
     }
 
     suspend fun publishDraft(id: Long) = withContext(Dispatchers.IO) {
-        wildFyre.postDraftPublication(areas.preferredAreaName, id)
-        return@withContext
+        wildFyre.postDraftPublication(areas.preferredAreaName, id).throwIfFailed()
     }
 
     suspend fun setImage(id: Long, content: String, image: ImageData) =
@@ -71,7 +69,6 @@ class DraftRepository(
     }
 
     suspend fun removeImage(id: Long, slot: Int = -1) = withContext(Dispatchers.IO) {
-        wildFyre.deleteImage(areas.preferredAreaName, id, slot)
-        return@withContext
+        wildFyre.deleteImage(areas.preferredAreaName, id, slot).throwIfFailed()
     }
 }
