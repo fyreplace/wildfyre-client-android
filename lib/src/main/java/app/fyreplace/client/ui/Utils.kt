@@ -38,8 +38,8 @@ fun Fragment.lazyMarkdown() = lazy {
     }
 }
 
-fun Post.toMarkdown(content: String? = text) =
-    (image?.let { "![]($it)\n\n" } ?: "") + content?.replace(IMAGE_REGEX) {
+fun Post.toMarkdown(content: String = text) =
+    (image?.let { "![]($it)\n\n" } ?: "") + content.replace(IMAGE_REGEX) {
         val imageNum = it.groupValues[1].toInt()
         val image = additionalImages.firstOrNull { img -> img.num == imageNum }
         return@replace image?.run { "\n![${image.comment}](${image.image})\n" } ?: it.groupValues[0]

@@ -45,6 +45,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         }
 
         viewModel.setDraft(fragmentArgs.draft)
+        launch { viewModel.cleanUpDraft() }
 
         if (fragmentArgs.showHint) launch {
             Toast.makeText(

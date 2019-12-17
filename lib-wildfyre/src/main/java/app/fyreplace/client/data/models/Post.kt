@@ -68,7 +68,7 @@ data class Image(
 data class Post(
     val id: Long,
     val author: Author? = null,
-    val text: String? = null,
+    val text: String,
     @SerializedName("anonym")
     val anonymous: Boolean,
     val subscribed: Boolean,
@@ -82,7 +82,7 @@ data class Post(
     private constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readParcelable(Author::class.java.classLoader),
-        parcel.readString(),
+        parcel.readString()!!,
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         Date(parcel.readLong()),

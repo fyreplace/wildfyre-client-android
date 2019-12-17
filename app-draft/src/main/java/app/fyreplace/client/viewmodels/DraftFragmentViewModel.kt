@@ -29,7 +29,7 @@ class DraftFragmentViewModel(
         saved = false
     }
 
-    suspend fun saveDraft(content: String, anonymous: Boolean) {
+    suspend fun cleanUpDraft(content: String = draft.text) {
         val usedSlots = mutableSetOf<Int>()
 
         for (match in IMAGE_REGEX.findAll(content)) {
@@ -41,7 +41,10 @@ class DraftFragmentViewModel(
                 draftRepository.removeImage(draft.id, slot)
             }
         }
+    }
 
+    suspend fun saveDraft(content: String, anonymous: Boolean) {
+        cleanUpDraft(content)
         draft = draftRepository.saveDraft(draft.id, content, anonymous)
         saved = true
     }
@@ -56,7 +59,7 @@ class DraftFragmentViewModel(
 
     suspend fun addImage(image: ImageData) {
         if (nextImageSlot == -1) {
-            draft = draftRepository.setImage(draft.id, draft.text.orEmpty(), image)
+            draft = draftRepository.setImage(draft.id, draft.text, image)
         } else {
             draft.additionalImages.add(
                 draftRepository.addImage(
@@ -69,7 +72,7 @@ class DraftFragmentViewModel(
     }
 
     suspend fun removeImage() {
-        draft = draftRepository.removeImage(draft.id, draft.text.orEmpty())
+        draft = draftRepository.removeImage(draft.id, draft.text)
     }
 
     private fun findNextImageSlot() = draft.additionalImages.map { it.num }
