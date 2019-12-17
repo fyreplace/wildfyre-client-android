@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="draft_image_sources">
-        <item>@string/draft_bottom_actions_images_dialog_file</item>
-        <item>@string/draft_bottom_actions_images_dialog_photo</item>
+        <item>@string/draft_bottom_action_images_dialog_file</item>
+        <item>@string/draft_bottom_action_images_dialog_photo</item>
     </string-array>
 </resources>

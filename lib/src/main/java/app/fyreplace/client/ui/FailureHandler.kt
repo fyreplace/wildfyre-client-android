@@ -32,14 +32,13 @@ interface FailureHandler : LifecycleOwner {
     fun launch(
         context: CoroutineContext = Dispatchers.Main,
         block: suspend CoroutineScope.() -> Unit
-    ) =
-        lifecycleScope.launch(context) {
-            try {
-                block()
-            } catch (e: CancellationException) {
-                // Cancellation happens
-            } catch (e: Exception) {
-                onFailure(e)
-            }
+    ) = lifecycleScope.launch(context) {
+        try {
+            block()
+        } catch (e: CancellationException) {
+            // Cancellation happens
+        } catch (e: Exception) {
+            onFailure(e)
         }
+    }
 }

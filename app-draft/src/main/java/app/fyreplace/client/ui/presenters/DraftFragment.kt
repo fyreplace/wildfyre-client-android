@@ -25,6 +25,7 @@ import kotlinx.coroutines.isActive
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import retrofit2.HttpException
 
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
     Toolbar.OnMenuItemClickListener, ImageSelector {
@@ -211,7 +212,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             val snackbar = Snackbar
                 .make(
                     bd.editor.bottomAppBar,
-                    R.string.draft_bottom_actions_images_snackbar,
+                    R.string.draft_bottom_action_images_snackbar,
                     Snackbar.LENGTH_INDEFINITE
                 )
                 .setAction(R.string.cancel) { cancel() }
@@ -221,20 +222,33 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                     show()
                 }
 
-            viewModel.addImage(image)
-            snackbar.dismiss()
+            try {
+                viewModel.addImage(image)
 
-            if (!isActive) {
-                return@launch
-            }
+                if (!isActive) {
+                    return@launch
+                }
 
-            if (viewModel.nextImageSlot == -1) {
-                updatePreview()
-            } else {
-                bd.editor.editor.editableText?.insert(
-                    bd.editor.editor.selectionStart,
-                    "[img: ${viewModel.nextImageSlot}]"
-                )
+                if (viewModel.nextImageSlot == -1) {
+                    updatePreview()
+                } else {
+                    bd.editor.editor.editableText?.insert(
+                        bd.editor.editor.selectionStart,
+                        "[img: ${viewModel.nextImageSlot}]"
+                    )
+                }
+            } catch (e: HttpException) {
+                if (e.code() == 404) {
+                    Toast.makeText(
+                        contextWrapper,
+                        R.string.draft_failure_images,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    throw e
+                }
+            } finally {
+                snackbar.dismiss()
             }
         }
     }
@@ -259,7 +273,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     private fun addTitle() {
         AlertDialog.Builder(contextWrapper)
-            .setTitle(R.string.draft_bottom_actions_title_dialog_title)
+            .setTitle(R.string.draft_bottom_action_title_dialog_title)
             .setItems((1..6).map { it.toString() }.toTypedArray()) { _, i ->
                 bd.editor.editor.editableText?.insert(editorLineStart(), "#".repeat(i + 1) + ' ')
             }
@@ -275,13 +289,13 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         var items = resources.getStringArray(R.array.draft_image_sources)
 
         if (main && viewModel.draft.image != null) {
-            items += getString(R.string.draft_bottom_actions_images_dialog_remove)
+            items += getString(R.string.draft_bottom_action_images_dialog_remove)
         }
 
         AlertDialog.Builder(contextWrapper)
             .setTitle(
-                if (main) R.string.draft_bottom_actions_main_image_dialog_title
-                else R.string.draft_bottom_actions_images_dialog_title
+                if (main) R.string.draft_bottom_action_main_image_dialog_title
+                else R.string.draft_bottom_action_images_dialog_title
             )
             .setItems(items) { _, i ->
                 if (i == 2) {
@@ -299,7 +313,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     private fun addYoutubeLink() {
         var link: EditText? = null
         link = AlertDialog.Builder(contextWrapper)
-            .setTitle(R.string.draft_bottom_actions_youtube_dialog_title)
+            .setTitle(R.string.draft_bottom_action_youtube_dialog_title)
             .setView(R.layout.draft_dialog_link)
             .setNegativeButton(R.string.cancel, null)
             .setPositiveButton(R.string.ok) { _, _ ->
@@ -313,7 +327,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                         )
                     } ?: Toast.makeText(
                         contextWrapper,
-                        R.string.draft_bottom_actions_youtube_toast,
+                        R.string.draft_bottom_action_youtube_toast,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -329,7 +343,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     private fun surroundSelectionWithLink() {
         var link: EditText? = null
         link = AlertDialog.Builder(contextWrapper)
-            .setTitle(R.string.draft_bottom_actions_selection_link_dialog_title)
+            .setTitle(R.string.draft_bottom_action_selection_link_dialog_title)
             .setView(R.layout.draft_dialog_link)
             .setNegativeButton(R.string.cancel, null)
             .setPositiveButton(R.string.ok) { _, _ ->

@@ -6,31 +6,31 @@
     <item
         android:id="@+id/action_title"
         android:icon="@drawable/ic_title"
-        android:title="@string/draft_bottom_actions_title"
+        android:title="@string/draft_bottom_action_title"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_list_bulleted"
         android:icon="@drawable/ic_format_list_bulleted"
-        android:title="@string/draft_bottom_actions_list_bulleted"
+        android:title="@string/draft_bottom_action_list_bulleted"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_list_numbered"
         android:icon="@drawable/ic_format_list_numbered"
-        android:title="@string/draft_bottom_actions_list_numbered"
+        android:title="@string/draft_bottom_action_list_numbered"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_main_image"
         android:icon="@drawable/ic_image"
-        android:title="@string/draft_bottom_actions_main_image"
+        android:title="@string/draft_bottom_action_main_image"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_images"
         android:icon="@drawable/ic_photo_library"
-        android:title="@string/draft_bottom_actions_images"
+        android:title="@string/draft_bottom_action_images"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_youtube"
         android:icon="@drawable/ic_play_circle_filled"
-        android:title="@string/draft_bottom_actions_youtube"
+        android:title="@string/draft_bottom_action_youtube"
         app:showAsAction="always" />
 </menu>
