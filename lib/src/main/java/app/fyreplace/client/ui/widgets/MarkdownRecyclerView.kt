@@ -23,12 +23,4 @@ class MarkdownRecyclerView : RecyclerView {
             AsyncDrawableScheduler.schedule(child)
         }
     }
-
-    override fun onChildDetachedFromWindow(child: View) {
-        super.onChildDetachedFromWindow(child)
-
-        if (child is TextView) {
-            AsyncDrawableScheduler.unschedule(child)
-        }
-    }
 }
