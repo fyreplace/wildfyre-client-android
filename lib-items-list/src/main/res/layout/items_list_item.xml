@@ -43,7 +43,6 @@
             android:layout_width="@dimen/list_item_author_picture_size"
             android:layout_height="@dimen/list_item_author_picture_size"
             android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginLeft="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_small"
             android:contentDescription="@string/image_desc_author_picture"
             app:layout_constraintBottom_toTopOf="@id/subtitle"

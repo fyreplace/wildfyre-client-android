@@ -74,7 +74,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_small"
-            android:layout_marginRight="@dimen/margin_small"
             android:contentDescription="@string/image_desc_comments_toggle"
             app:layout_constraintBottom_toBottomOf="@id/comment_count"
             app:layout_constraintEnd_toEndOf="parent"

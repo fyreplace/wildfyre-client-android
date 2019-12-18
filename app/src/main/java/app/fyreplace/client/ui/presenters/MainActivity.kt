@@ -182,7 +182,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         }
 
         bd.navigationView.doOnLayout {
-            bd.navigationView.findViewById<View>(R.id.edit)?.setOnClickListener { editProfile() }
+            bd.navigationView.findViewById<View>(R.id.edit).setOnClickListener { editProfile() }
         }
 
         bd.content.toolbar.addOnLayoutChangeListener(toolbarChangeListener)

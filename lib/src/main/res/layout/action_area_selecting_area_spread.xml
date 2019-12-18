@@ -17,7 +17,6 @@
         android:drawablePadding="@dimen/margin_small"
         android:gravity="center"
         android:paddingEnd="@dimen/margin_small"
-        android:paddingRight="@dimen/margin_small"
         android:text="@{Integer.toString(safeUnbox(model.currentAreaSpread))}"
         android:textAppearance="?attr/textAppearanceBody1"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark"

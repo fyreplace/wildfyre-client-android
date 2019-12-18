@@ -9,7 +9,6 @@
     <string name="draft_action_save">Save</string>
     <string name="draft_action_save_toast">Draft saved successfully</string>
     <string name="draft_action_save_empty_toast">Posts cannot be empty</string>
-    <string name="draft_action_delete">Delete</string>
     <string name="draft_action_delete_dialog_title">Delete this draft?</string>
     <string name="draft_bottom_action_selection_bold"><b>Bold</b></string>
     <string name="draft_bottom_action_selection_italic"><i>Italic</i></string>
