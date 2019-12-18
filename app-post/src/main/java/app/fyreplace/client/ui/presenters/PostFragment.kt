@@ -131,9 +131,19 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         }
 
         cbd.commentsList.addOnScrollListener(CommentsScrollListener())
-        cbd.goUp.setOnClickListener { cbd.commentsList.smoothScrollToPosition(0) }
+        cbd.goUp.setOnClickListener {
+            cbd.commentsList.smoothScrollToPosition(0)
+        }
+        cbd.goUp.setOnLongClickListener {
+            cbd.commentsList.scrollToPosition(0)
+            true
+        }
         cbd.goDown.setOnClickListener {
             cbd.commentsList.smoothScrollToPosition(max(commentsAdapter.itemCount - 1, 0))
+        }
+        cbd.goDown.setOnLongClickListener {
+            cbd.commentsList.scrollToPosition(max(commentsAdapter.itemCount - 1, 0))
+            true
         }
 
         for (button in listOf(cbd.goUp, cbd.goDown)) {
