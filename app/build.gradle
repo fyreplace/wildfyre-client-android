@@ -37,16 +37,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    flavorDimensions "freedom"
-    productFlavors {
-        vanilla {
-            dimension "freedom"
-        }
-        libre {
-            dimension "freedom"
-            minSdkVersion 21
-        }
-    }
 }
 
 dependencies {
@@ -70,8 +60,6 @@ dependencies {
     implementation libraries.koin.androidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinx.coroutines
-    vanillaImplementation libraries.androidx.multidex
-    vanillaImplementation libraries.playServices
 }
 
 dokka {

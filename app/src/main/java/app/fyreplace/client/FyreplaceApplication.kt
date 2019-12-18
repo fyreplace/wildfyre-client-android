@@ -1,5 +1,6 @@
 package app.fyreplace.client
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import app.fyreplace.client.app.R
 import app.fyreplace.client.data.repositories.SettingsRepository
@@ -11,7 +12,7 @@ import app.fyreplace.client.viewmodels.viewModelsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class FyreplaceApplication : BaseApplication() {
+class FyreplaceApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 

@@ -62,9 +62,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
     private val centralViewModel by viewModel<CentralViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val toolbarChangeListener by lazy {
-        OnToolbarChangeListener(
-            bd.content.toolbar
-        )
+        OnToolbarChangeListener(bd.content.toolbar)
     }
     private var toolbarInset = 0
 
@@ -77,9 +75,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             content.centralModel = centralViewModel
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.navigationBarColor = ActivityCompat.getColor(this, R.color.navigation)
-        }
+        window.navigationBarColor = ActivityCompat.getColor(this, R.color.navigation)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val nightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -90,13 +86,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            try {
-                reportFullyDrawn()
-            } catch (e: SecurityException) {
-                // Happens on KitKat
-            }
-        }
+        reportFullyDrawn()
 
         val navController = findNavController(R.id.navigation_host)
         val navHeaderBinding = MainNavHeaderBinding.bind(bd.navigationView.getHeaderView(0))
@@ -429,10 +419,8 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
     }
 
     private fun showLicenses() {
-        val licenses = resources.getStringArray(R.array.dependencies_names_base) +
-            resources.getStringArray(R.array.dependencies_names_additional)
-        val links = resources.getStringArray(R.array.dependencies_links_base) +
-            resources.getStringArray(R.array.dependencies_links_additional)
+        val licenses = resources.getStringArray(R.array.dependencies_names_base)
+        val links = resources.getStringArray(R.array.dependencies_links_base)
         AlertDialog.Builder(this)
             .setItems(licenses) { _, i ->
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(links[i])))
