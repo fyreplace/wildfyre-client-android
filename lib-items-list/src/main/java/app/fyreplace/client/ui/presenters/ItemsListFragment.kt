@@ -34,17 +34,25 @@ abstract class ItemsListFragment<I : Model, VM : ItemsListFragmentViewModel<I>, 
             hasData = viewModel.hasData
         }
 
-        bd.itemsList.setHasFixedSize(true)
-        bd.itemsList.adapter = itemsAdapter.apply {
-            onItemsChangedListener = this@ItemsListFragment
-            onItemClickedListener = this@ItemsListFragment
-            viewModel.itemsPagedList.observe(viewLifecycleOwner) { submitList(it) }
+        with(bd.itemsList) {
+            if (viewModel.firstLoading) {
+                bd.refresher.isRefreshing = true
+            }
+
+            setHasFixedSize(true)
+            adapter = itemsAdapter.apply {
+                onItemsChangedListener = this@ItemsListFragment
+                onItemClickedListener = this@ItemsListFragment
+                viewModel.itemsPagedList.observe(viewLifecycleOwner) { submitList(it) }
+            }
         }
 
-        bd.refresher.setColorSchemeResources(R.color.colorPrimary)
-        bd.refresher.setProgressBackgroundColorSchemeResource(R.color.colorBackground)
-        bd.refresher.setOnRefreshListener { refreshItems(Refresh.NORMAL) }
-        viewModel.loading.observe(viewLifecycleOwner) { bd.refresher.isRefreshing = it }
+        with(bd.refresher) {
+            setColorSchemeResources(R.color.colorPrimary)
+            setProgressBackgroundColorSchemeResource(R.color.colorBackground)
+            setOnRefreshListener { refreshItems(Refresh.NORMAL) }
+        }
+
         viewModel.dataSource.observe(viewLifecycleOwner) {
             itemsRefreshCallback = { mode ->
                 if (mode == Refresh.FULL) {
@@ -71,6 +79,8 @@ abstract class ItemsListFragment<I : Model, VM : ItemsListFragmentViewModel<I>, 
         if (bd.itemsList.adapter != itemsAdapter) {
             bd.itemsList.swapAdapter(itemsAdapter, false)
         }
+
+        bd.refresher.isRefreshing = false
     }
 
     override fun onItemClicked(item: I) = viewModel.pushRefresh()

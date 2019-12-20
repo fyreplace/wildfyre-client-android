@@ -19,8 +19,9 @@ import app.fyreplace.client.lib.items_list.R
  */
 abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources) : ViewModel(),
     DataLoadingListener {
-    private var firstLoading = true
+    private var mFirstLoading = true
     private var mShouldRefresh = false
+    private var mLoadingCount = 0
     private val mLoading = MutableLiveData<Boolean>()
 
     abstract val factory: ItemsDataSourceFactory<I>
@@ -28,21 +29,23 @@ abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources) : Vie
     val itemsPagedList: LiveData<PagedList<I>> by lazy {
         factory.toLiveData(Config(resources.getInteger(R.integer.post_preview_load_page_size)))
     }
+    val firstLoading: Boolean
+        get() = mFirstLoading.also { if (mFirstLoading) mFirstLoading = false }
     val loading: LiveData<Boolean> = mLoading
     val hasData: LiveData<Boolean> by lazy { itemsPagedList.map { it.size > 0 } }
 
-    override fun onLoadingStart() {
-        if (firstLoading) {
-            firstLoading = false
-            mLoading.postValue(true)
-        }
-    }
+    override fun onLoadingStart() = updateLoading(true)
 
-    override fun onLoadingStop() = mLoading.postValue(false)
+    override fun onLoadingStop() = updateLoading(false)
 
     fun pushRefresh() {
         mShouldRefresh = true
     }
 
     fun popRefresh() = mShouldRefresh.also { mShouldRefresh = false }
+
+    private fun updateLoading(start: Boolean) {
+        mLoadingCount += if (start) 1 else -1
+        mLoading.postValue(mLoadingCount > 0)
+    }
 }
