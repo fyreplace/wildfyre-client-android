@@ -2,7 +2,9 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Author(
     val user: Long,
     val name: String,
@@ -37,6 +39,7 @@ data class Author(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class AuthorPatch(val bio: String) : Model {
     private constructor(parcel: Parcel) : this(parcel.readString()!!)
 

@@ -2,8 +2,10 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 import java.util.*
 
+@JsonClass(generateAdapter = true)
 data class Comment(
     val id: Long,
     val author: Author? = null,
@@ -34,6 +36,7 @@ data class Comment(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class CommentText(val text: String) : Model {
     private constructor(parcel: Parcel) : this(parcel.readString()!!)
 

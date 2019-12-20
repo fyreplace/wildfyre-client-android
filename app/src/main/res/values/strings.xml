@@ -39,9 +39,9 @@
         <item>JetBrains - KotlinX - Apache 2.0</item>
         <item>Google - AndroidX - Apache 2.0</item>
         <item>Google - Material Components - Apache 2.0</item>
-        <item>Google - GSON - Apache 2.0</item>
         <item>Bumptech - Glide - BSD 2-clause</item>
         <item>Square - Retrofit - Apache 2.0</item>
+        <item>Square - Moshi - Apache 2.0</item>
         <item>InsertKoin - Koin - Apache 2.0</item>
         <item>Noties - Markwon - Apache 2.0</item>
     </string-array>
@@ -50,9 +50,9 @@
         <item>https://github.com/Kotlin/kotlinx.coroutines/blob/master/LICENSE.txt</item>
         <item>https://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-master-dev/LICENSE.txt</item>
         <item>https://github.com/material-components/material-components-android/blob/master/LICENSE</item>
-        <item>https://github.com/google/gson/blob/master/LICENSE</item>
         <item>https://github.com/bumptech/glide/blob/master/LICENSE</item>
         <item>https://github.com/square/retrofit/blob/master/LICENSE.txt</item>
+        <item>https://github.com/square/moshi/blob/master/LICENSE.txt</item>
         <item>https://github.com/InsertKoinIO/koin/blob/master/LICENSE</item>
         <item>https://github.com/noties/Markwon/blob/master/LICENSE</item>
     </string-array>

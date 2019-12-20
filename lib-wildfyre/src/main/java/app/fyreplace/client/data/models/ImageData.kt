@@ -2,7 +2,9 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class ImageData(
     val fileName: String,
     val mimeType: String,

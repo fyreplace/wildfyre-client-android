@@ -2,7 +2,9 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Auth(
     val username: String,
     val password: String
@@ -24,6 +26,7 @@ data class Auth(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class AuthToken(val token: String) : Model {
     private constructor(parcel: Parcel) : this(parcel.readString()!!)
 
@@ -36,6 +39,7 @@ data class AuthToken(val token: String) : Model {
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class Registration(
     val username: String,
     val email: String,
@@ -63,6 +67,7 @@ data class Registration(
     }
 }
 
+@JsonClass(generateAdapter = true)
 class RegistrationResult : Model {
     override fun writeToParcel(parcel: Parcel, flags: Int) = Unit
 

@@ -36,12 +36,13 @@ dependencies {
     implementation libraries.androidx.lifecycle.runtimeKtx
     implementation libraries.androidx.lifecycle.viewModelKtx
     implementation libraries.glide.okHttp
-    implementation libraries.gson
     implementation libraries.koin.androidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinx.coroutines
     implementation libraries.markwon.image
     implementation libraries.markwon.imageGlide
-    implementation libraries.retrofit.gson
+    implementation libraries.moshi.kotlin
+    implementation libraries.moshi.adapters
+    implementation libraries.retrofit.moshi
     kapt processors.glide
 }

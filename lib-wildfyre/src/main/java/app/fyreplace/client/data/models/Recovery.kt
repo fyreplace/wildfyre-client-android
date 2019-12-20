@@ -2,8 +2,10 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class PasswordRecoveryStep1(
     val email: String,
     val username: String,
@@ -28,8 +30,9 @@ data class PasswordRecoveryStep1(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class PasswordRecoveryStep2(
-    @SerializedName("new_password")
+    @Json(name = "new_password")
     val newPassword: String,
     val token: String,
     val transaction: String,
@@ -56,6 +59,7 @@ data class PasswordRecoveryStep2(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class RecoverTransaction(val transaction: String) : Model {
     private constructor(parcel: Parcel) : this(parcel.readString()!!)
 
@@ -68,6 +72,7 @@ data class RecoverTransaction(val transaction: String) : Model {
     }
 }
 
+@JsonClass(generateAdapter = true)
 class Reset : Model {
     override fun writeToParcel(parcel: Parcel, flags: Int) = Unit
 
@@ -78,6 +83,7 @@ class Reset : Model {
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class UsernameRecovery(
     val email: String,
     val captcha: String

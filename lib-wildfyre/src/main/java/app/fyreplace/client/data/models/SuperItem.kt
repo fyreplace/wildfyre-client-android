@@ -2,9 +2,11 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 
 @Suppress("UNCHECKED_CAST")
-open class SuperItem<T : Parcelable>(
+@JsonClass(generateAdapter = true)
+class SuperItem<T : Parcelable>(
     val count: Int,
     val next: String? = null,
     val previous: String? = null,
@@ -17,7 +19,7 @@ open class SuperItem<T : Parcelable>(
         parcel.readValue(List::class.java.classLoader) as List<T>
     )
 
-    final override fun writeToParcel(parcel: Parcel, flags: Int) {
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(count)
         parcel.writeString(next)
         parcel.writeString(previous)

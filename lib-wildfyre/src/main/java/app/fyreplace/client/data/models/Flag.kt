@@ -2,7 +2,9 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Flag(
     val reason: Long?,
     val comment: String? = null
@@ -24,6 +26,7 @@ data class Flag(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class Choice(
     val key: Long?,
     val value: String

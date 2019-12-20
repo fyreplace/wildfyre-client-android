@@ -23,7 +23,8 @@ android {
 
 dependencies {
     api libraries.retrofit.base
-    implementation libraries.gson
     implementation libraries.koin.base
     implementation libraries.kotlin
+    implementation libraries.moshi.kotlin
+    kapt processors.moshi
 }

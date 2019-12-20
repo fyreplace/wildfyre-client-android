@@ -2,11 +2,13 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Area(
     val name: String,
-    @SerializedName("displayname")
+    @Json(name = "displayname")
     val displayName: String
 ) : Model {
     private constructor(parcel: Parcel) : this(
@@ -26,6 +28,7 @@ data class Area(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class Reputation(
     val reputation: Int,
     val spread: Int

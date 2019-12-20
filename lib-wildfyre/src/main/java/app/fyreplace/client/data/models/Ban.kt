@@ -2,22 +2,24 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import java.util.*
 
+@JsonClass(generateAdapter = true)
 data class Ban(
     val timestamp: Date,
     val reason: Long,
     val comment: String? = null,
     val expiry: Date,
     val auto: Boolean? = null,
-    @SerializedName("ban_all")
+    @Json(name = "ban_all")
     val banAll: Boolean? = null,
-    @SerializedName("ban_post")
+    @Json(name = "ban_post")
     val banPost: Boolean? = null,
-    @SerializedName("ban_comment")
+    @Json(name = "ban_comment")
     val banComment: Boolean? = null,
-    @SerializedName("ban_flag")
+    @Json(name = "ban_flag")
     val banFlag: Boolean
 ) : Model {
     private constructor(parcel: Parcel) : this(

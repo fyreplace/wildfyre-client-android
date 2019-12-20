@@ -2,7 +2,9 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Account(
     val id: Long,
     val username: String,
@@ -27,6 +29,7 @@ data class Account(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class AccountPatch(
     val email: String? = null,
     val password: String? = null

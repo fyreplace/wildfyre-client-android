@@ -2,7 +2,9 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Notification(
     val area: String,
     val post: NotificationPost,
@@ -49,6 +51,7 @@ data class Notification(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class NotificationPost(
     val id: Long,
     val author: Author? = null,

@@ -2,12 +2,14 @@ package app.fyreplace.client.data.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import java.util.*
 
+@JsonClass(generateAdapter = true)
 data class Draft(
     val text: String,
-    @SerializedName("anonym")
+    @Json(name = "anonym")
     val anonymous: Boolean
 ) : Model {
     private constructor(parcel: Parcel) : this(
@@ -27,6 +29,7 @@ data class Draft(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class DraftNoImageContent(val text: String) : Model {
     val image = null
 
@@ -41,6 +44,7 @@ data class DraftNoImageContent(val text: String) : Model {
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class Image(
     val num: Int,
     val image: String,
@@ -65,17 +69,18 @@ data class Image(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class Post(
     val id: Long,
     val author: Author? = null,
     val text: String,
-    @SerializedName("anonym")
+    @Json(name = "anonym")
     val anonymous: Boolean,
     val subscribed: Boolean,
     val created: Date,
     val active: Boolean,
     val image: String? = null,
-    @SerializedName("additional_images")
+    @Json(name = "additional_images")
     val additionalImages: MutableList<Image> = mutableListOf(),
     val comments: List<Comment>
 ) : Model {
@@ -112,6 +117,7 @@ data class Post(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class Spread(val spread: Boolean) : Model {
     private constructor(parcel: Parcel) : this(parcel.readByte() != 0.toByte())
 
@@ -124,6 +130,7 @@ data class Spread(val spread: Boolean) : Model {
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class Subscription(val subscribed: Boolean) : Model {
     private constructor(parcel: Parcel) : this(parcel.readByte() != 0.toByte())
 
