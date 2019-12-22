@@ -11,6 +11,7 @@ import app.fyreplace.client.lib.items_list.databinding.FragmentItemsListBinding
 import app.fyreplace.client.ui.adapters.EmptyItemsAdapter
 import app.fyreplace.client.ui.adapters.ItemsAdapter
 import app.fyreplace.client.viewmodels.ItemsListFragmentViewModel
+import app.fyreplace.client.viewmodels.Refresh
 
 /**
  * Base class for fragments displaying a list of items.
@@ -21,7 +22,7 @@ abstract class ItemsListFragment<I : Model, VM : ItemsListFragmentViewModel<I>, 
     abstract override val viewModel: VM
     override lateinit var bd: FragmentItemsListBinding
     protected abstract val itemsAdapter: A
-    private var itemsRefreshCallback: ((Refresh) -> Unit)? = null
+    private var itemsRefreshCallback: (() -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +41,9 @@ abstract class ItemsListFragment<I : Model, VM : ItemsListFragmentViewModel<I>, 
             }
 
             setHasFixedSize(true)
-            adapter = itemsAdapter.apply {
+            adapter = EmptyItemsAdapter<I>()
+
+            with(itemsAdapter) {
                 onItemsChangedListener = this@ItemsListFragment
                 onItemClickedListener = this@ItemsListFragment
                 viewModel.itemsPagedList.observe(viewLifecycleOwner) { submitList(it) }
@@ -54,16 +57,26 @@ abstract class ItemsListFragment<I : Model, VM : ItemsListFragmentViewModel<I>, 
         }
 
         viewModel.dataSource.observe(viewLifecycleOwner) {
-            itemsRefreshCallback = { mode ->
-                if (mode == Refresh.FULL) {
-                    bd.itemsList.swapAdapter(EmptyItemsAdapter<I>(), false)
-                }
-
-                it.invalidate()
-            }
+            itemsRefreshCallback = { it.invalidate() }
 
             if (viewModel.popRefresh()) {
                 refreshItems(Refresh.BACKGROUND)
+            }
+        }
+
+        viewModel.refreshMode.observe(viewLifecycleOwner) { mode ->
+            val showingItems = bd.itemsList.adapter == itemsAdapter
+
+            when {
+                mode != Refresh.FULL && !showingItems ->
+                    bd.itemsList.swapAdapter(itemsAdapter, false)
+                mode == Refresh.FULL && showingItems ->
+                    bd.itemsList.swapAdapter(EmptyItemsAdapter<I>(), false)
+            }
+
+            when {
+                mode == null -> bd.refresher.isRefreshing = false
+                mode != Refresh.BACKGROUND -> bd.refresher.isRefreshing = true
             }
         }
 
@@ -76,26 +89,15 @@ abstract class ItemsListFragment<I : Model, VM : ItemsListFragmentViewModel<I>, 
     }
 
     override fun onItemsChanged() {
-        if (bd.itemsList.adapter != itemsAdapter) {
-            bd.itemsList.swapAdapter(itemsAdapter, false)
+        if (viewModel.hasRefreshedItems) {
+            viewModel.setRefreshMode(null)
         }
-
-        bd.refresher.isRefreshing = false
     }
 
     override fun onItemClicked(item: I) = viewModel.pushRefresh()
 
     fun refreshItems(mode: Refresh) = itemsRefreshCallback?.let {
-        if (mode != Refresh.BACKGROUND) {
-            bd.refresher.isRefreshing = true
-        }
-
-        it(mode)
-    }
-
-    enum class Refresh {
-        BACKGROUND,
-        NORMAL,
-        FULL
+        viewModel.setRefreshMode(mode)
+        it()
     }
 }

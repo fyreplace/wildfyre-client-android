@@ -17,6 +17,7 @@ import app.fyreplace.client.ui.widgets.PostDetailsLookup
 import app.fyreplace.client.ui.widgets.PostIdKeyProvider
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 import app.fyreplace.client.viewmodels.PostsFragmentViewModel
+import app.fyreplace.client.viewmodels.Refresh
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**

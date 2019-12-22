@@ -20,9 +20,11 @@ import app.fyreplace.client.lib.items_list.R
 abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources) : ViewModel(),
     DataLoadingListener {
     private var mFirstLoading = true
+    private var mHasRefreshedItems = false
     private var mShouldRefresh = false
     private var mLoadingCount = 0
     private val mLoading = MutableLiveData<Boolean>()
+    private val mRefreshMode = MutableLiveData<Refresh?>()
 
     abstract val factory: ItemsDataSourceFactory<I>
     val dataSource: LiveData<DataSource<Int, I>> by lazy { factory.dataSource }
@@ -31,12 +33,15 @@ abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources) : Vie
     }
     val firstLoading: Boolean
         get() = mFirstLoading.also { if (mFirstLoading) mFirstLoading = false }
+    val hasRefreshedItems: Boolean
+        get() = mHasRefreshedItems.also { if (mHasRefreshedItems) mHasRefreshedItems = false }
     val loading: LiveData<Boolean> = mLoading
+    val refreshMode: LiveData<Refresh?> = mRefreshMode
     val hasData: LiveData<Boolean> by lazy { itemsPagedList.map { it.size > 0 } }
 
     override fun onLoadingStart() = updateLoading(true)
 
-    override fun onLoadingStop() = updateLoading(false)
+    override fun onLoadingStop() = updateLoading(false).also { mHasRefreshedItems = true }
 
     fun pushRefresh() {
         mShouldRefresh = true
@@ -44,8 +49,16 @@ abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources) : Vie
 
     fun popRefresh() = mShouldRefresh.also { mShouldRefresh = false }
 
+    fun setRefreshMode(refresh: Refresh?) = mRefreshMode.postValue(refresh)
+
     private fun updateLoading(start: Boolean) {
         mLoadingCount += if (start) 1 else -1
         mLoading.postValue(mLoadingCount > 0)
     }
+}
+
+enum class Refresh {
+    BACKGROUND,
+    NORMAL,
+    FULL
 }
