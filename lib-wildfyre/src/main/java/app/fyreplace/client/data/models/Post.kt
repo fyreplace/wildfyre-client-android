@@ -78,7 +78,7 @@ data class Post(
     val anonymous: Boolean,
     val subscribed: Boolean,
     val created: Date,
-    val active: Boolean,
+    val active: Boolean? = null,
     val image: String? = null,
     @Json(name = "additional_images")
     val additionalImages: MutableList<Image> = mutableListOf(),
@@ -91,7 +91,11 @@ data class Post(
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         Date(parcel.readLong()),
-        parcel.readByte() != 0.toByte(),
+        when (parcel.readByte().toInt()) {
+            0 -> false
+            1 -> true
+            else -> null
+        },
         parcel.readString(),
         parcel.createTypedArrayList(Image)!!,
         parcel.createTypedArrayList(Comment)!!
@@ -104,7 +108,13 @@ data class Post(
         parcel.writeByte(if (anonymous) 1 else 0)
         parcel.writeByte(if (subscribed) 1 else 0)
         parcel.writeLong(created.time)
-        parcel.writeByte(if (active) 1 else 0)
+        parcel.writeByte(
+            when (active) {
+                false -> 0
+                true -> 1
+                null -> Byte.MAX_VALUE
+            }
+        )
         parcel.writeString(image)
         parcel.writeTypedList(additionalImages)
         parcel.writeTypedList(comments)
