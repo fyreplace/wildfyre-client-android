@@ -41,9 +41,7 @@ abstract class ItemsListFragment<I : Model, VM : ItemsListFragmentViewModel<I>, 
             }
 
             setHasFixedSize(true)
-            adapter = EmptyItemsAdapter<I>()
-
-            with(itemsAdapter) {
+            adapter = itemsAdapter.apply {
                 onItemsChangedListener = this@ItemsListFragment
                 onItemClickedListener = this@ItemsListFragment
                 viewModel.itemsPagedList.observe(viewLifecycleOwner) { submitList(it) }
