@@ -10,15 +10,15 @@ import java.util.*
 data class Ban(
     val timestamp: Date,
     val reason: Long,
-    val comment: String? = null,
+    val comment: String?,
     val expiry: Date,
-    val auto: Boolean? = null,
+    val auto: Boolean?,
     @Json(name = "ban_all")
-    val banAll: Boolean? = null,
+    val banAll: Boolean?,
     @Json(name = "ban_post")
-    val banPost: Boolean? = null,
+    val banPost: Boolean?,
     @Json(name = "ban_comment")
-    val banComment: Boolean? = null,
+    val banComment: Boolean?,
     @Json(name = "ban_flag")
     val banFlag: Boolean
 ) : Model {

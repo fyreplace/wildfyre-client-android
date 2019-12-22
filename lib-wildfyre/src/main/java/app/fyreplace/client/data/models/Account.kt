@@ -8,7 +8,7 @@ import com.squareup.moshi.JsonClass
 data class Account(
     val id: Long,
     val username: String,
-    val email: String? = null
+    val email: String?
 ) : Model {
     private constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -31,8 +31,8 @@ data class Account(
 
 @JsonClass(generateAdapter = true)
 data class AccountPatch(
-    val email: String? = null,
-    val password: String? = null
+    val email: String?,
+    val password: String?
 ) : Model {
     private constructor(parcel: Parcel) : this(
         parcel.readString(),

@@ -54,8 +54,8 @@ data class Notification(
 @JsonClass(generateAdapter = true)
 data class NotificationPost(
     val id: Long,
-    val author: Author? = null,
-    val text: String? = null
+    val author: Author?,
+    val text: String?
 ) : Model {
     private constructor(parcel: Parcel) : this(
         parcel.readLong(),

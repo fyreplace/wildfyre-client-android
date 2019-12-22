@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Flag(
     val reason: Long?,
-    val comment: String? = null
+    val comment: String?
 ) : Model {
     private constructor(parcel: Parcel) : this(
         parcel.readSerializable() as Long?,

@@ -8,8 +8,8 @@ import com.squareup.moshi.JsonClass
 data class Author(
     val user: Long,
     val name: String,
-    val avatar: String? = null,
-    val bio: String? = null,
+    val avatar: String?,
+    val bio: String?,
     val banned: Boolean
 ) : Model {
     private constructor(parcel: Parcel) : this(

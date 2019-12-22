@@ -8,10 +8,10 @@ import java.util.*
 @JsonClass(generateAdapter = true)
 data class Comment(
     val id: Long,
-    val author: Author? = null,
+    val author: Author?,
     val created: Date,
-    val text: String? = null,
-    val image: String? = null
+    val text: String?,
+    val image: String?
 ) : Model {
     private constructor(parcel: Parcel) : this(
         parcel.readLong(),

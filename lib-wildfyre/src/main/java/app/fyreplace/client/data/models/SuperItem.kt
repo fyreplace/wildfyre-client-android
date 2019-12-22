@@ -8,8 +8,8 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 class SuperItem<T : Parcelable>(
     val count: Int,
-    val next: String? = null,
-    val previous: String? = null,
+    val next: String?,
+    val previous: String?,
     val results: List<T>
 ) : Model {
     private constructor(parcel: Parcel) : this(

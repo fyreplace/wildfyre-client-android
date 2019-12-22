@@ -31,7 +31,7 @@ data class Draft(
 
 @JsonClass(generateAdapter = true)
 data class DraftNoImageContent(val text: String) : Model {
-    val image = null
+    val image: Image? = null
 
     private constructor(parcel: Parcel) : this(parcel.readString()!!)
 
@@ -48,7 +48,7 @@ data class DraftNoImageContent(val text: String) : Model {
 data class Image(
     val num: Int,
     val image: String,
-    val comment: String? = null
+    val comment: String?
 ) : Model {
     private constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -72,14 +72,14 @@ data class Image(
 @JsonClass(generateAdapter = true)
 data class Post(
     val id: Long,
-    val author: Author? = null,
+    val author: Author?,
     val text: String,
     @Json(name = "anonym")
     val anonymous: Boolean,
     val subscribed: Boolean,
     val created: Date,
-    val active: Boolean? = null,
-    val image: String? = null,
+    val active: Boolean?,
+    val image: String?,
     @Json(name = "additional_images")
     val additionalImages: MutableList<Image> = mutableListOf(),
     val comments: List<Comment>
