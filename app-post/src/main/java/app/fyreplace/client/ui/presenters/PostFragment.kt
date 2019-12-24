@@ -221,16 +221,12 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         viewModel.subscribed.observe(viewLifecycleOwner) {
             menu.findItem(R.id.action_subscribe).run {
                 setTitle(
-                    if (it)
-                        R.string.post_action_unsubscribe
-                    else
-                        R.string.post_action_subscribe
+                    if (it) R.string.post_action_unsubscribe
+                    else R.string.post_action_subscribe
                 )
                 setIcon(
-                    if (it)
-                        R.drawable.ic_notifications_white
-                    else
-                        R.drawable.ic_notifications_none_white
+                    if (it) R.drawable.ic_notifications_white
+                    else R.drawable.ic_notifications_none_white
                 )
             }
         }
@@ -344,7 +340,9 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
             .setPositiveButton(R.string.post_comment_attach_file_dialog_positive) { _, _ ->
                 selectImage(requestImageFile)
             }
-            .setNeutralButton(R.string.post_comment_attach_file_dialog_neutral) { _, _ -> viewModel.resetCommentImage() }
+            .setNeutralButton(R.string.post_comment_attach_file_dialog_neutral) { _, _ ->
+                viewModel.resetCommentImage()
+            }
             .show()
 
         val image = dialog.findViewById<ImageView>(R.id.image)
@@ -374,10 +372,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
 
     private fun copyComment(comment: Comment) {
         getSystemService(contextWrapper, ClipboardManager::class.java)?.setPrimaryClip(
-            ClipData.newPlainText(
-                getString(R.string.post_comment_copy_label),
-                comment.text
-            )
+            ClipData.newPlainText(getString(R.string.post_comment_copy_label), comment.text)
         )
 
         Toast.makeText(context, getString(R.string.post_comment_copy_toast), Toast.LENGTH_SHORT)

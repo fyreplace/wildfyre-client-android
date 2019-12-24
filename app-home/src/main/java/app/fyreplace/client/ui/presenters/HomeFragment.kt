@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 /**
  * [androidx.fragment.app.Fragment] for showing new posts to the user.
  */
-class HomeFragment : PostFragment(), AreaSelectionFragment {
+class HomeFragment : PostFragment(), AreaSelectingFragment {
     override val viewModel by viewModel<HomeFragmentViewModel>()
     private val areaSelectingViewModel by sharedViewModel<AreaSelectingFragmentViewModel>()
 

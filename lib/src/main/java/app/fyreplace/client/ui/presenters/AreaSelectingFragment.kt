@@ -16,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.getSharedViewModel
 /**
  * Interface for fragments displaying an area selector in their menu.
  */
-interface AreaSelectionFragment : FailureHandler {
+interface AreaSelectingFragment : FailureHandler {
     fun onCreateOptionsMenu(fragment: Fragment, menu: Menu, inflater: MenuInflater) {
         val areaSelectingViewModel = fragment.getSharedViewModel<AreaSelectingFragmentViewModel>()
         val areaSelectorMenuItem = menu.findItem(R.id.action_area_selector)

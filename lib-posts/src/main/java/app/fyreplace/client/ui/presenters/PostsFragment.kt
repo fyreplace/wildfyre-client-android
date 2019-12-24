@@ -24,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * [androidx.fragment.app.Fragment] listing posts.
  */
 abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelection: Boolean) :
-    ItemsListFragment<Post, VM, PostsAdapter>(), AreaSelectionFragment, ActionMode.Callback {
+    ItemsListFragment<Post, VM, PostsAdapter>(), AreaSelectingFragment, ActionMode.Callback {
     private val areaSelectingViewModel by sharedViewModel<AreaSelectingFragmentViewModel>()
     private var settingUp = true
     private var selectionObserver: SelectionObserver? = null
