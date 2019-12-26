@@ -30,8 +30,12 @@ data class Draft(
 }
 
 @JsonClass(generateAdapter = true)
-data class DraftNoImageContent(val text: String) : Model {
-    val image: Image? = null
+data class DraftNoImageContent(val text: String, val image: Image? = null) : Model {
+    init {
+        if (image != null) {
+            throw IllegalArgumentException()
+        }
+    }
 
     private constructor(parcel: Parcel) : this(parcel.readString()!!)
 
