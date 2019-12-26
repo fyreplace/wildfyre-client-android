@@ -17,5 +17,5 @@ class DraftsFragmentViewModel(
 
     override suspend fun delete(id: Long) = draftRepository.deleteDraft(id)
 
-    suspend fun createDraft() = draftRepository.createDraft()
+    suspend fun createDraft() = draftRepository.createDraft(null)
 }

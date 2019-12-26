@@ -47,7 +47,7 @@ class MainActivityViewModel(
 
     fun getTheme(which: Int) = THEMES.getOrElse(which) { SettingsRepository.Themes.AUTOMATIC }
 
-    suspend fun createDraft() = draftRepository.createDraft()
+    suspend fun createDraft(text: String? = null) = draftRepository.createDraft(text)
 
     companion object {
         private const val UI_UPDATE_MILLIS = 60_000L

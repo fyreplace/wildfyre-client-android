@@ -24,12 +24,12 @@ import kotlin.math.sqrt
 
 interface ImageSelector : FailureHandler {
     val contextWrapper: ContextWrapper
-    private val viewModel
-        get() = getViewModel<ImageSelectorViewModel>()
     val requestImageFile
         get() = contextWrapper.resources.getInteger(R.integer.request_image_file)
     val requestImagePhoto
         get() = contextWrapper.resources.getInteger(R.integer.request_image_photo)
+    private val imageSelectorViewModel
+        get() = getViewModel<ImageSelectorViewModel>()
 
     fun startActivityForResult(intent: Intent?, requestCode: Int)
 
@@ -43,7 +43,7 @@ interface ImageSelector : FailureHandler {
         launch {
             when (requestCode) {
                 requestImageFile -> data?.data?.let { useImageUri(it) }
-                requestImagePhoto -> viewModel.pop().let {
+                requestImagePhoto -> imageSelectorViewModel.pop().let {
                     useImageUri(it)
                     DocumentFile.fromSingleUri(contextWrapper, it)?.delete()
                 }
@@ -68,7 +68,7 @@ interface ImageSelector : FailureHandler {
                         Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
                             putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
                             putExtra(MediaStore.EXTRA_SIZE_LIMIT, IMAGE_MAX_FILE_SIZE)
-                            imageUri?.let { viewModel.push(it) } ?: return
+                            imageUri?.let { imageSelectorViewModel.push(it) } ?: return
                         }
                     }
                     else -> return

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import app.fyreplace.client.lib.R
 import kotlinx.coroutines.CancellationException
@@ -16,6 +17,8 @@ import kotlin.coroutines.CoroutineContext
  * Interface implemented by classes that can receive a [Throwable] and propagate it.
  */
 interface FailureHandler : LifecycleOwner {
+    val viewModel: ViewModel
+
     fun getContext(): Context?
 
     fun onFailure(failure: Throwable) {

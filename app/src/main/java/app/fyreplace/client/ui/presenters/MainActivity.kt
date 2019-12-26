@@ -195,6 +195,14 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         }
     }
 
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+
+        if (intent != null) {
+            handleSendIntent(intent)
+        }
+    }
+
     override fun onDestroy() {
         bd.content.toolbar.removeOnLayoutChangeListener(toolbarChangeListener)
         super.onDestroy()
@@ -202,13 +210,10 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        val uri = intent?.data?.path.orEmpty()
 
-        for (pair in REGEX_TO_DIRECTIONS) {
-            pair.key.matchEntire(uri)?.let {
-                findNavController(R.id.navigation_host).navigate(pair.value(it))
-                return
-            }
+        if (intent != null) {
+            handleViewIntent(intent)
+            handleSendIntent(intent)
         }
     }
 
@@ -293,6 +298,38 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
 
     fun onSelectAvatarImageClicked(view: View) {
         (view.tag as? String)?.toInt()?.let { selectImage(it) }
+    }
+
+    private fun handleViewIntent(intent: Intent) {
+        if (intent.action != Intent.ACTION_VIEW) {
+            return
+        }
+
+        for (pair in REGEX_TO_DIRECTIONS) {
+            pair.key.matchEntire(intent.data?.path.orEmpty())?.let {
+                findNavController(R.id.navigation_host).navigate(pair.value(it))
+                return
+            }
+        }
+    }
+
+    private fun handleSendIntent(intent: Intent) {
+        if (intent.action != Intent.ACTION_SEND) {
+            return
+        }
+
+        val navController = findNavController(R.id.navigation_host)
+
+        when {
+            intent.type?.startsWith("text/") == true -> launch {
+                val draft = viewModel.createDraft(intent.getStringExtra(Intent.EXTRA_TEXT))
+                navController.navigate(actionGlobalFragmentDraft(draft = draft))
+            }
+
+            intent.type?.startsWith("image/") == true -> launch {
+                TODO()
+            }
+        }
     }
 
     private fun updateDrawer(destination: NavDestination) {

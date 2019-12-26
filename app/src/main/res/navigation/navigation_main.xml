@@ -88,6 +88,16 @@
             android:name="draft"
             app:argType="app.fyreplace.client.data.models.Post" />
         <argument
+            android:name="text"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="image"
+            android:defaultValue="@null"
+            app:argType="app.fyreplace.client.data.models.ImageData"
+            app:nullable="true" />
+        <argument
             android:name="showHint"
             android:defaultValue="false"
             app:argType="boolean" />

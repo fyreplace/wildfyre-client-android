@@ -20,10 +20,10 @@ class DraftRepository(
         wildFyre.getDrafts(areas.preferredAreaName, size, offset)
     }
 
-    suspend fun createDraft() = withContext(Dispatchers.IO) {
+    suspend fun createDraft(text: String?) = withContext(Dispatchers.IO) {
         wildFyre.postDraft(
             areas.preferredAreaName,
-            Draft(context.getString(R.string.draft_created_text), false)
+            Draft(text ?: context.getString(R.string.draft_created_text), false)
         )
     }
 

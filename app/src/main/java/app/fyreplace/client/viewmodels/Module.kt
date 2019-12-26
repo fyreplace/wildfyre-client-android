@@ -6,6 +6,7 @@ import org.koin.dsl.module
 val viewModelsModule = module {
     viewModel { CentralViewModel(get(), get(), get()) }
     viewModel { MainActivityViewModel(get(), get()) }
+    viewModel { NewDraftActivityViewModel(get()) }
     viewModel { ArchiveFragmentViewModel(get(), get()) }
     viewModel { AreaSelectingFragmentViewModel(get()) }
     viewModel { DraftFragmentViewModel(get(), get()) }
