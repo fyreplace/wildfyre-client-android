@@ -18,7 +18,7 @@ buildscript {
                 lifecycle            : '2.2.0-rc03',
                 multidex             : '2.0.1',
                 navigation           : '2.1.0',
-                paging               : '2.1.0',
+                paging               : '2.1.1',
                 recyclerView         : '1.1.0',
                 recyclerViewSelection: '1.0.0',
                 swipeRefreshLayout   : '1.0.0',
