@@ -15,6 +15,8 @@ class DraftFragmentViewModel(
         private set
     var nextImageSlot = -1
         private set
+    var nextImageSlotIsMain = false
+        private set
     var saved = true
         private set
 
@@ -53,14 +55,16 @@ class DraftFragmentViewModel(
 
     suspend fun publishDraft() = draftRepository.publishDraft(draft.id)
 
-    fun pushImageIdentifier(main: Boolean) {
-        nextImageSlot = if (main) -1 else findNextImageSlot()
+    fun setNextImageIsMain() {
+        nextImageSlotIsMain = true
     }
 
     suspend fun addImage(image: ImageData) {
-        if (nextImageSlot == -1) {
+        if (nextImageSlotIsMain) {
+            nextImageSlotIsMain = false
             draft = draftRepository.setImage(draft.id, draft.text, image)
         } else {
+            nextImageSlot = findNextImageSlot()
             draft.additionalImages.add(
                 draftRepository.addImage(
                     draft.id,

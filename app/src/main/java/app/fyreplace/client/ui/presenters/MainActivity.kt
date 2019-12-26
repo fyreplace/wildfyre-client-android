@@ -294,7 +294,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
 
     override fun onDrawerStateChanged(newState: Int) = Unit
 
-    override fun onImage(image: ImageData) = centralViewModel.setPendingProfileAvatar(image)
+    override suspend fun onImage(image: ImageData) = centralViewModel.setPendingProfileAvatar(image)
 
     fun onSelectAvatarImageClicked(view: View) {
         (view.tag as? String)?.toInt()?.let { selectImage(it) }
@@ -314,7 +314,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
     }
 
     private fun handleSendIntent(intent: Intent) {
-        if (intent.action != Intent.ACTION_SEND) {
+        if (intent.action !in listOf(Intent.ACTION_SEND, Intent.ACTION_SEND_MULTIPLE)) {
             return
         }
 
@@ -327,7 +327,17 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             }
 
             intent.type?.startsWith("image/") == true -> launch {
-                TODO()
+                val uris =
+                    intent.getParcelableExtra<Uri?>(Intent.EXTRA_STREAM)?.let { listOf(it) }
+                        ?: intent.getParcelableArrayListExtra<Uri?>(Intent.EXTRA_STREAM)
+                        ?: intent.clipData?.run { (0..itemCount).map { getItemAt(it).uri } }
+
+                navController.navigate(
+                    actionGlobalFragmentDraft(
+                        draft = viewModel.createDraft(),
+                        imageUris = uris.orEmpty().filterNotNull().toTypedArray()
+                    )
+                )
             }
         }
     }

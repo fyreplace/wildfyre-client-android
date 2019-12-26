@@ -33,7 +33,7 @@ interface ImageSelector : FailureHandler {
 
     fun startActivityForResult(intent: Intent?, requestCode: Int)
 
-    fun onImage(image: ImageData)
+    suspend fun onImage(image: ImageData)
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode != AppCompatActivity.RESULT_OK) {
@@ -79,13 +79,13 @@ interface ImageSelector : FailureHandler {
         )
     }
 
-    private fun imagesDirectory() = File(contextWrapper.filesDir.path, "images")
-
-    private suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.Default) {
+    suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.Default) {
         contextWrapper.contentResolver.openInputStream(uri).use {
             it?.run { useBytes(readBytes(), contextWrapper.contentResolver.getType(uri)!!) }
         }
     }
+
+    private fun imagesDirectory() = File(contextWrapper.filesDir.path, "images")
 
     private suspend fun useBytes(bytes: ByteArray, mimeType: String) {
         var compressedBytes = bytes

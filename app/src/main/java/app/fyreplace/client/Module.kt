@@ -7,6 +7,8 @@ import org.koin.dsl.module
 val applicationModule = module {
     single { get<Context>().resources }
 
+    single { get<Context>().contentResolver }
+
     single {
         get<Context>().run {
             getSharedPreferences(

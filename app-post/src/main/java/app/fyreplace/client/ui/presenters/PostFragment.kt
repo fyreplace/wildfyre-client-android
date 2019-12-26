@@ -307,7 +307,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
                 .apply { takeUnless { it }?.run { toggleComments() } }
         } ?: true
 
-    override fun onImage(image: ImageData) = viewModel.setCommentImage(image)
+    override suspend fun onImage(image: ImageData) = viewModel.setCommentImage(image)
 
     open fun canUseFragmentArgs() = arguments != null
 

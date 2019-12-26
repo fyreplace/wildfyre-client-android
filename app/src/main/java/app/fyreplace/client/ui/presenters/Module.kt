@@ -66,6 +66,7 @@ val fragmentsModule = module {
         val args = fragment.navArgs<DraftFragmentArgs>().value
         object : DraftFragment.Args {
             override val draft = args.draft
+            override val imageUris = args.imageUris?.asList().orEmpty()
             override val showHint = args.showHint
         }
     }

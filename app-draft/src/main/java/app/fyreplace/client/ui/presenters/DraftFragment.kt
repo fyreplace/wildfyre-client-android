@@ -1,6 +1,7 @@
 package app.fyreplace.client.ui.presenters
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -45,7 +46,20 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         }
 
         viewModel.setDraft(fragmentArgs.draft)
-        launch { viewModel.cleanUpDraft() }
+
+        launch {
+            viewModel.cleanUpDraft()
+
+            when (fragmentArgs.imageUris.size) {
+                0 -> return@launch
+                1 -> viewModel.setNextImageIsMain()
+                else -> bd.editor.editor.setText("")
+            }
+
+            for (uri in fragmentArgs.imageUris) {
+                useImageUri(uri)
+            }
+        }
 
         if (fragmentArgs.showHint) launch {
             Toast.makeText(
@@ -208,51 +222,49 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         else -> false
     }
 
-    override fun onImage(image: ImageData) {
-        launch {
-            val snackbar = Snackbar
-                .make(
-                    bd.editor.bottomAppBar,
-                    R.string.draft_bottom_action_images_snackbar,
-                    Snackbar.LENGTH_INDEFINITE
-                )
-                .setAction(R.string.cancel) { cancel() }
-                .setAnchorView(bd.editor.bottomAppBar)
-                .apply {
-                    animationMode = Snackbar.ANIMATION_MODE_SLIDE
-                    show()
-                }
-
-            try {
-                viewModel.addImage(image)
-
-                if (!isActive) {
-                    return@launch
-                }
-
-                if (viewModel.nextImageSlot == -1) {
-                    updatePreview()
-                } else {
-                    bd.editor.editor.editableText?.insert(
-                        bd.editor.editor.selectionStart,
-                        "[img: ${viewModel.nextImageSlot}]"
-                    )
-                }
-            } catch (e: HttpException) {
-                if (e.code() == 404) {
-                    Toast.makeText(
-                        contextWrapper,
-                        R.string.draft_failure_images,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    throw e
-                }
-            } finally {
-                snackbar.dismiss()
+    override suspend fun onImage(image: ImageData) = launch {
+        val snackbar = Snackbar
+            .make(
+                bd.editor.bottomAppBar,
+                R.string.draft_bottom_action_images_snackbar,
+                Snackbar.LENGTH_INDEFINITE
+            )
+            .setAction(R.string.cancel) { cancel() }
+            .setAnchorView(bd.editor.bottomAppBar)
+            .apply {
+                animationMode = Snackbar.ANIMATION_MODE_SLIDE
+                show()
             }
+
+        try {
+            viewModel.addImage(image)
+
+            if (!isActive) {
+                return@launch
+            }
+
+            if (viewModel.nextImageSlot == -1) {
+                updatePreview()
+            } else {
+                bd.editor.editor.editableText?.insert(
+                    bd.editor.editor.selectionStart,
+                    "[img: ${viewModel.nextImageSlot}]\n"
+                )
+            }
+        } catch (e: HttpException) {
+            if (e.code() == 404) {
+                Toast.makeText(
+                    contextWrapper,
+                    R.string.draft_failure_images,
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                throw e
+            }
+        } finally {
+            snackbar.dismiss()
         }
-    }
+    }.join()
 
     private fun updatePreview() {
         markdownAdapter.setMarkdown(
@@ -286,7 +298,10 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private fun addImage(main: Boolean) {
-        viewModel.pushImageIdentifier(main)
+        if (main) {
+            viewModel.setNextImageIsMain()
+        }
+
         var items = resources.getStringArray(R.array.draft_image_sources)
 
         if (main && viewModel.draft.image != null) {
@@ -367,6 +382,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     interface Args {
         val draft: Post
+        val imageUris: List<Uri>
         val showHint: Boolean
     }
 
