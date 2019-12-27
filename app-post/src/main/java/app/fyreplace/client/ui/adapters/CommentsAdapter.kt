@@ -35,7 +35,6 @@ class CommentsAdapter(
     private var data: List<CommentWrapper> = listOf()
     private val recyclers: MutableList<RecyclerView> = mutableListOf()
     private var onCommentsChangedAction: (suspend () -> Unit)? = null
-    var selfId: Long = -1
     var authorId: Long = -1
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {

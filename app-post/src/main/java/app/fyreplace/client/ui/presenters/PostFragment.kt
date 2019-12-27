@@ -96,7 +96,6 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
             viewModel.setIsOwnPost(fragmentArgs.ownPost)
         }
 
-        centralViewModel.userId.observe(viewLifecycleOwner) { commentsAdapter.selfId = it }
         viewModel.post.observe(viewLifecycleOwner) { centralViewModel.setPost(it) }
         viewModel.contentLoaded.observe(viewLifecycleOwner) { cbd.commentNew.isEnabled = it }
         viewModel.authorId.observe(viewLifecycleOwner) { commentsAdapter.authorId = it }
