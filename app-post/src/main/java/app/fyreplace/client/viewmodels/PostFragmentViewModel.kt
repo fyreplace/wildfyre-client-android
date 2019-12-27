@@ -20,11 +20,11 @@ open class PostFragmentViewModel(
     var toolbarHasExpandedView = false
     var postAreaName = areaRepository.preferredAreaName
         private set
-    var postId = -1L
+    var postId = Long.MIN_VALUE
         private set
     protected val mHasContent = MutableLiveData<Boolean>()
     protected val mAllowSpread = MutableLiveData<Boolean>()
-    private val mPost = MutableLiveData<Post>()
+    private val mPost = MutableLiveData<Post?>()
     private val mIsOwnPost = MutableLiveData<Boolean>()
     private val mSubscribed = MediatorLiveData<Boolean>()
     private val mMarkdownContent = MediatorLiveData<String>()
