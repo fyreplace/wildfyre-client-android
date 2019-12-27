@@ -97,9 +97,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         }
 
         centralViewModel.userId.observe(viewLifecycleOwner) { commentsAdapter.selfId = it }
-        viewModel.post.observe(viewLifecycleOwner) {
-            centralViewModel.setPost(it)
-        }
+        viewModel.post.observe(viewLifecycleOwner) { centralViewModel.setPost(it) }
         viewModel.contentLoaded.observe(viewLifecycleOwner) { cbd.commentNew.isEnabled = it }
         viewModel.authorId.observe(viewLifecycleOwner) { commentsAdapter.authorId = it }
         viewModel.markdownContent.observe(viewLifecycleOwner) {
@@ -240,16 +238,18 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
             }
         }
 
-        val flagItem = menu.findItem(R.id.action_flag)
         val deleteItem = menu.findItem(R.id.action_delete)
+        val flagItem = menu.findItem(R.id.action_flag)
         viewModel.isOwnPost.observe(viewLifecycleOwner) {
-            deleteItem.isVisible = it
-            flagItem.isVisible = !it
+            val shouldShowItems = !viewModel.toolbarHasExpandedView
+            deleteItem.isVisible = it && shouldShowItems
+            flagItem.isVisible = !it && shouldShowItems
         }
         viewModel.authorId.observe(viewLifecycleOwner) {
+            val shouldShowItems = !viewModel.toolbarHasExpandedView
             val isOwnPost = it == centralViewModel.userId.value
-            deleteItem.isVisible = isOwnPost
-            flagItem.isVisible = !isOwnPost
+            deleteItem.isVisible = isOwnPost && shouldShowItems
+            flagItem.isVisible = !isOwnPost && shouldShowItems
         }
 
         val postMenuItems =

@@ -21,8 +21,8 @@ android {
         minSdkVersion configuration.minSdkVersion
         targetSdkVersion configuration.targetSdkVersion
         multiDexEnabled true
-        versionCode 5003
-        versionName "0.5.3"
+        versionCode 5004
+        versionName "0.5.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

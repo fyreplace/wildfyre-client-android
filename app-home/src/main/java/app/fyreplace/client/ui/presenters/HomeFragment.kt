@@ -70,6 +70,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
 
                 private fun switchItems(showAreaStuff: Boolean) {
                     centralViewModel.setNotificationBadgeVisible(!showAreaStuff)
+                    viewModel.toolbarHasExpandedView = showAreaStuff
                     menu.forEach {
                         it.isVisible = it.itemId != R.id.action_delete
                             && areaStuff.contains(it.itemId) == showAreaStuff
