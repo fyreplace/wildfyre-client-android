@@ -13,12 +13,10 @@ class DraftFragmentViewModel(
 ) : ViewModel() {
     lateinit var draft: Post
         private set
-    var nextImageSlot = -1
-        private set
-    var nextImageSlotIsMain = false
-        private set
     var saved = true
         private set
+    var nextImageSlotIsMain = false
+    private val nextImageSlots = mutableListOf<Int>()
 
     suspend fun getPreferredArea() =
         areaRepository.getAreas().firstOrNull { it.name == areaRepository.preferredAreaName }
@@ -55,23 +53,19 @@ class DraftFragmentViewModel(
 
     suspend fun publishDraft() = draftRepository.publishDraft(draft.id)
 
-    fun setNextImageIsMain() {
-        nextImageSlotIsMain = true
-    }
+    suspend fun addImage(image: ImageData) = if (nextImageSlotIsMain) {
+        draft = draftRepository.setImage(draft.id, draft.text, image)
+        -1
+    } else {
+        val nextImageSlot = findNextImageSlot()
 
-    suspend fun addImage(image: ImageData) {
-        if (nextImageSlotIsMain) {
-            nextImageSlotIsMain = false
-            draft = draftRepository.setImage(draft.id, draft.text, image)
-        } else {
-            nextImageSlot = findNextImageSlot()
-            draft.additionalImages.add(
-                draftRepository.addImage(
-                    draft.id,
-                    image,
-                    nextImageSlot
-                )
-            )
+        try {
+            nextImageSlots.add(nextImageSlot)
+            val img = draftRepository.addImage(draft.id, image, nextImageSlot)
+            draft.additionalImages.add(img)
+            img.num
+        } finally {
+            nextImageSlots.remove(nextImageSlot)
         }
     }
 
@@ -79,6 +73,6 @@ class DraftFragmentViewModel(
         draft = draftRepository.removeImage(draft.id, draft.text)
     }
 
-    private fun findNextImageSlot() = draft.additionalImages.map { it.num }
+    private fun findNextImageSlot() = (draft.additionalImages.map { it.num } + nextImageSlots)
         .let { images -> (0..images.size).first { it !in images } }
 }

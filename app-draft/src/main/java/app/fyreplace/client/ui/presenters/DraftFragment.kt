@@ -49,14 +49,16 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
         launch {
             viewModel.cleanUpDraft()
+            var useMainSlot = false
 
             when (fragmentArgs.imageUris.size) {
                 0 -> return@launch
-                1 -> viewModel.setNextImageIsMain()
+                1 -> useMainSlot = true
                 else -> bd.editor.editor.setText("")
             }
 
             for (uri in fragmentArgs.imageUris) {
+                viewModel.nextImageSlotIsMain = useMainSlot
                 useImageUri(uri)
             }
         }
@@ -237,18 +239,18 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             }
 
         try {
-            viewModel.addImage(image)
+            val imageSlot = viewModel.addImage(image)
 
             if (!isActive) {
                 return@launch
             }
 
-            if (viewModel.nextImageSlot == -1) {
+            if (imageSlot == -1) {
                 updatePreview()
             } else {
                 bd.editor.editor.editableText?.insert(
                     bd.editor.editor.selectionStart,
-                    "[img: ${viewModel.nextImageSlot}]\n"
+                    "[img: ${imageSlot}]\n"
                 )
             }
         } catch (e: HttpException) {
@@ -276,7 +278,6 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     private suspend fun saveDraft(anonymous: Boolean = false, showConfirmation: Boolean = false) {
         check(!bd.editor.editor.text.isNullOrBlank()) { getString(R.string.draft_action_save_empty_toast) }
-
         viewModel.saveDraft(bd.editor.editor.text.toString(), anonymous)
 
         if (showConfirmation) {
@@ -298,10 +299,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     private fun addImage(main: Boolean) {
-        if (main) {
-            viewModel.setNextImageIsMain()
-        }
-
+        viewModel.nextImageSlotIsMain = main
         var items = resources.getStringArray(R.array.draft_image_sources)
 
         if (main && viewModel.draft.image != null) {
