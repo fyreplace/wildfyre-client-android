@@ -12,7 +12,6 @@ class DraftFragmentViewModel(
     private val areaRepository: AreaRepository
 ) : ViewModel() {
     lateinit var draft: Post
-        private set
     var saved = true
         private set
     var nextImageSlotIsMain = false
@@ -20,10 +19,6 @@ class DraftFragmentViewModel(
 
     suspend fun getPreferredArea() =
         areaRepository.getAreas().firstOrNull { it.name == areaRepository.preferredAreaName }
-
-    fun setDraft(d: Post) {
-        draft = d
-    }
 
     fun dirtyDraft() {
         saved = false

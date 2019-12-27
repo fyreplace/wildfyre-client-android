@@ -8,16 +8,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class PostRepository(private val wildFyre: WildFyreService, private val areas: AreaRepository) {
+    suspend fun getNextPosts(limit: Int) = withContext(Dispatchers.IO) {
+        wildFyre.getNextPosts(areas.preferredAreaName, limit)
+    }
+
     suspend fun getArchive(offset: Int, size: Int) = withContext(Dispatchers.IO) {
-        wildFyre.getPosts(areas.preferredAreaName, size, offset)
+        wildFyre.getSubscribedPosts(areas.preferredAreaName, size, offset)
     }
 
     suspend fun getOwnPosts(offset: Int, size: Int) = withContext(Dispatchers.IO) {
         wildFyre.getOwnPosts(areas.preferredAreaName, size, offset)
-    }
-
-    suspend fun getNextPosts(limit: Int) = withContext(Dispatchers.IO) {
-        wildFyre.getNextPosts(areas.preferredAreaName, limit)
     }
 
     suspend fun getPost(areaName: String, id: Long) = withContext(Dispatchers.IO) {

@@ -109,13 +109,6 @@ interface WildFyreService {
 
     // Notifications
 
-    @GET("/areas/{areaName}/subscribed/")
-    suspend fun getPosts(
-        @Path("areaName") areaName: String,
-        @Query("limit") limit: Int,
-        @Query("offset") offset: Int
-    ): SuperPost
-
     @GET("/areas/notification/")
     suspend fun getNotifications(
         @Query("limit") limit: Int,
@@ -144,6 +137,13 @@ interface WildFyreService {
     suspend fun getNextPosts(
         @Path("areaName") areaName: String,
         @Query("limit") limit: Int
+    ): SuperPost
+
+    @GET("/areas/{areaName}/subscribed/")
+    suspend fun getSubscribedPosts(
+        @Path("areaName") areaName: String,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
     ): SuperPost
 
     @GET("/areas/{areaName}/own/")

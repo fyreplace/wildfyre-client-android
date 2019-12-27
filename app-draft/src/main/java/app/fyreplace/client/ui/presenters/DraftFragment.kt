@@ -45,7 +45,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             return
         }
 
-        viewModel.setDraft(fragmentArgs.draft)
+        viewModel.draft = fragmentArgs.draft
 
         launch {
             viewModel.cleanUpDraft()
@@ -209,19 +209,23 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         return false
     }
 
-    override fun onMenuItemClick(item: MenuItem) = when (item.itemId) {
-        R.id.action_title -> addTitle().let { true }
-        R.id.action_list_bulleted -> addList(false).let { true }
-        R.id.action_list_numbered -> addList(true).let { true }
-        R.id.action_main_image -> addImage(true).let { true }
-        R.id.action_images -> addImage(false).let { true }
-        R.id.action_youtube -> addYoutubeLink().let { true }
-        R.id.action_bold -> surroundSelectionWith("**", "**").let { true }
-        R.id.action_italic -> surroundSelectionWith("_", "_").let { true }
-        R.id.action_strikethrough -> surroundSelectionWith("~~", "~~").let { true }
-        R.id.action_code -> surroundSelectionWith("`", "`").let { true }
-        R.id.action_link -> surroundSelectionWithLink().let { true }
-        else -> false
+    override fun onMenuItemClick(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_title -> addTitle()
+            R.id.action_list_bulleted -> addList(false)
+            R.id.action_list_numbered -> addList(true)
+            R.id.action_main_image -> addImage(true)
+            R.id.action_images -> addImage(false)
+            R.id.action_youtube -> addYoutubeLink()
+            R.id.action_bold -> surroundSelectionWith("**", "**")
+            R.id.action_italic -> surroundSelectionWith("_", "_")
+            R.id.action_strikethrough -> surroundSelectionWith("~~", "~~")
+            R.id.action_code -> surroundSelectionWith("`", "`")
+            R.id.action_link -> surroundSelectionWithLink()
+            else -> return false
+        }
+
+        return true
     }
 
     override suspend fun onImage(image: ImageData) = launch {
