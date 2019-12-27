@@ -21,7 +21,9 @@ import app.fyreplace.client.ui.*
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
 import com.google.android.material.snackbar.Snackbar
 import io.noties.markwon.recycler.MarkwonAdapter
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.isActive
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,6 +39,9 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     private val markdown by lazyMarkdown()
     private val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
     private var allowDirtyingDraft = false
+    private var snackbar: Snackbar? = null
+    private var snackbarCount = 0
+    private var snackbarBatchCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,16 +54,17 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
         launch {
             viewModel.cleanUpDraft()
-            var useMainSlot = false
 
-            when (fragmentArgs.imageUris.size) {
+            when (val imageNumber = fragmentArgs.imageUris.size) {
                 0 -> return@launch
-                1 -> useMainSlot = true
-                else -> bd.editor.editor.setText("")
+                1 -> viewModel.nextImageSlotIsMain = true
+                else -> {
+                    snackbarBatchCount = imageNumber
+                    bd.editor.editor.setText("")
+                }
             }
 
             for (uri in fragmentArgs.imageUris) {
-                viewModel.nextImageSlotIsMain = useMainSlot
                 useImageUri(uri)
             }
         }
@@ -228,26 +234,14 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         return true
     }
 
-    override suspend fun onImage(image: ImageData) = launch {
-        val snackbar = Snackbar
-            .make(
-                bd.editor.bottomAppBar,
-                R.string.draft_bottom_action_images_snackbar,
-                Snackbar.LENGTH_INDEFINITE
-            )
-            .setAction(R.string.cancel) { cancel() }
-            .setAnchorView(bd.editor.bottomAppBar)
-            .apply {
-                animationMode = Snackbar.ANIMATION_MODE_SLIDE
-                show()
-            }
-
+    override suspend fun onImage(image: ImageData) = coroutineScope {
         try {
+            updateCancellingSnackbar(true)
             viewModel.cleanUpDraft()
             val imageSlot = viewModel.addImage(image)
 
             if (!isActive) {
-                return@launch
+                return@coroutineScope
             }
 
             if (imageSlot == -1) {
@@ -269,9 +263,9 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                 throw e
             }
         } finally {
-            snackbar.dismiss()
+            updateCancellingSnackbar(false)
         }
-    }.join()
+    }
 
     private fun updatePreview() {
         markdownAdapter.setMarkdown(
@@ -375,6 +369,62 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     private fun surroundSelectionWith(start: String, end: String) {
         bd.editor.editor.run {
             editableText?.insert(selectionStart, start)?.insert(selectionEnd, end)
+        }
+    }
+
+    private fun makeCancellingSnackbar() = Snackbar
+        .make(
+            bd.editor.bottomAppBar,
+            R.string.draft_bottom_action_images_snackbar,
+            Snackbar.LENGTH_INDEFINITE
+        )
+        .setAnchorView(bd.editor.bottomAppBar)
+        .apply {
+            animationMode = Snackbar.ANIMATION_MODE_SLIDE
+            show()
+        }
+
+    private fun CoroutineScope.updateCancellingSnackbar(increaseCount: Boolean) {
+        if (increaseCount) {
+            if (snackbarBatchCount > 0) {
+                if (snackbarCount != snackbarBatchCount) {
+                    snackbarCount = snackbarBatchCount
+                }
+
+                snackbarBatchCount--
+            } else {
+                snackbarCount++
+            }
+
+            if (snackbar == null) {
+                snackbar = makeCancellingSnackbar()
+            }
+        } else {
+            if (snackbarCount > 0) {
+                snackbarCount--
+            }
+
+            if (snackbarCount == 0) {
+                snackbar?.dismiss()
+                snackbar = null
+            }
+        }
+
+        if (!increaseCount || snackbarBatchCount > 0) {
+            snackbar?.setText(
+                resources.getQuantityString(
+                    R.plurals.draft_bottom_action_images_snackbar_multiple,
+                    snackbarCount,
+                    snackbarCount
+                )
+            )
+        }
+
+        snackbar?.setAction(R.string.cancel) {
+            snackbar = null
+            snackbarCount = 0
+            snackbarBatchCount = 0
+            cancel()
         }
     }
 

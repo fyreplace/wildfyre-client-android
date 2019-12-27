@@ -28,6 +28,10 @@
     <string name="draft_bottom_action_images_dialog_photo">Photo</string>
     <string name="draft_bottom_action_images_dialog_remove">Remove</string>
     <string name="draft_bottom_action_images_snackbar">Uploading image…</string>
+    <plurals name="draft_bottom_action_images_snackbar_multiple">
+        <item quantity="one">Uploading %1$d image…</item>
+        <item quantity="other">Uploading %1$d images…</item>
+    </plurals>
     <string name="draft_bottom_action_youtube">Youtube video</string>
     <string name="draft_bottom_action_youtube_dialog_title">Add a YouTube link</string>
     <string name="draft_bottom_action_youtube_toast">This is not a YouTube link</string>
