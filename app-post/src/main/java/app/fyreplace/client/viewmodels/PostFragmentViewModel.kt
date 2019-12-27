@@ -17,6 +17,7 @@ open class PostFragmentViewModel(
     private val commentRepository: CommentRepository,
     private val postRepository: PostRepository
 ) : ViewModel() {
+    var toolbarHasExpandedView = false
     var postAreaName = areaRepository.preferredAreaName
         private set
     var postId = -1L
@@ -69,9 +70,11 @@ open class PostFragmentViewModel(
     }
 
     fun setPost(post: Post?) {
-        if (post?.id != postId) {
+        val newPostId = post?.id ?: -1
+
+        if (newPostId != postId) {
             postAreaName = areaRepository.preferredAreaName
-            postId = post?.id ?: -1
+            postId = newPostId
             mPost.postValue(post)
             resetNewComment()
         }
