@@ -243,6 +243,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             }
 
         try {
+            viewModel.cleanUpDraft()
             val imageSlot = viewModel.addImage(image)
 
             if (!isActive) {

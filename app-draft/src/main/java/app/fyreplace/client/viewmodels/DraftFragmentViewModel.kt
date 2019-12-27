@@ -24,10 +24,10 @@ class DraftFragmentViewModel(
         saved = false
     }
 
-    suspend fun cleanUpDraft(content: String = draft.text) {
+    suspend fun cleanUpDraft() {
         val usedSlots = mutableSetOf<Int>()
 
-        for (match in IMAGE_REGEX.findAll(content)) {
+        for (match in IMAGE_REGEX.findAll(draft.text)) {
             usedSlots.add(match.groupValues[1].toInt())
         }
 
@@ -39,9 +39,9 @@ class DraftFragmentViewModel(
     }
 
     suspend fun saveDraft(content: String, anonymous: Boolean) {
-        cleanUpDraft(content)
         draft = draftRepository.saveDraft(draft.id, content, anonymous)
         saved = true
+        cleanUpDraft()
     }
 
     suspend fun deleteDraft() = draftRepository.deleteDraft(draft.id)
