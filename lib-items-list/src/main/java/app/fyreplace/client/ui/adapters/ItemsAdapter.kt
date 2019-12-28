@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.paging.PagedList
@@ -17,6 +16,7 @@ import app.fyreplace.client.AppGlide
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.lib.items_list.R
 import app.fyreplace.client.ui.PostPlugin
+import app.fyreplace.client.ui.loadAvatar
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -94,21 +94,19 @@ abstract class ItemsAdapter<I>(
             holder.authorName.text =
                 if (showAuthors) itemData.author?.name
                 else context.getString(R.string.items_author_anonymous)
-            AppGlide.with(context)
-                .load(
-                    if (showAuthors) itemData.author?.avatar ?: R.drawable.default_avatar
-                    else ContextCompat.getDrawable(
-                        context,
-                        R.drawable.ic_visibility_off
+
+            if (showAuthors) {
+                AppGlide.with(context)
+                    .loadAvatar(context, itemData.author)
+                    .transform(
+                        CenterCrop(),
+                        RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.list_item_author_picture_rounding))
                     )
-                )
-                .placeholder(android.R.color.transparent)
-                .transform(
-                    CenterCrop(),
-                    RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.list_item_author_picture_rounding))
-                )
-                .transition(imageTransition)
-                .into(holder.authorPicture)
+                    .transition(imageTransition)
+                    .into(holder.authorPicture)
+            } else {
+                holder.authorPicture.setImageResource(R.drawable.ic_visibility_off)
+            }
         }
 
         if (holder.image.isVisible) {

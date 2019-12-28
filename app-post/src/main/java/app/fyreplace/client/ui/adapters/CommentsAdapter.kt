@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.app.post.R
 import app.fyreplace.client.data.models.Comment
+import app.fyreplace.client.ui.loadAvatar
 import app.fyreplace.client.ui.presenters.PostFragment
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -77,8 +78,7 @@ class CommentsAdapter(
 
             holder.authorName.text = authorName.toSpanned()
             AppGlide.with(context)
-                .load(author.avatar ?: R.drawable.default_avatar)
-                .placeholder(android.R.color.transparent)
+                .loadAvatar(context, author)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.comment_author_picture_rounding))

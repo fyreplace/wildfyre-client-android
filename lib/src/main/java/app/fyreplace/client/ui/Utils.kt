@@ -1,12 +1,16 @@
 package app.fyreplace.client.ui
 
 import android.content.ClipDescription
+import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import app.fyreplace.client.GlideRequests
+import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.Post
+import app.fyreplace.client.lib.R
 import io.noties.markwon.Markwon
 import io.noties.markwon.core.CorePlugin
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
@@ -44,6 +48,11 @@ fun Post.toMarkdown(content: String = text) =
         val image = additionalImages.firstOrNull { img -> img.num == imageNum }
         return@replace image?.run { "\n![${image.comment}](${image.image})\n" } ?: it.groupValues[0]
     }
+
+fun GlideRequests.loadAvatar(context: Context, author: Author?) =
+    load(if (author?.banned != true) author?.avatar ?: R.drawable.default_avatar else "")
+        .error(context.getDrawable(if (author?.banned == true) R.drawable.ic_block else R.drawable.ic_image))
+        .placeholder(android.R.color.transparent)
 
 fun getShareIntent(text: CharSequence, title: CharSequence): Intent =
     Intent.createChooser(

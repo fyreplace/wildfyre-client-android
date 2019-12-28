@@ -10,6 +10,7 @@ import app.fyreplace.client.app.user.databinding.FragmentUserBinding
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.ui.getShareIntent
 import app.fyreplace.client.ui.lazyMarkdown
+import app.fyreplace.client.ui.loadAvatar
 import app.fyreplace.client.ui.userShareUrl
 import app.fyreplace.client.viewmodels.UserFragmentViewModel
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -58,8 +59,7 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
             }
 
             AppGlide.with(view)
-                .load(it.avatar ?: R.drawable.default_avatar)
-                .placeholder(android.R.color.transparent)
+                .loadAvatar(requireContext(), it)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(resources.getDimensionPixelOffset(R.dimen.user_picture_rounding))

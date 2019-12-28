@@ -38,8 +38,10 @@ import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalF
 import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentUser
 import app.fyreplace.client.app.R
 import app.fyreplace.client.app.databinding.*
+import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.ui.ImageSelector
+import app.fyreplace.client.ui.loadAvatar
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import com.bumptech.glide.load.MultiTransformation
@@ -378,33 +380,18 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
 
         val size = resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_size)
 
-        if (info.author != null) {
+        info.author?.let {
             AppGlide.with(this)
-                .load(info.author?.avatar ?: R.drawable.default_avatar)
-                .placeholder(android.R.color.transparent)
+                .loadAvatar(this, it)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_rounding))
                 )
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .into(object : CustomTarget<Drawable>(size, size) {
-                    override fun onLoadCleared(placeholder: Drawable?) = Unit
+                .into(ToolbarTarget(it, size))
+        }
 
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable>?
-                    ) {
-                        bd.content.toolbar.logo = resource
-                        bd.content.toolbar.children
-                            .filterIsInstance<ImageView>()
-                            .find { it.drawable == resource }
-                            ?.setOnClickListener {
-                                findNavController(R.id.navigation_host)
-                                    .navigate(actionGlobalFragmentUser(author = info.author))
-                            }
-                    }
-                })
-        } else {
+        if (info.author == null) {
             bd.content.toolbar.logo = null
         }
     }
@@ -527,6 +514,38 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
                 actionGlobalFragmentUser(userId = result.groupValues[1].toLong())
             }
         )
+    }
+
+    private inner class ToolbarTarget(private val author: Author, private val size: Int) :
+        CustomTarget<Drawable>(size, size) {
+        override fun onLoadCleared(placeholder: Drawable?) = Unit
+
+        override fun onLoadFailed(errorDrawable: Drawable?) {
+            if (errorDrawable != null) {
+                load(errorDrawable)
+            }
+        }
+
+        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) =
+            load(resource)
+
+        private fun load(drawable: Drawable) {
+            bd.content.toolbar.logo = drawable
+            bd.content.toolbar.children
+                .filterIsInstance<ImageView>()
+                .find { it.drawable == drawable }
+                ?.run {
+                    updateLayoutParams<ViewGroup.LayoutParams> {
+                        width = size
+                        height = size
+                    }
+
+                    setOnClickListener {
+                        findNavController(R.id.navigation_host)
+                            .navigate(actionGlobalFragmentUser(author = author))
+                    }
+                }
+        }
     }
 
     private class OnToolbarChangeListener(val toolbar: Toolbar) : View.OnLayoutChangeListener {
