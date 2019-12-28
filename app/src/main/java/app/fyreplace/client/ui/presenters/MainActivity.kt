@@ -57,7 +57,7 @@ import java.io.ByteArrayInputStream
  * The central activity that hosts the different fragments.
  */
 class MainActivity : FailureHandlingActivity(R.layout.activity_main),
-    NavController.OnDestinationChangedListener, DrawerLayout.DrawerListener, ImageSelector {
+    NavController.OnDestinationChangedListener, ImageSelector {
     override val viewModel by viewModel<MainActivityViewModel>()
     override val contextWrapper = this
     override lateinit var bd: ActivityMainBinding
@@ -157,8 +157,6 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         }
 
         setSupportActionBar(bd.content.toolbar)
-        bd.drawerLayout.addDrawerListener(this)
-
         appBarConfiguration = AppBarConfiguration(TOP_LEVEL_DESTINATIONS, bd.drawerLayout)
         toolbarInset = bd.content.toolbar.contentInsetStartWithNavigation
 
@@ -285,16 +283,6 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         super.onSupportActionModeFinished(mode)
         findNavController(R.id.navigation_host).currentDestination?.let { updateDrawer(it) }
     }
-
-    override fun onDrawerSlide(drawerView: View, slideOffset: Float) = Unit
-
-    override fun onDrawerOpened(drawerView: View) {
-        launch { centralViewModel.updateNotificationCount() }
-    }
-
-    override fun onDrawerClosed(drawerView: View) = Unit
-
-    override fun onDrawerStateChanged(newState: Int) = Unit
 
     override suspend fun onImage(image: ImageData) = centralViewModel.setPendingProfileAvatar(image)
 
