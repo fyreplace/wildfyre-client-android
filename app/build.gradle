@@ -20,11 +20,9 @@ android {
         applicationId "app.fyreplace.client"
         minSdkVersion configuration.minSdkVersion
         targetSdkVersion configuration.targetSdkVersion
-        multiDexEnabled true
         versionCode 5005
         versionName "0.5.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         debug {

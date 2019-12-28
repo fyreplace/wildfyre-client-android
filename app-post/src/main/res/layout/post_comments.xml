@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -44,15 +43,14 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/comments_header_height"
             android:background="?attr/selectableItemBackground"
+            android:drawableStart="@drawable/ic_comment"
             android:drawablePadding="@dimen/margin_medium"
             android:gravity="center_vertical|start"
-            android:paddingLeft="@dimen/margin_medium"
-            android:paddingRight="@dimen/margin_medium"
+            android:paddingStart="@dimen/margin_medium"
+            android:paddingEnd="@dimen/margin_medium"
             android:text="@{@plurals/post_comment_count(safeUnbox(model.commentCount), safeUnbox(model.commentCount))}"
             android:textAppearance="?attr/textAppearanceBody1"
             android:theme="@style/AppTheme.Button.HighlightButtonOverlay"
-            app:drawableLeftCompat="@drawable/ic_comment"
-            app:drawableStartCompat="@drawable/ic_comment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -75,10 +73,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_small"
             android:contentDescription="@string/image_desc_comments_toggle"
+            android:tint="?attr/colorOnBackground"
             app:layout_constraintBottom_toBottomOf="@id/comment_count"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/comment_count"
-            app:tint="?attr/colorOnBackground" />
+            app:layout_constraintTop_toTopOf="@id/comment_count" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/comment_new"
@@ -101,8 +99,7 @@
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine|textCapSentences"
                 android:maxLines="6"
-                android:text="@={model.newCommentData}"
-                tools:ignore="UnusedAttribute" />
+                android:text="@={model.newCommentData}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <app.fyreplace.client.ui.widgets.MarkdownRecyclerView
@@ -121,12 +118,12 @@
             android:layout_gravity="top|end"
             android:scaleX="0"
             android:scaleY="0"
+            android:src="@drawable/ic_keyboard_arrow_up_black"
             android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
             android:visibility="gone"
             app:fabSize="mini"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/comment_count"
-            app:srcCompat="@drawable/ic_keyboard_arrow_up_black"
             app:useCompatPadding="true" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -136,12 +133,12 @@
             android:layout_gravity="bottom|end"
             android:scaleX="0"
             android:scaleY="0"
+            android:src="@drawable/ic_keyboard_arrow_down_black"
             android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
             android:visibility="gone"
             app:fabSize="mini"
             app:layout_constraintBottom_toTopOf="@id/comment_new"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_keyboard_arrow_down_black"
             app:useCompatPadding="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

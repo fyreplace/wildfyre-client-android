@@ -28,8 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:paddingLeft="@dimen/margin_large"
-            android:paddingRight="@dimen/margin_large"
+            android:paddingStart="@dimen/margin_large"
+            android:paddingEnd="@dimen/margin_large"
             android:textAppearance="?attr/textAppearanceHeadline4"
             android:visibility="@{safeUnbox(model.hasContent) ? View.GONE : View.VISIBLE}" />
 
@@ -54,9 +54,9 @@
                     android:clipToPadding="false"
                     android:orientation="vertical"
                     android:overScrollMode="never"
-                    android:paddingLeft="@dimen/margin_large"
+                    android:paddingStart="@dimen/margin_large"
                     android:paddingTop="@dimen/margin_medium"
-                    android:paddingRight="@dimen/margin_large"
+                    android:paddingEnd="@dimen/margin_large"
                     android:paddingBottom="@dimen/margin_medium"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </FrameLayout>

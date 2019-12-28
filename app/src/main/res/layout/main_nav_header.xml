@@ -24,10 +24,10 @@
             android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_nav_header_top"
             android:contentDescription="@string/image_desc_user_picture"
+            android:src="@drawable/ic_account_box_white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_account_box_white" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/user_name"
@@ -48,11 +48,11 @@
             android:id="@+id/edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit_black"
             android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_edit_black"
             app:useCompatPadding="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

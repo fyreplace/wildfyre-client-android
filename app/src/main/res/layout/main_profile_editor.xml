@@ -36,11 +36,11 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/image_desc_profile_editor_change_image"
         android:onClick="onSelectAvatarImageClicked"
+        android:src="@drawable/ic_image"
         android:tag="@integer/request_image_file"
         app:layout_constraintEnd_toEndOf="@id/vertical_center"
         app:layout_constraintStart_toStartOf="@id/user_picture"
-        app:layout_constraintTop_toBottomOf="@+id/user_picture"
-        app:srcCompat="@drawable/ic_image" />
+        app:layout_constraintTop_toBottomOf="@+id/user_picture" />
 
     <ImageView
         android:id="@+id/user_picture_change_photo"
@@ -51,11 +51,11 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/image_desc_profile_editor_change_photo"
         android:onClick="onSelectAvatarImageClicked"
+        android:src="@drawable/ic_photo_camera"
         android:tag="@integer/request_image_photo"
         app:layout_constraintEnd_toEndOf="@id/user_picture"
         app:layout_constraintStart_toStartOf="@id/vertical_center"
-        app:layout_constraintTop_toBottomOf="@+id/user_picture"
-        app:srcCompat="@drawable/ic_photo_camera" />
+        app:layout_constraintTop_toBottomOf="@+id/user_picture" />
 
     <EditText
         android:id="@+id/user_bio"

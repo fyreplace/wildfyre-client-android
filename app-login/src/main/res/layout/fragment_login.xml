@@ -27,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:contentDescription="@string/app_name"
-                app:srcCompat="@drawable/logo_fyreplace"
-                app:tint="@color/loginLogo" />
+                android:src="@drawable/logo_fyreplace"
+                android:tint="@color/loginLogo" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
