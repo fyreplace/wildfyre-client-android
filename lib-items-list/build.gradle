@@ -30,5 +30,4 @@ dependencies {
     implementation libraries.androidx.lifecycle.liveDataKtx
     implementation libraries.androidx.swipeRefreshLayout
     implementation libraries.kotlin
-    implementation libraries.material
 }
