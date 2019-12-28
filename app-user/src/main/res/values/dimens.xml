@@ -2,4 +2,5 @@
 <resources>
     <dimen name="user_picture_size">144dp</dimen>
     <dimen name="user_picture_rounding">14dp</dimen>
+    <dimen name="user_bio_max_width">360dp</dimen>
 </resources>

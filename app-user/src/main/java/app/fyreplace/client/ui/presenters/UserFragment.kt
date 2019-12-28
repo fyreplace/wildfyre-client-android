@@ -2,6 +2,7 @@ package app.fyreplace.client.ui.presenters
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import app.fyreplace.client.AppGlide
@@ -53,9 +54,20 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
         viewModel.author.observe(viewLifecycleOwner) {
             bd.userName.text = it.name
 
-            it.bio?.run {
-                markdown.setMarkdown(bd.userBio, this)
-                bd.userBio.isVisible = isNotBlank()
+            with(bd.userBioWrapper) {
+                isVisible = it.bio?.isNotBlank() == true
+
+                if (it.banned) {
+                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorError))
+                }
+            }
+
+            if (it.banned) with(bd.userBio) {
+                setText(R.string.user_banned)
+                setTextColor(ContextCompat.getColor(context, R.color.colorOnError))
+                setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_error, 0, 0, 0)
+            } else {
+                it.bio?.run { markdown.setMarkdown(bd.userBio, this) }
             }
 
             AppGlide.with(view)
@@ -72,10 +84,13 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_fragment_sharing, menu)
         viewModel.author.observe(viewLifecycleOwner) {
-            menu.findItem(R.id.action_share).intent = getShareIntent(
-                userShareUrl(it.user),
-                getString(R.string.user_action_share_title)
-            )
+            with(menu.findItem(R.id.action_share)) {
+                isVisible = !it.banned
+                intent = getShareIntent(
+                    userShareUrl(it.user),
+                    getString(R.string.user_action_share_title)
+                )
+            }
         }
     }
 
