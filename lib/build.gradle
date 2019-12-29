@@ -30,7 +30,6 @@ dependencies {
     api libraries.material
     implementation libraries.androidx.appCompat
     implementation libraries.androidx.coreKtx
-    implementation libraries.androidx.documentFile
     implementation libraries.androidx.lifecycle.liveDataKtx
     implementation libraries.androidx.lifecycle.runtimeKtx
     implementation libraries.androidx.lifecycle.viewModelKtx
