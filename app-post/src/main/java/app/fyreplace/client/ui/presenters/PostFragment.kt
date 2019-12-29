@@ -334,10 +334,10 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
             .setView(R.layout.post_dialog_comment_image)
             .setTitle(R.string.post_comment_attach_file_dialog_title)
             .setNegativeButton(R.string.post_comment_attach_file_dialog_negative) { _, _ ->
-                selectImage(requestImagePhoto)
+                launch { selectImage(requestImagePhoto) }
             }
             .setPositiveButton(R.string.post_comment_attach_file_dialog_positive) { _, _ ->
-                selectImage(requestImageFile)
+                launch { selectImage(requestImageFile) }
             }
             .setNeutralButton(R.string.post_comment_attach_file_dialog_neutral) { _, _ ->
                 viewModel.resetCommentImage()

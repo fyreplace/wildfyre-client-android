@@ -51,33 +51,31 @@ interface ImageSelector : FailureHandler {
         }
     }
 
-    fun selectImage(request: Int) {
-        startActivityForResult(
-            Intent.createChooser(
-                when (request) {
-                    requestImageFile -> Intent(Intent.ACTION_GET_CONTENT)
-                        .apply { type = "image/*" }
-                    requestImagePhoto -> {
-                        imagesDirectory().mkdirs()
-                        val imageFile = File(imagesDirectory(), "image.data")
-                        val imageUri = getUriForFile(
-                            contextWrapper,
-                            contextWrapper.getString(R.string.file_provider_authority),
-                            imageFile
-                        )
-                        Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-                            putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                            putExtra(MediaStore.EXTRA_SIZE_LIMIT, IMAGE_MAX_FILE_SIZE)
-                            imageUri?.let { imageSelectorViewModel.push(it) } ?: return
-                        }
+    suspend fun selectImage(request: Int) = startActivityForResult(
+        Intent.createChooser(
+            when (request) {
+                requestImageFile -> Intent(Intent.ACTION_GET_CONTENT)
+                    .apply { type = "image/*" }
+                requestImagePhoto -> {
+                    val imageFile = File(imagesDirectory(), "image.data")
+                    withContext(Dispatchers.IO) { imageFile.parentFile?.mkdirs() }
+                    val imageUri = getUriForFile(
+                        contextWrapper,
+                        contextWrapper.getString(R.string.file_provider_authority),
+                        imageFile
+                    )
+                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                        putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+                        putExtra(MediaStore.EXTRA_SIZE_LIMIT, IMAGE_MAX_FILE_SIZE)
+                        imageUri?.let { imageSelectorViewModel.push(it) } ?: return
                     }
-                    else -> return
-                },
-                contextWrapper.getString(R.string.image_selector_chooser)
-            ),
-            request
-        )
-    }
+                }
+                else -> throw IllegalArgumentException()
+            },
+            contextWrapper.getString(R.string.image_selector_chooser)
+        ),
+        request
+    )
 
     suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.Default) {
         contextWrapper.contentResolver.openInputStream(uri).use {

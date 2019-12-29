@@ -311,13 +311,13 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
                 else R.string.draft_bottom_action_images_dialog_title
             )
             .setItems(items) { _, i ->
-                if (i == 2) {
-                    launch {
+                launch {
+                    if (i == 2) {
                         viewModel.removeImage()
                         updatePreview()
+                    } else {
+                        selectImage(if (i == 0) requestImageFile else requestImagePhoto)
                     }
-                } else {
-                    selectImage(if (i == 0) requestImageFile else requestImagePhoto)
                 }
             }
             .show()

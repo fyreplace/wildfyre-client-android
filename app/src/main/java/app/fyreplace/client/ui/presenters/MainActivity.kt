@@ -287,7 +287,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
     override suspend fun onImage(image: ImageData) = centralViewModel.setPendingProfileAvatar(image)
 
     fun onSelectAvatarImageClicked(view: View) {
-        (view.tag as? String)?.toInt()?.let { selectImage(it) }
+        (view.tag as? String)?.toInt()?.let { launch { selectImage(it) } }
     }
 
     private fun handleViewIntent(intent: Intent) {
