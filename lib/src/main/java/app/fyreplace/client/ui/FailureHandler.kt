@@ -13,9 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-/**
- * Interface implemented by classes that can receive a [Throwable] and propagate it.
- */
 interface FailureHandler : LifecycleOwner {
     val viewModel: ViewModel
 
