@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider.getUriForFile
 import app.fyreplace.client.data.models.ImageData
@@ -19,6 +18,7 @@ import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.IOException
 import kotlin.math.sqrt
 
 interface ImageSelector : FailureHandler {
@@ -81,8 +81,10 @@ interface ImageSelector : FailureHandler {
     )
 
     suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.Default) {
+        val mimeType = contextWrapper.contentResolver.getType(uri)
+            ?: throw IOException(contextWrapper.getString(R.string.image_failure_unknown_type))
         contextWrapper.contentResolver.openInputStream(uri).use {
-            it?.run { useBytes(readBytes(), contextWrapper.contentResolver.getType(uri)!!) }
+            it?.run { useBytes(readBytes(), mimeType) }
         }
     }
 
@@ -112,11 +114,7 @@ interface ImageSelector : FailureHandler {
                     .getExtensionFromMimeType(compressedMimeType)
                 onImage(ImageData("image.${extension}", compressedMimeType, compressedBytes))
             } else {
-                Toast.makeText(
-                    contextWrapper,
-                    R.string.image_selector_error_toast,
-                    Toast.LENGTH_LONG
-                ).show()
+                throw IOException(contextWrapper.getString(R.string.image_failure_file_size))
             }
         }
     }

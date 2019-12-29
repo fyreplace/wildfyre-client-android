@@ -7,7 +7,8 @@
     <string name="failure_toast">Erreur: %1$s</string>
     <string name="draft_created_text">Écris ton post ici</string>
     <string name="image_selector_chooser">Source de l\'image</string>
-    <string name="image_selector_error_toast">Taille de fichier trop élevée</string>
+    <string name="image_failure_unknown_type">Type de fichier inconnu</string>
+    <string name="image_failure_file_size">Taille de fichier trop élevée</string>
     <string name="area_selecting_action_area_selector">Zone: %1$s</string>
     <string name="area_selecting_action_area_spread">Propagation</string>
     <string name="area_selecting_action_area_reputation">Réputation</string>
