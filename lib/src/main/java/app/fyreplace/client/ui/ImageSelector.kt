@@ -11,7 +11,6 @@ import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider.getUriForFile
-import androidx.documentfile.provider.DocumentFile
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.lib.R
 import app.fyreplace.client.viewmodels.ImageSelectorViewModel
@@ -30,6 +29,10 @@ interface ImageSelector : FailureHandler {
         get() = contextWrapper.resources.getInteger(R.integer.request_image_photo)
     private val imageSelectorViewModel
         get() = getViewModel<ImageSelectorViewModel>()
+    private val imagesDirectory
+        get() = File(contextWrapper.filesDir, "images")
+    private val photoImageFile
+        get() = File(imagesDirectory, "image.data")
 
     fun startActivityForResult(intent: Intent?, requestCode: Int)
 
@@ -45,7 +48,7 @@ interface ImageSelector : FailureHandler {
                 requestImageFile -> data?.data?.let { useImageUri(it) }
                 requestImagePhoto -> imageSelectorViewModel.pop().let {
                     useImageUri(it)
-                    DocumentFile.fromSingleUri(contextWrapper, it)?.delete()
+                    photoImageFile.delete()
                 }
             }
         }
@@ -57,7 +60,7 @@ interface ImageSelector : FailureHandler {
                 requestImageFile -> Intent(Intent.ACTION_GET_CONTENT)
                     .apply { type = "image/*" }
                 requestImagePhoto -> {
-                    val imageFile = File(imagesDirectory(), "image.data")
+                    val imageFile = photoImageFile
                     withContext(Dispatchers.IO) { imageFile.parentFile?.mkdirs() }
                     val imageUri = getUriForFile(
                         contextWrapper,
@@ -82,8 +85,6 @@ interface ImageSelector : FailureHandler {
             it?.run { useBytes(readBytes(), contextWrapper.contentResolver.getType(uri)!!) }
         }
     }
-
-    private fun imagesDirectory() = File(contextWrapper.filesDir.path, "images")
 
     private suspend fun useBytes(bytes: ByteArray, mimeType: String) {
         var compressedBytes = bytes
