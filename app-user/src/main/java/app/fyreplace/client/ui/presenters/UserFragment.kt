@@ -55,10 +55,10 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
             bd.userName.text = it.name
 
             with(bd.userBioWrapper) {
-                isVisible = it.bio?.isNotBlank() == true
-
                 if (it.banned) {
                     setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorError))
+                } else if (it.bio.isBlank()) {
+                    isVisible = false
                 }
             }
 
@@ -67,7 +67,7 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
                 setTextColor(ContextCompat.getColor(context, R.color.colorOnError))
                 setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_error, 0, 0, 0)
             } else {
-                it.bio?.run { markdown.setMarkdown(bd.userBio, this) }
+                markdown.setMarkdown(bd.userBio, it.bio)
             }
 
             AppGlide.with(view)
