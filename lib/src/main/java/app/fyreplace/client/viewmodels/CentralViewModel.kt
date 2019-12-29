@@ -26,10 +26,10 @@ class CentralViewModel(
     private val mAllowDraftCreation = MutableLiveData<Boolean>()
 
     val isLogged: LiveData<Boolean> = mIsLogged
+    val self: LiveData<Author?> = mSelf
     val userId: LiveData<Long> = mSelf.map { it?.user ?: -1 }
     val userName: LiveData<String> = mSelf.map { it?.name.orEmpty() }
     val userBio: LiveData<String> = mSelf.map { it?.bio.orEmpty() }
-    val userAvatar: LiveData<String> = mSelf.map { it?.avatar.orEmpty() }
     val newUserAvatar: LiveData<ImageData?> = mNewUserAvatar
     val notificationCount: LiveData<Int> = mNotificationCount
     val notificationCountText: LiveData<String> = notificationCount

@@ -136,9 +136,9 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             }
         }
 
-        centralViewModel.userAvatar.observe(this) {
+        centralViewModel.self.observe(this) {
             AppGlide.with(this)
-                .load(it)
+                .loadAvatar(this, it)
                 .transform(
                     CenterCrop(),
                     RoundedCorners(resources.getDimensionPixelOffset(R.dimen.nav_header_user_picture_rounding))
@@ -414,7 +414,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
         val imageTransition = DrawableTransitionOptions.withCrossFade()
 
         AppGlide.with(this)
-            .load(centralViewModel.userAvatar.value)
+            .loadAvatar(this, centralViewModel.self.value)
             .transition(imageTransition)
             .transform(avatarTransform)
             .into(avatar)
