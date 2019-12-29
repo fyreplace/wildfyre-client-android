@@ -5,7 +5,10 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.AreaRepository
 import app.fyreplace.client.data.repositories.CommentRepository
 import app.fyreplace.client.data.repositories.PostRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlin.coroutines.coroutineContext
 
 class HomeFragmentViewModel(
@@ -42,13 +45,14 @@ class HomeFragmentViewModel(
         }
 
         setPost(postReserve.removeAt(0))
-        viewModelScope.launch(Dispatchers.IO) {
-            delay(SPREAD_DELAY)
-            mAllowSpread.postValue(contentLoaded.value)
+
+        if (postReserve.isEmpty()) {
+            fetchJob = viewModelScope.launch { fetchPosts() }
         }
 
-        if (postReserve.size <= RESERVE_SIZE / 2) {
-            fetchJob = viewModelScope.launch { fetchPosts() }
+        viewModelScope.launch {
+            delay(SPREAD_DELAY)
+            mAllowSpread.postValue(contentLoaded.value)
         }
     }
 
@@ -82,7 +86,7 @@ class HomeFragmentViewModel(
             endOfPosts = true
         } else if (coroutineContext.isActive) {
             mHasContent.postValue(true)
-            postReserve.addAll(superPost.results.filter { p -> p.id != postId && postReserve.find { it.id == p.id } == null })
+            postReserve.addAll(superPost.results.filter { p -> p.id != postId })
         }
     }
 
