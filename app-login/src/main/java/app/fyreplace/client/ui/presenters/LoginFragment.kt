@@ -14,6 +14,7 @@ import app.fyreplace.client.app.login.databinding.FragmentLoginBinding
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.LoginFragmentViewModel
+import kotlinx.coroutines.delay
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -53,11 +54,17 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // For both the username and the password fields, require the input to not be empty
-        mapOf(viewModel.username to bd.username, viewModel.password to bd.password).forEach {
-            it.key.observe(viewLifecycleOwner) { content ->
-                it.value.error =
-                    if (content.isEmpty()) getString(R.string.login_error_field_required)
-                    else null
+        mapOf(
+            viewModel.username to bd.username,
+            viewModel.password to bd.password
+        ).forEach { (data, field) ->
+            data.observe(viewLifecycleOwner) {
+                launch {
+                    delay(ERROR_DELAY)
+                    field.error =
+                        if (it.isEmpty()) getString(R.string.login_error_field_required)
+                        else null
+                }
             }
         }
 
@@ -115,5 +122,9 @@ class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
 
     interface Navigator {
         fun navigateToHome()
+    }
+
+    private companion object {
+        const val ERROR_DELAY = 150L
     }
 }
