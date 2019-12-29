@@ -9,14 +9,14 @@ data class Author(
     val user: Long,
     val name: String,
     val avatar: String?,
-    val bio: String?,
+    val bio: String,
     val banned: Boolean
 ) : Model {
     private constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readString()!!,
         parcel.readString(),
-        parcel.readString(),
+        parcel.readString()!!,
         parcel.readByte() != 0.toByte()
     )
 
