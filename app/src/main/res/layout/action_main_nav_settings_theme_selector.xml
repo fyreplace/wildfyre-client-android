@@ -8,6 +8,7 @@
             type="app.fyreplace.client.viewmodels.MainActivityViewModel" />
     </data>
 
+    <!--suppress AndroidUnknownAttribute -->
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

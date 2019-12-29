@@ -40,7 +40,7 @@ class BottomSheetArrowDrawableWrapper(
     }
 
     private companion object {
-        val DRAWABLE_UP = R.drawable.ic_arrow_drop_up_down_anim_black
-        val DRAWABLE_DOWN = R.drawable.ic_arrow_drop_down_up_anim_black
+        val DRAWABLE_UP = R.drawable.ic_arrow_drop_up_down_anim
+        val DRAWABLE_DOWN = R.drawable.ic_arrow_drop_down_up_anim
     }
 }

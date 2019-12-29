@@ -5,8 +5,6 @@
     <color name="colorPrimaryDark">@android:color/black</color>
     <color name="colorBackground">@android:color/black</color>
     <color name="colorOnBackground">@android:color/white</color>
-    <color name="colorSurface">@android:color/black</color>
-    <color name="colorOnSurface">@android:color/white</color>
     <color name="colorError">#EC407A</color>
     <color name="colorControlActivatedNeutral">#BFBFBF</color>
     <color name="colorSwitchThumbNormalNeutral">#3F3F3F</color>

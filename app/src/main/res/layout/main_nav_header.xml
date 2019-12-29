@@ -47,7 +47,7 @@
             android:id="@+id/edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit_black"
+            android:src="@drawable/ic_edit"
             android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -9,25 +9,25 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/fragment_home"
-            android:icon="@drawable/ic_home_black"
+            android:icon="@drawable/ic_home"
             android:title="@string/main_nav_fragment_home" />
         <item
             android:id="@+id/fragment_notifications"
-            android:icon="@drawable/ic_notifications_black"
+            android:icon="@drawable/ic_notifications"
             android:title="@string/main_nav_fragment_notifications"
             app:actionLayout="@layout/action_main_nav_fragment_notifications"
             app:showAsAction="always" />
         <item
             android:id="@+id/fragment_archive"
-            android:icon="@drawable/ic_folder_black"
+            android:icon="@drawable/ic_folder"
             android:title="@string/main_nav_fragment_archive" />
         <item
             android:id="@+id/fragment_own_posts"
-            android:icon="@drawable/ic_content_copy_black"
+            android:icon="@drawable/ic_content_copy"
             android:title="@string/main_nav_fragment_own_posts" />
         <item
             android:id="@+id/fragment_drafts"
-            android:icon="@drawable/ic_wb_incandescent_flipped_black"
+            android:icon="@drawable/ic_wb_incandescent_flipped"
             android:title="@string/main_nav_fragment_drafts"
             app:actionLayout="@layout/action_main_nav_fragment_drafts"
             app:showAsAction="always" />
@@ -36,13 +36,13 @@
         <menu>
             <item
                 android:id="@+id/settings_theme_selector"
-                android:icon="@drawable/ic_brightness_medium_black"
+                android:icon="@drawable/ic_brightness_medium"
                 android:title="@string/main_nav_settings_theme_selector"
                 app:actionLayout="@layout/action_main_nav_settings_theme_selector"
                 app:showAsAction="always" />
             <item
                 android:id="@+id/settings_badge_toggle"
-                android:icon="@drawable/ic_menu_badge_black"
+                android:icon="@drawable/ic_menu_badge"
                 android:title="@string/main_nav_settings_badge_toggle"
                 app:actionLayout="@layout/action_main_nav_settings_badge_toggle"
                 app:showAsAction="always" />
@@ -52,19 +52,19 @@
         <menu>
             <item
                 android:id="@+id/fyreplace_website"
-                android:icon="@drawable/ic_web_black"
+                android:icon="@drawable/ic_web"
                 android:title="@string/main_nav_fyreplace_website" />
             <item
                 android:id="@+id/fyreplace_open_source"
-                android:icon="@drawable/ic_code_black"
+                android:icon="@drawable/ic_code"
                 android:title="@string/main_nav_fyreplace_open_source" />
             <item
                 android:id="@+id/fyreplace_licenses"
-                android:icon="@drawable/ic_assignment_black"
+                android:icon="@drawable/ic_assignment"
                 android:title="@string/main_nav_fyreplace_licenses" />
             <item
                 android:id="@+id/fyreplace_logout"
-                android:icon="@drawable/ic_exit_to_app_black"
+                android:icon="@drawable/ic_exit_to_app"
                 android:title="@string/main_nav_fyreplace_logout" />
         </menu>
     </item>
@@ -72,23 +72,23 @@
         <menu>
             <item
                 android:id="@+id/wildfyre_website"
-                android:icon="@drawable/ic_web_black"
+                android:icon="@drawable/ic_web"
                 android:title="@string/main_nav_wildfyre_website" />
             <item
                 android:id="@+id/wildfyre_open_source"
-                android:icon="@drawable/ic_code_black"
+                android:icon="@drawable/ic_code"
                 android:title="@string/main_nav_wildfyre_open_source" />
             <item
                 android:id="@+id/wildfyre_faq"
-                android:icon="@drawable/ic_help_black"
+                android:icon="@drawable/ic_help"
                 android:title="@string/main_nav_wildfyre_faq" />
             <item
                 android:id="@+id/wildfyre_terms_and_conditions"
-                android:icon="@drawable/ic_assignment_black"
+                android:icon="@drawable/ic_assignment"
                 android:title="@string/main_nav_wildfyre_terms" />
             <item
                 android:id="@+id/wildfyre_privacy_policy"
-                android:icon="@drawable/ic_lock_black"
+                android:icon="@drawable/ic_lock"
                 android:title="@string/main_nav_wildfyre_privacy" />
         </menu>
     </item>

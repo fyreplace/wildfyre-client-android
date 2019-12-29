@@ -120,7 +120,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
                     )
                 }
             } else {
-                cbd.commentNew.setStartIconDrawable(R.drawable.ic_attach_file_black)
+                cbd.commentNew.setStartIconDrawable(R.drawable.ic_attach_file)
             }
         }
         viewModel.canSendNewComment.observe(viewLifecycleOwner) {
@@ -222,8 +222,8 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
                     else R.string.post_action_subscribe
                 )
                 setIcon(
-                    if (it) R.drawable.ic_notifications_white
-                    else R.drawable.ic_notifications_none_white
+                    if (it) R.drawable.ic_notifications
+                    else R.drawable.ic_notifications_none
                 )
             }
         }

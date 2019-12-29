@@ -84,11 +84,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:endIconContentDescription="@string/image_desc_comments_send_comment"
-            app:endIconDrawable="@drawable/ic_send_black"
+            app:endIconDrawable="@drawable/ic_send"
             app:endIconMode="custom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:startIconContentDescription="@string/image_desc_comments_attach_file"
-            app:startIconDrawable="@drawable/ic_attach_file_black">
+            app:startIconDrawable="@drawable/ic_attach_file">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -118,7 +118,7 @@
             android:layout_gravity="top|end"
             android:scaleX="0"
             android:scaleY="0"
-            android:src="@drawable/ic_keyboard_arrow_up_black"
+            android:src="@drawable/ic_keyboard_arrow_up"
             android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
             android:visibility="gone"
             app:fabSize="mini"
@@ -133,7 +133,7 @@
             android:layout_gravity="bottom|end"
             android:scaleX="0"
             android:scaleY="0"
-            android:src="@drawable/ic_keyboard_arrow_down_black"
+            android:src="@drawable/ic_keyboard_arrow_down"
             android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
             android:visibility="gone"
             app:fabSize="mini"

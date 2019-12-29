@@ -6,17 +6,20 @@
     tools:ignore="AlwaysShowAction">
     <item
         android:id="@+id/action_preview"
-        android:icon="@drawable/ic_visibility_white"
+        android:icon="@drawable/ic_visibility"
         android:title="@string/draft_action_preview"
+        app:iconTint="@color/colorOnPrimaryDark"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_publish"
-        android:icon="@drawable/ic_done_white"
+        android:icon="@drawable/ic_done"
         android:title="@string/draft_action_publish"
+        app:iconTint="@color/colorOnPrimaryDark"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_save"
-        android:icon="@drawable/ic_save_white"
+        android:icon="@drawable/ic_save"
         android:title="@string/draft_action_save"
+        app:iconTint="@color/colorOnPrimaryDark"
         app:showAsAction="always" />
 </menu>

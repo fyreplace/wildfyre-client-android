@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_flag"
-        android:icon="@drawable/ic_flag_white"
+        android:icon="@drawable/ic_flag"
         android:title="@string/post_action_flag"
+        app:iconTint="@color/colorOnPrimaryDark"
         app:showAsAction="ifRoom" />
 </menu>

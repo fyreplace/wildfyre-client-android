@@ -54,8 +54,8 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+    <style name="AppThemeOverlay.ActionBar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="AppThemeOverlay.Popup" parent="ThemeOverlay.MaterialComponents.Light" />
 
 </resources>
