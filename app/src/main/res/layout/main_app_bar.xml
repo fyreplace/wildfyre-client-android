@@ -40,8 +40,8 @@
 
                 <TextView
                     android:id="@+id/badge"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
                     android:background="@drawable/ic_badge_background"
                     android:clickable="false"
                     android:focusable="false"
