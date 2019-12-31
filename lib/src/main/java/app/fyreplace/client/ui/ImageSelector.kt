@@ -92,20 +92,20 @@ interface ImageSelector : FailureHandler {
         var compressedBytes = bytes
         var compressedMimeType = mimeType
         val isTooBig = compressedBytes.size > IMAGE_MAX_FILE_SIZE
-        val isUnknownMime = mimeType !in listOf("jpeg", "png", "webp").map { "image/$it" }
+        val isUnknownMime = mimeType !in listOf("jpeg", "png").map { "image/$it" }
 
         if (isTooBig || isUnknownMime) {
             val bitmap = BitmapFactory.decodeByteArray(compressedBytes, 0, compressedBytes.size)
             val os = ByteArrayOutputStream()
 
             if (isTooBig) {
-                downscaleBitmap(bitmap).compress(CompressFormat.WEBP, 50, os)
+                downscaleBitmap(bitmap).compress(CompressFormat.JPEG, 50, os)
             } else {
-                bitmap.compress(CompressFormat.WEBP, 100, os)
+                bitmap.compress(CompressFormat.JPEG, 100, os)
             }
 
             compressedBytes = os.toByteArray()
-            compressedMimeType = "image/webp"
+            compressedMimeType = "image/jpeg"
         }
 
         withContext(Dispatchers.Main) {
