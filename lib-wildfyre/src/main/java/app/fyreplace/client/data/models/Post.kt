@@ -32,7 +32,7 @@ data class Draft(
 @JsonClass(generateAdapter = true)
 data class DraftNoImageContent(val text: String, val image: Image? = null) : Model {
     init {
-        require(image != null)
+        require(image == null)
     }
 
     private constructor(parcel: Parcel) : this(parcel.readString()!!)
