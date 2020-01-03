@@ -237,7 +237,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     override suspend fun onImage(image: ImageData) = coroutineScope {
         try {
             updateCancellingSnackbar(true)
-            viewModel.cleanUpDraft()
+            viewModel.cleanUpDraft(bd.editor.editor.text.toString())
             val imageSlot = viewModel.addImage(image)
 
             if (!isActive) {
