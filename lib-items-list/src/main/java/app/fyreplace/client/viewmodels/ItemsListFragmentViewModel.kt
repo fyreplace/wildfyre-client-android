@@ -29,7 +29,8 @@ abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources) : Vie
     abstract val factory: ItemsDataSourceFactory<I>
     val dataSource: LiveData<DataSource<Int, I>> by lazy { factory.dataSource }
     val itemsPagedList: LiveData<PagedList<I>> by lazy {
-        factory.toLiveData(Config(resources.getInteger(R.integer.post_preview_load_page_size)))
+        val pageSize = resources.getInteger(R.integer.post_preview_load_page_size)
+        factory.toLiveData(Config(pageSize = pageSize, initialLoadSizeHint = pageSize))
     }
     val firstLoading: Boolean
         get() = mFirstLoading.also { if (mFirstLoading) mFirstLoading = false }

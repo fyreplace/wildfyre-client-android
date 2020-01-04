@@ -10,43 +10,30 @@ abstract class ItemsDataSource<I : Model>(private val listener: DataLoadingListe
     PositionalDataSource<I>(), CoroutineScope by CoroutineScope(
     SupervisorJob() + Dispatchers.IO
 ) {
-    abstract val fetcher: suspend (Int, Int) -> SuperItem<I>
+    protected abstract val fetcher: suspend (Int, Int) -> SuperItem<I>
 
     final override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<I>) {
         listener.onLoadingStart()
         val count = runFetcher(0, 1).count
-        val initialPosition =
-            computeInitialLoadPosition(params, count)
-        val initialSize = computeInitialLoadSize(
-            params,
-            initialPosition,
-            count
-        )
+        val initialPosition = computeInitialLoadPosition(params, count)
+        val initialSize = computeInitialLoadSize(params, initialPosition, count)
         val fetch = runFetcher(initialPosition, initialSize)
-        callback.onResult(fetch.results, initialPosition, fetch.count)
+        val actualInitialPosition = if (initialPosition < fetch.count) initialPosition else 0
+        callback.onResult(fetch.results, actualInitialPosition, fetch.count)
         listener.onLoadingStop()
     }
 
     final override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<I>) =
         callback.onResult(runFetcher(params.startPosition, params.loadSize).results)
 
-    final override fun invalidate() = cancel().also { super.invalidate() }
-
-    private fun runFetcher(offset: Int, size: Int) = runBlocking { runFetchImpl(offset, size) }
-
-    private suspend fun runFetchImpl(offset: Int, size: Int): SuperItem<I> {
-        while (true) {
-            try {
-                return fetcher(offset, size)
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                delay(FETCH_DELAY)
-            }
-        }
+    final override fun invalidate() {
+        super.invalidate()
+        cancel()
     }
 
-    private companion object {
-        const val FETCH_DELAY = 1000L
+    private fun runFetcher(offset: Int, size: Int): SuperItem<I> = try {
+        runBlocking(coroutineContext) { fetcher(offset, size) }
+    } catch (e: Exception) {
+        SuperItem(0, null, null, emptyList())
     }
 }
