@@ -27,9 +27,9 @@ class CentralViewModel(
 
     val isLogged: LiveData<Boolean> = mIsLogged
     val self: LiveData<Author?> = mSelf
-    val userId: LiveData<Long> = mSelf.map { it?.user ?: -1 }
-    val userName: LiveData<String> = mSelf.map { it?.name.orEmpty() }
-    val userBio: LiveData<String> = mSelf.map { it?.bio.orEmpty() }
+    val selfId: LiveData<Long> = mSelf.map { it?.user ?: -1 }
+    val selfUsername: LiveData<String> = mSelf.map { it?.name.orEmpty() }
+    val selfBio: LiveData<String> = mSelf.map { it?.bio.orEmpty() }
     val newUserAvatar: LiveData<ImageData?> = mNewUserAvatar
     val notificationCount: LiveData<Int> = mNotificationCount
     val notificationCountText: LiveData<String> = notificationCount
@@ -66,7 +66,7 @@ class CentralViewModel(
     fun forceNotificationCount(count: Int) = mNotificationCount.postValue(count)
 
     suspend fun sendProfile(bio: String) {
-        if (bio != userBio.value) {
+        if (bio != selfBio.value) {
             mSelf.postValue(authorRepository.updateSelfBio(bio))
         }
 

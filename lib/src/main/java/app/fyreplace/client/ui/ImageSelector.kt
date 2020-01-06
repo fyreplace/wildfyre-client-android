@@ -1,15 +1,18 @@
 package app.fyreplace.client.ui
 
+import android.app.Activity
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider.getUriForFile
+import androidx.exifinterface.media.ExifInterface
+import androidx.exifinterface.media.ExifInterface.*
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.lib.R
 import app.fyreplace.client.viewmodels.ImageSelectorViewModel
@@ -19,6 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import kotlin.math.sqrt
 
 interface ImageSelector : FailureHandler {
@@ -39,7 +43,7 @@ interface ImageSelector : FailureHandler {
     suspend fun onImage(image: ImageData)
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode != AppCompatActivity.RESULT_OK) {
+        if (resultCode != Activity.RESULT_OK) {
             return
         }
 
@@ -83,25 +87,53 @@ interface ImageSelector : FailureHandler {
     suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.Default) {
         val mimeType = contextWrapper.contentResolver.getType(uri)
             ?: throw IOException(contextWrapper.getString(R.string.image_failure_unknown_type))
-        contextWrapper.contentResolver.openInputStream(uri).use {
-            it?.run { useBytes(readBytes(), mimeType) }
-        }
+        val transformations = contextWrapper.contentResolver.openInputStream(uri)
+            ?.use { extractTransformations(it) }
+            ?: Matrix()
+        contextWrapper.contentResolver.openInputStream(uri)
+            ?.use { useBytes(it.readBytes(), transformations, mimeType) }
     }
 
-    private suspend fun useBytes(bytes: ByteArray, mimeType: String) {
+    private suspend fun extractTransformations(source: InputStream) = withContext(Dispatchers.IO) {
+        val transformations = Matrix()
+        val exif = ExifInterface(source)
+
+        when (exif.getAttributeInt(TAG_ORIENTATION, ORIENTATION_UNDEFINED)) {
+            ORIENTATION_ROTATE_90 -> transformations.postRotate(90f)
+            ORIENTATION_ROTATE_180 -> transformations.postRotate(180f)
+            ORIENTATION_ROTATE_270 -> transformations.postRotate(270f)
+            ORIENTATION_FLIP_HORIZONTAL -> transformations.postScale(-1f, 1f)
+            ORIENTATION_FLIP_VERTICAL -> transformations.postScale(1f, -1f)
+        }
+
+        return@withContext transformations
+    }
+
+    @Suppress("BlockingMethodInNonBlockingContext")
+    private suspend fun useBytes(bytes: ByteArray, transformations: Matrix, mimeType: String) {
         var compressedBytes = bytes
         var compressedMimeType = mimeType
         val isTooBig = compressedBytes.size > IMAGE_MAX_FILE_SIZE
         val isUnknownMime = mimeType !in listOf("jpeg", "png").map { "image/$it" }
+        val isRotated = !transformations.isIdentity
 
-        if (isTooBig || isUnknownMime) {
-            val bitmap = BitmapFactory.decodeByteArray(compressedBytes, 0, compressedBytes.size)
+        if (isTooBig || isUnknownMime || isRotated) {
             val os = ByteArrayOutputStream()
+            val bitmap = BitmapFactory.decodeByteArray(compressedBytes, 0, compressedBytes.size)
+            val rotatedBitmap = Bitmap.createBitmap(
+                bitmap,
+                0,
+                0,
+                bitmap.width,
+                bitmap.height,
+                transformations,
+                true
+            )
 
             if (isTooBig) {
-                downscaleBitmap(bitmap).compress(CompressFormat.JPEG, 50, os)
+                downscaleBitmap(rotatedBitmap).compress(CompressFormat.JPEG, 50, os)
             } else {
-                bitmap.compress(CompressFormat.JPEG, 100, os)
+                rotatedBitmap.compress(CompressFormat.JPEG, 100, os)
             }
 
             compressedBytes = os.toByteArray()

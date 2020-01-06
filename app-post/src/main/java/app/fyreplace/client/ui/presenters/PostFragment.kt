@@ -61,6 +61,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     private val navigator by inject<Navigator> { parametersOf(this) }
     private val markdown by lazyMarkdown()
     private val highlightedCommentIds by lazy { if (canUseFragmentArgs()) fragmentArgs.newCommentsIds else null }
+    private var selfId = -1L
     private var commentsSheetCallback: CommentsSheetCallback<View>? = null
 
     override fun onCreateView(
@@ -126,6 +127,8 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         viewModel.canSendNewComment.observe(viewLifecycleOwner) {
             cbd.commentNew.isEndIconVisible = it
         }
+
+        centralViewModel.selfId.observe(viewLifecycleOwner) { selfId = it }
 
         cbd.commentsList.addOnScrollListener(CommentsScrollListener())
         cbd.goUp.setOnClickListener {
@@ -246,7 +249,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         }
         viewModel.authorId.observe(viewLifecycleOwner) {
             val shouldShowItems = !viewModel.toolbarHasExpandedView
-            val isOwnPost = it == centralViewModel.userId.value
+            val isOwnPost = it == selfId
             deleteItem.isVisible = isOwnPost && shouldShowItems
             flagItem.isVisible = !isOwnPost && shouldShowItems
         }
@@ -281,7 +284,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
 
         val position = v.tag as Int
         val comment = (cbd.commentsList.adapter as CommentsAdapter).getComment(position)
-        val isOwnComment = comment.author?.user == centralViewModel.userId.value
+        val isOwnComment = comment.author?.user == selfId
 
         menu.findItem(R.id.action_copy).setOnMenuItemClickListener { copyComment(comment); true }
         menu.findItem(R.id.action_share).setOnMenuItemClickListener { shareComment(comment); true }
