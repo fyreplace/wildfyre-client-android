@@ -34,6 +34,7 @@ class DraftFragmentViewModel(
         for (slot in draft.additionalImages.map { it.num }) {
             if (slot !in usedSlots) {
                 draftRepository.removeImage(draft.id, slot)
+                draft.additionalImages.removeAll { it.num == slot }
             }
         }
     }
