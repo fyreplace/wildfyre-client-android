@@ -36,7 +36,7 @@
             android:layout_marginStart="@dimen/margin_small"
             android:ellipsize="end"
             android:lines="1"
-            android:text="@{model.userName}"
+            android:text="@{model.selfUsername}"
             android:textAppearance="?attr/textAppearanceBody1"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,6 +1,5 @@
 package app.fyreplace.client.ui.presenters
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
@@ -392,16 +391,18 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
 
         dialog = AlertDialog.Builder(this)
             .setView(R.layout.main_profile_editor)
-            .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
-                centralViewModel.newUserAvatar.removeObservers(this)
+            .setNegativeButton(R.string.cancel) { _, _ ->
                 centralViewModel.resetPendingProfileAvatar()
             }
-            .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
-                centralViewModel.newUserAvatar.removeObservers(this)
+            .setPositiveButton(R.string.ok) { _, _ ->
                 launch {
                     val bio = dialog.findViewById<TextView>(R.id.user_bio)?.text ?: ""
                     centralViewModel.sendProfile(bio.toString())
                 }
+            }
+            .setOnDismissListener {
+                centralViewModel.newUserAvatar.removeObservers(this)
+                centralViewModel.selfBio.removeObservers(this)
             }
             .create()
             .apply { show() }
@@ -429,7 +430,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             }
         }
 
-        centralViewModel.userBio.value?.let {
+        centralViewModel.selfBio.observe(this) {
             dialog.findViewById<EditText>(R.id.user_bio)?.run {
                 setText(it)
 
