@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_medium"
                 android:layout_marginBottom="@dimen/margin_medium"
-                android:textAppearance="?attr/textAppearanceHeadline6" />
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textIsSelectable="true" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/user_bio_wrapper"
@@ -44,6 +45,7 @@
                     android:drawablePadding="@dimen/margin_small"
                     android:maxWidth="@dimen/user_bio_max_width"
                     android:textAppearance="?attr/textAppearanceBody1"
+                    android:textIsSelectable="true"
                     app:drawableTint="@color/colorOnError" />
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>

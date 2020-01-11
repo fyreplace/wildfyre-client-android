@@ -30,7 +30,7 @@ fun hideSoftKeyboard(view: View?) {
 }
 
 fun Fragment.lazyMarkdown() = lazy {
-    requireContext().let {
+    requireActivity().let {
         Markwon.builder(it)
             .usePlugin(CorePlugin.create())
             .usePlugin(MovementMethodPlugin.create())

@@ -1,74 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:padding="@dimen/margin_medium"
-    tools:context="app.fyreplace.client.ui.presenters.MainActivity">
+    android:layout_height="match_parent"
+    android:overScrollMode="never">
 
-    <ImageView
-        android:id="@+id/user_picture"
-        android:layout_width="@dimen/dialog_user_picture_size"
-        android:layout_height="@dimen/dialog_user_picture_size"
-        android:contentDescription="@string/image_desc_user_picture"
-        app:layout_constraintBottom_toTopOf="@+id/user_picture_change_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/vertical_center"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/user_picture_change_image"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/image_desc_profile_editor_change_image"
-        android:onClick="onSelectAvatarImageClicked"
-        android:src="@drawable/ic_image"
-        android:tag="@integer/request_image_file"
-        app:layout_constraintEnd_toEndOf="@id/vertical_center"
-        app:layout_constraintStart_toStartOf="@id/user_picture"
-        app:layout_constraintTop_toBottomOf="@+id/user_picture" />
-
-    <ImageView
-        android:id="@+id/user_picture_change_photo"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/image_desc_profile_editor_change_photo"
-        android:onClick="onSelectAvatarImageClicked"
-        android:src="@drawable/ic_photo_camera"
-        android:tag="@integer/request_image_photo"
-        app:layout_constraintEnd_toEndOf="@id/user_picture"
-        app:layout_constraintStart_toStartOf="@id/vertical_center"
-        app:layout_constraintTop_toBottomOf="@+id/user_picture" />
-
-    <EditText
-        android:id="@+id/user_bio"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:gravity="start"
-        android:hint="@string/main_profile_editor_bio"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine|textCapSentences"
-        android:minLines="3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_picture_change_image" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:gravity="center"
+        android:paddingStart="@dimen/margin_medium"
+        android:paddingEnd="@dimen/margin_medium"
+        tools:context="app.fyreplace.client.ui.presenters.MainActivity">
+
+        <ImageView
+            android:id="@+id/user_picture"
+            android:layout_width="@dimen/dialog_user_picture_size"
+            android:layout_height="@dimen/dialog_user_picture_size"
+            android:layout_marginTop="@dimen/margin_large"
+            android:contentDescription="@string/image_desc_user_picture"
+            app:layout_constraintBottom_toTopOf="@+id/user_picture_change_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_center"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/user_picture_change_image"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/image_desc_profile_editor_change_image"
+            android:onClick="onSelectAvatarImageClicked"
+            android:src="@drawable/ic_image"
+            android:tag="@integer/request_image_file"
+            app:layout_constraintEnd_toEndOf="@id/vertical_center"
+            app:layout_constraintStart_toStartOf="@id/user_picture"
+            app:layout_constraintTop_toBottomOf="@+id/user_picture" />
+
+        <ImageView
+            android:id="@+id/user_picture_change_photo"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/image_desc_profile_editor_change_photo"
+            android:onClick="onSelectAvatarImageClicked"
+            android:src="@drawable/ic_photo_camera"
+            android:tag="@integer/request_image_photo"
+            app:layout_constraintEnd_toEndOf="@id/user_picture"
+            app:layout_constraintStart_toStartOf="@id/vertical_center"
+            app:layout_constraintTop_toBottomOf="@+id/user_picture" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_picture_change_image">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/user_bio"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:hint="@string/main_profile_editor_bio"
+                android:imeOptions="actionSend"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine|textCapSentences" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
