@@ -61,8 +61,14 @@ interface WildFyreService {
     @POST("/account/register/")
     @Headers("Content-Type: application/json")
     suspend fun postRegistration(
-        @Body recover: Registration
+        @Body registration: Registration
     ): RegistrationResult
+
+    @POST("/account/recover/")
+    @Headers("Content-Type: application/json")
+    suspend fun postRecovery(
+        @Body recovery: UsernameRecovery
+    ): RecoverTransaction
 
     @POST("/account/recover/")
     @Headers("Content-Type: application/json")
@@ -75,12 +81,6 @@ interface WildFyreService {
     suspend fun postRecovery(
         @Body recovery: PasswordRecoveryStep2
     ): Reset
-
-    @POST("/account/recover/reset/")
-    @Headers("Content-Type: application/json")
-    suspend fun postRecovery(
-        @Body recovery: UsernameRecovery
-    ): RecoverTransaction
 
 
     // Flags
