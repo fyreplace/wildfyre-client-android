@@ -21,14 +21,13 @@ import app.fyreplace.client.ui.*
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
 import com.google.android.material.snackbar.Snackbar
 import io.noties.markwon.recycler.MarkwonAdapter
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.ensureActive
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import retrofit2.HttpException
+import kotlin.coroutines.coroutineContext
 
 class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
     Toolbar.OnMenuItemClickListener, ImageSelector {
@@ -234,15 +233,11 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
         return true
     }
 
-    override suspend fun onImage(image: ImageData) = coroutineScope {
+    override suspend fun onImage(image: ImageData) {
         try {
-            updateCancellingSnackbar(true)
             viewModel.cleanUpDraft(bd.editor.editor.text.toString())
             val imageSlot = viewModel.addImage(image)
-
-            if (!isActive) {
-                return@coroutineScope
-            }
+            coroutineContext.ensureActive()
 
             if (imageSlot == -1) {
                 updatePreview()
@@ -262,10 +257,12 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             } else {
                 throw e
             }
-        } finally {
-            updateCancellingSnackbar(false)
         }
     }
+
+    override suspend fun onImageLoadingBegin() = updateCancellingSnackbar(true)
+
+    override suspend fun onImageLoadingEnd() = updateCancellingSnackbar(false)
 
     private fun updatePreview() {
         markdownAdapter.setMarkdown(
@@ -384,7 +381,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             show()
         }
 
-    private fun CoroutineScope.updateCancellingSnackbar(increaseCount: Boolean) {
+    private suspend fun updateCancellingSnackbar(increaseCount: Boolean) {
         if (increaseCount) {
             if (snackbarBatchCount > 0) {
                 if (snackbarCount != snackbarBatchCount) {
@@ -420,11 +417,12 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
             )
         }
 
+        val context = coroutineContext
         snackbar?.setAction(R.string.cancel) {
             snackbar = null
             snackbarCount = 0
             snackbarBatchCount = 0
-            cancel()
+            context.cancel()
         }
     }
 

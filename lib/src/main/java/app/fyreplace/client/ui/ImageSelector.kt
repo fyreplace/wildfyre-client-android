@@ -17,12 +17,14 @@ import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.lib.R
 import app.fyreplace.client.viewmodels.ImageSelectorViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
+import kotlin.coroutines.coroutineContext
 import kotlin.math.sqrt
 
 interface ImageSelector : FailureHandler {
@@ -41,6 +43,10 @@ interface ImageSelector : FailureHandler {
     fun startActivityForResult(intent: Intent?, requestCode: Int)
 
     suspend fun onImage(image: ImageData)
+
+    suspend fun onImageLoadingBegin() = Unit
+
+    suspend fun onImageLoadingEnd() = Unit
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode != Activity.RESULT_OK) {
@@ -85,13 +91,18 @@ interface ImageSelector : FailureHandler {
     )
 
     suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.Default) {
-        val mimeType = contextWrapper.contentResolver.getType(uri)
-            ?: throw IOException(contextWrapper.getString(R.string.image_failure_unknown_type))
-        val transformations = contextWrapper.contentResolver.openInputStream(uri)
-            ?.use { extractTransformations(it) }
-            ?: Matrix()
-        contextWrapper.contentResolver.openInputStream(uri)
-            ?.use { useBytes(it.readBytes(), transformations, mimeType) }
+        try {
+            onImageLoadingBegin()
+            val mimeType = contextWrapper.contentResolver.getType(uri)
+                ?: throw IOException(contextWrapper.getString(R.string.image_failure_unknown_type))
+            val transformations = contextWrapper.contentResolver.openInputStream(uri)
+                ?.use { extractTransformations(it) }
+                ?: Matrix()
+            contextWrapper.contentResolver.openInputStream(uri)
+                ?.use { useBytes(it.readBytes(), transformations, mimeType) }
+        } finally {
+            onImageLoadingEnd()
+        }
     }
 
     private suspend fun extractTransformations(source: InputStream) = withContext(Dispatchers.IO) {
@@ -129,6 +140,8 @@ interface ImageSelector : FailureHandler {
                 transformations,
                 true
             )
+
+            coroutineContext.ensureActive()
 
             if (isTooBig) {
                 downscaleBitmap(rotatedBitmap).compress(CompressFormat.JPEG, 50, os)
