@@ -36,6 +36,7 @@
     <string name="image_desc_profile_editor_change_image">Select an image</string>
     <string name="image_desc_profile_editor_change_photo">Take a picture</string>
     <string-array name="dependencies_names_base">
+        <item>Fyreplace - AGPL 3.0</item>
         <item>JetBrains - Kotlin - Apache 2.0</item>
         <item>JetBrains - KotlinX - Apache 2.0</item>
         <item>Google - AndroidX - Apache 2.0</item>
@@ -47,6 +48,7 @@
         <item>Noties - Markwon - Apache 2.0</item>
     </string-array>
     <string-array name="dependencies_links_base">
+        <item>https://github.com/fyreplace/fyreplace-client-android/blob/master/COPYING.md</item>
         <item>https://github.com/JetBrains/kotlin/blob/master/license/LICENSE.txt</item>
         <item>https://github.com/Kotlin/kotlinx.coroutines/blob/master/LICENSE.txt</item>
         <item>https://android.googlesource.com/platform/frameworks/support/+/refs/heads/androidx-master-dev/LICENSE.txt</item>
