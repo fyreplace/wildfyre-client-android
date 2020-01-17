@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="app.fyreplace.client.app">
+    package="app.fyreplace.client.app"
+    android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
