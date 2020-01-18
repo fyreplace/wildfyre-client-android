@@ -18,13 +18,17 @@ abstract class ItemsDataSource<I : Model>(private val listener: DataLoadingListe
 
         try {
             listener.onLoadingStart()
-            val countingFetch = validateFetch(runFetcher(0, 1)) ?: return
-            val count = countingFetch.count
-            val initialPosition = computeInitialLoadPosition(params, count)
-            val initialSize = computeInitialLoadSize(params, initialPosition, count)
-            val fetch = validateFetch(runFetcher(initialPosition, initialSize)) ?: return
-            val actualInitialPosition = if (initialPosition < fetch.count) initialPosition else 0
-            callback.onResult(fetch.results, actualInitialPosition, fetch.count)
+            var fetch = validateFetch(runFetcher(0, 1)) ?: return
+            var initialPosition: Int
+
+            do {
+                val count = fetch.count
+                initialPosition = computeInitialLoadPosition(params, count)
+                val initialSize = computeInitialLoadSize(params, initialPosition, count)
+                fetch = validateFetch(runFetcher(initialPosition, initialSize)) ?: return
+            } while (fetch.count != count)
+
+            callback.onResult(fetch.results, initialPosition, fetch.count)
         } finally {
             listener.onLoadingStop()
         }
