@@ -17,7 +17,8 @@ import app.fyreplace.client.lib.items_list.R
 /**
  * Interface for ViewModels containing a list of items.
  */
-abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources) : ViewModel(),
+abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources, placeholders: Boolean) :
+    ViewModel(),
     DataLoadingListener {
     private var mFirstLoading = true
     private var mHasRefreshedItems = false
@@ -30,7 +31,13 @@ abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources) : Vie
     val dataSource: LiveData<DataSource<Int, I>> by lazy { factory.dataSource }
     val itemsPagedList: LiveData<PagedList<I>> by lazy {
         val pageSize = resources.getInteger(R.integer.post_preview_load_page_size)
-        factory.toLiveData(Config(pageSize = pageSize, initialLoadSizeHint = pageSize))
+        factory.toLiveData(
+            Config(
+                pageSize = pageSize,
+                initialLoadSizeHint = pageSize,
+                enablePlaceholders = placeholders
+            )
+        )
     }
     val firstLoading: Boolean
         get() = mFirstLoading.also { if (mFirstLoading) mFirstLoading = false }
