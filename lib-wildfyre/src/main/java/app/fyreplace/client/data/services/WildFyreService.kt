@@ -172,7 +172,7 @@ interface WildFyreService {
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Body spread: Spread
-    ): Response<Unit>
+    ): Spread
 
     @PUT("/areas/{areaName}/{postId}/subscribe/")
     @Headers("Content-Type: application/json")
@@ -220,7 +220,7 @@ interface WildFyreService {
 
     @PUT("/areas/{areaName}/drafts/{postId}/")
     @Multipart
-    suspend fun putImage(
+    suspend fun putDraftImage(
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Part image: MultipartBody.Part,
@@ -237,7 +237,7 @@ interface WildFyreService {
 
     @PUT("/areas/{areaName}/drafts/{postId}/img/{slot}/")
     @Multipart
-    suspend fun putImage(
+    suspend fun putDraftImage(
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Path("slot") slot: Int,
@@ -260,7 +260,7 @@ interface WildFyreService {
     ): Response<Unit>
 
     @DELETE("/areas/{areaName}/drafts/{postId}/img/{slot}/")
-    suspend fun deleteImage(
+    suspend fun deleteDraftImage(
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Path("slot") slot: Int
@@ -279,7 +279,7 @@ interface WildFyreService {
 
     @POST("/areas/{areaName}/{postId}/")
     @Multipart
-    suspend fun postImage(
+    suspend fun postComment(
         @Path("areaName") areaName: String,
         @Path("postId") postId: Long,
         @Part image: MultipartBody.Part,

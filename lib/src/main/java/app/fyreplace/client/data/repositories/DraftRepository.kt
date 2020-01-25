@@ -46,7 +46,7 @@ class DraftRepository(
 
     suspend fun setImage(id: Long, content: String, image: ImageData) =
         withContext(Dispatchers.IO) {
-            wildFyre.putImage(
+            wildFyre.putDraftImage(
                 areas.preferredAreaName,
                 id,
                 createFormData("image", image),
@@ -55,7 +55,7 @@ class DraftRepository(
         }
 
     suspend fun addImage(id: Long, image: ImageData, slot: Int) = withContext(Dispatchers.IO) {
-        wildFyre.putImage(
+        wildFyre.putDraftImage(
             areas.preferredAreaName,
             id,
             slot,
@@ -69,6 +69,6 @@ class DraftRepository(
     }
 
     suspend fun removeImage(id: Long, slot: Int = -1) = withContext(Dispatchers.IO) {
-        wildFyre.deleteImage(areas.preferredAreaName, id, slot).throwIfFailed()
+        wildFyre.deleteDraftImage(areas.preferredAreaName, id, slot).throwIfFailed()
     }
 }

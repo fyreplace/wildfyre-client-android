@@ -34,7 +34,7 @@ class PostRepository(private val wildFyre: WildFyreService, private val areas: A
         }
 
     suspend fun spread(areaName: String, id: Long, spread: Boolean) = withContext(Dispatchers.IO) {
-        wildFyre.postSpread(areaName, id, Spread(spread)).throwIfFailed()
+        wildFyre.postSpread(areaName, id, Spread(spread))
     }
 
     suspend fun deletePost(areaName: String?, id: Long) = withContext(Dispatchers.IO) {

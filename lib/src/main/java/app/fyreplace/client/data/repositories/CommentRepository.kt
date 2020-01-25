@@ -14,7 +14,7 @@ class CommentRepository(private val wildFyre: WildFyreService) {
             if (image == null) {
                 wildFyre.postComment(areaName, postId, CommentText(comment))
             } else {
-                wildFyre.postImage(
+                wildFyre.postComment(
                     areaName,
                     postId,
                     createFormData("image", image),
