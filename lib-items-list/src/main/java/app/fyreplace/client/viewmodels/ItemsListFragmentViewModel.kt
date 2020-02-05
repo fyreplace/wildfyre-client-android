@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.paging.Config
-import androidx.paging.DataSource
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import app.fyreplace.client.data.DataLoadingListener
 import app.fyreplace.client.data.models.Model
+import app.fyreplace.client.data.sources.ItemsDataSource
 import app.fyreplace.client.data.sources.ItemsDataSourceFactory
 import app.fyreplace.client.lib.items_list.R
 
@@ -28,7 +28,7 @@ abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources, place
     private val mRefreshMode = MutableLiveData<Refresh?>()
 
     abstract val factory: ItemsDataSourceFactory<I>
-    val dataSource: LiveData<DataSource<Int, I>> by lazy { factory.dataSource }
+    val dataSource: LiveData<ItemsDataSource<I>> by lazy { factory.dataSource }
     val itemsPagedList: LiveData<PagedList<I>> by lazy {
         val pageSize = resources.getInteger(R.integer.post_preview_load_page_size)
         factory.toLiveData(
