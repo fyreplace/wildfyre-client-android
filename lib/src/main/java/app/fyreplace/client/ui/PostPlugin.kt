@@ -17,8 +17,10 @@ class PostPlugin private constructor() : AbstractMarkwonPlugin() {
         builder.on(SoftLineBreak::class.java) { visitor, _ -> visitor.forceNewLine() }
         builder.on(Text::class.java) { visitor, text ->
             visitor.builder().append(
-                SpannableString(text.literal)
-                    .apply { LinkifyCompat.addLinks(this, Linkify.WEB_URLS) })
+                SpannableString(text.literal).apply {
+                    LinkifyCompat.addLinks(this, Linkify.WEB_URLS)
+                }
+            )
             visitor.visitChildren(text)
         }
     }
