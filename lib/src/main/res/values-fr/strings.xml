@@ -5,6 +5,8 @@
     <string name="ok">OK</string>
     <string name="cancel">Annuler</string>
     <string name="failure_toast">Erreur: %1$s</string>
+    <string name="failure_ban_dialog_title">Erreur</string>
+    <string name="failure_ban_dialog_message">Vous avez été banni et ne pouvez pas éxécuter cette action.</string>
     <string name="draft_created_text">Écris ton post ici</string>
     <string name="image_selector_chooser">Source de l\'image</string>
     <string name="image_failure_unknown_type">Type de fichier inconnu</string>
