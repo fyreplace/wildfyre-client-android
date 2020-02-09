@@ -16,7 +16,7 @@ data class Comment(
     private constructor(parcel: Parcel) : this(
         parcel.readLong(),
         parcel.readParcelable(Author::class.java.classLoader),
-        Date(parcel.readLong()),
+        parcel.readDate(),
         parcel.readString(),
         parcel.readString()
     )
@@ -24,7 +24,7 @@ data class Comment(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
         parcel.writeParcelable(author, flags)
-        parcel.writeLong(created.time)
+        parcel.writeDate(created)
         parcel.writeString(text)
         parcel.writeString(image)
     }

@@ -17,7 +17,7 @@ data class Author(
         parcel.readString()!!,
         parcel.readString(),
         parcel.readString()!!,
-        parcel.readByte() != 0.toByte()
+        parcel.readBool()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -25,7 +25,7 @@ data class Author(
         parcel.writeString(name)
         parcel.writeString(avatar)
         parcel.writeString(bio)
-        parcel.writeByte(if (banned) 1 else 0)
+        parcel.writeBool(banned)
     }
 
     companion object CREATOR : Parcelable.Creator<Author> {

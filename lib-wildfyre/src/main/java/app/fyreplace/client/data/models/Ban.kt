@@ -11,39 +11,39 @@ data class Ban(
     val timestamp: Date,
     val reason: Long,
     val comment: String?,
-    val expiry: Date,
+    val expiry: Date?,
     val auto: Boolean?,
     @Json(name = "ban_all")
-    val banAll: Boolean?,
+    val banAll: Boolean,
     @Json(name = "ban_post")
-    val banPost: Boolean?,
+    val banPost: Boolean,
     @Json(name = "ban_comment")
-    val banComment: Boolean?,
+    val banComment: Boolean,
     @Json(name = "ban_flag")
     val banFlag: Boolean
 ) : Model {
     private constructor(parcel: Parcel) : this(
-        Date(parcel.readLong()),
+        parcel.readDate(),
         parcel.readLong(),
         parcel.readString(),
-        Date(parcel.readLong()),
-        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-        parcel.readByte() != 0.toByte()
+        parcel.readNullableDate(),
+        parcel.readNullableBool(),
+        parcel.readBool(),
+        parcel.readBool(),
+        parcel.readBool(),
+        parcel.readBool()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeLong(timestamp.time)
+        parcel.writeDate(timestamp)
         parcel.writeLong(reason)
         parcel.writeString(comment)
-        parcel.writeLong(expiry.time)
-        parcel.writeValue(auto)
-        parcel.writeValue(banAll)
-        parcel.writeValue(banPost)
-        parcel.writeValue(banComment)
-        parcel.writeByte(if (banFlag) 1 else 0)
+        parcel.writeDate(expiry)
+        parcel.writeBool(auto)
+        parcel.writeBool(banAll)
+        parcel.writeBool(banPost)
+        parcel.writeBool(banComment)
+        parcel.writeBool(banFlag)
     }
 
     companion object CREATOR : Parcelable.Creator<Ban> {

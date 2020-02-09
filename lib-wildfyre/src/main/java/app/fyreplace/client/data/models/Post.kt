@@ -14,12 +14,12 @@ data class Draft(
 ) : Model {
     private constructor(parcel: Parcel) : this(
         parcel.readString()!!,
-        parcel.readByte() != 0.toByte()
+        parcel.readBool()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(text)
-        parcel.writeByte(if (anonymous) 1 else 0)
+        parcel.writeBool(anonymous)
     }
 
     companion object CREATOR : Parcelable.Creator<Draft> {
@@ -90,14 +90,10 @@ data class Post(
         parcel.readLong(),
         parcel.readParcelable(Author::class.java.classLoader),
         parcel.readString()!!,
-        parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte(),
-        Date(parcel.readLong()),
-        when (parcel.readByte().toInt()) {
-            0 -> false
-            1 -> true
-            else -> null
-        },
+        parcel.readBool(),
+        parcel.readBool(),
+        parcel.readDate(),
+        parcel.readNullableBool(),
         parcel.readString(),
         parcel.createTypedArrayList(Image)!!,
         parcel.createTypedArrayList(Comment)!!
@@ -107,16 +103,10 @@ data class Post(
         parcel.writeLong(id)
         parcel.writeParcelable(author, flags)
         parcel.writeString(text)
-        parcel.writeByte(if (anonymous) 1 else 0)
-        parcel.writeByte(if (subscribed) 1 else 0)
-        parcel.writeLong(created.time)
-        parcel.writeByte(
-            when (active) {
-                false -> 0
-                true -> 1
-                null -> Byte.MAX_VALUE
-            }
-        )
+        parcel.writeBool(anonymous)
+        parcel.writeBool(subscribed)
+        parcel.writeDate(created)
+        parcel.writeBool(active)
         parcel.writeString(image)
         parcel.writeTypedList(additionalImages)
         parcel.writeTypedList(comments)
@@ -131,9 +121,9 @@ data class Post(
 
 @JsonClass(generateAdapter = true)
 data class Spread(val spread: Boolean) : Model {
-    private constructor(parcel: Parcel) : this(parcel.readByte() != 0.toByte())
+    private constructor(parcel: Parcel) : this(parcel.readBool())
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) = parcel.writeByte(if (spread) 1 else 0)
+    override fun writeToParcel(parcel: Parcel, flags: Int) = parcel.writeBool(spread)
 
     companion object CREATOR : Parcelable.Creator<Spread> {
         override fun createFromParcel(parcel: Parcel) = Spread(parcel)
@@ -144,10 +134,9 @@ data class Spread(val spread: Boolean) : Model {
 
 @JsonClass(generateAdapter = true)
 data class Subscription(val subscribed: Boolean) : Model {
-    private constructor(parcel: Parcel) : this(parcel.readByte() != 0.toByte())
+    private constructor(parcel: Parcel) : this(parcel.readBool())
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) =
-        parcel.writeByte(if (subscribed) 1 else 0)
+    override fun writeToParcel(parcel: Parcel, flags: Int) = parcel.writeBool(subscribed)
 
     companion object CREATOR : Parcelable.Creator<Subscription> {
         override fun createFromParcel(parcel: Parcel) = Subscription(parcel)
