@@ -37,7 +37,9 @@ class NotificationsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.itemsPagedList.observe(viewLifecycleOwner) {
-            centralViewModel.forceNotificationCount(it.size)
+            viewModel.dataSource.value?.let { source ->
+                centralViewModel.forceNotificationCount(source.totalSize)
+            }
         }
     }
 

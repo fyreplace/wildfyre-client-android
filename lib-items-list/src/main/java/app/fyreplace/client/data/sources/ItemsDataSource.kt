@@ -10,6 +10,8 @@ abstract class ItemsDataSource<I : Model>(private val listener: DataLoadingListe
     PositionalDataSource<I>(), CoroutineScope by CoroutineScope(
     SupervisorJob() + Dispatchers.IO
 ) {
+    var totalSize = 0
+        private set
     protected abstract val fetcher: suspend (Int, Int) -> SuperItem<I>
 
     final override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<I?>) {
@@ -55,5 +57,5 @@ abstract class ItemsDataSource<I : Model>(private val listener: DataLoadingListe
     }
 
     private fun runFetcher(offset: Int, size: Int) =
-        runBlocking(coroutineContext) { fetcher(offset, size) }
+        runBlocking(coroutineContext) { fetcher(offset, size).apply { totalSize = count } }
 }
