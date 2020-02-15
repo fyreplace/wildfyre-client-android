@@ -49,7 +49,7 @@ open class PostFragmentViewModel(
 
     init {
         mHasContent.value = true
-        mAllowSpread.value = false
+        mAllowSpread.value = true
         mIsOwnPost.value = false
         mSubscribed.addSource(post) { mSubscribed.postValue(it?.subscribed ?: false) }
         mMarkdownContent.addSource(post) {
