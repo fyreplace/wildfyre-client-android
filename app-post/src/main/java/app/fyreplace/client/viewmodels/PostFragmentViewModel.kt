@@ -20,7 +20,7 @@ open class PostFragmentViewModel(
     var toolbarHasExpandedView = false
     var postAreaName = areaRepository.preferredAreaName
         private set
-    var postId = Long.MIN_VALUE
+    var postId = -1L
         private set
     protected val mHasContent = MutableLiveData<Boolean>()
     protected val mAllowSpread = MutableLiveData<Boolean>()
