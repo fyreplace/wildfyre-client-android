@@ -13,24 +13,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="@string/image_desc_more"
+        android:focusable="true"
+        android:padding="@dimen/margin_tiny"
+        android:src="@drawable/ic_more_vert"
+        app:layout_constraintBottom_toBottomOf="@id/author_picture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/author_picture" />
+
     <TextView
         android:id="@+id/author_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_small"
+        android:ellipsize="end"
+        android:lines="1"
         android:textAppearance="?attr/textAppearanceBody2"
-        app:layout_constraintEnd_toStartOf="@id/date"
+        app:layout_constraintEnd_toStartOf="@id/more"
         app:layout_constraintStart_toEndOf="@id/author_picture"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/author_picture" />
 
     <TextView
         android:id="@+id/date"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:ellipsize="end"
+        android:lines="1"
         android:textAppearance="?attr/textAppearanceCaption"
-        app:layout_constraintBaseline_toBaselineOf="@id/author_name"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/author_picture"
+        app:layout_constraintEnd_toStartOf="@id/more"
+        app:layout_constraintStart_toStartOf="@id/author_name" />
 
     <TextView
         android:id="@+id/text"
@@ -39,7 +59,8 @@
         android:layout_marginTop="@dimen/margin_small"
         android:autoLink="web"
         android:textAppearance="?attr/textAppearanceBody2"
+        android:textIsSelectable="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/author_name"
-        app:layout_constraintTop_toBottomOf="@id/author_name" />
+        app:layout_constraintStart_toStartOf="@id/author_picture"
+        app:layout_constraintTop_toBottomOf="@id/author_picture" />
 </androidx.constraintlayout.widget.ConstraintLayout>

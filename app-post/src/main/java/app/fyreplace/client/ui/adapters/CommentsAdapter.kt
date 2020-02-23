@@ -29,13 +29,13 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 class CommentsAdapter(
-    private val fragment: PostFragment,
     private val navigator: PostFragment.Navigator,
     private val markdown: Markwon
 ) : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     private var data: List<CommentWrapper> = listOf()
     private val recyclers: MutableList<RecyclerView> = mutableListOf()
-    private var onCommentsChangedAction: (suspend () -> Unit)? = null
+    private var onCommentsChangedAction: (() -> Unit)? = null
+    private var onCommentMoreAction: ((View, Int) -> Unit)? = null
     var authorId: Long = -1
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -56,7 +56,7 @@ class CommentsAdapter(
         LayoutInflater
             .from(parent.context)
             .inflate(R.layout.post_comments_comment, parent, false)
-    ).also { fragment.registerForContextMenu(it.text) }
+    )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val wrapper = data[position]
@@ -93,12 +93,14 @@ class CommentsAdapter(
         comment.image?.let { markdownContent.append("![]($it)") }
         comment.text?.let { markdownContent.append(it) }
         markdown.setMarkdown(holder.text, markdownContent.toString())
-        holder.text.tag = position
+
+        holder.more.setOnClickListener {
+            onCommentMoreAction?.invoke(holder.more, position)
+        }
+
         holder.itemView.setBackgroundResource(
-            if (wrapper.isHighlighted)
-                R.color.backgroundHighlight
-            else
-                android.R.color.transparent
+            if (wrapper.isHighlighted) R.color.backgroundHighlight
+            else android.R.color.transparent
         )
     }
 
@@ -127,14 +129,20 @@ class CommentsAdapter(
             }
         }
 
-        withContext(Dispatchers.Main) { onCommentsChangedAction?.invoke() }
-        onCommentsChangedAction = null
+        onCommentsChangedAction?.run {
+            invoke()
+            onCommentsChangedAction = null
+        }
     }
 
     fun getComment(position: Int) = data[position].comment
 
-    fun doOnCommentsChanged(action: suspend () -> Unit) {
+    fun doOnCommentsChanged(action: () -> Unit) {
         onCommentsChangedAction = action
+    }
+
+    fun doOnCommentMore(action: (View, Int) -> Unit) {
+        onCommentMoreAction = action
     }
 
     private companion object {
@@ -146,6 +154,7 @@ class CommentsAdapter(
         val authorPicture: ImageView = itemView.findViewById(R.id.author_picture)
         val date: TextView = itemView.findViewById(R.id.date)
         val text: TextView = itemView.findViewById(R.id.text)
+        val more: View = itemView.findViewById(R.id.more)
     }
 
     private class CommentWrapper(val comment: Comment) {

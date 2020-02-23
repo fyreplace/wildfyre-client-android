@@ -20,4 +20,5 @@
     <string name="deletion_action_delete">Delete</string>
     <string name="sharing_action_share">Share</string>
     <string name="image_desc_author_picture">Author picture</string>
+    <string name="image_desc_more">More</string>
 </resources>

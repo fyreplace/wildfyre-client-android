@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.graphics.drawable.DrawableCompat
@@ -79,7 +80,8 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
-        val commentsAdapter = CommentsAdapter(this, navigator, markdown)
+        val commentsAdapter = CommentsAdapter(navigator, markdown)
+            .apply { doOnCommentMore(this@PostFragment::showCommentActions) }
 
         bd.content.adapter = markdownAdapter
         cbd.commentsList.setHasFixedSize(true)
@@ -272,32 +274,6 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onCreateContextMenu(
-        menu: ContextMenu,
-        v: View,
-        menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        val menuInflater = requireActivity().menuInflater
-        menuInflater.inflate(R.menu.actions_fragment_post_comment, menu)
-        menuInflater.inflate(R.menu.actions_fragment_flagging, menu)
-
-        val position = v.tag as Int
-        val comment = (cbd.commentsList.adapter as CommentsAdapter).getComment(position)
-        val isOwnComment = comment.author?.user == selfId
-
-        menu.findItem(R.id.action_copy).setOnMenuItemClickListener { copyComment(comment); true }
-        menu.findItem(R.id.action_share).setOnMenuItemClickListener { shareComment(comment); true }
-        menu.findItem(R.id.action_delete).run {
-            isVisible = isOwnComment
-            setOnMenuItemClickListener { deleteComment(position, comment); true }
-        }
-        menu.findItem(R.id.action_flag).run {
-            isVisible = !isOwnComment
-            setOnMenuItemClickListener { showFlagChoices(comment); true }
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super<FailureHandlingFragment>.onActivityResult(requestCode, resultCode, data)
         super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
@@ -330,6 +306,32 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     private fun clearCommentInput() {
         hideSoftKeyboard(cbd.commentNew)
         cbd.commentNew.clearFocus()
+    }
+
+    private fun showCommentActions(more: View, position: Int) {
+        val comment = (cbd.commentsList.adapter as CommentsAdapter).getComment(position)
+        val isOwnComment = comment.author?.user == selfId
+        val popup = PopupMenu(requireContext(), more)
+
+        popup.inflate(R.menu.actions_fragment_post_comment)
+        popup.inflate(R.menu.actions_fragment_flagging)
+
+        with(popup.menu) {
+            findItem(R.id.action_copy)
+                .setOnMenuItemClickListener { copyComment(comment); true }
+            findItem(R.id.action_share)
+                .setOnMenuItemClickListener { shareComment(comment); true }
+            findItem(R.id.action_delete).run {
+                isVisible = isOwnComment
+                setOnMenuItemClickListener { deleteComment(position, comment); true }
+            }
+            findItem(R.id.action_flag).run {
+                isVisible = !isOwnComment
+                setOnMenuItemClickListener { showFlagChoices(comment); true }
+            }
+        }
+
+        popup.show()
     }
 
     private fun requestImage() {

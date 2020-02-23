@@ -17,4 +17,5 @@
     <string name="deletion_action_delete">Supprimer</string>
     <string name="sharing_action_share">Partager</string>
     <string name="image_desc_author_picture">Image de l\'auteur</string>
+    <string name="image_desc_more">Plus</string>
 </resources>
