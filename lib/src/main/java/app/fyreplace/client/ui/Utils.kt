@@ -51,7 +51,7 @@ fun Post.toMarkdown(content: String = text) =
 
 fun GlideRequests.loadAvatar(context: Context, author: Author?) =
     load(if (author?.banned != true) author?.avatar ?: R.drawable.default_avatar else "")
-        .error(context.getDrawable(if (author?.banned == true) R.drawable.ic_block else R.drawable.ic_image))
+        .error(context.getDrawable(if (author?.banned == true) R.drawable.blocked_avatar else R.drawable.ic_image))
         .placeholder(android.R.color.transparent)
 
 fun getShareIntent(text: CharSequence, title: CharSequence): Intent =

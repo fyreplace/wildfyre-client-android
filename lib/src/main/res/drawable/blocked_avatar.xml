@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/block_avatar_background" />
+    <item
+        android:bottom="@dimen/margin_tiny"
+        android:drawable="@drawable/ic_block_error"
+        android:left="@dimen/margin_tiny"
+        android:right="@dimen/margin_tiny"
+        android:top="@dimen/margin_tiny" />
+</layer-list>
