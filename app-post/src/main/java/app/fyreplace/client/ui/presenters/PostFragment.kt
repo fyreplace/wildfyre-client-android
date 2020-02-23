@@ -20,6 +20,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -51,7 +52,7 @@ import org.koin.core.parameter.parametersOf
 import retrofit2.HttpException
 import kotlin.math.max
 
-open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackHandlingFragment,
+open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandlingFragment,
     ToolbarUsingFragment, ImageSelector {
     override val viewModel by viewModel<PostFragmentViewModel>()
     override lateinit var bd: FragmentPostBinding
@@ -74,6 +75,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
         model = viewModel
         bd = this
         cbd = collapsibleComments ?: staticComments ?: throw IllegalStateException()
+        setHasOptionsMenu(true)
         return@run root
     }
 
@@ -275,7 +277,7 @@ open class PostFragment : FailureHandlingFragment(R.layout.fragment_post), BackH
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super<FailureHandlingFragment>.onActivityResult(requestCode, resultCode, data)
+        super<Fragment>.onActivityResult(requestCode, resultCode, data)
         super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
     }
 

@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import app.fyreplace.client.app.login.R
 import app.fyreplace.client.app.login.databinding.FragmentLoginBinding
+import app.fyreplace.client.ui.Presenter
 import app.fyreplace.client.ui.hideSoftKeyboard
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.LoginFragmentViewModel
@@ -24,7 +26,7 @@ import retrofit2.HttpException
 /**
  * [androidx.fragment.app.Fragment] showing a login screen to the user.
  */
-class LoginFragment : FailureHandlingFragment(R.layout.fragment_login) {
+class LoginFragment : Fragment(R.layout.fragment_login), Presenter {
     override val viewModel by viewModel<LoginFragmentViewModel>()
     override lateinit var bd: FragmentLoginBinding
     private val centralViewModel by sharedViewModel<CentralViewModel>()

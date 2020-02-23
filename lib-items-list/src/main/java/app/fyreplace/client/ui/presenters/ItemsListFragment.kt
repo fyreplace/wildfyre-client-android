@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import app.fyreplace.client.data.models.Model
 import app.fyreplace.client.lib.items_list.R
 import app.fyreplace.client.lib.items_list.databinding.FragmentItemsListBinding
+import app.fyreplace.client.ui.Presenter
 import app.fyreplace.client.ui.adapters.EmptyItemsAdapter
 import app.fyreplace.client.ui.adapters.ItemsAdapter
 import app.fyreplace.client.viewmodels.ItemsListFragmentViewModel
@@ -17,12 +19,17 @@ import app.fyreplace.client.viewmodels.Refresh
  * Base class for fragments displaying a list of items.
  */
 abstract class ItemsListFragment<I : Model, VM : ItemsListFragmentViewModel<I>, A : ItemsAdapter<I>> :
-    FailureHandlingFragment(R.layout.fragment_items_list), ItemsAdapter.OnItemsChangedListener,
+    Fragment(R.layout.fragment_items_list), Presenter, ItemsAdapter.OnItemsChangedListener,
     ItemsAdapter.OnItemClickedListener<I> {
     abstract override val viewModel: VM
     override lateinit var bd: FragmentItemsListBinding
     protected abstract val itemsAdapter: A
     private var itemsRefreshCallback: (() -> Unit)? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.appcompat.view.ActionMode
@@ -40,6 +41,7 @@ import app.fyreplace.client.app.databinding.*
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.ui.ImageSelector
+import app.fyreplace.client.ui.Presenter
 import app.fyreplace.client.ui.loadAvatar
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
@@ -55,7 +57,7 @@ import java.io.ByteArrayInputStream
 /**
  * The central activity that hosts the different fragments.
  */
-class MainActivity : FailureHandlingActivity(R.layout.activity_main),
+class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
     NavController.OnDestinationChangedListener, ImageSelector {
     override val viewModel by viewModel<MainActivityViewModel>()
     override val contextWrapper = this
@@ -234,9 +236,11 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super<FailureHandlingActivity>.onActivityResult(requestCode, resultCode, data)
+        super<AppCompatActivity>.onActivityResult(requestCode, resultCode, data)
         super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
     }
+
+    override fun getContext() = this
 
     override fun onDestinationChanged(
         controller: NavController,
@@ -458,7 +462,7 @@ class MainActivity : FailureHandlingActivity(R.layout.activity_main),
             .firstOrNull { it is NavHostFragment }
             ?.childFragmentManager
             ?.fragments
-            ?.filterIsInstance<FailureHandlingFragment>()
+            ?.filterIsInstance<Presenter>()
 
         destinationFragments?.let {
             val last = it.last()

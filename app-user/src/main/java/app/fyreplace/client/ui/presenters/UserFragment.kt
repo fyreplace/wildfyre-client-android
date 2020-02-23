@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.app.user.R
 import app.fyreplace.client.app.user.databinding.FragmentUserBinding
 import app.fyreplace.client.data.models.Author
-import app.fyreplace.client.ui.getShareIntent
-import app.fyreplace.client.ui.lazyMarkdown
-import app.fyreplace.client.ui.loadAvatar
-import app.fyreplace.client.ui.userShareUrl
+import app.fyreplace.client.ui.*
 import app.fyreplace.client.viewmodels.UserFragmentViewModel
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -21,7 +19,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
+class UserFragment : Fragment(R.layout.fragment_user), Presenter {
     override val viewModel by viewModel<UserFragmentViewModel>()
     override lateinit var bd: FragmentUserBinding
     private val fragmentArgs by inject<Args> { parametersOf(this) }
@@ -29,6 +27,8 @@ class UserFragment : FailureHandlingFragment(R.layout.fragment_user) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
         val author = fragmentArgs.author
         val userId = fragmentArgs.userId
 

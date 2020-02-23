@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.app.draft.R
@@ -29,7 +30,7 @@ import org.koin.core.parameter.parametersOf
 import retrofit2.HttpException
 import kotlin.coroutines.coroutineContext
 
-class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHandlingFragment,
+class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandlingFragment,
     Toolbar.OnMenuItemClickListener, ImageSelector {
     override val viewModel by viewModel<DraftFragmentViewModel>()
     override lateinit var bd: FragmentDraftBinding
@@ -44,6 +45,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
         if (savedInstanceState?.getBoolean(SAVE_INIT, true) == false) {
             return
@@ -131,7 +133,7 @@ class DraftFragment : FailureHandlingFragment(R.layout.fragment_draft), BackHand
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super<FailureHandlingFragment>.onActivityResult(requestCode, resultCode, data)
+        super<Fragment>.onActivityResult(requestCode, resultCode, data)
         super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
     }
 
