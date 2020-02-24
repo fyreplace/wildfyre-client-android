@@ -43,7 +43,7 @@ interface FailureHandler : LifecycleOwner {
             if (e.code() == 403) {
                 showBanAlert()
             } else {
-                throw e
+                onFailure(e)
             }
         } catch (e: Exception) {
             onFailure(e)
