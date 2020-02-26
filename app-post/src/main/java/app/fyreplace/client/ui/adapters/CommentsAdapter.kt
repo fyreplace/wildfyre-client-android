@@ -104,6 +104,13 @@ class CommentsAdapter(
         )
     }
 
+    override fun onViewAttachedToWindow(holder: ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        // TextView's in RecyclerView's are buggy, this makes them selectable again
+        holder.text.isEnabled = false
+        holder.text.isEnabled = true
+    }
+
     suspend fun setComments(comments: List<Comment>, highlightedIds: List<Long>?) {
         val highlightedOnes = highlightedIds?.toMutableList()
         var scrollPosition = -1
