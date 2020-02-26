@@ -10,7 +10,7 @@ import app.fyreplace.client.viewmodels.NewDraftActivityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewDraftActivity : AppCompatActivity(), FailureHandler {
-    override val viewModel by viewModel<NewDraftActivityViewModel>()
+    private val viewModel by viewModel<NewDraftActivityViewModel>()
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)

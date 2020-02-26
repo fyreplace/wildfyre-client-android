@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import app.fyreplace.client.lib.R
 import kotlinx.coroutines.CancellationException
@@ -16,8 +15,6 @@ import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
 interface FailureHandler : LifecycleOwner {
-    val viewModel: ViewModel
-
     fun getContext(): Context?
 
     fun onFailure(failure: Throwable) {
