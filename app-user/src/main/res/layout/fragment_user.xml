@@ -41,7 +41,6 @@
                     android:id="@+id/user_bio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:autoLink="web"
                     android:drawablePadding="@dimen/margin_small"
                     android:maxWidth="@dimen/user_bio_max_width"
                     android:textAppearance="?attr/textAppearanceBody1"
