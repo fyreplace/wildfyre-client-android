@@ -63,7 +63,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     private val navigator by inject<Navigator> { parametersOf(this) }
     private val markdown by lazyMarkdown()
     private val highlightedCommentIds by lazy { if (canUseFragmentArgs()) fragmentArgs.newCommentsIds else null }
-    private var selfId = -1L
+    private var selfId = Long.MIN_VALUE
     private var commentsSheetCallback: CommentsSheetCallback<View>? = null
 
     override fun onCreateView(
