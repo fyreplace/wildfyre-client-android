@@ -63,7 +63,6 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     private val navigator by inject<Navigator> { parametersOf(this) }
     private val markdown by lazyMarkdown()
     private val highlightedCommentIds by lazy { if (canUseFragmentArgs()) fragmentArgs.newCommentsIds else null }
-    private var selfId = Long.MIN_VALUE
     private var commentsSheetCallback: CommentsSheetCallback<View>? = null
 
     override fun onCreateView(
@@ -98,7 +97,10 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         if (canUseFragmentArgs()) launch {
             fragmentArgs.post?.let { viewModel.setPost(it) }
                 ?: viewModel.setPostData(fragmentArgs.areaName, fragmentArgs.postId)
-            viewModel.setIsOwnPost(fragmentArgs.ownPost)
+
+            if (fragmentArgs.ownPost) {
+                viewModel.setIsOwnPost()
+            }
         }
 
         viewModel.post.observe(viewLifecycleOwner) { centralViewModel.setPost(it) }
@@ -132,7 +134,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
             cbd.commentNew.isEndIconVisible = it
         }
 
-        centralViewModel.selfId.observe(viewLifecycleOwner) { selfId = it }
+        centralViewModel.selfId.observe(viewLifecycleOwner) { viewModel.selfId = it }
 
         cbd.commentsList.addOnScrollListener(CommentsScrollListener())
         cbd.goUp.setOnClickListener {
@@ -206,6 +208,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+
         if (view != null) {
             bd.collapsibleComments?.let {
                 outState.putBoolean(
@@ -244,18 +247,10 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
             }
         }
 
-        val deleteItem = menu.findItem(R.id.action_delete)
-        val flagItem = menu.findItem(R.id.action_flag)
         viewModel.isOwnPost.observe(viewLifecycleOwner) {
             val shouldShowItems = !viewModel.toolbarHasExpandedView
-            deleteItem.isVisible = it && shouldShowItems
-            flagItem.isVisible = !it && shouldShowItems
-        }
-        viewModel.authorId.observe(viewLifecycleOwner) {
-            val shouldShowItems = !viewModel.toolbarHasExpandedView
-            val isOwnPost = it == selfId
-            deleteItem.isVisible = isOwnPost && shouldShowItems
-            flagItem.isVisible = !isOwnPost && shouldShowItems
+            menu.findItem(R.id.action_delete).isVisible = it && shouldShowItems
+            menu.findItem(R.id.action_flag).isVisible = !it && shouldShowItems
         }
 
         val postMenuItems =
@@ -312,7 +307,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
 
     private fun showCommentActions(more: View, position: Int) {
         val comment = (cbd.commentsList.adapter as CommentsAdapter).getComment(position)
-        val isOwnComment = comment.author?.user == selfId
+        val isOwnComment = comment.author?.user == viewModel.selfId
         val popup = PopupMenu(requireContext(), more)
 
         popup.inflate(R.menu.actions_fragment_post_comment)

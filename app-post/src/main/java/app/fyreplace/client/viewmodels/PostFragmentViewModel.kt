@@ -17,6 +17,7 @@ open class PostFragmentViewModel(
     private val commentRepository: CommentRepository,
     private val postRepository: PostRepository
 ) : ViewModel() {
+    var selfId = Long.MIN_VALUE
     var toolbarHasExpandedView = false
     var postAreaName = areaRepository.preferredAreaName
         private set
@@ -25,7 +26,7 @@ open class PostFragmentViewModel(
     protected val mHasContent = MutableLiveData<Boolean>()
     protected val mAllowSpread = MutableLiveData<Boolean>()
     private val mPost = MutableLiveData<Post?>()
-    private val mIsOwnPost = MutableLiveData<Boolean>()
+    private val mIsOwnPost = MediatorLiveData<Boolean>()
     private val mSubscribed = MediatorLiveData<Boolean>()
     private val mMarkdownContent = MediatorLiveData<String>()
     private val mComments = MediatorLiveData<List<Comment>>()
@@ -36,7 +37,7 @@ open class PostFragmentViewModel(
     val hasContent: LiveData<Boolean> = mHasContent.distinctUntilChanged()
     val allowSpread: LiveData<Boolean> = mAllowSpread.distinctUntilChanged()
     val post: LiveData<Post?> = mPost
-    val isOwnPost: LiveData<Boolean> = mIsOwnPost
+    val isOwnPost: LiveData<Boolean> = mIsOwnPost.distinctUntilChanged()
     val contentLoaded: LiveData<Boolean> = post.map { it != null }
     val authorId: LiveData<Long> = post.map { it?.author?.user ?: -1 }
     val subscribed: LiveData<Boolean> = mSubscribed.distinctUntilChanged()
@@ -51,10 +52,12 @@ open class PostFragmentViewModel(
         mHasContent.value = true
         mAllowSpread.value = true
         mPost.value = null
-        mIsOwnPost.value = false
+        mIsOwnPost.addSource(authorId) { mIsOwnPost.postValue(it == selfId) }
         mSubscribed.addSource(post) { mSubscribed.postValue(it?.subscribed ?: false) }
         mMarkdownContent.addSource(post) {
-            viewModelScope.launch(Dispatchers.Default) { mMarkdownContent.postValue(it?.toMarkdown().orEmpty()) }
+            viewModelScope.launch(Dispatchers.Default) {
+                mMarkdownContent.postValue(it?.toMarkdown().orEmpty())
+            }
         }
         mComments.addSource(post) {
             commentsData.clear()
@@ -81,7 +84,7 @@ open class PostFragmentViewModel(
         }
     }
 
-    fun setIsOwnPost(ownPost: Boolean) = mIsOwnPost.postValue(ownPost)
+    fun setIsOwnPost() = mIsOwnPost.postValue(true)
 
     suspend fun getFlagChoices() = postRepository.getFlagChoices()
         .sortedWith(Comparator { f1, f2 ->
