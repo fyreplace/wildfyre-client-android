@@ -36,7 +36,7 @@ abstract class ItemsDataSource<I : Model>(private val listener: DataLoadingListe
 
             callback.onResult(fetch.results, initialPosition, fetch.count)
         } catch (e: Exception) {
-            callback.onResult(emptyList(), 0)
+            callback.onResult(emptyList(), 0, 0)
         } finally {
             listener.onLoadingStop()
         }

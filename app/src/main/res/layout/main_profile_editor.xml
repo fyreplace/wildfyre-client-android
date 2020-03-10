@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:overScrollMode="never">
+    android:overScrollMode="never"
+    tools:context="app.fyreplace.client.ui.presenters.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingStart="@dimen/margin_medium"
-        android:paddingEnd="@dimen/margin_medium"
-        tools:context="app.fyreplace.client.ui.presenters.MainActivity">
+        android:paddingEnd="@dimen/margin_medium">
 
         <ImageView
             android:id="@+id/user_picture"
