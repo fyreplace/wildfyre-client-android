@@ -35,6 +35,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
     override val viewModel by viewModel<DraftFragmentViewModel>()
     override lateinit var bd: FragmentDraftBinding
     override val contextWrapper by lazy { requireActivity() }
+    override val maxImageSize = 1f
     private val fragmentArgs by inject<Args> { parametersOf(this) }
     private val markdown by lazyMarkdown()
     private val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)

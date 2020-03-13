@@ -60,8 +60,9 @@ import java.io.ByteArrayInputStream
 class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
     NavController.OnDestinationChangedListener, ImageSelector {
     override val viewModel by viewModel<MainActivityViewModel>()
-    override val contextWrapper = this
     override lateinit var bd: ActivityMainBinding
+    override val contextWrapper = this
+    override val maxImageSize = 0.5f
     private val centralViewModel by viewModel<CentralViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val toolbarChangeListener by lazy {

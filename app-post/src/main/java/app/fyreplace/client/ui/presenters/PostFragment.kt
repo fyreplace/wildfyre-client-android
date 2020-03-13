@@ -57,6 +57,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     override val viewModel by viewModel<PostFragmentViewModel>()
     override lateinit var bd: FragmentPostBinding
     override val contextWrapper by lazy { requireActivity() }
+    override val maxImageSize = 0.5f
     protected lateinit var cbd: PostCommentsBinding
     private val centralViewModel by sharedViewModel<CentralViewModel>()
     private val fragmentArgs by inject<Args> { parametersOf(this) }

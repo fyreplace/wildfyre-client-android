@@ -25,10 +25,12 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import kotlin.coroutines.coroutineContext
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 interface ImageSelector : FailureHandler {
     val contextWrapper: ContextWrapper
+    val maxImageSize: Float
     val requestImageFile
         get() = contextWrapper.resources.getInteger(R.integer.request_image_file)
     val requestImagePhoto
@@ -39,6 +41,8 @@ interface ImageSelector : FailureHandler {
         get() = File(contextWrapper.filesDir, "images")
     private val photoImageFile
         get() = File(imagesDirectory, "image.data")
+    private val maxImageByteSize: Int
+        get() = (maxImageSize * 1024 * 1024).roundToInt()
 
     fun startActivityForResult(intent: Intent?, requestCode: Int)
 
@@ -79,7 +83,7 @@ interface ImageSelector : FailureHandler {
                     )
                     Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
                         putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                        putExtra(MediaStore.EXTRA_SIZE_LIMIT, IMAGE_MAX_FILE_SIZE)
+                        putExtra(MediaStore.EXTRA_SIZE_LIMIT, maxImageByteSize)
                         imageUri?.let { imageSelectorViewModel.push(it) } ?: return
                     }
                 }
@@ -124,7 +128,7 @@ interface ImageSelector : FailureHandler {
     private suspend fun useBytes(bytes: ByteArray, transformations: Matrix, mimeType: String) {
         var compressedBytes = bytes
         var compressedMimeType = mimeType
-        val isTooBig = compressedBytes.size > IMAGE_MAX_FILE_SIZE
+        val isTooBig = compressedBytes.size > maxImageByteSize
         val isUnknownMime = mimeType !in listOf("jpeg", "png").map { "image/$it" }
         val isRotated = !transformations.isIdentity
 
@@ -154,7 +158,7 @@ interface ImageSelector : FailureHandler {
         }
 
         withContext(Dispatchers.Main) {
-            if (compressedBytes.size <= IMAGE_MAX_FILE_SIZE) {
+            if (compressedBytes.size <= maxImageByteSize) {
                 val extension = MimeTypeMap.getSingleton()
                     .getExtensionFromMimeType(compressedMimeType)
                 onImage(ImageData("image.${extension}", compressedMimeType, compressedBytes))
@@ -181,7 +185,6 @@ interface ImageSelector : FailureHandler {
     }
 
     companion object {
-        const val IMAGE_MAX_FILE_SIZE = 512 * 1024
         const val IMAGE_MAX_AREA = 1920 * 1080
     }
 }
