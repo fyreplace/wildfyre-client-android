@@ -313,13 +313,13 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             intent.type?.startsWith("image/") == true -> launch {
                 val uris =
                     intent.getParcelableExtra<Uri?>(Intent.EXTRA_STREAM)?.let { listOf(it) }
-                        ?: intent.getParcelableArrayListExtra<Uri?>(Intent.EXTRA_STREAM)
+                        ?: intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM)
                         ?: intent.clipData?.run { (0..itemCount).map { getItemAt(it).uri } }
 
                 navController.navigate(
                     actionGlobalFragmentDraft(
                         draft = viewModel.createDraft(),
-                        imageUris = uris.orEmpty().filterNotNull().toTypedArray()
+                        imageUris = uris.orEmpty().toTypedArray()
                     )
                 )
             }
