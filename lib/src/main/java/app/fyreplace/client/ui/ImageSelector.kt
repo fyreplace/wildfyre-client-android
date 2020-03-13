@@ -130,12 +130,16 @@ interface ImageSelector : FailureHandler {
         var compressedMimeType = mimeType
         val isTooBig = compressedBytes.size > maxImageByteSize
         val isUnknownMime = mimeType !in listOf("jpeg", "png").map { "image/$it" }
+        val isPng = mimeType == "image/png"
         val isRotated = !transformations.isIdentity
 
         if (isTooBig || isUnknownMime || isRotated) {
+            coroutineContext.ensureActive()
             val os = ByteArrayOutputStream()
             val bitmap = BitmapFactory.decodeByteArray(compressedBytes, 0, compressedBytes.size)
-            val rotatedBitmap = Bitmap.createBitmap(
+            var quality = 100
+            var compressFormat = if (isPng) CompressFormat.PNG else CompressFormat.JPEG
+            var rotatedBitmap = Bitmap.createBitmap(
                 bitmap,
                 0,
                 0,
@@ -145,16 +149,33 @@ interface ImageSelector : FailureHandler {
                 true
             )
 
-            coroutineContext.ensureActive()
-
             if (isTooBig) {
-                downscaleBitmap(rotatedBitmap).compress(CompressFormat.JPEG, 50, os)
-            } else {
-                rotatedBitmap.compress(CompressFormat.JPEG, 100, os)
+                coroutineContext.ensureActive()
+                rotatedBitmap = downscaleBitmap(rotatedBitmap)
+                quality = 50
+            }
+
+            suspend fun compress() {
+                coroutineContext.ensureActive()
+                os.reset()
+                rotatedBitmap.compress(compressFormat, quality, os)
+            }
+
+            compress()
+
+            if (os.size() > maxImageByteSize && isPng) {
+                compressFormat = CompressFormat.JPEG
+                compress()
             }
 
             compressedBytes = os.toByteArray()
-            compressedMimeType = "image/jpeg"
+            compressedMimeType = "image/" + when (compressFormat) {
+                CompressFormat.JPEG -> "jpeg"
+                CompressFormat.PNG -> "png"
+                CompressFormat.WEBP -> "webp"
+            }
+
+            coroutineContext.ensureActive()
         }
 
         withContext(Dispatchers.Main) {
