@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.appcompat.view.ActionMode
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.children
@@ -65,9 +64,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
     override val maxImageSize = 0.5f
     private val centralViewModel by viewModel<CentralViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private val toolbarChangeListener by lazy {
-        OnToolbarChangeListener(bd.content.toolbar)
-    }
     private var toolbarInset = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -187,7 +183,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             bd.navigationView.findViewById<View>(R.id.edit).setOnClickListener { editProfile() }
         }
 
-        bd.content.toolbar.addOnLayoutChangeListener(toolbarChangeListener)
         bd.content.toolbar.doOnLayout {
             bd.content.badge.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 leftMargin = bd.content.toolbar.height / 2
@@ -203,11 +198,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
         if (intent != null) {
             handleSendIntent(intent)
         }
-    }
-
-    override fun onDestroy() {
-        bd.content.toolbar.removeOnLayoutChangeListener(toolbarChangeListener)
-        super.onDestroy()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -539,24 +529,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
                             .navigate(actionGlobalFragmentUser(author = author))
                     }
                 }
-        }
-    }
-
-    private class OnToolbarChangeListener(val toolbar: Toolbar) : View.OnLayoutChangeListener {
-        override fun onLayoutChange(
-            v: View,
-            left: Int,
-            top: Int,
-            right: Int,
-            bottom: Int,
-            oldLeft: Int,
-            oldTop: Int,
-            oldRight: Int,
-            oldBottom: Int
-        ) {
-            if (toolbar.isTitleTruncated && toolbar.subtitle.isNullOrEmpty()) {
-                toolbar.title = ""
-            }
         }
     }
 }
