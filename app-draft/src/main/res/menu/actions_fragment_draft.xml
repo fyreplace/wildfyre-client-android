@@ -5,15 +5,14 @@
     tools:context="app.fyreplace.client.ui.presenters.DraftFragment"
     tools:ignore="AlwaysShowAction">
     <item
+        android:id="@+id/action_publish"
+        android:title="@string/draft_action_publish"
+        app:actionLayout="@layout/action_draft_publish"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_preview"
         android:icon="@drawable/ic_visibility"
         android:title="@string/draft_action_preview"
-        app:iconTint="@color/colorOnPrimaryDark"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_publish"
-        android:icon="@drawable/ic_done"
-        android:title="@string/draft_action_publish"
         app:iconTint="@color/colorOnPrimaryDark"
         app:showAsAction="always" />
     <item

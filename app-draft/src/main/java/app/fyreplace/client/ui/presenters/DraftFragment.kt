@@ -145,20 +145,14 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_fragment_draft, menu)
         inflater.inflate(R.menu.actions_fragment_deletion, menu)
+        menu.findItem(R.id.action_publish).actionView.findViewById<View>(R.id.button)
+            .setOnClickListener { menu.performIdentifierAction(R.id.action_publish, 0) }
         menu.findItem(R.id.action_preview).isVisible = bd.preview == null
         menu.findItem(R.id.action_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_preview -> {
-                hideSoftKeyboard(bd.editor.editor)
-                AlertDialog.Builder(contextWrapper)
-                    .setView(R.layout.draft_dialog_preview)
-                    .show()
-                    .findViewById<RecyclerView>(R.id.preview)?.adapter = markdownAdapter
-                updatePreview()
-            }
             R.id.action_publish -> {
                 var anon: Boolean? = null
                 AlertDialog.Builder(contextWrapper)
@@ -185,6 +179,14 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
                             }
                         }
                     }
+            }
+            R.id.action_preview -> {
+                hideSoftKeyboard(bd.editor.editor)
+                AlertDialog.Builder(contextWrapper)
+                    .setView(R.layout.draft_dialog_preview)
+                    .show()
+                    .findViewById<RecyclerView>(R.id.preview)?.adapter = markdownAdapter
+                updatePreview()
             }
             R.id.action_save -> launch { saveDraft(showConfirmation = true) }
             R.id.action_delete -> AlertDialog.Builder(contextWrapper)

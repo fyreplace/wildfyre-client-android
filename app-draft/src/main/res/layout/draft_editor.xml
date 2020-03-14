@@ -22,7 +22,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:boxBackgroundColor="@color/colorBackground"
+            app:boxBackgroundColor="@android:color/transparent"
             app:layout_behavior="app.fyreplace.client.ui.widgets.BottomAppBarAvoidingBehavior">
 
             <app.fyreplace.client.ui.widgets.MarkdownEditText
