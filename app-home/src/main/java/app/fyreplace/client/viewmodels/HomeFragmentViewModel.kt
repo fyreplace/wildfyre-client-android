@@ -21,15 +21,20 @@ class HomeFragmentViewModel(
     private var endOfPosts = false
     private var lastAreaName: String? = null
 
-    suspend fun nextPost(areaName: String? = null) {
+    suspend fun nextPost(areaName: String? = null, refill: Boolean = false) {
         if (areaName == lastAreaName) {
             return
         }
 
-        if (areaName != null) {
+        val forcedArea = areaName != null
+
+        if (forcedArea || (refill && endOfPosts)) {
+            if (forcedArea) {
+                lastAreaName = areaName
+            }
+
             setPost(null)
             mHasContent.postValue(true)
-            lastAreaName = areaName
             fetchJob?.cancel()
             postReserve.clear()
         }

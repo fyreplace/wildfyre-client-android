@@ -43,6 +43,11 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         bd.buttons.ignite.setOnClickListener { launch { viewModel.spread(true); resetHomeView() } }
     }
 
+    override fun onResume() {
+        super.onResume()
+        launch { viewModel.nextPost(refill = true) }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.actions_fragment_home, menu)
         onCreateOptionsMenu(this, menu, inflater)
