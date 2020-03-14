@@ -52,13 +52,18 @@ class NotificationsFragment :
             hasData = viewModel.hasData
         }
 
-        clear.findViewById<View>(R.id.button).setOnClickListener {
-            AlertDialog.Builder(requireContext())
-                .setTitle(getString(R.string.notifications_action_clear_dialog_title))
-                .setNegativeButton(R.string.no, null)
-                .setPositiveButton(R.string.yes) { _, _ -> launch { viewModel.clearNotifications() } }
-                .show()
-        }
+        clear.findViewById<View>(R.id.button)
+            .setOnClickListener { menu.performIdentifierAction(clear.id, 0) }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.notifications_action_clear_dialog_title))
+            .setNegativeButton(R.string.no, null)
+            .setPositiveButton(R.string.yes) { _, _ -> launch { viewModel.clearNotifications() } }
+            .show()
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onItemClicked(item: Notification) {

@@ -1,10 +1,7 @@
 package app.fyreplace.client.ui.presenters
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import app.fyreplace.client.app.drafts.R
 import app.fyreplace.client.data.models.Post
@@ -41,7 +38,12 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>(true) {
         inflater.inflate(R.menu.actions_fragment_drafts, menu)
         super.onCreateOptionsMenu(menu, inflater)
         menu.findItem(R.id.action_new).actionView?.findViewById<Button>(R.id.button)
-            ?.setOnClickListener { launch { onItemClicked(viewModel.createDraft()) } }
+            ?.setOnClickListener { menu.performIdentifierAction(R.id.action_new, 0) }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        launch { onItemClicked(viewModel.createDraft()) }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onItemClicked(item: Post) {
