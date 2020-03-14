@@ -23,11 +23,11 @@
             android:title="@string/main_nav_fragment_archive" />
         <item
             android:id="@+id/fragment_own_posts"
-            android:icon="@drawable/ic_content_copy"
+            android:icon="@drawable/ic_library_books"
             android:title="@string/main_nav_fragment_own_posts" />
         <item
             android:id="@+id/fragment_drafts"
-            android:icon="@drawable/ic_wb_incandescent_flipped"
+            android:icon="@drawable/ic_description"
             android:title="@string/main_nav_fragment_drafts"
             app:actionLayout="@layout/action_main_nav_fragment_drafts"
             app:showAsAction="always" />
