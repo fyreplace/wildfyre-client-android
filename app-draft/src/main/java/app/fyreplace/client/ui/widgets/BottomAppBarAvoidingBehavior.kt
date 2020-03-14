@@ -10,7 +10,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 
 class BottomAppBarAvoidingBehavior(context: Context?, attrs: AttributeSet?) :
     CoordinatorLayout.Behavior<View>(context, attrs) {
-    private var originalMargin = 0
+    private var originalMargin = -1
 
     override fun layoutDependsOn(parent: CoordinatorLayout, child: View, dependency: View) =
         dependency is BottomAppBar
@@ -21,7 +21,7 @@ class BottomAppBarAvoidingBehavior(context: Context?, attrs: AttributeSet?) :
         dependency: View
     ): Boolean {
         child.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            if (originalMargin == 0) {
+            if (originalMargin == -1) {
                 originalMargin = bottomMargin
             }
 

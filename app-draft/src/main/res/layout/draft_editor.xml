@@ -19,10 +19,10 @@
             app:title="@string/draft_bottom_app_bar_title" />
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/margin_small"
+            app:boxBackgroundColor="@color/colorBackground"
             app:layout_behavior="app.fyreplace.client.ui.widgets.BottomAppBarAvoidingBehavior">
 
             <app.fyreplace.client.ui.widgets.MarkdownEditText
