@@ -101,8 +101,10 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
         with(bd.editor) {
             bottomAppBar.setTag(R.menu.bottom_actions_fragment_draft_selection, false)
             bottomAppBar.setOnMenuItemClickListener(this@DraftFragment)
+            val text = fragmentArgs.draft.text
             editor.addTextChangedListener(EditorWatcher())
-            editor.setText(fragmentArgs.draft.text)
+            editor.setText(text)
+            editor.setSelection(text.length)
             editor.onSelectionChangedListener = { hasSelection ->
                 if (bottomAppBar.getTag(R.menu.bottom_actions_fragment_draft_selection) != hasSelection) {
                     bottomAppBar.setTag(
@@ -115,6 +117,8 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
                     )
                 }
             }
+
+            showSoftKeyboard(editor)
         }
     }
 

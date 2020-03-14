@@ -22,6 +22,13 @@ val IMAGE_REGEX = Regex("\n*\\[img:\\s*(\\d+)]\n*", RegexOption.MULTILINE)
 val YOUTUBE_REGEX =
     Regex("(?:https?://)?(?:www\\.)?youtu(?:be\\.(?:\\w+)/watch\\?v=|\\.be/)([\\w\\-]+)")
 
+fun showSoftKeyboard(view: View?) {
+    view?.let {
+        ContextCompat.getSystemService(it.context, InputMethodManager::class.java)
+            ?.showSoftInput(it, 0)
+    }
+}
+
 fun hideSoftKeyboard(view: View?) {
     view?.let {
         ContextCompat.getSystemService(it.context, InputMethodManager::class.java)
