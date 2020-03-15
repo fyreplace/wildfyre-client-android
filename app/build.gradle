@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
-apply plugin: 'org.jetbrains.dokka-android'
 
 android {
     compileSdkVersion configuration.compileSdkVersion
@@ -58,9 +57,4 @@ dependencies {
     implementation libraries.koin.androidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinx.coroutines
-}
-
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/javadoc"
 }
