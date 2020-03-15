@@ -13,6 +13,7 @@ import android.webkit.MimeTypeMap
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.exifinterface.media.ExifInterface
 import androidx.exifinterface.media.ExifInterface.*
+import androidx.lifecycle.ViewModelStoreOwner
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.lib.R
 import app.fyreplace.client.viewmodels.ImageSelectorViewModel
@@ -28,7 +29,7 @@ import kotlin.coroutines.coroutineContext
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
-interface ImageSelector : FailureHandler {
+interface ImageSelector : FailureHandler, ViewModelStoreOwner {
     val contextWrapper: ContextWrapper
     val maxImageSize: Float
     val requestImageFile
