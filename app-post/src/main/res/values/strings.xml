@@ -4,7 +4,8 @@
     <string name="post_action_unsubscribe">Unsubscribe</string>
     <string name="post_action_flag">Report</string>
     <string name="post_action_share_title">Share post</string>
-    <string name="post_action_delete_dialog_title">Delete this post? This action cannot be undone</string>
+    <string name="post_action_delete_dialog_title">Delete this post?</string>
+    <string name="post_action_delete_dialog_message">This action cannot be undone</string>
     <string name="post_action_flag_dialog_title">Report</string>
     <string name="post_action_flag_dialog_positive">Next</string>
     <string name="post_action_flag_info_dialog_hint">Comment</string>
@@ -28,7 +29,8 @@
     <string name="post_comment_copy_label">Comment</string>
     <string name="post_comment_copy_toast">Comment copied to clipboard</string>
     <string name="post_comment_share_title">Share this comment</string>
-    <string name="post_comment_delete_dialog_title">Delete this comment? This action cannot be undone</string>
+    <string name="post_comment_delete_dialog_title">Delete this comment?</string>
+    <string name="post_comment_delete_dialog_message">This action cannot be undone</string>
     <string name="post_failure_flag">Posts and comments can be reported only once</string>
     <string name="image_desc_comment_picture">Comment picture</string>
     <string name="image_desc_comments_toggle">Toggle comments</string>

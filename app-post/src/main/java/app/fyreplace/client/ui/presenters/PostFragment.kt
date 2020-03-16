@@ -361,6 +361,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     private fun deletePost() {
         AlertDialog.Builder(contextWrapper)
             .setTitle(R.string.post_action_delete_dialog_title)
+            .setMessage(R.string.post_action_delete_dialog_message)
             .setNegativeButton(R.string.no, null)
             .setPositiveButton(R.string.yes) { _, _ ->
                 launch {
@@ -390,6 +391,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     private fun deleteComment(position: Int, comment: Comment) {
         AlertDialog.Builder(contextWrapper)
             .setTitle(R.string.post_comment_delete_dialog_title)
+            .setMessage(R.string.post_comment_delete_dialog_message)
             .setNegativeButton(R.string.no, null)
             .setPositiveButton(R.string.yes) { _, _ ->
                 launch { viewModel.deleteComment(position, comment) }
