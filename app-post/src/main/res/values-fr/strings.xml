@@ -25,7 +25,6 @@
     <string name="post_comment_attach_file_dialog_neutral">Rien</string>
     <string name="post_comment_menu_copy">Copier</string>
     <string name="post_comment_menu_share">Partager</string>
-    <string name="post_comment_menu_delete">Supprimer</string>
     <string name="post_comment_copy_label">Commentaire</string>
     <string name="post_comment_copy_toast">Commentaire copié dans le presse-papier</string>
     <string name="post_comment_share_title">Partager ce commentaire</string>

@@ -310,6 +310,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         val popup = PopupMenu(requireContext(), more)
 
         popup.inflate(R.menu.actions_fragment_post_comment)
+        popup.inflate(R.menu.actions_fragment_deletion)
         popup.inflate(R.menu.actions_fragment_flagging)
 
         with(popup.menu) {

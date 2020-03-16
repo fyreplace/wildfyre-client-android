@@ -25,7 +25,6 @@
     <string name="post_comment_attach_file_dialog_neutral">Nothing</string>
     <string name="post_comment_menu_copy">Copy</string>
     <string name="post_comment_menu_share">Share</string>
-    <string name="post_comment_menu_delete">Delete</string>
     <string name="post_comment_copy_label">Comment</string>
     <string name="post_comment_copy_toast">Comment copied to clipboard</string>
     <string name="post_comment_share_title">Share this comment</string>
