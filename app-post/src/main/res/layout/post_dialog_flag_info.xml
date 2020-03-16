@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<EditText xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/text"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_medium"
-    android:gravity="start"
-    android:hint="@string/post_action_flag_info_dialog_hint"
-    android:importantForAutofill="no"
-    android:inputType="textMultiLine|textCapSentences"
-    android:minLines="3" />
+    android:padding="@dimen/margin_medium">
+
+    <EditText
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:hint="@string/post_action_flag_info_dialog_hint"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine|textCapSentences"
+        android:minLines="3" />
+</FrameLayout>

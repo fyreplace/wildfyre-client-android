@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import app.fyreplace.client.app.R
 import app.fyreplace.client.data.repositories.DraftRepository
 import app.fyreplace.client.data.repositories.SettingsRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,7 +34,7 @@ class MainActivityViewModel(
 
     fun login() {
         startupLogin = false
-        uiRefreshTickerJob = viewModelScope.launch {
+        uiRefreshTickerJob = viewModelScope.launch(Dispatchers.IO) {
             while (true) {
                 mUiRefreshTick.postValue(Unit)
                 delay(UI_UPDATE_MILLIS)

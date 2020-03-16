@@ -4,7 +4,8 @@
     <string name="post_action_unsubscribe">Se désinscrire</string>
     <string name="post_action_flag">Signaler</string>
     <string name="post_action_share_title">Partager ce post</string>
-    <string name="post_action_delete_dialog_title">Supprimer ce post ? Cette action est irréversible</string>
+    <string name="post_action_delete_dialog_title">Supprimer ce post ?</string>
+    <string name="post_action_delete_dialog_message">Cette action est irréversible</string>
     <string name="post_action_flag_dialog_title">Signalement</string>
     <string name="post_action_flag_dialog_positive">Suivant</string>
     <string name="post_action_flag_info_dialog_hint">Commentaire</string>
@@ -25,11 +26,11 @@
     <string name="post_comment_attach_file_dialog_neutral">Rien</string>
     <string name="post_comment_menu_copy">Copier</string>
     <string name="post_comment_menu_share">Partager</string>
-    <string name="post_comment_menu_delete">Supprimer</string>
     <string name="post_comment_copy_label">Commentaire</string>
     <string name="post_comment_copy_toast">Commentaire copié dans le presse-papier</string>
     <string name="post_comment_share_title">Partager ce commentaire</string>
-    <string name="post_comment_delete_dialog_title">Supprimer ce commentaire ? Cette action est irréversible</string>
+    <string name="post_comment_delete_dialog_title">Supprimer ce commentaire ?</string>
+    <string name="post_comment_delete_dialog_message">Cette action est irréversible</string>
     <string name="post_failure_flag">Les posts et les commentaires ne peuvent être signalés qu\'une fois</string>
     <string name="image_desc_comment_picture">Image du commentaire</string>
     <string name="image_desc_comments_toggle">Afficher les commentaires</string>

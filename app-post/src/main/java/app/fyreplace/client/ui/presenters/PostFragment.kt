@@ -3,14 +3,13 @@ package app.fyreplace.client.ui.presenters
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.*
+import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
@@ -312,6 +311,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         val popup = PopupMenu(requireContext(), more)
 
         popup.inflate(R.menu.actions_fragment_post_comment)
+        popup.inflate(R.menu.actions_fragment_deletion)
         popup.inflate(R.menu.actions_fragment_flagging)
 
         with(popup.menu) {
@@ -362,6 +362,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     private fun deletePost() {
         AlertDialog.Builder(contextWrapper)
             .setTitle(R.string.post_action_delete_dialog_title)
+            .setMessage(R.string.post_action_delete_dialog_message)
             .setNegativeButton(R.string.no, null)
             .setPositiveButton(R.string.yes) { _, _ ->
                 launch {
@@ -391,6 +392,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     private fun deleteComment(position: Int, comment: Comment) {
         AlertDialog.Builder(contextWrapper)
             .setTitle(R.string.post_comment_delete_dialog_title)
+            .setMessage(R.string.post_comment_delete_dialog_message)
             .setNegativeButton(R.string.no, null)
             .setPositiveButton(R.string.yes) { _, _ ->
                 launch { viewModel.deleteComment(position, comment) }
@@ -402,37 +404,31 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         launch {
             val choices = viewModel.getFlagChoices()
             var key: Long? = null
-            val alert = AlertDialog.Builder(contextWrapper)
+            AlertDialog.Builder(contextWrapper)
                 .setTitle(R.string.post_action_flag_dialog_title)
                 .setSingleChoiceItems(
                     choices.map { it.value }.toTypedArray(),
                     choices.indexOfFirst { it.key == null }
                 ) { _, i -> key = choices[i].key }
                 .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.post_action_flag_dialog_positive, null)
+                .setPositiveButton(R.string.post_action_flag_dialog_positive) { _, _ ->
+                    showFlagInfo(comment, key)
+                }
                 .show()
-            alert.getButton(DialogInterface.BUTTON_POSITIVE)
-                .setOnClickListener { showFlagInfo(alert, comment, key) }
         }
     }
 
-    private fun showFlagInfo(alert: AlertDialog, comment: Comment?, key: Long?) {
-        val root = alert.listView.parent as ViewGroup
-        val editText = layoutInflater.inflate(R.layout.post_dialog_flag_info, root, false)
-            .findViewById<TextView>(R.id.text)
-
-        root.run {
-            removeView(alert.listView)
-            addView(editText)
-        }
-
-        alert.getButton(DialogInterface.BUTTON_POSITIVE).run {
-            setText(R.string.post_action_flag)
-            setOnClickListener {
-                alert.dismiss()
-                doFlag(comment, key, editText.text?.toString())
+    private fun showFlagInfo(comment: Comment?, key: Long?) {
+        var editText: EditText? = null
+        val alert = AlertDialog.Builder(contextWrapper)
+            .setTitle(R.string.post_action_flag_dialog_title)
+            .setView(R.layout.post_dialog_flag_info)
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.post_action_flag) { _, _ ->
+                doFlag(comment, key, editText?.text.toString())
             }
-        }
+            .show()
+        editText = alert.findViewById(R.id.text)
     }
 
     private fun doFlag(comment: Comment?, key: Long?, text: String?) = launch {

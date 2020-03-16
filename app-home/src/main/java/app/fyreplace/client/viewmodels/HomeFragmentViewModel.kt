@@ -5,10 +5,7 @@ import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.AreaRepository
 import app.fyreplace.client.data.repositories.CommentRepository
 import app.fyreplace.client.data.repositories.PostRepository
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.coroutines.coroutineContext
 
 class HomeFragmentViewModel(
@@ -52,10 +49,10 @@ class HomeFragmentViewModel(
         setPost(postReserve.removeAt(0))
 
         if (postReserve.isEmpty()) {
-            fetchJob = viewModelScope.launch { fetchPosts() }
+            fetchJob = viewModelScope.launch(Dispatchers.IO) { fetchPosts() }
         }
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             delay(SPREAD_DELAY)
             mAllowSpread.postValue(contentLoaded.value)
         }
