@@ -7,7 +7,7 @@
     <string name="draft_action_publish_dialog_positive">Myself</string>
     <string name="draft_action_publish_toast">Post published!</string>
     <string name="draft_action_save">Save</string>
-    <string name="draft_action_save_toast">Draft saved successfully</string>
+    <string name="draft_action_save_toast">Draft saved</string>
     <string name="draft_action_save_empty_toast">Posts cannot be empty</string>
     <string name="draft_action_delete_dialog_title">Delete this draft?</string>
     <string name="draft_bottom_action_selection_bold"><b>Bold</b></string>
