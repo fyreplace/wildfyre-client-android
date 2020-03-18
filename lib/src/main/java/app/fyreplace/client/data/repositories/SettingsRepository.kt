@@ -7,10 +7,7 @@ import androidx.core.content.edit
 
 class SettingsRepository(private val preferences: SharedPreferences) {
     var theme: Int
-        get() = preferences.getInt(
-            PREFS_KEY_UI_THEME,
-            Themes.AUTOMATIC
-        )
+        get() = preferences.getInt(PREFS_KEY_UI_THEME, Themes.AUTOMATIC)
         set(value) = preferences.edit { putInt(PREFS_KEY_UI_THEME, value) }
     var showBadge: Boolean
         get() = preferences.getBoolean(PREFS_KEY_UI_BADGE, true)
