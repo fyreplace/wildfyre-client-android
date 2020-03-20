@@ -12,11 +12,11 @@ import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.lib.R
 import io.noties.markwon.Markwon
+import io.noties.markwon.SoftBreakAddsNewLinePlugin
 import io.noties.markwon.core.CorePlugin
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 import io.noties.markwon.image.ImagesPlugin
 import io.noties.markwon.image.glide.GlideImagesPlugin
-import io.noties.markwon.movement.MovementMethodPlugin
 
 val IMAGE_REGEX = Regex("\n*\\[img:\\s*(\\d+)]\n*", RegexOption.MULTILINE)
 val YOUTUBE_REGEX =
@@ -40,7 +40,7 @@ fun Fragment.lazyMarkdown() = lazy {
     requireActivity().let {
         Markwon.builder(it)
             .usePlugin(CorePlugin.create())
-            .usePlugin(MovementMethodPlugin.create())
+            .usePlugin(SoftBreakAddsNewLinePlugin.create())
             .usePlugin(PostPlugin.create())
             .usePlugin(StrikethroughPlugin.create())
             .usePlugin(ImagesPlugin.create())

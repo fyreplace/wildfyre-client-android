@@ -22,6 +22,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.card.MaterialCardView
 import io.noties.markwon.Markwon
+import io.noties.markwon.SoftBreakAddsNewLinePlugin
 import io.noties.markwon.core.CorePlugin
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
 
@@ -45,6 +46,7 @@ abstract class ItemsAdapter<I>(
         super.onAttachedToRecyclerView(recyclerView)
         markdown = Markwon.builder(recyclerView.context)
             .usePlugin(CorePlugin.create())
+            .usePlugin(SoftBreakAddsNewLinePlugin.create())
             .usePlugin(StrikethroughPlugin.create())
             .usePlugin(PostPlugin.create())
             .build()

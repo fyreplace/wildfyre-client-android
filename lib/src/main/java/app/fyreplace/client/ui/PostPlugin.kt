@@ -9,18 +9,14 @@ import io.noties.markwon.MarkwonConfiguration
 import io.noties.markwon.MarkwonVisitor
 import io.noties.markwon.image.AsyncDrawable
 import io.noties.markwon.image.ImageSizeResolver
-import org.commonmark.node.SoftLineBreak
 import org.commonmark.node.Text
 
 class PostPlugin private constructor() : AbstractMarkwonPlugin() {
     override fun configureVisitor(builder: MarkwonVisitor.Builder) {
-        builder.on(SoftLineBreak::class.java) { visitor, _ -> visitor.forceNewLine() }
         builder.on(Text::class.java) { visitor, text ->
-            visitor.builder().append(
-                SpannableString(text.literal).apply {
-                    LinkifyCompat.addLinks(this, Linkify.WEB_URLS)
-                }
-            )
+            val textWithLinks = SpannableString(text.literal)
+            LinkifyCompat.addLinks(textWithLinks, Linkify.WEB_URLS)
+            visitor.builder().append(textWithLinks)
             visitor.visitChildren(text)
         }
     }
