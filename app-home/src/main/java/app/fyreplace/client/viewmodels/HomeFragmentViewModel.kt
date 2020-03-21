@@ -41,7 +41,10 @@ class HomeFragmentViewModel(
         }
 
         if (postReserve.isEmpty()) {
-            setPost(null)
+            if (!refill) {
+                setPost(null)
+            }
+
             fillReserve()
         } else if (refill) {
             return
