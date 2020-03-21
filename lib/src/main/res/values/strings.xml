@@ -14,9 +14,8 @@
     <string name="image_selector_chooser">Image source</string>
     <string name="image_failure_unknown_type">Unknown file type</string>
     <string name="image_failure_file_size">Image file too large</string>
-    <string name="area_selecting_action_area_selector">Area: %1$s</string>
-    <string name="area_selecting_action_area_spread">Spread</string>
-    <string name="area_selecting_action_area_reputation">Reputation</string>
+    <string name="area_selecting_action_selector">Area: %1$s</string>
+    <string name="area_selecting_action_selector_dialog_title">Got to area…</string>
     <string name="deletion_action_delete">Delete</string>
     <string name="sharing_action_share">Share</string>
     <string name="image_desc_author_picture">Author picture</string>

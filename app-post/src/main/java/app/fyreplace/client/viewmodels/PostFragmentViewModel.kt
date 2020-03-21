@@ -18,7 +18,6 @@ open class PostFragmentViewModel(
     private val postRepository: PostRepository
 ) : ViewModel() {
     var selfId = Long.MIN_VALUE
-    var toolbarHasExpandedView = false
     var postAreaName = areaRepository.preferredAreaName
         private set
     var postId = -1L

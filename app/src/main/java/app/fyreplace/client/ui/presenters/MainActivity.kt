@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
                     else
                         actionGlobalFragmentLogin().also {
                             viewModel.logout()
-                            launch { areaSelectingViewModel.setPreferredAreaName("") }
+                            areaSelectingViewModel.setPreferredAreaName("")
                         }
                 )
             }
@@ -355,7 +355,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
         }
 
         bd.content.toolbar.run {
-            collapseActionView()
             title = " " + (info.author?.name ?: getString(R.string.main_author_anonymous))
             subtitle = " " + info.date
             contentInsetStartWithNavigation = 0

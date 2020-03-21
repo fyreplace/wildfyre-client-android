@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="model"
+            type="app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/margin_small"
+        android:paddingEnd="@dimen/margin_small">
+
+        <Button
+            android:id="@+id/button"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{@string/area_selecting_action_selector(model.preferredArea.displayName)}"
+            android:theme="@style/AppTheme.AppBar.Button.NeutralButtonOverlay" />
+    </FrameLayout>
+</layout>

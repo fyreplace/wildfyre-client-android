@@ -248,9 +248,8 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         }
 
         viewModel.isOwnPost.observe(viewLifecycleOwner) {
-            val shouldShowItems = !viewModel.toolbarHasExpandedView
-            menu.findItem(R.id.action_delete).isVisible = it && shouldShowItems
-            menu.findItem(R.id.action_flag).isVisible = !it && shouldShowItems
+            menu.findItem(R.id.action_delete).isVisible = it
+            menu.findItem(R.id.action_flag).isVisible = !it
         }
 
         val postMenuItems =

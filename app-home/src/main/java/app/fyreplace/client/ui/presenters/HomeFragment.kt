@@ -3,14 +3,10 @@ package app.fyreplace.client.ui.presenters
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import app.fyreplace.client.app.home.R
-import app.fyreplace.client.lib.databinding.ActionAreaSelectingAreaReputationBinding
-import app.fyreplace.client.lib.databinding.ActionAreaSelectingAreaSpreadBinding
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
-import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.HomeFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,46 +45,12 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.actions_fragment_home, menu)
+        inflater.inflate(R.menu.actions_fragment_area_selecting, menu)
         onCreateOptionsMenu(this, menu, inflater)
-
-        ActionAreaSelectingAreaSpreadBinding.bind(menu.findItem(R.id.action_area_spread).actionView)
-            .run {
-                lifecycleOwner = viewLifecycleOwner
-                model = areaSelectingViewModel
-            }
-
-        ActionAreaSelectingAreaReputationBinding.bind(menu.findItem(R.id.action_area_reputation).actionView)
-            .run {
-                lifecycleOwner = viewLifecycleOwner
-                model = areaSelectingViewModel
-            }
-
-        menu.findItem(R.id.action_area_selector)?.actionView
-            ?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-                private val areaStuff = listOf(R.id.action_area_spread, R.id.action_area_reputation)
-                private val centralViewModel by sharedViewModel<CentralViewModel>()
-
-                override fun onViewAttachedToWindow(v: View?) = switchItems(true)
-
-                override fun onViewDetachedFromWindow(v: View?) = switchItems(false)
-
-                private fun switchItems(showAreaStuff: Boolean) {
-                    centralViewModel.setNotificationBadgeVisible(!showAreaStuff)
-                    viewModel.toolbarHasExpandedView = showAreaStuff
-                    menu.forEach {
-                        it.isVisible = it.itemId != R.id.action_delete
-                            && areaStuff.contains(it.itemId) == showAreaStuff
-                    }
-                }
-            })
-
         super<PostFragment>.onCreateOptionsMenu(menu, inflater)
         val showAsAction =
-            if (resources.getBoolean(R.bool.home_show_full_menu))
-                MenuItem.SHOW_AS_ACTION_IF_ROOM
-            else
-                MenuItem.SHOW_AS_ACTION_NEVER
+            if (resources.getBoolean(R.bool.home_show_full_menu)) MenuItem.SHOW_AS_ACTION_IF_ROOM
+            else MenuItem.SHOW_AS_ACTION_NEVER
 
         for (id in setOf(
             R.id.action_area_selector,
@@ -96,8 +58,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
             R.id.action_delete,
             R.id.action_flag
         )) {
-            menu.findItem(id)
-                .setShowAsAction(showAsAction or MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+            menu.findItem(id).setShowAsAction(showAsAction)
         }
     }
 

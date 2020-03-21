@@ -76,7 +76,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelecti
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.actions_fragment_posts, menu)
+        inflater.inflate(R.menu.actions_fragment_area_selecting, menu)
         onCreateOptionsMenu(this, menu, inflater)
     }
 
