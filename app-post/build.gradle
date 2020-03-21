@@ -26,7 +26,6 @@ dependencies {
     implementation libraries.androidx.constraintLayout
     implementation libraries.androidx.coordinatorLayout
     implementation libraries.androidx.coreKtx
-    implementation libraries.androidx.dynamicAnimation
     implementation libraries.androidx.lifecycle.liveDataKtx
     implementation libraries.androidx.lifecycle.runtimeKtx
     implementation libraries.androidx.lifecycle.viewModelKtx

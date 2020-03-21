@@ -17,8 +17,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
-import androidx.dynamicanimation.animation.SpringAnimation
-import androidx.dynamicanimation.animation.SpringForce
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
@@ -150,24 +148,6 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         cbd.goDown.setOnLongClickListener {
             cbd.commentsList.scrollToPosition(max(commentsAdapter.itemCount - 1, 0))
             true
-        }
-
-        for (button in listOf(cbd.goUp, cbd.goDown)) {
-            button.setTag(
-                R.id.anim_scale_x,
-                SpringAnimation(button, SpringAnimation.SCALE_X).setSpring(BUTTON_ANIM_SPRING)
-            )
-            button.setTag(
-                R.id.anim_scale_y,
-                SpringAnimation(button, SpringAnimation.SCALE_Y)
-                    .setSpring(BUTTON_ANIM_SPRING).apply {
-                        addEndListener { _, _, value, _ ->
-                            if (button.isVisible && value == 0f) {
-                                button.isVisible = false
-                            }
-                        }
-                    }
-            )
         }
 
         cbd.commentNew.setEndIconOnClickListener {
@@ -454,8 +434,6 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
 
     private companion object {
         const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
-        val BUTTON_ANIM_SPRING: SpringForce = SpringForce()
-            .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
     }
 
     interface Args {
@@ -478,22 +456,8 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         }
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            for (pair in mapOf(
-                cbd.goUp to (recyclerView.canScrollVertically(-1) && dy < 0),
-                cbd.goDown to (recyclerView.canScrollVertically(1) && dy > 0)
-            )) {
-                val button = pair.key
-                val visible = pair.value
-
-                if (button.isVisible != visible) {
-                    if (visible) {
-                        button.isVisible = true
-                    }
-
-                    for (key in listOf(R.id.anim_scale_x, R.id.anim_scale_y)) {
-                        (button.getTag(key) as? SpringAnimation)?.animateToFinalPosition(if (visible) 1f else 0f)
-                    }
-                }
+            for ((button, direction) in mapOf(cbd.goUp to -1, cbd.goDown to 1)) {
+                button.shown = direction * dy > 0 && recyclerView.canScrollVertically(direction)
             }
         }
     }
