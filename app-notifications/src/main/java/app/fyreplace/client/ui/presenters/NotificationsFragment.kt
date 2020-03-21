@@ -57,11 +57,13 @@ class NotificationsFragment :
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.notifications_action_clear_dialog_title))
-            .setNegativeButton(R.string.no, null)
-            .setPositiveButton(R.string.yes) { _, _ -> launch { viewModel.clearNotifications() } }
-            .show()
+        when (item.itemId) {
+            R.id.action_clear -> AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.notifications_action_clear_dialog_title))
+                .setNegativeButton(R.string.no, null)
+                .setPositiveButton(R.string.yes) { _, _ -> launch { viewModel.clearNotifications() } }
+                .show()
+        }
 
         return super.onOptionsItemSelected(item)
     }
