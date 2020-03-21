@@ -1,13 +1,8 @@
 package app.fyreplace.client.ui.presenters
 
-import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.FrameLayout
-import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.app.drafts.R
 import app.fyreplace.client.data.models.Post
@@ -36,18 +31,9 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>(true) {
         savedInstanceState: Bundle?
     ) = super.onCreateView(inflater, container, savedInstanceState).apply {
         centralViewModel.setAllowDraftCreation(false)
-        val button = FloatingActionButton(bd.container.context)
-        val layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            button.tooltipText = getString(R.string.drafts_action_create)
-        }
-
-        button.setImageResource(R.drawable.ic_add)
-        button.useCompatPadding = true
+        val button = inflater.inflate(R.layout.action_drafts_create, bd.container)
+            .findViewById<FloatingActionButton>(R.id.button)
         button.setOnClickListener { launch { onItemClicked(viewModel.createDraft()) } }
-        layoutParams.gravity = Gravity.BOTTOM or GravityCompat.END
-        bd.container.addView(button, layoutParams)
         bd.text.setText(R.string.drafts_empty)
         bd.itemsList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
