@@ -205,6 +205,8 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
     }
 
     override fun onGoBack(method: BackHandlingFragment.Method): Boolean {
+        hideSoftKeyboard(view)
+
         if (viewModel.saved) {
             return true
         }
