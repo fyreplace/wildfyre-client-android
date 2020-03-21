@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="model"
+            type="app.fyreplace.client.viewmodels.DraftFragmentViewModel" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
@@ -10,19 +17,15 @@
         android:fitsSystemWindows="true"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottom_app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:menu="@menu/bottom_actions_fragment_draft"
-            app:title="@string/draft_bottom_app_bar_title" />
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:hint="@{model.hasMainImage ? @string/draft_editor_hint_has_image : @string/draft_editor_hint_no_image}"
             app:boxBackgroundColor="@android:color/transparent"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintTextColor="@color/colorTextEditSubtleHint"
             app:layout_behavior="app.fyreplace.client.ui.widgets.BottomAppBarAvoidingBehavior">
 
             <app.fyreplace.client.ui.widgets.MarkdownEditText
@@ -36,5 +39,13 @@
                 <requestFocus />
             </app.fyreplace.client.ui.widgets.MarkdownEditText>
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:menu="@menu/bottom_actions_fragment_draft"
+            app:title="@string/draft_bottom_app_bar_title" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

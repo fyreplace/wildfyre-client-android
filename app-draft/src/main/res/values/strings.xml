@@ -34,6 +34,8 @@
     <string name="draft_bottom_action_youtube_dialog_title">Add a YouTube link</string>
     <string name="draft_bottom_action_youtube_toast">This is not a YouTube link</string>
     <string name="draft_bottom_app_bar_title">Tools</string>
+    <string name="draft_editor_hint_has_image">This post contains a main image</string>
+    <string name="draft_editor_hint_no_image">No main image has been set</string>
     <string name="draft_back_dialog_title">Save changes?</string>
     <string name="draft_link_dialog_hint">Paste the link here</string>
     <string name="draft_hint_toast">Draft created in current area (%1$s)</string>

@@ -34,6 +34,8 @@
     <string name="draft_bottom_action_youtube_dialog_title">Ajouter un lien YouTube</string>
     <string name="draft_bottom_action_youtube_toast">Ceci n\'est pas un lien YouTube</string>
     <string name="draft_bottom_app_bar_title">Outils</string>
+    <string name="draft_editor_hint_has_image">Ce post contient une image principale</string>
+    <string name="draft_editor_hint_no_image">Aucune image principale définie</string>
     <string name="draft_back_dialog_title">Sauvegarder les changements ?</string>
     <string name="draft_link_dialog_hint">Copier le lien ici</string>
     <string name="draft_hint_toast">Brouillon créé dans la zone actuelle (%1$s)</string>

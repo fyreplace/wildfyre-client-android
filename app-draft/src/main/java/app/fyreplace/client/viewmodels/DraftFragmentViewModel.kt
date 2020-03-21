@@ -1,5 +1,7 @@
 package app.fyreplace.client.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.models.Post
@@ -11,14 +13,23 @@ class DraftFragmentViewModel(
     private val draftRepository: DraftRepository,
     private val areaRepository: AreaRepository
 ) : ViewModel() {
+    private val mHasMainImage = MutableLiveData<Boolean>()
+    private val nextImageSlots = mutableListOf<Int>()
+
     lateinit var draft: Post
+        private set
     var saved = true
         private set
+    val hasMainImage: LiveData<Boolean> = mHasMainImage
     var nextImageSlotIsMain = false
-    private val nextImageSlots = mutableListOf<Int>()
 
     suspend fun getPreferredArea() =
         areaRepository.getAreas().firstOrNull { it.name == areaRepository.preferredAreaName }
+
+    fun setDraft(post: Post) {
+        draft = post
+        mHasMainImage.postValue(!post.image.isNullOrEmpty())
+    }
 
     fun dirtyDraft() {
         saved = false
@@ -51,6 +62,7 @@ class DraftFragmentViewModel(
 
     suspend fun addImage(image: ImageData) = if (nextImageSlotIsMain) {
         draft = draftRepository.setImage(draft.id, draft.text, image)
+        mHasMainImage.postValue(true)
         -1
     } else {
         val nextImageSlot = findNextImageSlot()
@@ -67,6 +79,7 @@ class DraftFragmentViewModel(
 
     suspend fun removeImage() {
         draft = draftRepository.removeImage(draft.id, draft.text)
+        mHasMainImage.postValue(false)
     }
 
     private fun findNextImageSlot() = (draft.additionalImages.map { it.num } + nextImageSlots)

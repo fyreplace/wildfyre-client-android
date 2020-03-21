@@ -53,7 +53,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
             return
         }
 
-        viewModel.draft = fragmentArgs.draft
+        viewModel.setDraft(fragmentArgs.draft)
 
         launch {
             viewModel.cleanUpDraft()
@@ -90,6 +90,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
         savedInstanceState: Bundle?
     ) = FragmentDraftBinding.inflate(inflater).run {
         lifecycleOwner = viewLifecycleOwner
+        editor.model = viewModel
         bd = this
         return@run root
     }
@@ -99,22 +100,27 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
         bd.preview?.adapter = markdownAdapter
 
         with(bd.editor) {
-            bottomAppBar.setTag(R.menu.bottom_actions_fragment_draft_selection, false)
-            bottomAppBar.setOnMenuItemClickListener(this@DraftFragment)
-            val text = fragmentArgs.draft.text
-            editor.addTextChangedListener(EditorWatcher())
-            editor.setText(text)
-            editor.setSelection(text.length)
-            editor.onSelectionChangedListener = { hasSelection ->
-                if (bottomAppBar.getTag(R.menu.bottom_actions_fragment_draft_selection) != hasSelection) {
-                    bottomAppBar.setTag(
-                        R.menu.bottom_actions_fragment_draft_selection,
-                        hasSelection
-                    )
-                    bottomAppBar.replaceMenu(
-                        if (hasSelection) R.menu.bottom_actions_fragment_draft_selection
-                        else R.menu.bottom_actions_fragment_draft
-                    )
+            with(bottomAppBar) {
+                setTag(R.menu.bottom_actions_fragment_draft_selection, false)
+                setOnMenuItemClickListener(this@DraftFragment)
+            }
+
+            with(editor) {
+                addTextChangedListener(EditorWatcher())
+                val text = fragmentArgs.draft.text
+                setText(text)
+                setSelection(text.length)
+                onSelectionChangedListener = { hasSelection ->
+                    if (bottomAppBar.getTag(R.menu.bottom_actions_fragment_draft_selection) != hasSelection) {
+                        bottomAppBar.setTag(
+                            R.menu.bottom_actions_fragment_draft_selection,
+                            hasSelection
+                        )
+                        bottomAppBar.replaceMenu(
+                            if (hasSelection) R.menu.bottom_actions_fragment_draft_selection
+                            else R.menu.bottom_actions_fragment_draft
+                        )
+                    }
                 }
             }
         }
