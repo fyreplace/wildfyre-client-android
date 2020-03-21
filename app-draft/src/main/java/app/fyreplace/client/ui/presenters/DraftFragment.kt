@@ -321,8 +321,8 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
 
         AlertDialog.Builder(contextWrapper)
             .setTitle(
-                if (main) R.string.draft_bottom_action_main_image_dialog_title
-                else R.string.draft_bottom_action_images_dialog_title
+                if (main) R.string.draft_bottom_action_main_image
+                else R.string.draft_bottom_action_images
             )
             .setItems(items) { _, i ->
                 launch {

@@ -21,11 +21,9 @@
     <string name="draft_bottom_action_list_bulleted">Liste à puces</string>
     <string name="draft_bottom_action_list_numbered">Liste numérotée</string>
     <string name="draft_bottom_action_main_image">Image principale</string>
-    <string name="draft_bottom_action_main_image_dialog_title">Image principale :</string>
-    <string name="draft_bottom_action_images">Images</string>
-    <string name="draft_bottom_action_images_dialog_title">Images supplémentaires :</string>
-    <string name="draft_bottom_action_images_dialog_file">Fichier</string>
-    <string name="draft_bottom_action_images_dialog_photo">Photo</string>
+    <string name="draft_bottom_action_images">Images supplémentaires</string>
+    <string name="draft_bottom_action_images_dialog_file">Choisir un fichier</string>
+    <string name="draft_bottom_action_images_dialog_photo">Prendre une photo</string>
     <string name="draft_bottom_action_images_dialog_remove">Retirer</string>
     <string name="draft_bottom_action_images_snackbar">Envoi de l\'image…</string>
     <plurals name="draft_bottom_action_images_snackbar_multiple">
