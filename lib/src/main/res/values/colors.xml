@@ -5,8 +5,8 @@
     <color name="colorPrimaryVariant">#BF360C</color>
     <color name="colorPrimaryDark">#BF360C</color>
     <color name="colorOnPrimaryDark">@android:color/white</color>
-    <color name="colorSecondary">#F44336</color>
-    <color name="colorSecondaryVariant">#D32F2F</color>
+    <color name="colorSecondary">#F57C00</color>
+    <color name="colorSecondaryVariant">#E65100</color>
     <color name="colorOnSecondary">@android:color/white</color>
     <color name="colorBackground">@android:color/white</color>
     <color name="colorOnBackground">@android:color/black</color>
