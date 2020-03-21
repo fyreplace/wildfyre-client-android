@@ -23,6 +23,7 @@ import app.fyreplace.client.viewmodels.DraftFragmentViewModel
 import com.google.android.material.snackbar.Snackbar
 import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -95,7 +96,6 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         bd.preview?.adapter = markdownAdapter
 
         with(bd.editor) {
@@ -117,14 +117,20 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
                     )
                 }
             }
-
-            showSoftKeyboard(editor)
         }
     }
 
     override fun onDestroyView() {
         hideSoftKeyboard(bd.editor.editor)
         super.onDestroyView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        launch {
+            delay(resources.getInteger(android.R.integer.config_mediumAnimTime).toLong())
+            showSoftKeyboard(bd.editor.editor)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
