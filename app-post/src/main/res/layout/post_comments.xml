@@ -102,7 +102,7 @@
                 android:text="@={model.newCommentData}" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <app.fyreplace.client.ui.widgets.MarkdownRecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/comments_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"

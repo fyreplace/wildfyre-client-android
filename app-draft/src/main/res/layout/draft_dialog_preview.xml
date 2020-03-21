@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<app.fyreplace.client.ui.widgets.MarkdownRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/preview"
     android:layout_width="match_parent"
