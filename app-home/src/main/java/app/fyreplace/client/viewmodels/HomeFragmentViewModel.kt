@@ -25,6 +25,10 @@ class HomeFragmentViewModel(
 
         val forcedArea = areaName != null
 
+        if (!forcedArea && lastAreaName == null) {
+            return
+        }
+
         if (forcedArea || (refill && endOfPosts)) {
             if (forcedArea) {
                 lastAreaName = areaName

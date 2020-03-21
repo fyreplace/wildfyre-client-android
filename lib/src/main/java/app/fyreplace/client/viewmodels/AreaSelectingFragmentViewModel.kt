@@ -27,11 +27,11 @@ class AreaSelectingFragmentViewModel(private val areaRepository: AreaRepository)
 
     suspend fun updateAreas() {
         val fetchedAreas = areaRepository.getAreas()
+        val repoAreaName = areaRepository.preferredAreaName
         mAreas.postValue(fetchedAreas)
 
         if (preferredAreaName.value.isNullOrEmpty()) {
-            val name = areaRepository.preferredAreaName
-            updatePreferredAreaInfo(if (name.isNotEmpty()) name else fetchedAreas.first().name)
+            updatePreferredAreaInfo(if (repoAreaName.isNotEmpty()) repoAreaName else fetchedAreas.first().name)
         }
     }
 
@@ -44,7 +44,10 @@ class AreaSelectingFragmentViewModel(private val areaRepository: AreaRepository)
     private suspend fun updatePreferredAreaInfo(areaName: String) {
         areaRepository.preferredAreaName = areaName
         mPreferredAreaName.postValue(areaName)
-        mPreferredAreaReputationInfo.postValue(areaRepository.getAreaReputation())
+        mPreferredAreaReputationInfo.postValue(
+            if (areaName.isNotBlank()) areaRepository.getAreaReputation()
+            else Reputation(0, 0)
+        )
     }
 
     private fun updatePreferredArea(areas: List<Area>?, areaName: String?) =

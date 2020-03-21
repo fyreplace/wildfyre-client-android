@@ -23,9 +23,7 @@ class NewDraftActivity : AppCompatActivity(), FailureHandler {
         .setTitle(R.string.new_draft_dialog_title)
         .setItems(areas.map { it.displayName }.toTypedArray()) { _, i ->
             viewModel.setPreferredAreaName(areas[i].name)
-            startActivity(intent.apply {
-                setClass(this@NewDraftActivity, MainActivity::class.java)
-            })
+            startActivity(intent.also { it.setClass(this, MainActivity::class.java) })
         }
         .setOnDismissListener { finish() }
         .show()
