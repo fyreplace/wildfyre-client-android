@@ -2,11 +2,11 @@
 <resources>
     <string name="app_name" translatable="false">Fyreplace</string>
     <string name="app_name_original" translatable="false">WildFyre</string>
+    <string name="file_provider_authority" translatable="false">app.fyreplace.client.provider</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="file_provider_authority" translatable="false">app.fyreplace.client.provider</string>
     <string name="failure_toast">Error: %1$s</string>
     <string name="failure_ban_dialog_title">Error</string>
     <string name="failure_ban_dialog_message">You have been banned and cannot execute this action.</string>

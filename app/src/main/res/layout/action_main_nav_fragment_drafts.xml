@@ -15,7 +15,7 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center"
         android:text="@string/drafts_action_create"
         android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
         android:visibility="@{safeUnbox(model.allowDraftCreation) ? View.VISIBLE : View.GONE}" />
