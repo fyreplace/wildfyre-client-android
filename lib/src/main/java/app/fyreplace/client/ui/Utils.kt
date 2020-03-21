@@ -11,6 +11,7 @@ import app.fyreplace.client.GlideRequests
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.lib.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.noties.markwon.Markwon
 import io.noties.markwon.SoftBreakAddsNewLinePlugin
 import io.noties.markwon.core.CorePlugin
@@ -62,6 +63,16 @@ fun GlideRequests.loadAvatar(context: Context, author: Author?) =
     load(if (author?.banned != true) author?.avatar ?: R.drawable.default_avatar else "")
         .error(context.getDrawable(if (author?.banned == true) R.drawable.banned_avatar else R.drawable.ic_image))
         .placeholder(android.R.color.transparent)
+
+var FloatingActionButton.shown: Boolean
+    get() = isOrWillBeShown
+    set(value) {
+        if (value) {
+            show()
+        } else {
+            hide()
+        }
+    }
 
 fun getShareIntent(text: CharSequence, title: CharSequence): Intent =
     Intent.createChooser(

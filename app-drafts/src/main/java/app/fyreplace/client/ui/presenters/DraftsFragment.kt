@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.app.drafts.R
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
+import app.fyreplace.client.ui.shown
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.DraftsFragmentViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -47,10 +49,18 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>(true) {
         layoutParams.gravity = Gravity.BOTTOM or GravityCompat.END
         bd.container.addView(button, layoutParams)
         bd.text.setText(R.string.drafts_empty)
+        bd.itemsList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                button.shown = dy <= 0
+            }
+        })
     }
 
-    override fun onDestroyView() = super.onDestroyView()
-        .also { centralViewModel.setAllowDraftCreation(true) }
+    override fun onDestroyView() {
+        bd.itemsList.clearOnScrollListeners()
+        centralViewModel.setAllowDraftCreation(true)
+        super.onDestroyView()
+    }
 
     override fun onItemClicked(item: Post) {
         super.onItemClicked(item)
