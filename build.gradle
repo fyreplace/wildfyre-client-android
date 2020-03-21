@@ -1,11 +1,9 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     ext {
         configuration = [
             compileSdkVersion: 29,
             targetSdkVersion : 29,
-            minSdkVersion    : 21,
+            minSdkVersion    : 23,
         ]
         versions = [
             androidx: [
@@ -20,6 +18,7 @@ buildscript {
                 paging               : '2.1.2',
                 recyclerView         : '1.1.0',
                 recyclerViewSelection: '1.0.0',
+                security             : '1.0.0-beta01',
                 swipeRefreshLayout   : '1.0.0',
             ],
             kotlinx : [
@@ -54,6 +53,7 @@ buildscript {
                 paging               : "androidx.paging:paging-runtime-ktx:$versions.androidx.paging",
                 recyclerView         : "androidx.recyclerview:recyclerview:$versions.androidx.recyclerView",
                 recyclerViewSelection: "androidx.recyclerview:recyclerview-selection:$versions.androidx.recyclerViewSelection",
+                security             : "androidx.security:security-crypto:$versions.androidx.security",
                 swipeRefreshLayout   : "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidx.swipeRefreshLayout",
             ],
             koin    : [
