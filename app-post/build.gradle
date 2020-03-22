@@ -30,6 +30,7 @@ dependencies {
     implementation libraries.androidx.lifecycle.runtimeKtx
     implementation libraries.androidx.lifecycle.viewModelKtx
     implementation libraries.androidx.navigation.fragmentKtx
+    implementation libraries.androidx.swipeRefreshLayout
     implementation libraries.koin.androidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinx.coroutines
