@@ -37,6 +37,17 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         bd.text.setText(R.string.home_empty)
         bd.buttons.extinguish.setOnClickListener { launch { viewModel.spread(false); resetHomeView() } }
         bd.buttons.ignite.setOnClickListener { launch { viewModel.spread(true); resetHomeView() } }
+
+        with(bd.refresher) {
+            setColorSchemeResources(R.color.colorPrimary)
+            setProgressBackgroundColorSchemeResource(R.color.colorBackground)
+            setOnRefreshListener {
+                launch {
+                    viewModel.nextPost()
+                    isRefreshing = false
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

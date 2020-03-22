@@ -40,7 +40,6 @@ import app.fyreplace.client.viewmodels.PostFragmentViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
@@ -82,18 +81,6 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
         val commentsAdapter = CommentsAdapter(navigator, markdown)
             .apply { doOnCommentMore(this@PostFragment::showCommentActions) }
-
-        with(bd.refresher) {
-            setColorSchemeResources(R.color.colorPrimary)
-            setProgressBackgroundColorSchemeResource(R.color.colorBackground)
-            setOnRefreshListener {
-                launch {
-                    bd.content.refreshImages()
-                    delay(REFRESH_DELAY)
-                    isRefreshing = false
-                }
-            }
-        }
 
         bd.content.adapter = markdownAdapter
         cbd.commentsList.setHasFixedSize(true)
@@ -446,7 +433,6 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     }
 
     private companion object {
-        const val REFRESH_DELAY = 1000L
         const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
     }
 

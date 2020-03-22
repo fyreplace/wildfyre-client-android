@@ -5,11 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.GlideRequests
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.Post
@@ -19,7 +16,6 @@ import io.noties.markwon.Markwon
 import io.noties.markwon.SoftBreakAddsNewLinePlugin
 import io.noties.markwon.core.CorePlugin
 import io.noties.markwon.ext.strikethrough.StrikethroughPlugin
-import io.noties.markwon.image.AsyncDrawableScheduler
 import io.noties.markwon.image.ImagesPlugin
 import io.noties.markwon.image.glide.GlideImagesPlugin
 import io.noties.markwon.movement.MovementMethodPlugin
@@ -67,9 +63,6 @@ fun GlideRequests.loadAvatar(context: Context, author: Author?) =
     load(if (author?.banned != true) author?.avatar ?: R.drawable.default_avatar else "")
         .error(context.getDrawable(if (author?.banned == true) R.drawable.banned_avatar else R.drawable.ic_image))
         .placeholder(android.R.color.transparent)
-
-fun RecyclerView.refreshImages() =
-    children.filterIsInstance<TextView>().forEach { AsyncDrawableScheduler.schedule(it) }
 
 var FloatingActionButton.shown: Boolean
     get() = isOrWillBeShown

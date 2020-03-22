@@ -21,6 +21,7 @@ android {
 }
 
 dependencies {
+    api libraries.androidx.swipeRefreshLayout
     implementation project(':app-user')
     implementation project(':lib')
     implementation libraries.androidx.constraintLayout
@@ -30,7 +31,6 @@ dependencies {
     implementation libraries.androidx.lifecycle.runtimeKtx
     implementation libraries.androidx.lifecycle.viewModelKtx
     implementation libraries.androidx.navigation.fragmentKtx
-    implementation libraries.androidx.swipeRefreshLayout
     implementation libraries.koin.androidxViewModel
     implementation libraries.kotlin
     implementation libraries.kotlinx.coroutines
