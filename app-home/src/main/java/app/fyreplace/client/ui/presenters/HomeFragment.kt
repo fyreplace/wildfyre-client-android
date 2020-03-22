@@ -30,7 +30,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = super.onCreateView(inflater, container, savedInstanceState)
-        .apply { findViewById<View>(R.id.buttons).isVisible = true }
+        .apply { bd.buttons.root.isVisible = true }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
