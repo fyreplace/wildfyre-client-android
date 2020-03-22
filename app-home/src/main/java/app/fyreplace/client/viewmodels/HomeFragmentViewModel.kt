@@ -61,14 +61,19 @@ class HomeFragmentViewModel(
         } catch (e: Exception) {
             mAllowSpread.postValue(true)
             throw e
+        } finally {
+            nextPost()
         }
-
-        nextPost()
     }
 
     private suspend fun fillReserve() {
         endOfPosts = false
-        fetchJob?.join()
+
+        try {
+            fetchJob?.join()
+        } catch (e: Exception) {
+            // Don't cancel everything just because the background fetch failed
+        }
 
         while (!endOfPosts && postReserve.isEmpty()) {
             fetchPosts()
