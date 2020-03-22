@@ -18,7 +18,7 @@ class HomeFragmentViewModel(
     private var endOfPosts = false
     private var lastAreaName: String? = null
 
-    suspend fun nextPost(areaName: String? = null, refill: Boolean = false) {
+    suspend fun nextPost(areaName: String? = null) {
         if (areaName == lastAreaName) {
             return
         }
@@ -29,7 +29,7 @@ class HomeFragmentViewModel(
             return
         }
 
-        if (forcedArea || (refill && endOfPosts)) {
+        if (forcedArea || endOfPosts) {
             if (forcedArea) {
                 lastAreaName = areaName
             }
@@ -41,13 +41,8 @@ class HomeFragmentViewModel(
         }
 
         if (postReserve.isEmpty()) {
-            if (!refill) {
-                setPost(null)
-            }
-
+            setPost(null)
             fillReserve()
-        } else if (refill) {
-            return
         }
 
         if (endOfPosts) {
