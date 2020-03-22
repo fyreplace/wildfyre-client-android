@@ -29,11 +29,8 @@ class HomeFragmentViewModel(
             return
         }
 
-        if (forcedArea || endOfPosts) {
-            if (forcedArea) {
-                lastAreaName = areaName
-            }
-
+        if (forcedArea) {
+            lastAreaName = areaName
             setPost(null)
             mHasContent.postValue(true)
             fetchJob?.cancel()
