@@ -3,7 +3,6 @@ package app.fyreplace.client.ui.presenters
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.observe
@@ -18,6 +17,7 @@ import app.fyreplace.client.ui.widgets.PostIdKeyProvider
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 import app.fyreplace.client.viewmodels.PostsFragmentViewModel
 import app.fyreplace.client.viewmodels.Refresh
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -105,7 +105,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelecti
     }
 
     private fun deleteSelection(mode: ActionMode) {
-        AlertDialog.Builder(requireContext())
+        MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.posts_action_delete_dialog_title)
             .setNegativeButton(R.string.no, null)
             .setPositiveButton(R.string.yes) { _, _ ->

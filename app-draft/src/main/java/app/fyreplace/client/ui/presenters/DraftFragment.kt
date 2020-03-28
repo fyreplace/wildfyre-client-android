@@ -9,7 +9,6 @@ import android.text.TextWatcher
 import android.view.*
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -20,6 +19,7 @@ import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.*
 import app.fyreplace.client.viewmodels.DraftFragmentViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.coroutines.cancel
@@ -167,7 +167,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
         when (item.itemId) {
             R.id.action_publish -> {
                 var anon: Boolean? = null
-                AlertDialog.Builder(contextWrapper)
+                MaterialAlertDialogBuilder(contextWrapper)
                     .setTitle(R.string.draft_action_publish_dialog_title)
                     .setNegativeButton(R.string.draft_action_publish_dialog_negative) { _, _ ->
                         anon = true
@@ -194,14 +194,14 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
             }
             R.id.action_preview -> {
                 hideSoftKeyboard(bd.editor.editor)
-                AlertDialog.Builder(contextWrapper)
+                MaterialAlertDialogBuilder(contextWrapper)
                     .setView(R.layout.draft_dialog_preview)
                     .show()
                     .findViewById<RecyclerView>(R.id.preview)?.adapter = markdownAdapter
                 updatePreview()
             }
             R.id.action_save -> launch { saveDraft(showConfirmation = true) }
-            R.id.action_delete -> AlertDialog.Builder(contextWrapper)
+            R.id.action_delete -> MaterialAlertDialogBuilder(contextWrapper)
                 .setTitle(R.string.draft_action_delete_dialog_title)
                 .setNegativeButton(R.string.no, null)
                 .setPositiveButton(R.string.yes) { _, _ ->
@@ -223,7 +223,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
             return true
         }
 
-        AlertDialog.Builder(contextWrapper)
+        MaterialAlertDialogBuilder(contextWrapper)
             .setTitle(R.string.draft_back_dialog_title)
             .setNegativeButton(R.string.no) { _, _ -> findNavController().navigateUp() }
             .setPositiveButton(R.string.yes) { _, _ ->
@@ -305,7 +305,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
     }
 
     private fun addTitle() {
-        AlertDialog.Builder(contextWrapper)
+        MaterialAlertDialogBuilder(contextWrapper)
             .setTitle(R.string.draft_bottom_action_title_dialog_title)
             .setItems((1..6).map { it.toString() }.toTypedArray()) { _, i ->
                 bd.editor.editor.editableText?.insert(editorLineStart(), "#".repeat(i + 1) + ' ')
@@ -325,7 +325,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
             items += getString(R.string.draft_bottom_action_images_dialog_remove)
         }
 
-        AlertDialog.Builder(contextWrapper)
+        MaterialAlertDialogBuilder(contextWrapper)
             .setTitle(
                 if (main) R.string.draft_bottom_action_main_image
                 else R.string.draft_bottom_action_images
@@ -345,7 +345,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
 
     private fun addYoutubeLink() {
         var link: EditText? = null
-        link = AlertDialog.Builder(contextWrapper)
+        link = MaterialAlertDialogBuilder(contextWrapper)
             .setTitle(R.string.draft_bottom_action_youtube_dialog_title)
             .setView(R.layout.draft_dialog_link)
             .setNegativeButton(R.string.cancel, null)
@@ -375,7 +375,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
 
     private fun surroundSelectionWithLink() {
         var link: EditText? = null
-        link = AlertDialog.Builder(contextWrapper)
+        link = MaterialAlertDialogBuilder(contextWrapper)
             .setTitle(R.string.draft_bottom_action_selection_link_dialog_title)
             .setView(R.layout.draft_dialog_link)
             .setNegativeButton(R.string.cancel, null)

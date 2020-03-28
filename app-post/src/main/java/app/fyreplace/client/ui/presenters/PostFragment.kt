@@ -11,7 +11,6 @@ import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
@@ -37,6 +36,7 @@ import app.fyreplace.client.ui.widgets.CommentSheetBehavior
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.PostFragmentViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -289,7 +289,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     }
 
     private fun requestImage() {
-        val dialog = AlertDialog.Builder(contextWrapper)
+        val dialog = MaterialAlertDialogBuilder(contextWrapper)
             .setView(R.layout.post_dialog_comment_image)
             .setTitle(R.string.post_comment_attach_file_dialog_title)
             .setNegativeButton(R.string.post_comment_attach_file_dialog_negative) { _, _ ->
@@ -316,7 +316,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     }
 
     private fun deletePost() {
-        AlertDialog.Builder(contextWrapper)
+        MaterialAlertDialogBuilder(contextWrapper)
             .setTitle(R.string.post_action_delete_dialog_title)
             .setMessage(R.string.post_action_delete_dialog_message)
             .setNegativeButton(R.string.no, null)
@@ -346,7 +346,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     )
 
     private fun deleteComment(position: Int, comment: Comment) {
-        AlertDialog.Builder(contextWrapper)
+        MaterialAlertDialogBuilder(contextWrapper)
             .setTitle(R.string.post_comment_delete_dialog_title)
             .setMessage(R.string.post_comment_delete_dialog_message)
             .setNegativeButton(R.string.no, null)
@@ -360,7 +360,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         launch {
             val choices = viewModel.getFlagChoices()
             var key: Long? = null
-            AlertDialog.Builder(contextWrapper)
+            MaterialAlertDialogBuilder(contextWrapper)
                 .setTitle(R.string.post_action_flag_dialog_title)
                 .setSingleChoiceItems(
                     choices.map { it.value }.toTypedArray(),
@@ -376,7 +376,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
 
     private fun showFlagInfo(comment: Comment?, key: Long?) {
         var editText: EditText? = null
-        val alert = AlertDialog.Builder(contextWrapper)
+        val alert = MaterialAlertDialogBuilder(contextWrapper)
             .setTitle(R.string.post_action_flag_dialog_title)
             .setView(R.layout.post_dialog_flag_info)
             .setNegativeButton(R.string.cancel, null)

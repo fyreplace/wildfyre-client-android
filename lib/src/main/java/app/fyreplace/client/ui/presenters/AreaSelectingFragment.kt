@@ -2,13 +2,13 @@ package app.fyreplace.client.ui.presenters
 
 import android.view.Menu
 import android.view.MenuInflater
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import app.fyreplace.client.lib.R
 import app.fyreplace.client.lib.databinding.ActionAreaSelectingSelectorBinding
 import app.fyreplace.client.ui.FailureHandler
 import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.getSharedViewModel
 
 /**
@@ -34,7 +34,7 @@ interface AreaSelectingFragment : FailureHandler {
 
         areaSelectingViewModel.areas.observe(fragment.viewLifecycleOwner) { areas ->
             bd.button.setOnClickListener {
-                AlertDialog.Builder(fragment.requireContext())
+                MaterialAlertDialogBuilder(fragment.requireContext())
                     .setTitle(R.string.area_selecting_action_selector_dialog_title)
                     .setItems(areas.map { it.displayName }.toTypedArray()) { _, i ->
                         areaSelectingViewModel.setPreferredAreaName(areas[i].name)

@@ -52,6 +52,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.ByteArrayInputStream
 
@@ -391,7 +392,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
     private fun editProfile() {
         lateinit var dialog: AlertDialog
 
-        dialog = AlertDialog.Builder(this)
+        dialog = MaterialAlertDialogBuilder(this)
             .setView(R.layout.main_profile_editor)
             .setNegativeButton(R.string.cancel) { _, _ ->
                 centralViewModel.resetPendingProfileAvatar()
@@ -446,7 +447,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
     private fun showLicenses() {
         val licenses = resources.getStringArray(R.array.dependencies_names_base)
         val links = resources.getStringArray(R.array.dependencies_links_base)
-        AlertDialog.Builder(this)
+
+        MaterialAlertDialogBuilder(this)
             .setItems(licenses) { _, i ->
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(links[i])))
             }

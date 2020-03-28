@@ -1,12 +1,12 @@
 package app.fyreplace.client.ui.presenters
 
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import app.fyreplace.client.app.R
 import app.fyreplace.client.data.models.Area
 import app.fyreplace.client.ui.FailureHandler
 import app.fyreplace.client.viewmodels.NewDraftActivityViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewDraftActivity : AppCompatActivity(), FailureHandler {
@@ -19,7 +19,7 @@ class NewDraftActivity : AppCompatActivity(), FailureHandler {
 
     override fun getContext() = this
 
-    private fun showDialog(areas: List<Area>) = AlertDialog.Builder(this)
+    private fun showDialog(areas: List<Area>) = MaterialAlertDialogBuilder(this)
         .setTitle(R.string.new_draft_dialog_title)
         .setItems(areas.map { it.displayName }.toTypedArray()) { _, i ->
             viewModel.setPreferredAreaName(areas[i].name)

@@ -3,10 +3,10 @@ package app.fyreplace.client.ui
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import app.fyreplace.client.lib.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +49,7 @@ interface FailureHandler : LifecycleOwner {
 
     fun showBanAlert() {
         val ctx = getContext() ?: return
-        AlertDialog.Builder(ctx)
+        MaterialAlertDialogBuilder(ctx)
             .setIcon(R.drawable.ic_warning)
             .setTitle(R.string.failure_ban_dialog_title)
             .setMessage(R.string.failure_ban_dialog_message)

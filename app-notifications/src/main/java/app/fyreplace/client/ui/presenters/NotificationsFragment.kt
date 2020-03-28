@@ -3,7 +3,6 @@ package app.fyreplace.client.ui.presenters
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.observe
 import app.fyreplace.client.data.models.Notification
 import app.fyreplace.client.lib.notifications.R
@@ -11,6 +10,7 @@ import app.fyreplace.client.lib.notifications.databinding.ActionNotificationsCle
 import app.fyreplace.client.ui.adapters.NotificationsAdapter
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.NotificationsFragmentViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -58,7 +58,7 @@ class NotificationsFragment :
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_clear -> AlertDialog.Builder(requireContext())
+            R.id.action_clear -> MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.notifications_action_clear_dialog_title))
                 .setNegativeButton(R.string.no, null)
                 .setPositiveButton(R.string.yes) { _, _ -> launch { viewModel.clearNotifications() } }
