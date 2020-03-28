@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="app.fyreplace.client.viewmodels.PostFragmentViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/extinguish"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:enabled="@{model.contentLoaded &amp;&amp; model.allowSpread}"
+                android:text="@string/post_extinguish"
+                android:theme="@style/AppTheme.ExtinguishButtonOverlay"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/comments"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="@{model.contentLoaded}"
+                android:text="@{@plurals/post_comment_count(safeUnbox(model.commentCount), safeUnbox(model.commentCount))}"
+                android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
+                app:layout_anchor="@id/bottom_bar"
+                app:layout_anchorGravity="center" />
+
+            <Button
+                android:id="@+id/ignite"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_large"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:layout_weight="1"
+                android:clickable="false"
+                android:enabled="@{model.contentLoaded &amp;&amp; model.allowSpread}"
+                android:text="@string/post_ignite"
+                android:theme="@style/AppTheme.IgniteButtonOverlay"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

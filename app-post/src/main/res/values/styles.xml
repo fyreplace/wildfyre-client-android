@@ -2,10 +2,18 @@
 <resources>
 
     <style name="AppTheme.ExtinguishButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="colorPrimary">@color/extinguish</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSecondary">@android:color/white</item>
+        <item name="colorOnSecondary">@color/extinguish</item>
         <item name="colorControlHighlight">@color/extinguish</item>
     </style>
 
     <style name="AppTheme.IgniteButtonOverlay" parent="ThemeOverlay.MaterialComponents">
+        <item name="colorPrimary">@color/ignite</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSecondary">@android:color/white</item>
+        <item name="colorOnSecondary">@color/ignite</item>
         <item name="colorControlHighlight">@color/ignite</item>
     </style>
 
