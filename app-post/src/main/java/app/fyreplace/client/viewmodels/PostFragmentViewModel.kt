@@ -30,6 +30,7 @@ open class PostFragmentViewModel(
     private val mSubscribed = MediatorLiveData<Boolean>()
     private val mMarkdownContent = MediatorLiveData<String>()
     private val mCommentsVisible = MutableLiveData<Boolean>()
+    private val mCommentsDividerVisible = MutableLiveData<Boolean>()
     private val mComments = MediatorLiveData<List<Comment>>()
     private val commentsData = mutableListOf<Comment>()
     private val mNewCommentImage = MutableLiveData<ImageData?>()
@@ -46,6 +47,7 @@ open class PostFragmentViewModel(
     val commentSheetState: LiveData<Int> =
         mCommentsVisible.map { if (it) BottomSheetBehavior.STATE_EXPANDED else BottomSheetBehavior.STATE_COLLAPSED }
             .distinctUntilChanged()
+    val commentsDividerVisible: LiveData<Boolean> = mCommentsDividerVisible
     val comments: LiveData<List<Comment>> = mComments
     val commentCount: LiveData<Int> = comments.map { it.size }
     val newCommentData = MutableLiveData<String>()
@@ -115,6 +117,9 @@ open class PostFragmentViewModel(
         postRepository.flag(postAreaName, postId, commentId, Flag(key, comment))
 
     fun setCommentsVisible(visible: Boolean) = mCommentsVisible.postValue(visible)
+
+    fun setCommentsDividerVisibility(visibility: Int) =
+        mCommentsDividerVisible.postValue(visibility == BottomSheetBehavior.STATE_DRAGGING)
 
     fun setCommentImage(image: ImageData) = mNewCommentImage.postValue(image)
 

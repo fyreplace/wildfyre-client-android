@@ -442,6 +442,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
             val notExpanded = newState != BottomSheetBehavior.STATE_EXPANDED
             bd.content.isVisible = notExpanded
             behavior.canDrag = notExpanded
+            viewModel.setCommentsDividerVisibility(newState)
 
             when (newState) {
                 BottomSheetBehavior.STATE_COLLAPSED -> {
