@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="backgroundHighlight">#3FE64A19</color>
+    <color name="backgroundHighlight">#3FFF6E40</color>
     <color name="extinguish">#0091EA</color>
     <color name="ignite">#FF6D00</color>
     <color name="inactive">#BFBFBF</color>
