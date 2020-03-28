@@ -15,10 +15,6 @@
         <item name="colorOnSecondary">?attr/colorOnSurface</item>
     </style>
 
-    <style name="AppTheme.Button.HighlightButtonOverlay" parent="ThemeOverlay.MaterialComponents">
-        <item name="colorControlHighlight">?attr/colorPrimary</item>
-    </style>
-
     <style name="AppTheme.AppBar.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="strokeColor">@color/colorAppBarButtonStroke</item>
     </style>

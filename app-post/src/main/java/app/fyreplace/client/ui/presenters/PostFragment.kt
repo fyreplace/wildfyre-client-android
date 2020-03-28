@@ -33,7 +33,6 @@ import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.*
 import app.fyreplace.client.ui.adapters.CommentsAdapter
-import app.fyreplace.client.ui.drawables.BottomSheetArrowDrawableWrapper
 import app.fyreplace.client.ui.widgets.CommentSheetBehavior
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.PostFragmentViewModel
@@ -73,6 +72,12 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         bd = this
         cbd = collapsibleComments ?: staticComments ?: throw IllegalStateException()
         setHasOptionsMenu(true)
+
+        if (collapsibleComments == null) {
+            bd.buttons.comments.isVisible = false
+            cbd.divider.isVisible = false
+        }
+
         return@run root
     }
 
@@ -83,6 +88,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
             .apply { doOnCommentMore(this@PostFragment::showCommentActions) }
 
         bd.content.adapter = markdownAdapter
+        bd.buttons.comments.setOnClickListener { toggleComments() }
         cbd.commentsList.setHasFixedSize(true)
         cbd.commentsList.adapter = commentsAdapter
         cbd.commentsList.addItemDecoration(
@@ -159,19 +165,18 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         }
         cbd.commentNew.setStartIconOnClickListener { requestImage() }
 
-        bd.collapsibleComments?.let {
-            it.commentCount.setOnClickListener { toggleComments() }
+        bd.collapsibleComments?.let { collapsibleComments ->
+            var commentsState = savedInstanceState?.getInt(SAVE_COMMENTS_EXPANDED)
+            val behavior = CommentSheetBehavior.from(collapsibleComments.root)
 
-            val commentsExpanded = savedInstanceState?.getBoolean(SAVE_COMMENTS_EXPANDED)
-                ?: (highlightedCommentIds != null)
-            val behavior = CommentSheetBehavior.from(it.root)
+            if (commentsState == null && highlightedCommentIds != null) {
+                commentsState = BottomSheetBehavior.STATE_EXPANDED
+            }
 
-            commentsSheetCallback = CommentsSheetCallback(behavior, it.arrow, commentsExpanded)
+            commentsSheetCallback = CommentsSheetCallback(behavior)
                 .apply { behavior.addBottomSheetCallback(this) }
 
-            if (commentsExpanded) {
-                toggleComments()
-            }
+            commentsState?.let { behavior.state = it }
         }
     }
 
@@ -191,10 +196,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
 
         if (view != null) {
             bd.collapsibleComments?.let {
-                outState.putBoolean(
-                    SAVE_COMMENTS_EXPANDED,
-                    BottomSheetBehavior.from(it.root).state == BottomSheetBehavior.STATE_EXPANDED
-                )
+                outState.putInt(SAVE_COMMENTS_EXPANDED, BottomSheetBehavior.from(it.root).state)
             }
         }
     }
@@ -462,24 +464,15 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         }
     }
 
-    private inner class CommentsSheetCallback<V : View>(
-        private val behavior: CommentSheetBehavior<V>,
-        arrow: ImageView,
-        commentsExpanded: Boolean
-    ) : BottomSheetBehavior.BottomSheetCallback() {
-        private val arrowWrapper = BottomSheetArrowDrawableWrapper(arrow, !commentsExpanded)
-
+    private inner class CommentsSheetCallback<V : View>(private val behavior: CommentSheetBehavior<V>) :
+        BottomSheetBehavior.BottomSheetCallback() {
         @SuppressLint("SwitchIntDef")
         override fun onStateChanged(bottomSheet: View, newState: Int) {
             bd.content.isVisible = newState != BottomSheetBehavior.STATE_EXPANDED
             behavior.canDrag = newState != BottomSheetBehavior.STATE_EXPANDED
 
-            when (newState) {
-                BottomSheetBehavior.STATE_COLLAPSED -> {
-                    clearCommentInput()
-                    arrowWrapper.setPointingUp(true)
-                }
-                BottomSheetBehavior.STATE_EXPANDED -> arrowWrapper.setPointingUp(false)
+            if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                clearCommentInput()
             }
         }
 

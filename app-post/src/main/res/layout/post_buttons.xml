@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,60 +10,78 @@
             type="app.fyreplace.client.viewmodels.PostFragmentViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <View
-            android:id="@+id/top_separator"
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/dividerHorizontal"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
 
-        <View
-            android:id="@+id/button_splitter"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="1dp"
-            android:background="?android:attr/dividerVertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            android:clipChildren="false"
+            android:clipToPadding="false">
 
-        <TextView
-            android:id="@+id/extinguish"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/post_button_size"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="@{safeUnbox(model.contentLoaded) &amp;&amp; safeUnbox(model.allowSpread)}"
-            android:enabled="@{safeUnbox(model.contentLoaded) &amp;&amp; safeUnbox(model.allowSpread)}"
-            android:gravity="center"
-            android:text="@string/post_extinguish"
-            android:textAppearance="?attr/textAppearanceButton"
-            android:textSize="@dimen/post_button_text_size"
-            android:theme="@style/AppTheme.ExtinguishButtonOverlay"
-            app:layout_constraintEnd_toStartOf="@id/button_splitter"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/top_separator" />
+            <ImageView
+                android:id="@+id/extinguish"
+                android:layout_width="@dimen/post_buttons_size"
+                android:layout_height="@dimen/post_buttons_size"
+                android:layout_marginStart="@dimen/post_buttons_margin"
+                android:clickable="@{model.contentLoaded &amp;&amp; model.allowSpread}"
+                android:contentDescription="@string/post_extinguish"
+                android:focusable="@{model.contentLoaded &amp;&amp; model.allowSpread}"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_water"
+                android:theme="@style/AppTheme.ExtinguishButtonOverlay"
+                android:tint="@{model.contentLoaded &amp;&amp; model.allowSpread ? @color/extinguish : @color/inactive}"
+                android:tooltipText="@string/post_extinguish"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="UnusedAttribute" />
 
-        <TextView
-            android:id="@+id/ignite"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/post_button_size"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="@{safeUnbox(model.contentLoaded) &amp;&amp; safeUnbox(model.allowSpread)}"
-            android:enabled="@{safeUnbox(model.contentLoaded) &amp;&amp; safeUnbox(model.allowSpread)}"
-            android:gravity="center"
-            android:text="@string/post_ignite"
-            android:textAppearance="?attr/textAppearanceButton"
-            android:textSize="@dimen/post_button_text_size"
-            android:theme="@style/AppTheme.IgniteButtonOverlay"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/button_splitter"
-            app:layout_constraintTop_toBottomOf="@id/top_separator" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/ignite"
+                android:layout_width="@dimen/post_buttons_size"
+                android:layout_height="@dimen/post_buttons_size"
+                android:layout_marginEnd="@dimen/post_buttons_margin"
+                android:clickable="@{model.contentLoaded &amp;&amp; model.allowSpread}"
+                android:contentDescription="@string/post_ignite"
+                android:focusable="@{model.contentLoaded &amp;&amp; model.allowSpread}"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_whatshot"
+                android:theme="@style/AppTheme.IgniteButtonOverlay"
+                android:tint="@{model.contentLoaded &amp;&amp; model.allowSpread ? @color/ignite : @color/inactive}"
+                android:tooltipText="@string/post_ignite"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="UnusedAttribute" />
+
+            <Button
+                android:id="@+id/comments"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/post_buttons_margin"
+                android:layout_marginEnd="@dimen/post_buttons_margin"
+                android:enabled="@{model.contentLoaded}"
+                android:text="@{@plurals/post_comment_count(safeUnbox(model.commentCount), safeUnbox(model.commentCount))}"
+                android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/ignite"
+                app:layout_constraintStart_toEndOf="@id/extinguish"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

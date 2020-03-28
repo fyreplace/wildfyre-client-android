@@ -20,7 +20,7 @@
             android:id="@+id/vertical_center"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="?android:attr/dividerVertical"
+            android:background="?attr/dividerVertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -51,7 +51,8 @@
             android:id="@+id/refresher"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/buttons"
+            android:layout_marginBottom="?attr/actionBarSize"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/vertical_center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -78,9 +79,7 @@
             android:id="@+id/buttons"
             layout="@layout/post_buttons"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="@id/vertical_center"
             app:layout_constraintStart_toStartOf="parent"
             app:model="@{model}" />

@@ -13,8 +13,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/comments_header_height_inverse">
+        android:layout_height="match_parent">
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -33,49 +32,38 @@
             android:textAppearance="?attr/textAppearanceHeadline4"
             android:visibility="@{safeUnbox(model.hasContent) ? View.GONE : View.VISIBLE}" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    android:paddingStart="@dimen/margin_large"
+                    android:paddingTop="@dimen/margin_medium"
+                    android:paddingEnd="@dimen/margin_large"
+                    android:paddingBottom="?attr/actionBarSize"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </FrameLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <include
+            android:id="@+id/buttons"
+            layout="@layout/post_buttons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/comments_header_height"
-            android:layout_marginBottom="@dimen/comments_header_height">
-
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/refresher"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@id/buttons"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        android:orientation="vertical"
-                        android:overScrollMode="never"
-                        android:paddingStart="@dimen/margin_large"
-                        android:paddingTop="@dimen/margin_medium"
-                        android:paddingEnd="@dimen/margin_large"
-                        android:paddingBottom="@dimen/margin_medium"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-                </FrameLayout>
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-            <include
-                android:id="@+id/buttons"
-                layout="@layout/post_buttons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:model="@{model}" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:model="@{model}" />
 
         <include
             android:id="@+id/collapsible_comments"
@@ -84,7 +72,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             app:behavior_hideable="false"
-            app:behavior_peekHeight="@dimen/comments_header_height"
+            app:behavior_peekHeight="0dp"
             app:behavior_skipCollapsed="false"
             app:layout_behavior="app.fyreplace.client.ui.widgets.CommentSheetBehavior"
             app:model="@{model}" />

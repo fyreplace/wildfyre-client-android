@@ -3,4 +3,5 @@
     <color name="backgroundHighlight">#3FE64A19</color>
     <color name="extinguish">#0091EA</color>
     <color name="ignite">#FF6D00</color>
+    <color name="inactive">#BFBFBF</color>
 </resources>
