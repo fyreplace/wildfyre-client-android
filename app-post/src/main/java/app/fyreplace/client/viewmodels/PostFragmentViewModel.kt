@@ -9,6 +9,7 @@ import app.fyreplace.client.data.repositories.AreaRepository
 import app.fyreplace.client.data.repositories.CommentRepository
 import app.fyreplace.client.data.repositories.PostRepository
 import app.fyreplace.client.ui.toMarkdown
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -28,6 +29,7 @@ open class PostFragmentViewModel(
     private val mIsOwnPost = MediatorLiveData<Boolean>()
     private val mSubscribed = MediatorLiveData<Boolean>()
     private val mMarkdownContent = MediatorLiveData<String>()
+    private val mCommentsVisible = MutableLiveData<Boolean>()
     private val mComments = MediatorLiveData<List<Comment>>()
     private val commentsData = mutableListOf<Comment>()
     private val mNewCommentImage = MutableLiveData<ImageData?>()
@@ -41,6 +43,9 @@ open class PostFragmentViewModel(
     val authorId: LiveData<Long> = post.map { it?.author?.user ?: -1 }
     val subscribed: LiveData<Boolean> = mSubscribed.distinctUntilChanged()
     val markdownContent: LiveData<String> = mMarkdownContent
+    val commentSheetState: LiveData<Int> =
+        mCommentsVisible.map { if (it) BottomSheetBehavior.STATE_EXPANDED else BottomSheetBehavior.STATE_COLLAPSED }
+            .distinctUntilChanged()
     val comments: LiveData<List<Comment>> = mComments
     val commentCount: LiveData<Int> = comments.map { it.size }
     val newCommentData = MutableLiveData<String>()
@@ -108,6 +113,8 @@ open class PostFragmentViewModel(
 
     suspend fun flag(commentId: Long?, key: Long?, comment: String?) =
         postRepository.flag(postAreaName, postId, commentId, Flag(key, comment))
+
+    fun setCommentsVisible(visible: Boolean) = mCommentsVisible.postValue(visible)
 
     fun setCommentImage(image: ImageData) = mNewCommentImage.postValue(image)
 

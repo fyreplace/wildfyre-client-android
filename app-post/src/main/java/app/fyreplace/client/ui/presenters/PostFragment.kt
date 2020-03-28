@@ -88,7 +88,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
             .apply { doOnCommentMore(this@PostFragment::showCommentActions) }
 
         bd.content.adapter = markdownAdapter
-        bd.buttons.comments.setOnClickListener { toggleComments() }
+        bd.buttons.comments.setOnClickListener { viewModel.setCommentsVisible(true) }
         cbd.commentsList.setHasFixedSize(true)
         cbd.commentsList.adapter = commentsAdapter
         cbd.commentsList.addItemDecoration(
@@ -115,6 +115,9 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
                 markdownAdapter.setMarkdown(markdown, it)
                 withContext(Dispatchers.Main) { markdownAdapter.notifyDataSetChanged() }
             }
+        }
+        viewModel.commentSheetState.observe(viewLifecycleOwner) { state ->
+            bd.collapsibleComments?.root?.let { BottomSheetBehavior.from(it).state = state }
         }
         viewModel.comments.observe(viewLifecycleOwner) {
             lifecycleScope.launch(Dispatchers.Default) {
@@ -165,18 +168,14 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         }
         cbd.commentNew.setStartIconOnClickListener { requestImage() }
 
-        bd.collapsibleComments?.let { collapsibleComments ->
-            var commentsState = savedInstanceState?.getInt(SAVE_COMMENTS_EXPANDED)
-            val behavior = CommentSheetBehavior.from(collapsibleComments.root)
-
-            if (commentsState == null && highlightedCommentIds != null) {
-                commentsState = BottomSheetBehavior.STATE_EXPANDED
-            }
-
+        bd.collapsibleComments?.run {
+            val behavior = CommentSheetBehavior.from(root)
             commentsSheetCallback = CommentsSheetCallback(behavior)
                 .apply { behavior.addBottomSheetCallback(this) }
 
-            commentsState?.let { behavior.state = it }
+            if (viewModel.commentSheetState.value == null) {
+                viewModel.setCommentsVisible(highlightedCommentIds != null)
+            }
         }
     }
 
@@ -189,16 +188,6 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
 
         clearCommentInput()
         super.onDestroyView()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        if (view != null) {
-            bd.collapsibleComments?.let {
-                outState.putInt(SAVE_COMMENTS_EXPANDED, BottomSheetBehavior.from(it.root).state)
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -260,26 +249,12 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     override fun onGoBack(method: BackHandlingFragment.Method) =
         method == BackHandlingFragment.Method.UP_BUTTON || bd.collapsibleComments?.let { binding ->
             (BottomSheetBehavior.from(binding.root).state != BottomSheetBehavior.STATE_EXPANDED)
-                .apply { takeUnless { it }?.run { toggleComments() } }
+                .apply { takeUnless { it }?.run { viewModel.setCommentsVisible(false) } }
         } ?: true
 
     override suspend fun onImage(image: ImageData) = viewModel.setCommentImage(image)
 
     open fun canUseFragmentArgs() = arguments != null
-
-    private fun toggleComments() {
-        bd.collapsibleComments?.let {
-            val commentsBehavior = BottomSheetBehavior.from(it.root)
-            when (commentsBehavior.state) {
-                in setOf(
-                    BottomSheetBehavior.STATE_HIDDEN,
-                    BottomSheetBehavior.STATE_COLLAPSED
-                ) -> commentsBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                BottomSheetBehavior.STATE_EXPANDED ->
-                    commentsBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            }
-        }
-    }
 
     private fun clearCommentInput() {
         hideSoftKeyboard(cbd.commentNew)
@@ -434,10 +409,6 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         }
     }
 
-    private companion object {
-        const val SAVE_COMMENTS_EXPANDED = "save.comments.expanded"
-    }
-
     interface Args {
         val post: Post?
         val areaName: String?
@@ -468,11 +439,16 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         BottomSheetBehavior.BottomSheetCallback() {
         @SuppressLint("SwitchIntDef")
         override fun onStateChanged(bottomSheet: View, newState: Int) {
-            bd.content.isVisible = newState != BottomSheetBehavior.STATE_EXPANDED
-            behavior.canDrag = newState != BottomSheetBehavior.STATE_EXPANDED
+            val notExpanded = newState != BottomSheetBehavior.STATE_EXPANDED
+            bd.content.isVisible = notExpanded
+            behavior.canDrag = notExpanded
 
-            if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                clearCommentInput()
+            when (newState) {
+                BottomSheetBehavior.STATE_COLLAPSED -> {
+                    clearCommentInput()
+                    viewModel.setCommentsVisible(false)
+                }
+                BottomSheetBehavior.STATE_EXPANDED -> viewModel.setCommentsVisible(true)
             }
         }
 

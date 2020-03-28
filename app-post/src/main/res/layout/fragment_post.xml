@@ -74,6 +74,7 @@
             android:layout_gravity="bottom"
             app:behavior_hideable="false"
             app:behavior_peekHeight="0dp"
+            app:behavior_saveFlags="all"
             app:behavior_skipCollapsed="false"
             app:layout_behavior="app.fyreplace.client.ui.widgets.CommentSheetBehavior"
             app:model="@{model}" />
