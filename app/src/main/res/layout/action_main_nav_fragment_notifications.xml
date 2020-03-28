@@ -17,6 +17,6 @@
         android:gravity="center_vertical"
         android:text="@{Long.toString(safeUnbox(model.notificationCount))}"
         android:textAppearance="?attr/textAppearanceBody1"
-        android:textColor="?attr/colorPrimary"
+        android:textColor="?attr/colorSecondary"
         android:visibility="@{safeUnbox(model.notificationCount) &gt; 0 ? View.VISIBLE : View.GONE}" />
 </layout>

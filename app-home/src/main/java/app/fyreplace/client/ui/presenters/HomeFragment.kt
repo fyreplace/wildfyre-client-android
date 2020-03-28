@@ -41,7 +41,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         bd.buttons.ignite.setOnClickListener { launch { viewModel.spread(true); resetHomeView() } }
 
         with(bd.refresher) {
-            setColorSchemeResources(R.color.colorPrimary)
+            setColorSchemeResources(R.color.colorSecondary)
             setProgressBackgroundColorSchemeResource(R.color.colorBackground)
             setOnRefreshListener {
                 launch {
