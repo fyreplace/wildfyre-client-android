@@ -68,7 +68,7 @@ class CommentsAdapter(
             val authorName = SpannableStringBuilder(author.name)
             authorName[0..author.name.length] = StyleSpan(Typeface.BOLD)
             authorName[0..author.name.length] =
-                ForegroundColorSpan(ContextCompat.getColor(context, R.color.colorOnBackground))
+                ForegroundColorSpan(ContextCompat.getColor(context, R.color.onBackground))
 
             if (authorId != -1L && authorId == author.user) {
                 val authorBadge = context.getString(R.string.post_comment_author)

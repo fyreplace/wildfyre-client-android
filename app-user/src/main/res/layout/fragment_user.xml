@@ -45,7 +45,7 @@
                     android:maxWidth="@dimen/user_bio_max_width"
                     android:textAppearance="?attr/textAppearanceBody1"
                     android:textIsSelectable="true"
-                    app:drawableTint="@color/colorOnError" />
+                    app:drawableTint="@color/onError" />
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>

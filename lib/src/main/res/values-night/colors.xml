@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF7043</color>
-    <color name="colorPrimaryVariant">#F4511E</color>
-    <color name="colorPrimaryDark">@android:color/black</color>
-    <color name="colorBackground">@android:color/black</color>
-    <color name="colorOnBackground">@android:color/white</color>
-    <color name="colorError">#EC407A</color>
-    <color name="colorControlActivatedNeutral">#BFBFBF</color>
-    <color name="colorSwitchThumbNormalNeutral">#3F3F3F</color>
+    <color name="primary">#FF7043</color>
+    <color name="primaryVariant">#F4511E</color>
+    <color name="primaryDark">@android:color/black</color>
+    <color name="background">@android:color/black</color>
+    <color name="onBackground">@android:color/white</color>
+    <color name="error">#EC407A</color>
+    <color name="controlActivatedNeutral">#BFBFBF</color>
+    <color name="switchThumbNormalNeutral">#3F3F3F</color>
 </resources>

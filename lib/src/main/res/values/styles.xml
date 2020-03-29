@@ -16,7 +16,7 @@
     </style>
 
     <style name="AppTheme.AppBar.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@color/colorAppBarButtonStroke</item>
+        <item name="strokeColor">@color/appBarButtonStroke</item>
     </style>
 
 </resources>

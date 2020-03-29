@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="backgroundSplash">@color/colorBackground</color>
+    <color name="backgroundSplash">@color/background</color>
     <color name="badgeBackground">#D50000</color>
 </resources>

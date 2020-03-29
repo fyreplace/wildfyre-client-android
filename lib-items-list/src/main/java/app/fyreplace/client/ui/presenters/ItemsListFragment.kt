@@ -56,8 +56,8 @@ abstract class ItemsListFragment<I : Model, VM : ItemsListFragmentViewModel<I>, 
         }
 
         with(bd.refresher) {
-            setColorSchemeResources(R.color.colorSecondary)
-            setProgressBackgroundColorSchemeResource(R.color.colorBackground)
+            setColorSchemeResources(R.color.secondary)
+            setProgressBackgroundColorSchemeResource(R.color.background)
             setOnRefreshListener { refreshItems(Refresh.NORMAL) }
         }
 

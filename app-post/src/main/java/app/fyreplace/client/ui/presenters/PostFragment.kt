@@ -133,7 +133,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
                 cbd.commentNew.startIconDrawable?.let {
                     DrawableCompat.setTint(
                         it,
-                        ContextCompat.getColor(view.context, R.color.colorSecondary)
+                        ContextCompat.getColor(view.context, R.color.secondary)
                     )
                 }
             } else {

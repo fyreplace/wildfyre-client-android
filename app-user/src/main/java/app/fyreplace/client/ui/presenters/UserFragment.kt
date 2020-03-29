@@ -56,7 +56,7 @@ class UserFragment : Fragment(R.layout.fragment_user), Presenter {
 
             with(bd.userBioWrapper) {
                 if (it.banned) {
-                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorError))
+                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.error))
                 } else if (it.bio.isBlank()) {
                     isVisible = false
                 }
@@ -64,7 +64,7 @@ class UserFragment : Fragment(R.layout.fragment_user), Presenter {
 
             if (it.banned) with(bd.userBio) {
                 setText(R.string.user_banned)
-                setTextColor(ContextCompat.getColor(context, R.color.colorOnError))
+                setTextColor(ContextCompat.getColor(context, R.color.onError))
                 setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_error, 0, 0, 0)
             } else {
                 markdown.setMarkdown(bd.userBio, it.bio)

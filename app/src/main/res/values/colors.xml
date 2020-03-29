@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="backgroundSplash">@color/colorAccent</color>
+    <color name="backgroundSplash">@color/accent</color>
     <color name="navigation">@android:color/black</color>
     <color name="badgeBackground">#FFFF00</color>
 </resources>

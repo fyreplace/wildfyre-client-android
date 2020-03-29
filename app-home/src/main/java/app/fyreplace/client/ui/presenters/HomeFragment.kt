@@ -42,8 +42,8 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
 
         with(bd.refresher) {
             isEnabled = true
-            setColorSchemeResources(R.color.colorSecondary)
-            setProgressBackgroundColorSchemeResource(R.color.colorBackground)
+            setColorSchemeResources(R.color.secondary)
+            setProgressBackgroundColorSchemeResource(R.color.background)
             setOnRefreshListener {
                 launch {
                     viewModel.nextPost()
