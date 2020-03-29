@@ -15,7 +15,6 @@
         <item name="colorOnSurface">@color/colorOnSurface</item>
         <item name="colorError">@color/colorError</item>
         <item name="colorOnError">@color/colorOnError</item>
-        <item name="android:navigationBarColor">@color/backgroundSplash</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeCloseDrawable">@drawable/ic_clear_white</item>
     </style>
@@ -44,6 +43,7 @@
 
     <style name="AppTheme.Launcher" parent="AppTheme.NoActionBar">
         <item name="android:windowBackground">@drawable/ic_splash_screen</item>
+        <item name="android:navigationBarColor">@color/backgroundSplash</item>
     </style>
 
     <style name="AppTheme.TextAppearance.ActionBar.Title" parent="TextAppearance.MaterialComponents.Headline6">

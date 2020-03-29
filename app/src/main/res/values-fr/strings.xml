@@ -22,6 +22,7 @@
     <string name="main_nav_wildfyre_faq">FAQ</string>
     <string name="main_nav_wildfyre_terms">Conditions d\'utilisation</string>
     <string name="main_nav_wildfyre_privacy">Politique de confidentialité</string>
+    <string name="main_profile_editor_dialog_title">Image de profil</string>
     <string name="main_profile_editor_bio">Bio de profil</string>
     <string name="main_author_anonymous">Anonyme</string>
     <string name="new_draft_dialog_title">Créer le post dans la zone…</string>

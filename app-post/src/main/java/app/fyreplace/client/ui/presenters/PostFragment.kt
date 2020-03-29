@@ -4,12 +4,9 @@ import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -52,7 +49,6 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     ToolbarUsingFragment, ImageSelector {
     override val viewModel by viewModel<PostFragmentViewModel>()
     override lateinit var bd: FragmentPostBinding
-    override val contextWrapper by lazy { requireActivity() }
     override val maxImageSize = 0.5f
     protected lateinit var cbd: PostCommentsBinding
     private val centralViewModel by sharedViewModel<CentralViewModel>()
@@ -254,6 +250,8 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
 
     override suspend fun onImage(image: ImageData) = viewModel.setCommentImage(image)
 
+    override suspend fun onImageRemoved() = viewModel.resetCommentImage()
+
     open fun canUseFragmentArgs() = arguments != null
 
     private fun clearCommentInput() {
@@ -289,34 +287,14 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     }
 
     private fun requestImage() {
-        val dialog = MaterialAlertDialogBuilder(contextWrapper)
-            .setView(R.layout.post_dialog_comment_image)
-            .setTitle(R.string.post_comment_attach_file_dialog_title)
-            .setNegativeButton(R.string.post_comment_attach_file_dialog_negative) { _, _ ->
-                launch { selectImage(requestImagePhoto) }
-            }
-            .setPositiveButton(R.string.post_comment_attach_file_dialog_positive) { _, _ ->
-                launch { selectImage(requestImageFile) }
-            }
-            .setNeutralButton(R.string.post_comment_attach_file_dialog_neutral) { _, _ ->
-                viewModel.resetCommentImage()
-            }
-            .show()
-
-        val image = dialog.findViewById<ImageView>(R.id.image)
-        image?.isVisible = viewModel.newCommentImage.value != null
-        viewModel.newCommentImage.value?.let {
-            image?.setImageDrawable(
-                BitmapDrawable(
-                    resources,
-                    BitmapFactory.decodeByteArray(it.bytes, 0, it.bytes.size)
-                )
-            )
-        }
+        showImageChooser(
+            R.string.post_comment_attach_file_dialog_title,
+            viewModel.newCommentImage.value != null
+        )
     }
 
     private fun deletePost() {
-        MaterialAlertDialogBuilder(contextWrapper)
+        MaterialAlertDialogBuilder(requiredContext)
             .setTitle(R.string.post_action_delete_dialog_title)
             .setMessage(R.string.post_action_delete_dialog_message)
             .setNegativeButton(R.string.no, null)
@@ -330,12 +308,15 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     }
 
     private fun copyComment(comment: Comment) {
-        getSystemService(contextWrapper, ClipboardManager::class.java)?.setPrimaryClip(
+        getSystemService(requiredContext, ClipboardManager::class.java)?.setPrimaryClip(
             ClipData.newPlainText(getString(R.string.post_comment_copy_label), comment.text)
         )
 
-        Toast.makeText(context, getString(R.string.post_comment_copy_toast), Toast.LENGTH_SHORT)
-            .show()
+        Toast.makeText(
+            requiredContext,
+            getString(R.string.post_comment_copy_toast),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun shareComment(comment: Comment) = startActivity(
@@ -346,7 +327,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
     )
 
     private fun deleteComment(position: Int, comment: Comment) {
-        MaterialAlertDialogBuilder(contextWrapper)
+        MaterialAlertDialogBuilder(requiredContext)
             .setTitle(R.string.post_comment_delete_dialog_title)
             .setMessage(R.string.post_comment_delete_dialog_message)
             .setNegativeButton(R.string.no, null)
@@ -360,7 +341,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         launch {
             val choices = viewModel.getFlagChoices()
             var key: Long? = null
-            MaterialAlertDialogBuilder(contextWrapper)
+            MaterialAlertDialogBuilder(requiredContext)
                 .setTitle(R.string.post_action_flag_dialog_title)
                 .setSingleChoiceItems(
                     choices.map { it.value }.toTypedArray(),
@@ -376,7 +357,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
 
     private fun showFlagInfo(comment: Comment?, key: Long?) {
         var editText: EditText? = null
-        val alert = MaterialAlertDialogBuilder(contextWrapper)
+        val alert = MaterialAlertDialogBuilder(requiredContext)
             .setTitle(R.string.post_action_flag_dialog_title)
             .setView(R.layout.post_dialog_flag_info)
             .setNegativeButton(R.string.cancel, null)
@@ -391,7 +372,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         try {
             viewModel.flag(comment?.id, key, text)
             Toast.makeText(
-                contextWrapper,
+                requiredContext,
                 if (comment == null) R.string.post_action_flag_post_toast
                 else R.string.post_action_flag_comment_toast,
                 Toast.LENGTH_SHORT
@@ -399,7 +380,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         } catch (e: HttpException) {
             if (e.code() == 400) {
                 Toast.makeText(
-                    contextWrapper,
+                    requiredContext,
                     R.string.post_failure_flag,
                     Toast.LENGTH_SHORT
                 ).show()

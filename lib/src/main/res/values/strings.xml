@@ -11,6 +11,9 @@
     <string name="failure_ban_dialog_title">Error</string>
     <string name="failure_ban_dialog_message">You have been banned and cannot execute this action.</string>
     <string name="draft_created_text">Write your post here</string>
+    <string name="image_selector_dialog_file">Select a file</string>
+    <string name="image_selector_dialog_photo">Take a picture</string>
+    <string name="image_selector_dialog_remove">Remove the image</string>
     <string name="image_selector_chooser">Image source</string>
     <string name="image_failure_unknown_type">Unknown file type</string>
     <string name="image_failure_file_size">Image file too large</string>

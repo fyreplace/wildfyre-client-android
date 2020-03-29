@@ -22,9 +22,6 @@
     <string name="draft_bottom_action_list_numbered">Numbered list</string>
     <string name="draft_bottom_action_main_image">Main image</string>
     <string name="draft_bottom_action_images">Additional images</string>
-    <string name="draft_bottom_action_images_dialog_file">Choose a file</string>
-    <string name="draft_bottom_action_images_dialog_photo">Take a photo</string>
-    <string name="draft_bottom_action_images_dialog_remove">Remove</string>
     <string name="draft_bottom_action_images_snackbar">Uploading image…</string>
     <plurals name="draft_bottom_action_images_snackbar_multiple">
         <item quantity="one">Uploading %1$d image…</item>

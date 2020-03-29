@@ -35,7 +35,6 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
     Toolbar.OnMenuItemClickListener, ImageSelector {
     override val viewModel by viewModel<DraftFragmentViewModel>()
     override lateinit var bd: FragmentDraftBinding
-    override val contextWrapper by lazy { requireActivity() }
     override val maxImageSize = 1f
     private val fragmentArgs by inject<Args> { parametersOf(this) }
     private val markdown by lazyMarkdown()
@@ -74,7 +73,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
 
         if (fragmentArgs.showHint) launch {
             Toast.makeText(
-                context,
+                requiredContext,
                 getString(
                     R.string.draft_hint_toast,
                     viewModel.getPreferredArea()?.displayName
@@ -167,7 +166,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
         when (item.itemId) {
             R.id.action_publish -> {
                 var anon: Boolean? = null
-                MaterialAlertDialogBuilder(contextWrapper)
+                MaterialAlertDialogBuilder(requiredContext)
                     .setTitle(R.string.draft_action_publish_dialog_title)
                     .setNegativeButton(R.string.draft_action_publish_dialog_negative) { _, _ ->
                         anon = true
@@ -183,7 +182,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
                                 saveDraft(it)
                                 viewModel.publishDraft()
                                 Toast.makeText(
-                                    context,
+                                    requiredContext,
                                     R.string.draft_action_publish_toast,
                                     Toast.LENGTH_SHORT
                                 ).show()
@@ -194,14 +193,14 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
             }
             R.id.action_preview -> {
                 hideSoftKeyboard(bd.editor.editor)
-                MaterialAlertDialogBuilder(contextWrapper)
+                MaterialAlertDialogBuilder(requiredContext)
                     .setView(R.layout.draft_dialog_preview)
                     .show()
                     .findViewById<RecyclerView>(R.id.preview)?.adapter = markdownAdapter
                 updatePreview()
             }
             R.id.action_save -> launch { saveDraft(showConfirmation = true) }
-            R.id.action_delete -> MaterialAlertDialogBuilder(contextWrapper)
+            R.id.action_delete -> MaterialAlertDialogBuilder(requiredContext)
                 .setTitle(R.string.draft_action_delete_dialog_title)
                 .setNegativeButton(R.string.no, null)
                 .setPositiveButton(R.string.yes) { _, _ ->
@@ -223,7 +222,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
             return true
         }
 
-        MaterialAlertDialogBuilder(contextWrapper)
+        MaterialAlertDialogBuilder(requiredContext)
             .setTitle(R.string.draft_back_dialog_title)
             .setNegativeButton(R.string.no) { _, _ -> findNavController().navigateUp() }
             .setPositiveButton(R.string.yes) { _, _ ->
@@ -273,7 +272,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
         } catch (e: HttpException) {
             if (e.code() == 404) {
                 Toast.makeText(
-                    contextWrapper,
+                    requiredContext,
                     R.string.draft_failure_images,
                     Toast.LENGTH_SHORT
                 ).show()
@@ -281,6 +280,11 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
                 throw e
             }
         }
+    }
+
+    override suspend fun onImageRemoved() {
+        viewModel.removeImage()
+        updatePreview()
     }
 
     override suspend fun onImageLoadingBegin() = updateCancellingSnackbar(true)
@@ -300,12 +304,13 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
         viewModel.saveDraft(bd.editor.editor.text.toString(), anonymous)
 
         if (showConfirmation) {
-            Toast.makeText(context, R.string.draft_action_save_toast, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requiredContext, R.string.draft_action_save_toast, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
     private fun addTitle() {
-        MaterialAlertDialogBuilder(contextWrapper)
+        MaterialAlertDialogBuilder(requiredContext)
             .setTitle(R.string.draft_bottom_action_title_dialog_title)
             .setItems((1..6).map { it.toString() }.toTypedArray()) { _, i ->
                 bd.editor.editor.editableText?.insert(editorLineStart(), "#".repeat(i + 1) + ' ')
@@ -319,33 +324,16 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
 
     private fun addImage(main: Boolean) {
         viewModel.nextImageSlotIsMain = main
-        var items = resources.getStringArray(R.array.draft_image_sources)
-
-        if (main && viewModel.draft.image != null) {
-            items += getString(R.string.draft_bottom_action_images_dialog_remove)
-        }
-
-        MaterialAlertDialogBuilder(contextWrapper)
-            .setTitle(
-                if (main) R.string.draft_bottom_action_main_image
-                else R.string.draft_bottom_action_images
-            )
-            .setItems(items) { _, i ->
-                launch {
-                    if (i == 2) {
-                        viewModel.removeImage()
-                        updatePreview()
-                    } else {
-                        selectImage(if (i == 0) requestImageFile else requestImagePhoto)
-                    }
-                }
-            }
-            .show()
+        showImageChooser(
+            if (main) R.string.draft_bottom_action_main_image
+            else R.string.draft_bottom_action_images,
+            main && viewModel.draft.image != null
+        )
     }
 
     private fun addYoutubeLink() {
         var link: EditText? = null
-        link = MaterialAlertDialogBuilder(contextWrapper)
+        link = MaterialAlertDialogBuilder(requiredContext)
             .setTitle(R.string.draft_bottom_action_youtube_dialog_title)
             .setView(R.layout.draft_dialog_link)
             .setNegativeButton(R.string.cancel, null)
@@ -359,7 +347,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
                             "[![YouTube link]($thumbnail)](https://www.youtube.com/watch?v=$videoId)"
                         )
                     } ?: Toast.makeText(
-                        contextWrapper,
+                        requiredContext,
                         R.string.draft_bottom_action_youtube_toast,
                         Toast.LENGTH_SHORT
                     ).show()
@@ -375,7 +363,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
 
     private fun surroundSelectionWithLink() {
         var link: EditText? = null
-        link = MaterialAlertDialogBuilder(contextWrapper)
+        link = MaterialAlertDialogBuilder(requiredContext)
             .setTitle(R.string.draft_bottom_action_selection_link_dialog_title)
             .setView(R.layout.draft_dialog_link)
             .setNegativeButton(R.string.cancel, null)

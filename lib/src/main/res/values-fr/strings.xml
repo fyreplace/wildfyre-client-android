@@ -8,6 +8,9 @@
     <string name="failure_ban_dialog_title">Erreur</string>
     <string name="failure_ban_dialog_message">Vous avez été banni et ne pouvez pas éxécuter cette action.</string>
     <string name="draft_created_text">Écris ton post ici</string>
+    <string name="image_selector_dialog_file">Sélectionner un fichier</string>
+    <string name="image_selector_dialog_photo">Prendre une photo</string>
+    <string name="image_selector_dialog_remove">Retirer l\'image</string>
     <string name="image_selector_chooser">Source de l\'image</string>
     <string name="image_failure_unknown_type">Type de fichier inconnu</string>
     <string name="image_failure_file_size">Taille de fichier trop élevée</string>

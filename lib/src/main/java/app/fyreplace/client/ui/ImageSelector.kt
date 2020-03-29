@@ -1,7 +1,7 @@
 package app.fyreplace.client.ui
 
 import android.app.Activity
-import android.content.ContextWrapper
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
@@ -10,6 +10,7 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
+import androidx.annotation.StringRes
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.exifinterface.media.ExifInterface
 import androidx.exifinterface.media.ExifInterface.*
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.lib.R
 import app.fyreplace.client.viewmodels.ImageSelectorViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
@@ -30,16 +32,13 @@ import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 interface ImageSelector : FailureHandler, ViewModelStoreOwner {
-    val contextWrapper: ContextWrapper
     val maxImageSize: Float
-    val requestImageFile
-        get() = contextWrapper.resources.getInteger(R.integer.request_image_file)
-    val requestImagePhoto
-        get() = contextWrapper.resources.getInteger(R.integer.request_image_photo)
+    val requiredContext: Context
+        get() = getContext()!!
     private val imageSelectorViewModel
         get() = getViewModel<ImageSelectorViewModel>()
     private val imagesDirectory
-        get() = File(contextWrapper.filesDir, "images")
+        get() = File(requiredContext.filesDir, "images")
     private val photoImageFile
         get() = File(imagesDirectory, "image.data")
     private val maxImageByteSize: Int
@@ -48,6 +47,8 @@ interface ImageSelector : FailureHandler, ViewModelStoreOwner {
     fun startActivityForResult(intent: Intent?, requestCode: Int)
 
     suspend fun onImage(image: ImageData)
+
+    suspend fun onImageRemoved()
 
     suspend fun onImageLoadingBegin() = Unit
 
@@ -60,8 +61,8 @@ interface ImageSelector : FailureHandler, ViewModelStoreOwner {
 
         launch {
             when (requestCode) {
-                requestImageFile -> data?.data?.let { useImageUri(it) }
-                requestImagePhoto -> imageSelectorViewModel.pop().let {
+                IMAGE_FILE -> data?.data?.let { useImageUri(it) }
+                IMAGE_PHOTO -> imageSelectorViewModel.pop().let {
                     useImageUri(it)
                     photoImageFile.delete()
                 }
@@ -69,17 +70,41 @@ interface ImageSelector : FailureHandler, ViewModelStoreOwner {
         }
     }
 
+    fun showImageChooser(@StringRes title: Int, canRemove: Boolean) {
+        val items = mutableListOf(
+            R.string.image_selector_dialog_file,
+            R.string.image_selector_dialog_photo
+        )
+
+        if (canRemove) {
+            items.add(R.string.image_selector_dialog_remove)
+        }
+
+        MaterialAlertDialogBuilder(requiredContext)
+            .setTitle(title)
+            .setItems(items.map { requiredContext.getString(it) }.toTypedArray()) { _, i ->
+                launch {
+                    if (items[i] == R.string.image_selector_dialog_remove) {
+                        onImageRemoved()
+                    } else {
+                        selectImage(i)
+                    }
+                }
+            }
+            .show()
+    }
+
     suspend fun selectImage(request: Int) = startActivityForResult(
         Intent.createChooser(
             when (request) {
-                requestImageFile -> Intent(Intent.ACTION_GET_CONTENT)
+                IMAGE_FILE -> Intent(Intent.ACTION_GET_CONTENT)
                     .apply { type = "image/*" }
-                requestImagePhoto -> {
+                IMAGE_PHOTO -> {
                     val imageFile = photoImageFile
                     withContext(Dispatchers.IO) { imageFile.parentFile?.mkdirs() }
                     val imageUri = getUriForFile(
-                        contextWrapper,
-                        contextWrapper.getString(R.string.file_provider_authority),
+                        requiredContext,
+                        requiredContext.getString(R.string.file_provider_authority),
                         imageFile
                     )
                     Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
@@ -90,7 +115,7 @@ interface ImageSelector : FailureHandler, ViewModelStoreOwner {
                 }
                 else -> throw IllegalArgumentException()
             },
-            contextWrapper.getString(R.string.image_selector_chooser)
+            requiredContext.getString(R.string.image_selector_chooser)
         ),
         request
     )
@@ -98,12 +123,12 @@ interface ImageSelector : FailureHandler, ViewModelStoreOwner {
     suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.Default) {
         try {
             onImageLoadingBegin()
-            val mimeType = contextWrapper.contentResolver.getType(uri)
-                ?: throw IOException(contextWrapper.getString(R.string.image_failure_unknown_type))
-            val transformations = contextWrapper.contentResolver.openInputStream(uri)
+            val mimeType = requiredContext.contentResolver.getType(uri)
+                ?: throw IOException(requiredContext.getString(R.string.image_failure_unknown_type))
+            val transformations = requiredContext.contentResolver.openInputStream(uri)
                 ?.use { extractTransformations(it) }
                 ?: Matrix()
-            contextWrapper.contentResolver.openInputStream(uri)
+            requiredContext.contentResolver.openInputStream(uri)
                 ?.use { useBytes(it.readBytes(), transformations, mimeType) }
         } finally {
             onImageLoadingEnd()
@@ -185,7 +210,7 @@ interface ImageSelector : FailureHandler, ViewModelStoreOwner {
                     .getExtensionFromMimeType(compressedMimeType)
                 onImage(ImageData("image.${extension}", compressedMimeType, compressedBytes))
             } else {
-                throw IOException(contextWrapper.getString(R.string.image_failure_file_size))
+                throw IOException(requiredContext.getString(R.string.image_failure_file_size))
             }
         }
     }
@@ -207,6 +232,8 @@ interface ImageSelector : FailureHandler, ViewModelStoreOwner {
     }
 
     companion object {
+        const val IMAGE_FILE = 0
+        const val IMAGE_PHOTO = 1
         const val IMAGE_MAX_AREA = 1920 * 1080
     }
 }

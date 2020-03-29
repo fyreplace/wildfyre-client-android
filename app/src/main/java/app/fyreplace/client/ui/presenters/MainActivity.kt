@@ -29,7 +29,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
-import androidx.transition.TransitionManager
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentDraft
 import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalFragmentLogin
@@ -63,7 +62,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
     NavController.OnDestinationChangedListener, ImageSelector {
     override val viewModel by viewModel<MainActivityViewModel>()
     override lateinit var bd: ActivityMainBinding
-    override val contextWrapper = this
     override val maxImageSize = 0.5f
     private val centralViewModel by viewModel<CentralViewModel>()
     private val areaSelectingViewModel by viewModel<AreaSelectingFragmentViewModel>()
@@ -287,9 +285,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
 
     override suspend fun onImage(image: ImageData) = centralViewModel.setPendingProfileAvatar(image)
 
-    fun onSelectAvatarImageClicked(view: View) {
-        (view.tag as? String)?.toInt()?.let { launch { selectImage(it) } }
-    }
+
+    override suspend fun onImageRemoved() = Unit
+
+    fun onSelectAvatarImageClicked(@Suppress("UNUSED_PARAMETER") view: View) =
+        showImageChooser(R.string.main_profile_editor_dialog_title, false)
 
     private fun handleViewIntent(intent: Intent) {
         if (intent.action != Intent.ACTION_VIEW) {

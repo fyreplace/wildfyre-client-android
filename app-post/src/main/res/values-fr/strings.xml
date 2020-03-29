@@ -20,10 +20,7 @@
     </plurals>
     <string name="post_comment_author">Auteur</string>
     <string name="post_comment_new_comment">Ajouter un commentaire</string>
-    <string name="post_comment_attach_file_dialog_title">Joindre…</string>
-    <string name="post_comment_attach_file_dialog_negative">Photo</string>
-    <string name="post_comment_attach_file_dialog_positive">Fichier</string>
-    <string name="post_comment_attach_file_dialog_neutral">Rien</string>
+    <string name="post_comment_attach_file_dialog_title">Joindre une image</string>
     <string name="post_comment_menu_copy">Copier</string>
     <string name="post_comment_menu_share">Partager</string>
     <string name="post_comment_copy_label">Commentaire</string>
