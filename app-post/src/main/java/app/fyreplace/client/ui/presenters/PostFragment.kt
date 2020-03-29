@@ -36,6 +36,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import io.noties.markwon.recycler.MarkwonAdapter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
@@ -84,7 +85,13 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
             .apply { doOnCommentMore(this@PostFragment::showCommentActions) }
 
         bd.content.adapter = markdownAdapter
-        bd.buttons.comments.setOnClickListener { viewModel.setCommentsVisible(true) }
+        bd.buttons.comments.setOnClickListener {
+            launch {
+                delay(resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
+                viewModel.setCommentsVisible(true)
+            }
+        }
+
         cbd.commentsList.setHasFixedSize(true)
         cbd.commentsList.adapter = commentsAdapter
         cbd.commentsList.addItemDecoration(
