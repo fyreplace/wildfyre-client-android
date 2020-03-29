@@ -56,7 +56,7 @@ open class PostFragmentViewModel(
 
     init {
         mHasContent.value = true
-        mAllowSpread.value = true
+        mAllowSpread.value = false
         mPost.value = null
         mIsOwnPost.addSource(authorId) { mIsOwnPost.postValue(it == selfId) }
         mSubscribed.addSource(post) { mSubscribed.postValue(it?.subscribed ?: false) }
