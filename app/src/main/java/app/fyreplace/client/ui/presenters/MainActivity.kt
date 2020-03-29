@@ -347,8 +347,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             return
         }
 
-        TransitionManager.beginDelayedTransition(bd.content.toolbar)
-
         if (info == null) {
             bd.content.toolbar.run {
                 title = ""
@@ -523,7 +521,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             load(resource)
 
         private fun load(drawable: Drawable) {
-            TransitionManager.beginDelayedTransition(bd.content.toolbar)
             bd.content.toolbar.logo = drawable
             bd.content.toolbar.children
                 .filterIsInstance<ImageView>()
