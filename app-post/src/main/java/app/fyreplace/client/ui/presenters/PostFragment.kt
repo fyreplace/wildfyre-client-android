@@ -82,7 +82,7 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         super.onViewCreated(view, savedInstanceState)
         val markdownAdapter = MarkwonAdapter.createTextViewIsRoot(R.layout.post_entry)
         val commentsAdapter = CommentsAdapter(navigator, markdown)
-            .apply { doOnCommentMore(this@PostFragment::showCommentActions) }
+            .apply { doOnCommentMore(::showCommentActions) }
 
         bd.content.adapter = markdownAdapter
         bd.buttons.comments.setOnClickListener {

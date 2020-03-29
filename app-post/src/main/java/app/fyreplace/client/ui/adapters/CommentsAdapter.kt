@@ -2,14 +2,12 @@ package app.fyreplace.client.ui.adapters
 
 import android.graphics.Typeface
 import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.text.set
 import androidx.core.text.toSpanned
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -67,8 +65,6 @@ class CommentsAdapter(
         comment.author?.let { author ->
             val authorName = SpannableStringBuilder(author.name)
             authorName[0..author.name.length] = StyleSpan(Typeface.BOLD)
-            authorName[0..author.name.length] =
-                ForegroundColorSpan(ContextCompat.getColor(context, R.color.onBackground))
 
             if (authorId != -1L && authorId == author.user) {
                 val authorBadge = context.getString(R.string.post_comment_author)
