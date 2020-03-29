@@ -36,6 +36,7 @@
             android:id="@+id/refresher"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="?attr/actionBarSize"
             android:enabled="false">
 
             <FrameLayout
@@ -54,7 +55,7 @@
                     android:paddingStart="@dimen/margin_large"
                     android:paddingTop="@dimen/margin_medium"
                     android:paddingEnd="@dimen/margin_large"
-                    android:paddingBottom="?attr/actionBarSize"
+                    android:paddingBottom="@dimen/margin_medium"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </FrameLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
