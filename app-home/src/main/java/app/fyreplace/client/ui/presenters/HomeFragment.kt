@@ -57,17 +57,21 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         inflater.inflate(R.menu.actions_fragment_area_selecting, menu)
         onCreateOptionsMenu(this, menu, inflater)
         super<PostFragment>.onCreateOptionsMenu(menu, inflater)
-        val showAsAction =
-            if (resources.getBoolean(R.bool.home_show_full_menu)) MenuItem.SHOW_AS_ACTION_IF_ROOM
-            else MenuItem.SHOW_AS_ACTION_NEVER
-
-        for (id in setOf(
+        val hiddenItems = setOf(
             R.id.action_area_selector,
             R.id.action_share,
             R.id.action_delete,
             R.id.action_flag
-        )) {
-            menu.findItem(id).setShowAsAction(showAsAction)
+        )
+
+        viewModel.hasContent.observe(viewLifecycleOwner) {
+            val showAsAction =
+                if (resources.getBoolean(R.bool.home_show_full_menu) || !it) MenuItem.SHOW_AS_ACTION_IF_ROOM
+                else MenuItem.SHOW_AS_ACTION_NEVER
+
+            for (id in hiddenItems) {
+                menu.findItem(id).setShowAsAction(showAsAction)
+            }
         }
     }
 
