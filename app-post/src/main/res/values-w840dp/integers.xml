@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="post_buttons_comments_weight">3</integer>
+</resources>

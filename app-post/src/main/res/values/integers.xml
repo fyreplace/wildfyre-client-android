@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="post_buttons_spread_weight">3</integer>
+    <integer name="post_buttons_comments_weight">4</integer>
+</resources>
