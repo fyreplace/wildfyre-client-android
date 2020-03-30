@@ -21,17 +21,6 @@
             android:layout_gravity="center"
             android:visibility="@{safeUnbox(model.contentLoaded) || !safeUnbox(model.hasContent) ? View.GONE : View.VISIBLE}" />
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingStart="@dimen/margin_large"
-            android:paddingEnd="@dimen/margin_large"
-            android:textAppearance="?attr/textAppearanceHeadline4"
-            android:visibility="@{safeUnbox(model.hasContent) ? View.GONE : View.VISIBLE}" />
-
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/refresher"
             android:layout_width="match_parent"
@@ -59,6 +48,31 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </FrameLayout>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="?attr/actionBarSize"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{safeUnbox(model.hasContent) ? View.GONE : View.VISIBLE}">
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="@dimen/margin_large"
+                android:paddingEnd="@dimen/margin_large"
+                android:textAppearance="?attr/textAppearanceHeadline4" />
+
+            <Button
+                android:id="@+id/button"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium" />
+        </LinearLayout>
 
         <include
             android:id="@+id/buttons"

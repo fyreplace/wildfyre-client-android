@@ -30,6 +30,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = super.onCreateView(inflater, container, savedInstanceState).apply {
+        bd.button?.isVisible = !resources.getBoolean(R.bool.home_show_full_menu)
         bd.buttons.extinguish.isVisible = true
         bd.buttons.ignite.isVisible = true
     }
@@ -37,6 +38,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bd.text.setText(R.string.home_empty)
+        bd.button?.setText(R.string.home_change_area)
         bd.buttons.extinguish.setOnClickListener { launch { viewModel.spread(false); resetHomeView() } }
         bd.buttons.ignite.setOnClickListener { launch { viewModel.spread(true); resetHomeView() } }
 
@@ -64,14 +66,17 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
             R.id.action_flag
         )
 
-        viewModel.hasContent.observe(viewLifecycleOwner) {
-            val showAsAction =
-                if (resources.getBoolean(R.bool.home_show_full_menu) || !it) MenuItem.SHOW_AS_ACTION_IF_ROOM
-                else MenuItem.SHOW_AS_ACTION_NEVER
+        val showAsAction =
+            if (resources.getBoolean(R.bool.home_show_full_menu)) MenuItem.SHOW_AS_ACTION_IF_ROOM
+            else MenuItem.SHOW_AS_ACTION_NEVER
 
-            for (id in hiddenItems) {
-                menu.findItem(id).setShowAsAction(showAsAction)
-            }
+        for (id in hiddenItems) {
+            menu.findItem(id).setShowAsAction(showAsAction)
+        }
+
+        bd.button?.setOnClickListener {
+            menu.findItem(hiddenItems.first()).actionView.findViewById<View>(R.id.button)
+                .callOnClick()
         }
     }
 
