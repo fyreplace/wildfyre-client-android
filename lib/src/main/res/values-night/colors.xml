@@ -6,6 +6,7 @@
     <color name="background">@android:color/black</color>
     <color name="onBackground">@android:color/white</color>
     <color name="error">#EC407A</color>
+    <color name="inactive">#5F5F5F</color>
     <color name="controlActivatedNeutral">#BFBFBF</color>
     <color name="switchThumbNormalNeutral">#3F3F3F</color>
 </resources>

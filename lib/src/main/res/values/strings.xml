@@ -19,6 +19,7 @@
     <string name="image_failure_file_size">Image file too large</string>
     <string name="area_selecting_action_selector">Area: %1$s</string>
     <string name="area_selecting_action_selector_dialog_title">Got to area…</string>
+    <string name="area_selecting_action_selector_dialog_current">%1$s (current area)</string>
     <string name="deletion_action_delete">Delete</string>
     <string name="sharing_action_share">Share</string>
     <string name="image_desc_author_picture">Author picture</string>
