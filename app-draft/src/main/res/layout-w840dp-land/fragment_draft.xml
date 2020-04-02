@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <app.fyreplace.client.ui.views.MarkdownRecyclerView
             android:id="@+id/preview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
