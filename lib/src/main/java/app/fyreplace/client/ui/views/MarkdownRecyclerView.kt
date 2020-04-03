@@ -2,6 +2,7 @@ package app.fyreplace.client.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.children
@@ -17,24 +18,18 @@ class MarkdownRecyclerView : RecyclerView {
         defStyleAttr
     )
 
-    init {
-        addOnScrollListener(ScrollStopListener())
+    override fun onViewAdded(child: View?) {
+        child?.addClick()
     }
 
-    private inner class ScrollStopListener : OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            if (newState == SCROLL_STATE_IDLE) {
-                schedule()
+    private fun View.addClick() {
+        if (this is TextView) {
+            setOnClickListener {
+                AsyncDrawableScheduler.schedule(this)
             }
-        }
-
-        private fun ViewGroup.schedule() {
+        } else if (this is ViewGroup) {
             for (child in children) {
-                if (child is TextView) {
-                    AsyncDrawableScheduler.schedule(child)
-                } else if (child is ViewGroup) {
-                    child.schedule()
-                }
+                child.addClick()
             }
         }
     }
