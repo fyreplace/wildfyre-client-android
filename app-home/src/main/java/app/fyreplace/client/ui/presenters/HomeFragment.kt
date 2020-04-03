@@ -28,7 +28,7 @@ class HomeFragment : PostFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = super.onCreateView(inflater, container, savedInstanceState).apply {
-        bd.button?.isVisible = !resources.getBoolean(R.bool.home_show_full_menu)
+        bd.button?.isVisible = !resources.getBoolean(R.bool.home_show_full_area_selector)
         bd.buttons.extinguish.isVisible = true
         bd.buttons.ignite.isVisible = true
     }
@@ -65,11 +65,12 @@ class HomeFragment : PostFragment() {
             R.id.action_flag
         ).map { menu.findItem(it) }
 
-        val showAsAction = if (resources.getBoolean(R.bool.home_show_full_menu)) {
-            MenuItem.SHOW_AS_ACTION_IF_ROOM
-        } else {
+        val showAsAction =
+            if (resources.getBoolean(R.bool.home_show_full_menu)) MenuItem.SHOW_AS_ACTION_IF_ROOM
+            else MenuItem.SHOW_AS_ACTION_NEVER
+
+        if (!resources.getBoolean(R.bool.home_show_full_area_selector)) {
             areaSelectorAction.actionView = null
-            MenuItem.SHOW_AS_ACTION_NEVER
         }
 
         for (action in hiddenActions) {

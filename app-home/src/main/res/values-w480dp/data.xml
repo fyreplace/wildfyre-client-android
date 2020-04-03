@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="home_show_full_area_selector">true</bool>
+    <bool name="home_show_full_menu">true</bool>
 </resources>
