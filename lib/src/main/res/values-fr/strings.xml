@@ -14,9 +14,9 @@
     <string name="image_selector_chooser">Source de l\'image</string>
     <string name="image_failure_unknown_type">Type de fichier inconnu</string>
     <string name="image_failure_file_size">Taille de fichier trop élevée</string>
-    <string name="area_selecting_action_selector">Zone: %1$s</string>
-    <string name="area_selecting_action_selector_dialog_title">Aller dans la zone…</string>
-    <string name="area_selecting_action_selector_dialog_current">%1$s (zone actuelle)</string>
+    <string name="area_selector_action_selector">Zone: %1$s</string>
+    <string name="area_selector_action_selector_dialog_title">Aller dans la zone…</string>
+    <string name="area_selector_action_selector_dialog_current">%1$s (zone actuelle)</string>
     <string name="deletion_action_delete">Supprimer</string>
     <string name="sharing_action_share">Partager</string>
     <string name="image_desc_author_picture">Image de l\'auteur</string>

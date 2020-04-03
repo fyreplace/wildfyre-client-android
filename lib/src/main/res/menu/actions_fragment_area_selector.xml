@@ -2,10 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="app.fyreplace.client.ui.presenters.AreaSelectingFragment">
+    tools:context="app.fyreplace.client.ui.presenters.AreaSelector">
     <item
         android:id="@+id/action_area_selector"
+        android:icon="@drawable/ic_map"
         android:title=""
-        app:actionLayout="@layout/action_area_selecting_selector"
+        app:actionLayout="@layout/action_area_selector_selector"
         app:showAsAction="always" />
 </menu>

@@ -14,24 +14,22 @@ import app.fyreplace.client.lib.posts.R
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.ui.widgets.PostDetailsLookup
 import app.fyreplace.client.ui.widgets.PostIdKeyProvider
-import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 import app.fyreplace.client.viewmodels.PostsFragmentViewModel
 import app.fyreplace.client.viewmodels.Refresh
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
  * [androidx.fragment.app.Fragment] listing posts.
  */
 abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelection: Boolean) :
-    ItemsListFragment<Post, VM, PostsAdapter>(), AreaSelectingFragment, ActionMode.Callback {
-    private val areaSelectingViewModel by sharedViewModel<AreaSelectingFragmentViewModel>()
+    ItemsListFragment<Post, VM, PostsAdapter>(), ActionMode.Callback {
+    private val areaSelector by lazy { AreaSelector(this) }
     private var settingUp = true
     private var selectionObserver: SelectionObserver? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        areaSelectingViewModel.preferredAreaName.observe(this) {
+        areaSelector.viewModel.preferredAreaName.observe(this) {
             if (settingUp) {
                 settingUp = false
             } else {
@@ -76,8 +74,8 @@ abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelecti
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.actions_fragment_area_selecting, menu)
-        onCreateOptionsMenu(this, menu, inflater)
+        inflater.inflate(R.menu.actions_fragment_area_selector, menu)
+        areaSelector.onCreateOptionsMenu(menu)
     }
 
     override fun onItemClicked(item: Post) {

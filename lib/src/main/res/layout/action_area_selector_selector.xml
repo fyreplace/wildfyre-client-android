@@ -5,7 +5,7 @@
 
         <variable
             name="model"
-            type="app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel" />
+            type="app.fyreplace.client.viewmodels.AreaSelectorViewModel" />
     </data>
 
     <FrameLayout
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@{@string/area_selecting_action_selector(model.preferredArea.displayName)}"
+            android:text="@{@string/area_selector_action_selector(model.preferredArea.displayName)}"
             android:theme="@style/AppTheme.AppBar.Button.NeutralButtonOverlay" />
     </FrameLayout>
 </layout>

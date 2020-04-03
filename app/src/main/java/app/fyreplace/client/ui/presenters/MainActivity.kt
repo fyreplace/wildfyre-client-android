@@ -42,7 +42,7 @@ import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.ui.ImageSelector
 import app.fyreplace.client.ui.Presenter
 import app.fyreplace.client.ui.loadAvatar
-import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
+import app.fyreplace.client.viewmodels.AreaSelectorViewModel
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import com.bumptech.glide.load.MultiTransformation
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
     override lateinit var bd: ActivityMainBinding
     override val maxImageSize = 0.5f
     private val centralViewModel by viewModel<CentralViewModel>()
-    private val areaSelectingViewModel by viewModel<AreaSelectingFragmentViewModel>()
+    private val areaSelectorViewModel by viewModel<AreaSelectorViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var toolbarInset = 0
 
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
                     else
                         actionGlobalFragmentLogin().also {
                             viewModel.logout()
-                            areaSelectingViewModel.setPreferredAreaName("")
+                            areaSelectorViewModel.setPreferredAreaName("")
                         }
                 )
             }

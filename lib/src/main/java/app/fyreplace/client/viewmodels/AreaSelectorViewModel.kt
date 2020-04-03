@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import app.fyreplace.client.data.models.Area
 import app.fyreplace.client.data.repositories.AreaRepository
 
-class AreaSelectingFragmentViewModel(private val areaRepository: AreaRepository) : ViewModel() {
+class AreaSelectorViewModel(private val areaRepository: AreaRepository) : ViewModel() {
     private val mAreas = MutableLiveData<List<Area>>()
     private val mPreferredAreaName = MutableLiveData<String>()
     private val mPreferredArea = MediatorLiveData<Area>()
