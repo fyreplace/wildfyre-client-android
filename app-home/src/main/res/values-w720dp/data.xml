@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="inactive">#3F3F3F</color>
+    <bool name="home_show_full_area_selector">true</bool>
 </resources>

@@ -42,7 +42,7 @@ import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.ui.ImageSelector
 import app.fyreplace.client.ui.Presenter
 import app.fyreplace.client.ui.loadAvatar
-import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
+import app.fyreplace.client.viewmodels.AreaSelectorViewModel
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
 import com.bumptech.glide.load.MultiTransformation
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
     override lateinit var bd: ActivityMainBinding
     override val maxImageSize = 0.5f
     private val centralViewModel by viewModel<CentralViewModel>()
-    private val areaSelectingViewModel by viewModel<AreaSelectingFragmentViewModel>()
+    private val areaSelectorViewModel by viewModel<AreaSelectorViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var toolbarInset = 0
 
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
                     else
                         actionGlobalFragmentLogin().also {
                             viewModel.logout()
-                            areaSelectingViewModel.setPreferredAreaName("")
+                            areaSelectorViewModel.setPreferredAreaName("")
                         }
                 )
             }
@@ -182,10 +182,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
         bd.navigationView.menu.findItem(R.id.fyreplace_logout).setOnMenuItemClickListener {
             centralViewModel.logout()
             return@setOnMenuItemClickListener true
-        }
-
-        bd.navigationView.doOnLayout {
-            bd.navigationView.findViewById<View>(R.id.edit).setOnClickListener { editProfile() }
         }
 
         bd.content.toolbar.doOnLayout {
@@ -288,6 +284,61 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
 
     override suspend fun onImageRemoved() = Unit
 
+    fun editProfile(@Suppress("UNUSED_PARAMETER") view: View) {
+        lateinit var dialog: AlertDialog
+
+        dialog = MaterialAlertDialogBuilder(this)
+            .setView(R.layout.main_profile_editor)
+            .setNegativeButton(R.string.cancel) { _, _ ->
+                centralViewModel.resetPendingProfileAvatar()
+            }
+            .setPositiveButton(R.string.ok) { _, _ ->
+                launch {
+                    val bio = dialog.findViewById<TextView>(R.id.user_bio)?.text ?: ""
+                    centralViewModel.sendProfile(bio.toString())
+                }
+            }
+            .setOnDismissListener {
+                centralViewModel.newUserAvatar.removeObservers(this)
+                centralViewModel.selfBio.removeObservers(this)
+            }
+            .create()
+            .apply { show() }
+
+        val avatar = dialog.findViewById<ImageView>(R.id.user_picture)!!
+        val avatarTransform = MultiTransformation(
+            CenterCrop(),
+            RoundedCorners(resources.getDimensionPixelOffset(R.dimen.dialog_user_picture_rounding))
+        )
+        val imageTransition = DrawableTransitionOptions.withCrossFade()
+
+        AppGlide.with(this)
+            .loadAvatar(this, centralViewModel.self.value)
+            .transition(imageTransition)
+            .transform(avatarTransform)
+            .into(avatar)
+
+        centralViewModel.newUserAvatar.observe(this) {
+            it?.run {
+                AppGlide.with(this@MainActivity)
+                    .load(Drawable.createFromStream(ByteArrayInputStream(bytes), "avatar"))
+                    .transform(avatarTransform)
+                    .transition(imageTransition)
+                    .into(avatar)
+            }
+        }
+
+        centralViewModel.selfBio.observe(this) {
+            dialog.findViewById<EditText>(R.id.user_bio)?.run {
+                setText(it)
+
+                if (it.isNotEmpty()) {
+                    minLines = 0
+                }
+            }
+        }
+    }
+
     fun onSelectAvatarImageClicked(@Suppress("UNUSED_PARAMETER") view: View) =
         showImageChooser(R.string.main_profile_editor_dialog_title, false)
 
@@ -381,64 +432,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
 
         if (info.author == null) {
             bd.content.toolbar.logo = null
-        }
-    }
-
-    /**
-     * Shows a dialog to let the user edit their profile bio and their avatar.
-     */
-    private fun editProfile() {
-        lateinit var dialog: AlertDialog
-
-        dialog = MaterialAlertDialogBuilder(this)
-            .setView(R.layout.main_profile_editor)
-            .setNegativeButton(R.string.cancel) { _, _ ->
-                centralViewModel.resetPendingProfileAvatar()
-            }
-            .setPositiveButton(R.string.ok) { _, _ ->
-                launch {
-                    val bio = dialog.findViewById<TextView>(R.id.user_bio)?.text ?: ""
-                    centralViewModel.sendProfile(bio.toString())
-                }
-            }
-            .setOnDismissListener {
-                centralViewModel.newUserAvatar.removeObservers(this)
-                centralViewModel.selfBio.removeObservers(this)
-            }
-            .create()
-            .apply { show() }
-
-        val avatar = dialog.findViewById<ImageView>(R.id.user_picture)!!
-        val avatarTransform = MultiTransformation(
-            CenterCrop(),
-            RoundedCorners(resources.getDimensionPixelOffset(R.dimen.dialog_user_picture_rounding))
-        )
-        val imageTransition = DrawableTransitionOptions.withCrossFade()
-
-        AppGlide.with(this)
-            .loadAvatar(this, centralViewModel.self.value)
-            .transition(imageTransition)
-            .transform(avatarTransform)
-            .into(avatar)
-
-        centralViewModel.newUserAvatar.observe(this) {
-            it?.run {
-                AppGlide.with(this@MainActivity)
-                    .load(Drawable.createFromStream(ByteArrayInputStream(bytes), "avatar"))
-                    .transform(avatarTransform)
-                    .transition(imageTransition)
-                    .into(avatar)
-            }
-        }
-
-        centralViewModel.selfBio.observe(this) {
-            dialog.findViewById<EditText>(R.id.user_bio)?.run {
-                setText(it)
-
-                if (it.isNotEmpty()) {
-                    minLines = 0
-                }
-            }
         }
     }
 

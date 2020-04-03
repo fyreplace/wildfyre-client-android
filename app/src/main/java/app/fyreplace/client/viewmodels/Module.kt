@@ -8,7 +8,7 @@ val viewModelsModule = module {
     viewModel { MainActivityViewModel(get(), get()) }
     viewModel { NewDraftActivityViewModel(get()) }
     viewModel { ArchiveFragmentViewModel(get(), get()) }
-    viewModel { AreaSelectingFragmentViewModel(get()) }
+    viewModel { AreaSelectorViewModel(get()) }
     viewModel { DraftFragmentViewModel(get(), get()) }
     viewModel { DraftsFragmentViewModel(get(), get(), get()) }
     viewModel { HomeFragmentViewModel(get(), get(), get()) }

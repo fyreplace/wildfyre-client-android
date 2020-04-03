@@ -6,21 +6,19 @@ import android.view.*
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import app.fyreplace.client.app.home.R
-import app.fyreplace.client.viewmodels.AreaSelectingFragmentViewModel
 import app.fyreplace.client.viewmodels.HomeFragmentViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * [androidx.fragment.app.Fragment] for showing new posts to the user.
  */
-class HomeFragment : PostFragment(), AreaSelectingFragment {
+class HomeFragment : PostFragment() {
     override val viewModel by viewModel<HomeFragmentViewModel>()
-    private val areaSelectingViewModel by sharedViewModel<AreaSelectingFragmentViewModel>()
+    private val areaSelector by lazy { AreaSelector(this) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        areaSelectingViewModel.preferredAreaName.observe(this) {
+        areaSelector.viewModel.preferredAreaName.observe(this) {
             if (it.isNotEmpty()) launch { viewModel.nextPost(it) }
         }
     }
@@ -30,7 +28,7 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = super.onCreateView(inflater, container, savedInstanceState).apply {
-        bd.button?.isVisible = !resources.getBoolean(R.bool.home_show_full_menu)
+        bd.button?.isVisible = !resources.getBoolean(R.bool.home_show_full_area_selector)
         bd.buttons.extinguish.isVisible = true
         bd.buttons.ignite.isVisible = true
     }
@@ -56,28 +54,30 @@ class HomeFragment : PostFragment(), AreaSelectingFragment {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.actions_fragment_area_selecting, menu)
-        onCreateOptionsMenu(this, menu, inflater)
-        super<PostFragment>.onCreateOptionsMenu(menu, inflater)
-        val hiddenItems = setOf(
-            R.id.action_area_selector,
+        inflater.inflate(R.menu.actions_fragment_area_selector, menu)
+        areaSelector.onCreateOptionsMenu(menu)
+        super.onCreateOptionsMenu(menu, inflater)
+
+        val areaSelectorAction = menu.findItem(R.id.action_area_selector)
+        val hiddenActions = setOf(
             R.id.action_share,
             R.id.action_delete,
             R.id.action_flag
-        )
+        ).map { menu.findItem(it) }
 
         val showAsAction =
             if (resources.getBoolean(R.bool.home_show_full_menu)) MenuItem.SHOW_AS_ACTION_IF_ROOM
             else MenuItem.SHOW_AS_ACTION_NEVER
 
-        for (id in hiddenItems) {
-            menu.findItem(id).setShowAsAction(showAsAction)
+        if (!resources.getBoolean(R.bool.home_show_full_area_selector)) {
+            areaSelectorAction.actionView = null
         }
 
-        bd.button?.setOnClickListener {
-            menu.findItem(hiddenItems.first()).actionView.findViewById<View>(R.id.button)
-                .callOnClick()
+        for (action in hiddenActions) {
+            action.setShowAsAction(showAsAction)
         }
+
+        bd.button?.setOnClickListener { areaSelector.showAreaSelector() }
     }
 
     override fun canUseFragmentArgs() = false
