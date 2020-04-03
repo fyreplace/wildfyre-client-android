@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_medium"
+            android:onClick="editProfile"
             android:src="@drawable/ic_edit"
             android:theme="@style/AppTheme.Button.NeutralButtonOverlay"
             app:fabSize="mini"

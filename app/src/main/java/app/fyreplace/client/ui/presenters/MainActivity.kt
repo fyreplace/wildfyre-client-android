@@ -184,10 +184,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             return@setOnMenuItemClickListener true
         }
 
-        bd.navigationView.doOnLayout {
-            bd.navigationView.findViewById<View>(R.id.edit).setOnClickListener { editProfile() }
-        }
-
         bd.content.toolbar.doOnLayout {
             bd.content.badge.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 leftMargin = bd.content.toolbar.height / 2
@@ -288,6 +284,61 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
 
     override suspend fun onImageRemoved() = Unit
 
+    fun editProfile(@Suppress("UNUSED_PARAMETER") view: View) {
+        lateinit var dialog: AlertDialog
+
+        dialog = MaterialAlertDialogBuilder(this)
+            .setView(R.layout.main_profile_editor)
+            .setNegativeButton(R.string.cancel) { _, _ ->
+                centralViewModel.resetPendingProfileAvatar()
+            }
+            .setPositiveButton(R.string.ok) { _, _ ->
+                launch {
+                    val bio = dialog.findViewById<TextView>(R.id.user_bio)?.text ?: ""
+                    centralViewModel.sendProfile(bio.toString())
+                }
+            }
+            .setOnDismissListener {
+                centralViewModel.newUserAvatar.removeObservers(this)
+                centralViewModel.selfBio.removeObservers(this)
+            }
+            .create()
+            .apply { show() }
+
+        val avatar = dialog.findViewById<ImageView>(R.id.user_picture)!!
+        val avatarTransform = MultiTransformation(
+            CenterCrop(),
+            RoundedCorners(resources.getDimensionPixelOffset(R.dimen.dialog_user_picture_rounding))
+        )
+        val imageTransition = DrawableTransitionOptions.withCrossFade()
+
+        AppGlide.with(this)
+            .loadAvatar(this, centralViewModel.self.value)
+            .transition(imageTransition)
+            .transform(avatarTransform)
+            .into(avatar)
+
+        centralViewModel.newUserAvatar.observe(this) {
+            it?.run {
+                AppGlide.with(this@MainActivity)
+                    .load(Drawable.createFromStream(ByteArrayInputStream(bytes), "avatar"))
+                    .transform(avatarTransform)
+                    .transition(imageTransition)
+                    .into(avatar)
+            }
+        }
+
+        centralViewModel.selfBio.observe(this) {
+            dialog.findViewById<EditText>(R.id.user_bio)?.run {
+                setText(it)
+
+                if (it.isNotEmpty()) {
+                    minLines = 0
+                }
+            }
+        }
+    }
+
     fun onSelectAvatarImageClicked(@Suppress("UNUSED_PARAMETER") view: View) =
         showImageChooser(R.string.main_profile_editor_dialog_title, false)
 
@@ -381,64 +432,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
 
         if (info.author == null) {
             bd.content.toolbar.logo = null
-        }
-    }
-
-    /**
-     * Shows a dialog to let the user edit their profile bio and their avatar.
-     */
-    private fun editProfile() {
-        lateinit var dialog: AlertDialog
-
-        dialog = MaterialAlertDialogBuilder(this)
-            .setView(R.layout.main_profile_editor)
-            .setNegativeButton(R.string.cancel) { _, _ ->
-                centralViewModel.resetPendingProfileAvatar()
-            }
-            .setPositiveButton(R.string.ok) { _, _ ->
-                launch {
-                    val bio = dialog.findViewById<TextView>(R.id.user_bio)?.text ?: ""
-                    centralViewModel.sendProfile(bio.toString())
-                }
-            }
-            .setOnDismissListener {
-                centralViewModel.newUserAvatar.removeObservers(this)
-                centralViewModel.selfBio.removeObservers(this)
-            }
-            .create()
-            .apply { show() }
-
-        val avatar = dialog.findViewById<ImageView>(R.id.user_picture)!!
-        val avatarTransform = MultiTransformation(
-            CenterCrop(),
-            RoundedCorners(resources.getDimensionPixelOffset(R.dimen.dialog_user_picture_rounding))
-        )
-        val imageTransition = DrawableTransitionOptions.withCrossFade()
-
-        AppGlide.with(this)
-            .loadAvatar(this, centralViewModel.self.value)
-            .transition(imageTransition)
-            .transform(avatarTransform)
-            .into(avatar)
-
-        centralViewModel.newUserAvatar.observe(this) {
-            it?.run {
-                AppGlide.with(this@MainActivity)
-                    .load(Drawable.createFromStream(ByteArrayInputStream(bytes), "avatar"))
-                    .transform(avatarTransform)
-                    .transition(imageTransition)
-                    .into(avatar)
-            }
-        }
-
-        centralViewModel.selfBio.observe(this) {
-            dialog.findViewById<EditText>(R.id.user_bio)?.run {
-                setText(it)
-
-                if (it.isNotEmpty()) {
-                    minLines = 0
-                }
-            }
         }
     }
 
