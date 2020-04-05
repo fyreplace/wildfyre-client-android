@@ -6,6 +6,7 @@ import app.fyreplace.client.data.repositories.AreaRepository
 import app.fyreplace.client.data.repositories.CommentRepository
 import app.fyreplace.client.data.repositories.PostRepository
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 import kotlin.coroutines.coroutineContext
 
 class HomeFragmentViewModel(
@@ -18,19 +19,22 @@ class HomeFragmentViewModel(
     private var endOfPosts = false
     private var lastAreaName: String? = null
 
-    suspend fun nextPost(areaName: String? = null) {
+    suspend fun nextPost(areaName: String? = null, force: Boolean = false) {
         if (areaName == lastAreaName) {
             return
         }
 
-        val forcedArea = areaName != null
+        val forced = areaName != null || force
 
-        if (!forcedArea && lastAreaName == null) {
+        if (!forced && lastAreaName == null) {
             return
         }
 
-        if (forcedArea) {
-            lastAreaName = areaName
+        if (forced) {
+            if (areaName != null) {
+                lastAreaName = areaName
+            }
+
             setPost(null)
             mHasContent.postValue(true)
             fetchJob?.cancel()
@@ -61,14 +65,20 @@ class HomeFragmentViewModel(
 
     suspend fun spread(spread: Boolean) {
         mAllowSpread.postValue(false)
+        var forceReload = false
 
         try {
             postRepository.spread(postAreaName, postId, spread)
         } catch (e: Exception) {
             mAllowSpread.postValue(true)
-            throw e
+
+            if (e is HttpException && e.code() == 403) {
+                forceReload = true
+            } else {
+                throw e
+            }
         } finally {
-            nextPost()
+            nextPost(force = forceReload)
         }
     }
 
