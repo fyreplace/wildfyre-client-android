@@ -286,9 +286,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
 
     override suspend fun onImageRemoved() = Unit
 
-    fun onSelectAvatarImageClicked(@Suppress("UNUSED_PARAMETER") view: View) =
-        showImageChooser(R.string.main_profile_editor_dialog_title, false)
-
     private fun handleViewIntent(intent: Intent) {
         if (intent.action != Intent.ACTION_VIEW) {
             return
@@ -415,6 +412,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             .transition(imageTransition)
             .transform(avatarTransform)
             .into(avatar)
+
+        dialog.findViewById<View>(R.id.edit_user_picture)?.setOnClickListener {
+            showImageChooser(R.string.main_profile_editor_dialog_title, false)
+        }
 
         centralViewModel.newUserAvatar.observe(this) {
             it?.run {
