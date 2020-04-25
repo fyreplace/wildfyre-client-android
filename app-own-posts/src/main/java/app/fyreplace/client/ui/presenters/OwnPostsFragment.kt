@@ -16,7 +16,7 @@ import org.koin.core.parameter.parametersOf
  */
 class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>(true) {
     override val viewModel by viewModel<OwnPostsFragmentViewModel>()
-    override val itemsAdapter = PostsAdapter(false)
+    override val itemsAdapter = PostsAdapter(false).apply { setHasStableIds(true) }
     private val navigator by inject<Navigator> { parametersOf(this) }
 
     override fun onCreateView(

@@ -110,6 +110,6 @@ class HomeFragmentViewModel(
 
     private companion object {
         const val RESERVE_SIZE = 10
-        const val SPREAD_DELAY = 1000L
+        const val SPREAD_DELAY = 500L
     }
 }
