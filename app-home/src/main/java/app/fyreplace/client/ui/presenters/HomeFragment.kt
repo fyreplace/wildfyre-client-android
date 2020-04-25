@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.isVisible
 import androidx.lifecycle.observe
+import androidx.transition.TransitionManager
 import app.fyreplace.client.app.home.R
 import app.fyreplace.client.viewmodels.HomeFragmentViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -50,6 +51,10 @@ class HomeFragment : PostFragment() {
                     isRefreshing = false
                 }
             }
+        }
+
+        viewModel.hasContent.observe(viewLifecycleOwner) {
+            TransitionManager.beginDelayedTransition(bd.root as ViewGroup)
         }
     }
 
