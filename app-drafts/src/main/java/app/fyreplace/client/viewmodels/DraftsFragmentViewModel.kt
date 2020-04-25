@@ -12,7 +12,7 @@ class DraftsFragmentViewModel(
     resources: Resources,
     postRepository: PostRepository,
     private val draftRepository: DraftRepository
-) : PostsFragmentViewModel(resources, postRepository), KoinComponent {
+) : PostsFragmentViewModel(resources, postRepository, false), KoinComponent {
     override val factory by inject<DraftsDataSourceFactory> { parametersOf(this) }
 
     override suspend fun delete(id: Long) = draftRepository.deleteDraft(id)
