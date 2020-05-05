@@ -4,17 +4,20 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
 import app.fyreplace.client.lib.R
+import app.fyreplace.client.viewmodels.CentralViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import retrofit2.HttpException
 import kotlin.coroutines.CoroutineContext
 
-interface FailureHandler : LifecycleOwner {
+interface FailureHandler : LifecycleOwner, ViewModelStoreOwner {
     fun getContext(): Context?
 
     fun onFailure(failure: Throwable) {
@@ -37,17 +40,17 @@ interface FailureHandler : LifecycleOwner {
         } catch (e: CancellationException) {
             // Cancellation happens
         } catch (e: HttpException) {
-            if (e.code() == 403) {
-                showBanAlert()
-            } else {
-                onFailure(e)
+            when (e.code()) {
+                401 -> getViewModel<CentralViewModel>().logout()
+                403 -> showBanAlert()
+                else -> onFailure(e)
             }
         } catch (e: Exception) {
             onFailure(e)
         }
     }
 
-    fun showBanAlert() {
+    private fun showBanAlert() {
         val ctx = getContext() ?: return
         MaterialAlertDialogBuilder(ctx)
             .setIcon(R.drawable.ic_warning)
