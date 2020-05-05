@@ -68,7 +68,7 @@
             android:paddingTop="@dimen/margin_tiny"
             android:paddingEnd="@dimen/margin_small"
             android:paddingBottom="@dimen/margin_tiny"
-            android:textAppearance="?attr/textAppearanceSubtitle2"
+            android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="parent" />
 
