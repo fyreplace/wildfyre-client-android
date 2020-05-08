@@ -53,8 +53,10 @@ class HomeFragment : PostFragment() {
             }
         }
 
-        viewModel.hasContent.observe(viewLifecycleOwner) {
-            TransitionManager.beginDelayedTransition(bd.root as ViewGroup)
+        for (value in listOf(viewModel.hasContent, viewModel.contentLoaded)) {
+            value.observe(viewLifecycleOwner) {
+                TransitionManager.beginDelayedTransition(bd.root as ViewGroup)
+            }
         }
     }
 

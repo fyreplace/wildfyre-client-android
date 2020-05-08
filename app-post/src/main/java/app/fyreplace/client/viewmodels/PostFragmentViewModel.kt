@@ -49,7 +49,7 @@ open class PostFragmentViewModel(
             .distinctUntilChanged()
     val commentsDividerVisible: LiveData<Boolean> = mCommentsDividerVisible
     val comments: LiveData<List<Comment>> = mComments
-    val commentCount: LiveData<Int> = comments.map { it.size }
+    val commentCount: LiveData<Int> = comments.map { it.size }.distinctUntilChanged()
     val newCommentData = MutableLiveData<String>()
     val newCommentImage: LiveData<ImageData?> = mNewCommentImage
     val canSendNewComment: LiveData<Boolean> = mCanSendNewComment
