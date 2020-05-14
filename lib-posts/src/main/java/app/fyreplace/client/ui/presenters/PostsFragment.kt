@@ -23,6 +23,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  */
 abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelection: Boolean) :
     ItemsListFragment<Post, VM, PostsAdapter>(), ActionMode.Callback {
+    protected abstract val navigator: Navigator
     private val areaSelector by lazy { AreaSelector(this) }
     private var settingUp = true
     private var selectionObserver: SelectionObserver? = null
@@ -81,6 +82,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelecti
     override fun onItemClicked(item: Post) {
         super.onItemClicked(item)
         itemsAdapter.selectionTracker?.clearSelection()
+        navigator.navigateToPost(item)
     }
 
     override fun onCreateActionMode(mode: ActionMode, menu: Menu) =
@@ -118,6 +120,10 @@ abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelecti
 
     private companion object {
         const val SELECTION_TRACKER_ID = "selection.posts"
+    }
+
+    interface Navigator {
+        fun navigateToPost(post: Post)
     }
 
     private inner class SelectionObserver : SelectionTracker.SelectionObserver<Long>() {

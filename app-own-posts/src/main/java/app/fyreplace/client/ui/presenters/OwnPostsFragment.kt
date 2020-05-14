@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import app.fyreplace.client.app.own_posts.R
-import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.viewmodels.OwnPostsFragmentViewModel
 import org.koin.android.ext.android.inject
@@ -17,7 +16,7 @@ import org.koin.core.parameter.parametersOf
 class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>(true) {
     override val viewModel by viewModel<OwnPostsFragmentViewModel>()
     override val itemsAdapter = PostsAdapter(false).apply { setHasStableIds(true) }
-    private val navigator by inject<Navigator> { parametersOf(this) }
+    override val navigator by inject<Navigator> { parametersOf(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,12 +25,5 @@ class OwnPostsFragment : PostsFragment<OwnPostsFragmentViewModel>(true) {
     ) = super.onCreateView(inflater, container, savedInstanceState)
         .apply { bd.text.setText(R.string.own_posts_empty) }
 
-    override fun onItemClicked(item: Post) {
-        super.onItemClicked(item)
-        navigator.navigateToPost(item)
-    }
-
-    interface Navigator {
-        fun navigateToPost(post: Post)
-    }
+    interface Navigator : PostsFragment.Navigator
 }

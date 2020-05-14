@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.app.drafts.R
-import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.ui.adapters.PostsAdapter
 import app.fyreplace.client.ui.shown
 import app.fyreplace.client.viewmodels.CentralViewModel
@@ -23,7 +22,7 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>(true) {
     override val viewModel by viewModel<DraftsFragmentViewModel>()
     override val itemsAdapter = PostsAdapter(false).apply { setHasStableIds(true) }
     private val centralViewModel by sharedViewModel<CentralViewModel>()
-    private val navigator by inject<Navigator> { parametersOf(this) }
+    override val navigator by inject<Navigator> { parametersOf(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,12 +47,5 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>(true) {
         super.onDestroyView()
     }
 
-    override fun onItemClicked(item: Post) {
-        super.onItemClicked(item)
-        navigator.navigateToDraft(item)
-    }
-
-    interface Navigator {
-        fun navigateToDraft(draft: Post)
-    }
+    interface Navigator : PostsFragment.Navigator
 }

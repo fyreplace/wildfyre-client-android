@@ -50,8 +50,8 @@ val fragmentsModule = module {
 
     factory<DraftsFragment.Navigator> { (fragment: DraftsFragment) ->
         object : DraftsFragment.Navigator {
-            override fun navigateToDraft(draft: Post) = fragment.findNavController()
-                .navigate(actionGlobalFragmentDraft(draft = draft))
+            override fun navigateToPost(post: Post) = fragment.findNavController()
+                .navigate(actionGlobalFragmentDraft(draft = post))
         }
     }
 
