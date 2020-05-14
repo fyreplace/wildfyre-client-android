@@ -29,6 +29,7 @@ class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(), sh
             oldItem.created == newItem.created &&
                 oldItem.text == newItem.text &&
                 oldItem.image == newItem.image &&
-                oldItem.author == newItem.author
+                oldItem.author == newItem.author &&
+                oldItem.comments.size == newItem.comments.size
     }
 }
