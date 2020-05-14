@@ -8,14 +8,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody.Part.createFormData
 
-class CommentRepository(private val wildFyre: WildFyreService) {
-    suspend fun sendComment(areaName: String, postId: Long, comment: String, image: ImageData?) =
+class CommentRepository(private val wildFyre: WildFyreService, private val areas: AreaRepository) {
+    suspend fun sendComment(areaName: String?, postId: Long, comment: String, image: ImageData?) =
         withContext(Dispatchers.IO) {
+            val area = areaName ?: areas.preferredAreaName
+
             if (image == null) {
-                wildFyre.postComment(areaName, postId, CommentText(comment))
+                wildFyre.postComment(area, postId, CommentText(comment))
             } else {
                 wildFyre.postComment(
-                    areaName,
+                    area,
                     postId,
                     createFormData("image", image),
                     createFormData("text", comment)
@@ -23,8 +25,9 @@ class CommentRepository(private val wildFyre: WildFyreService) {
             }
         }
 
-    suspend fun deleteComment(areaName: String, postId: Long, commentId: Long) =
+    suspend fun deleteComment(areaName: String?, postId: Long, commentId: Long) =
         withContext(Dispatchers.IO) {
-            wildFyre.deleteComment(areaName, postId, commentId).throwIfFailed()
+            wildFyre.deleteComment(areaName ?: areas.preferredAreaName, postId, commentId)
+                .throwIfFailed()
         }
 }

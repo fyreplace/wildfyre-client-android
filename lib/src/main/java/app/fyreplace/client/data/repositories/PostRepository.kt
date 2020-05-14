@@ -20,21 +20,21 @@ class PostRepository(private val wildFyre: WildFyreService, private val areas: A
         wildFyre.getOwnPosts(areas.preferredAreaName, size, offset)
     }
 
-    suspend fun getPost(areaName: String, id: Long) = withContext(Dispatchers.IO) {
-        wildFyre.getPost(areaName, id)
+    suspend fun getPost(areaName: String?, id: Long) = withContext(Dispatchers.IO) {
+        wildFyre.getPost(areaName ?: areas.preferredAreaName, id)
     }
 
     suspend fun getFlagChoices() = withContext(Dispatchers.IO) {
         wildFyre.getFlagReasons()
     }
 
-    suspend fun setSubscription(areaName: String, id: Long, sub: Boolean) =
+    suspend fun setSubscription(areaName: String?, id: Long, sub: Boolean) =
         withContext(Dispatchers.IO) {
-            wildFyre.putSubscription(areaName, id, Subscription(sub))
+            wildFyre.putSubscription(areaName ?: areas.preferredAreaName, id, Subscription(sub))
         }
 
-    suspend fun spread(areaName: String, id: Long, spread: Boolean) = withContext(Dispatchers.IO) {
-        wildFyre.postSpread(areaName, id, Spread(spread))
+    suspend fun spread(areaName: String?, id: Long, spread: Boolean) = withContext(Dispatchers.IO) {
+        wildFyre.postSpread(areaName ?: areas.preferredAreaName, id, Spread(spread))
     }
 
     suspend fun deletePost(areaName: String?, id: Long) = withContext(Dispatchers.IO) {

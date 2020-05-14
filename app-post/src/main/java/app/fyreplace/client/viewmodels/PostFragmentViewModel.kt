@@ -74,9 +74,12 @@ open class PostFragmentViewModel(
         mCanSendNewComment.addSource(newCommentData) { updateCanSendNewComment() }
     }
 
-    suspend fun setPostData(areaName: String?, id: Long) = areaName?.let {
-        setPost(postRepository.getPost(it, id))
-        postAreaName = it
+    suspend fun setPostData(areaName: String?, id: Long) {
+        setPost(postRepository.getPost(areaName, id))
+
+        if (areaName != null) {
+            postAreaName = areaName
+        }
     }
 
     fun setPost(post: Post?) {

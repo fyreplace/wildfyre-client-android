@@ -6,7 +6,7 @@ val repositoriesModule = module {
     single { AreaRepository(get(), get()) }
     single { AuthorRepository(get()) }
     single { AuthRepository(get(), get()) }
-    single { CommentRepository(get()) }
+    single { CommentRepository(get(), get()) }
     single { DraftRepository(get(), get(), get()) }
     single { NotificationRepository(get()) }
     single { PostRepository(get(), get()) }
