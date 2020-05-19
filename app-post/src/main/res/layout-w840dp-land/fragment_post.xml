@@ -24,7 +24,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <ProgressBar
+        <androidx.core.widget.ContentLoadingProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{safeUnbox(model.contentLoaded) || !safeUnbox(model.hasContent) ? View.GONE : View.VISIBLE}"
