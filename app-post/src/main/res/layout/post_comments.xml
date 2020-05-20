@@ -26,7 +26,7 @@
             android:visibility="@{model.commentsDividerVisible ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.core.widget.ContentLoadingProgressBar
+        <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{safeUnbox(model.contentLoaded) || !safeUnbox(model.hasContent) ? View.GONE : View.VISIBLE}"
