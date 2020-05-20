@@ -72,7 +72,7 @@
             android:textColor="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <androidx.core.widget.ContentLoadingProgressBar
+        <ProgressBar
             android:id="@+id/loader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
