@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    api project(':lib-posts')
+    api project(':lib-posts-list')
     implementation project(':lib')
     implementation libraries.koin.androidxViewModel
     implementation libraries.kotlin

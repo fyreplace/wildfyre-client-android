@@ -11,18 +11,18 @@ import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.lib.posts.R
-import app.fyreplace.client.ui.adapters.PostsAdapter
+import app.fyreplace.client.ui.adapters.PostsListAdapter
 import app.fyreplace.client.ui.widgets.PostDetailsLookup
 import app.fyreplace.client.ui.widgets.PostIdKeyProvider
-import app.fyreplace.client.viewmodels.PostsFragmentViewModel
+import app.fyreplace.client.viewmodels.PostsListFragmentViewModel
 import app.fyreplace.client.viewmodels.Refresh
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
  * [androidx.fragment.app.Fragment] listing posts.
  */
-abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelection: Boolean) :
-    ItemsListFragment<Post, VM, PostsAdapter>(), ActionMode.Callback {
+abstract class PostsListFragment<VM : PostsListFragmentViewModel>(private val hasSelection: Boolean) :
+    ItemsListFragment<Post, VM, PostsListAdapter>(), ActionMode.Callback {
     protected abstract val navigator: Navigator
     private val areaSelector by lazy { AreaSelector(this) }
     private var settingUp = true
@@ -145,7 +145,7 @@ abstract class PostsFragment<VM : PostsFragmentViewModel>(private val hasSelecti
 
         fun startActionMode() {
             actionMode =
-                (activity as? AppCompatActivity)?.startSupportActionMode(this@PostsFragment)
+                (activity as? AppCompatActivity)?.startSupportActionMode(this@PostsListFragment)
         }
     }
 }

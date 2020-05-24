@@ -4,7 +4,7 @@ import android.content.res.Resources
 import app.fyreplace.client.data.models.Post
 import app.fyreplace.client.data.repositories.PostRepository
 
-abstract class PostsFragmentViewModel(
+abstract class PostsListFragmentViewModel(
     resources: Resources,
     private val postRepository: PostRepository,
     placeholders: Boolean

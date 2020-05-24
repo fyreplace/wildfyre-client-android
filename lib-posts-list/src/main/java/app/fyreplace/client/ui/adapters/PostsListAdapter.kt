@@ -6,9 +6,9 @@ import app.fyreplace.client.data.models.Post
 import java.text.SimpleDateFormat
 
 /**
- * Adapter for displaying posts with [app.fyreplace.client.ui.presenters.PostsFragment] implementations.
+ * Adapter for displaying posts with [app.fyreplace.client.ui.presenters.PostsListFragment] implementations.
  */
-class PostsAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(), showAuthors) {
+class PostsListAdapter(showAuthors: Boolean) : ItemsAdapter<Post>(PostCallback(), showAuthors) {
     override fun getItemId(position: Int) = getItem(position)?.id ?: RecyclerView.NO_ID
 
     override fun getItemData(item: Post) = ItemDataHolder(

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.app.drafts.R
-import app.fyreplace.client.ui.adapters.PostsAdapter
+import app.fyreplace.client.ui.adapters.PostsListAdapter
 import app.fyreplace.client.ui.shown
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.DraftsFragmentViewModel
@@ -18,9 +18,9 @@ import org.koin.core.parameter.parametersOf
 /**
  * [androidx.fragment.app.Fragment] listing the user's drafts.
  */
-class DraftsFragment : PostsFragment<DraftsFragmentViewModel>(true) {
+class DraftsFragment : PostsListFragment<DraftsFragmentViewModel>(true) {
     override val viewModel by viewModel<DraftsFragmentViewModel>()
-    override val itemsAdapter = PostsAdapter(false).apply { setHasStableIds(true) }
+    override val itemsAdapter = PostsListAdapter(false).apply { setHasStableIds(true) }
     private val centralViewModel by sharedViewModel<CentralViewModel>()
     override val navigator by inject<Navigator> { parametersOf(this) }
 
@@ -47,5 +47,5 @@ class DraftsFragment : PostsFragment<DraftsFragmentViewModel>(true) {
         super.onDestroyView()
     }
 
-    interface Navigator : PostsFragment.Navigator
+    interface Navigator : PostsListFragment.Navigator
 }

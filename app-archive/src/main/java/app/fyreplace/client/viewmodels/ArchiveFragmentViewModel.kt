@@ -8,6 +8,6 @@ import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
 
 class ArchiveFragmentViewModel(resources: Resources, postRepository: PostRepository) :
-    PostsFragmentViewModel(resources, postRepository, true), KoinComponent {
+    PostsListFragmentViewModel(resources, postRepository, true), KoinComponent {
     override val factory by inject<ArchiveDataSourceFactory> { parametersOf(this) }
 }
