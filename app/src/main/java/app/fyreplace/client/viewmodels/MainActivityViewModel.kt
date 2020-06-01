@@ -62,6 +62,7 @@ class MainActivityViewModel(
         val NAVIGATION_LINKS = mapOf(
             R.id.fyreplace_website to R.string.main_nav_fyreplace_website_link,
             R.id.fyreplace_open_source to R.string.main_nav_fyreplace_open_source_link,
+            R.id.fyreplace_privacy_policy to R.string.main_nav_fyreplace_privacy_link,
             R.id.wildfyre_website to R.string.main_nav_wildfyre_website_link,
             R.id.wildfyre_open_source to R.string.main_nav_wildfyre_open_source_link,
             R.id.wildfyre_faq to R.string.main_nav_wildfyre_faq_link,

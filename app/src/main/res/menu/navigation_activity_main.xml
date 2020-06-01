@@ -59,6 +59,10 @@
                 android:icon="@drawable/ic_code"
                 android:title="@string/main_nav_fyreplace_open_source" />
             <item
+                android:id="@+id/fyreplace_privacy_policy"
+                android:icon="@drawable/ic_lock"
+                android:title="@string/main_nav_fyreplace_privacy" />
+            <item
                 android:id="@+id/fyreplace_licenses"
                 android:icon="@drawable/ic_assignment"
                 android:title="@string/main_nav_fyreplace_licenses" />
