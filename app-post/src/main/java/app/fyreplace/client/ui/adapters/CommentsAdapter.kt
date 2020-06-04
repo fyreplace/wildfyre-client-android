@@ -124,7 +124,7 @@ class CommentsAdapter(
             }
         }
 
-        if (scrollPosition > -1) withContext(Dispatchers.Main) {
+        if (scrollPosition > -1) withContext(Dispatchers.Main.immediate) {
             recyclers.forEach {
                 (it.layoutManager as? LinearLayoutManager)
                     ?.scrollToPositionWithOffset(scrollPosition, 0)

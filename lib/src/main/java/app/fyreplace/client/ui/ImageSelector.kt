@@ -27,7 +27,6 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import kotlin.coroutines.coroutineContext
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
@@ -120,16 +119,21 @@ interface ImageSelector : FailureHandler, ViewModelStoreOwner {
         request
     )
 
-    suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.Default) {
+    suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.Main) {
         try {
             onImageLoadingBegin()
             val mimeType = requiredContext.contentResolver.getType(uri)
                 ?: throw IOException(requiredContext.getString(R.string.image_failure_unknown_type))
-            val transformations = requiredContext.contentResolver.openInputStream(uri)
-                ?.use { extractTransformations(it) }
-                ?: Matrix()
-            requiredContext.contentResolver.openInputStream(uri)
-                ?.use { useBytes(it.readBytes(), transformations, mimeType) }
+
+            withContext(Dispatchers.IO) {
+                val transformations =
+                    requiredContext.contentResolver.openInputStream(uri)
+                        ?.use { extractTransformations(it) }
+                        ?: Matrix()
+
+                requiredContext.contentResolver.openInputStream(uri)
+                    ?.use { useBytes(it.readBytes(), transformations, mimeType) }
+            }
         } finally {
             onImageLoadingEnd()
         }
@@ -159,7 +163,7 @@ interface ImageSelector : FailureHandler, ViewModelStoreOwner {
         val isPng = mimeType == "image/png"
         val isRotated = !transformations.isIdentity
 
-        if (isTooBig || isUnknownMime || isRotated) {
+        if (isTooBig || isUnknownMime || isRotated) withContext(Dispatchers.Default) {
             coroutineContext.ensureActive()
             val os = ByteArrayOutputStream()
             val bitmap = BitmapFactory.decodeByteArray(compressedBytes, 0, compressedBytes.size)
@@ -181,7 +185,7 @@ interface ImageSelector : FailureHandler, ViewModelStoreOwner {
                 quality = 50
             }
 
-            suspend fun compress() {
+            fun compress() {
                 coroutineContext.ensureActive()
                 os.reset()
                 rotatedBitmap.compress(compressFormat, quality, os)

@@ -32,7 +32,7 @@ interface FailureHandler : LifecycleOwner, ViewModelStoreOwner {
     }
 
     fun launch(
-        context: CoroutineContext = Dispatchers.Main,
+        context: CoroutineContext = Dispatchers.Main.immediate,
         block: suspend CoroutineScope.() -> Unit
     ) = lifecycleScope.launch(context) {
         try {

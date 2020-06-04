@@ -18,6 +18,6 @@ class NotificationsFragmentViewModel(
 
     suspend fun clearNotifications() {
         notificationRepository.clearNotifications()
-        withContext(Dispatchers.Main) { dataSource.value?.invalidate() }
+        withContext(Dispatchers.Main.immediate) { dataSource.value?.invalidate() }
     }
 }
