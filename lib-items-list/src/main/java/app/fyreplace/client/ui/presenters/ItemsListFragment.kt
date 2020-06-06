@@ -76,7 +76,7 @@ abstract class ItemsListFragment<I : Model, VM : ItemsListFragmentViewModel<I>, 
                 mode != Refresh.FULL && !showingItems ->
                     bd.itemsList.swapAdapter(itemsAdapter, false)
                 mode == Refresh.FULL && showingItems ->
-                    bd.itemsList.swapAdapter(EmptyItemsAdapter<I>(), false)
+                    bd.itemsList.swapAdapter(EmptyItemsAdapter(), false)
             }
 
             when {
