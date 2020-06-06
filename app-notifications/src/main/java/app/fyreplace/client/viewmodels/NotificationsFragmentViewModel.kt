@@ -13,7 +13,7 @@ import org.koin.core.parameter.parametersOf
 class NotificationsFragmentViewModel(
     resources: Resources,
     private val notificationRepository: NotificationRepository
-) : ItemsListFragmentViewModel<Notification>(resources, true), KoinComponent {
+) : ItemsListFragmentViewModel<Notification>(resources), KoinComponent {
     override val factory by inject<NotificationsDataSourceFactory> { parametersOf(this) }
 
     suspend fun clearNotifications() {

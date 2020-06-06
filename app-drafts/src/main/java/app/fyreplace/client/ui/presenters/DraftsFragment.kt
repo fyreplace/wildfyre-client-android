@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import app.fyreplace.client.app.drafts.R
-import app.fyreplace.client.ui.adapters.PostsListAdapter
 import app.fyreplace.client.ui.shown
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.DraftsFragmentViewModel
@@ -20,7 +19,6 @@ import org.koin.core.parameter.parametersOf
  */
 class DraftsFragment : PostsListFragment<DraftsFragmentViewModel>(true) {
     override val viewModel by viewModel<DraftsFragmentViewModel>()
-    override val itemsAdapter = PostsListAdapter(false).apply { setHasStableIds(true) }
     private val centralViewModel by sharedViewModel<CentralViewModel>()
     override val navigator by inject<Navigator> { parametersOf(this) }
 

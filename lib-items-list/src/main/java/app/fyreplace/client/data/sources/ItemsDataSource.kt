@@ -17,24 +17,8 @@ abstract class ItemsDataSource<I : Model>(private val listener: DataLoadingListe
     final override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<I?>) {
         try {
             listener.onLoadingStart()
-
-            if (!params.placeholdersEnabled) {
-                val position = params.requestedStartPosition
-                callback.onResult(runFetcher(position, params.requestedLoadSize).results, position)
-                return
-            }
-
-            var fetch = runFetcher(0, 1)
-            var initialPosition: Int
-
-            do {
-                val count = fetch.count
-                initialPosition = computeInitialLoadPosition(params, count)
-                val initialSize = computeInitialLoadSize(params, initialPosition, count)
-                fetch = runFetcher(initialPosition, initialSize)
-            } while (fetch.count != count)
-
-            callback.onResult(fetch.results, initialPosition, fetch.count)
+            val position = params.requestedStartPosition
+            callback.onResult(runFetcher(position, params.requestedLoadSize).results, position)
         } catch (e: Exception) {
             callback.onResult(emptyList(), 0, 0)
         } finally {

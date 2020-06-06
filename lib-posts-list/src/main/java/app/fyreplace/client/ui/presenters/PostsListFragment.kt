@@ -23,6 +23,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  */
 abstract class PostsListFragment<VM : PostsListFragmentViewModel>(private val hasSelection: Boolean) :
     ItemsListFragment<Post, VM, PostsListAdapter>(), ActionMode.Callback {
+    override val itemsAdapter = PostsListAdapter(false)
     protected abstract val navigator: Navigator
     private val areaSelector by lazy { AreaSelector(this) }
     private var settingUp = true

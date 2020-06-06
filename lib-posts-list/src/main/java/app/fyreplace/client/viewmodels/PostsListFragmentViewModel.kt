@@ -6,8 +6,7 @@ import app.fyreplace.client.data.repositories.PostRepository
 
 abstract class PostsListFragmentViewModel(
     resources: Resources,
-    private val postRepository: PostRepository,
-    placeholders: Boolean
-) : ItemsListFragmentViewModel<Post>(resources, placeholders) {
+    private val postRepository: PostRepository
+) : ItemsListFragmentViewModel<Post>(resources) {
     open suspend fun delete(id: Long) = postRepository.deletePost(null, id)
 }

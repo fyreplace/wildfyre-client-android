@@ -17,8 +17,7 @@ import app.fyreplace.client.lib.items_list.R
 /**
  * Interface for ViewModels containing a list of items.
  */
-abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources, placeholders: Boolean) :
-    ViewModel(),
+abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources) : ViewModel(),
     DataLoadingListener {
     private var mFirstLoading = true
     private var mHasRefreshedItems = false
@@ -35,7 +34,7 @@ abstract class ItemsListFragmentViewModel<I : Model>(resources: Resources, place
             Config(
                 pageSize = pageSize,
                 initialLoadSizeHint = pageSize,
-                enablePlaceholders = placeholders
+                enablePlaceholders = false
             )
         )
     }
