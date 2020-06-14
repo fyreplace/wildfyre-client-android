@@ -39,7 +39,7 @@ val servicesModule = module {
 
     single {
         Retrofit.Builder()
-            .baseUrl(getProperty<String>("data.api.base_url"))
+            .baseUrl(getProperty("data.api.base_url"))
             .addConverterFactory(get())
             .client(get())
             .build()
