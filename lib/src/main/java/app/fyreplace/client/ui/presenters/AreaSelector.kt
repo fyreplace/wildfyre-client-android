@@ -3,6 +3,7 @@ package app.fyreplace.client.ui.presenters
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.Menu
+import androidx.core.content.ContextCompat
 import androidx.core.text.set
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -59,6 +60,9 @@ class AreaSelector<F>(private val fragment: F) where F : Fragment, F : FailureHa
                     R.string.area_selector_action_selector_dialog_current,
                     displayName
                 )
-            ).apply { set(0..length, ForegroundColorSpan(getColor(R.color.inactive))) }
+            ).apply {
+                val color = ContextCompat.getColor(this@run, R.color.inactive)
+                set(0..length, ForegroundColorSpan(color))
+            }
         }
 }

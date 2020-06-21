@@ -6,6 +6,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-sdk tools:overrideLibrary="androidx.security" />
+
     <application
         android:name="app.fyreplace.client.FyreplaceApplication"
         android:allowBackup="false"
