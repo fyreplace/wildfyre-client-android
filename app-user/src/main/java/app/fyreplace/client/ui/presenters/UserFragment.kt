@@ -51,25 +51,27 @@ class UserFragment : Fragment(R.layout.fragment_user), Presenter {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.author.observe(viewLifecycleOwner) {
-            bd.userName.text = it.name
 
-            with(bd.userBioWrapper) {
-                if (it.banned) {
-                    setCardBackgroundColor(ContextCompat.getColor(context, R.color.error))
-                } else if (it.bio.isBlank()) {
-                    isVisible = false
+        viewModel.name.observe(viewLifecycleOwner) { bd.userName.text = it }
+
+        viewModel.bio.observe(viewLifecycleOwner) { bio ->
+            bd.userBioWrapper.isVisible = bio.isBlank()
+            markdown.setMarkdown(bd.userBio, bio)
+        }
+
+        viewModel.banned.observe(viewLifecycleOwner) { banned ->
+            if (banned) with(bd.userBioWrapper) {
+                setCardBackgroundColor(ContextCompat.getColor(context, R.color.error))
+
+                with(bd.userBio) {
+                    setText(R.string.user_banned)
+                    setTextColor(ContextCompat.getColor(context, R.color.onError))
+                    setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_error, 0, 0, 0)
                 }
             }
+        }
 
-            if (it.banned) with(bd.userBio) {
-                setText(R.string.user_banned)
-                setTextColor(ContextCompat.getColor(context, R.color.onError))
-                setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_error, 0, 0, 0)
-            } else {
-                markdown.setMarkdown(bd.userBio, it.bio)
-            }
-
+        viewModel.author.observe(viewLifecycleOwner) {
             AppGlide.with(view)
                 .loadAvatar(requireContext(), it)
                 .transform(
