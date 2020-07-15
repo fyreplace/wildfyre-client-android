@@ -22,13 +22,11 @@ class MainActivityViewModel(
     val uiRefreshTick: LiveData<Unit> = mUiRefreshTick
     var startupLogin = true
         private set
-    val selectedThemeIndex = MutableLiveData<Int>()
-    val shouldShowNotificationBadge = MutableLiveData<Boolean>()
+    val selectedThemeIndex = MutableLiveData(THEMES.indexOfFirst { it == settingsRepository.theme })
+    val shouldShowNotificationBadge = MutableLiveData(settingsRepository.showBadge)
 
     init {
-        selectedThemeIndex.value = THEMES.indexOfFirst { it == settingsRepository.theme }
         selectedThemeIndex.observeForever { settingsRepository.theme = getTheme(it) }
-        shouldShowNotificationBadge.value = settingsRepository.showBadge
         shouldShowNotificationBadge.observeForever { settingsRepository.showBadge = it }
     }
 

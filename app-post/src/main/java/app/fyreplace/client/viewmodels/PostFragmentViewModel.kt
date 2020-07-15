@@ -23,9 +23,9 @@ open class PostFragmentViewModel(
         private set
     var postId = -1L
         private set
-    protected val mHasContent = MutableLiveData<Boolean>()
-    protected val mAllowSpread = MutableLiveData<Boolean>()
-    private val mPost = MutableLiveData<Post?>()
+    protected val mHasContent = MutableLiveData(true)
+    protected val mAllowSpread = MutableLiveData(false)
+    private val mPost = MutableLiveData<Post?>(null)
     private val mIsOwnPost = MediatorLiveData<Boolean>()
     private val mSubscribed = MediatorLiveData<Boolean>()
     private val mMarkdownContent = MediatorLiveData<String>()
@@ -55,9 +55,6 @@ open class PostFragmentViewModel(
     val canSendNewComment: LiveData<Boolean> = mCanSendNewComment
 
     init {
-        mHasContent.value = true
-        mAllowSpread.value = false
-        mPost.value = null
         mIsOwnPost.addSource(authorId) { mIsOwnPost.postValue(it == selfId) }
         mSubscribed.addSource(post) { mSubscribed.postValue(it?.subscribed ?: false) }
         mMarkdownContent.addSource(post) {

@@ -23,7 +23,7 @@ class CentralViewModel(
     private val mNotificationCount = MutableLiveData<Int>()
     private val mNotificationBadgeVisible = MutableLiveData<Boolean>()
     private val mPostInfo = MutableLiveData<PostInfo?>()
-    private val mAllowDraftCreation = MutableLiveData<Boolean>()
+    private val mAllowDraftCreation = MutableLiveData(true)
 
     val isLogged: LiveData<Boolean> = mIsLogged
     val self: LiveData<Author?> = mSelf
@@ -44,8 +44,6 @@ class CentralViewModel(
         } else {
             logout()
         }
-
-        setAllowDraftCreation(true)
     }
 
     fun login() {
