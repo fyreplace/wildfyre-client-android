@@ -19,8 +19,8 @@ import org.koin.core.parameter.parametersOf
  */
 class DraftsFragment : PostsListFragment<DraftsFragmentViewModel>(true) {
     override val viewModel by viewModel<DraftsFragmentViewModel>()
-    private val centralViewModel by sharedViewModel<CentralViewModel>()
     override val navigator by inject<Navigator> { parametersOf(this) }
+    private val centralViewModel by sharedViewModel<CentralViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

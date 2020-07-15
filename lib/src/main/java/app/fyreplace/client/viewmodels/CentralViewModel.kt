@@ -78,13 +78,12 @@ class CentralViewModel(
 
     fun setNotificationBadgeVisible(visible: Boolean) = mNotificationBadgeVisible.postValue(visible)
 
-    fun setPost(post: Post?) =
-        mPostInfo.postValue(post?.let {
-            PostInfo(
-                it.author,
-                DATE_FORMAT.format(it.created)
-            )
-        })
+    fun setPost(post: Post?) = mPostInfo.postValue(post?.let {
+        PostInfo(
+            it.author,
+            DATE_FORMAT.format(it.created)
+        )
+    })
 
     fun setAllowDraftCreation(allow: Boolean) = mAllowDraftCreation.postValue(allow)
 

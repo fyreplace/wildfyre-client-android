@@ -5,17 +5,17 @@ import org.koin.dsl.module
 
 val viewModelsModule = module {
     viewModel { CentralViewModel(get(), get(), get()) }
+    viewModel { AreaSelectorViewModel(get()) }
+    viewModel { ImageSelectorViewModel() }
     viewModel { MainActivityViewModel(get(), get()) }
     viewModel { NewDraftActivityViewModel(get()) }
-    viewModel { ArchiveFragmentViewModel(get(), get()) }
-    viewModel { AreaSelectorViewModel(get()) }
-    viewModel { DraftFragmentViewModel(get(), get()) }
-    viewModel { DraftsFragmentViewModel(get(), get(), get()) }
-    viewModel { HomeFragmentViewModel(get(), get(), get()) }
-    viewModel { ImageSelectorViewModel() }
     viewModel { LoginFragmentViewModel(get()) }
+    viewModel { HomeFragmentViewModel(get(), get(), get()) }
     viewModel { NotificationsFragmentViewModel(get(), get()) }
+    viewModel { ArchiveFragmentViewModel(get(), get()) }
+    viewModel { DraftsFragmentViewModel(get(), get(), get()) }
     viewModel { OwnPostsFragmentViewModel(get(), get()) }
     viewModel { PostFragmentViewModel(get(), get(), get()) }
+    viewModel { DraftFragmentViewModel(get(), get()) }
     viewModel { UserFragmentViewModel(get()) }
 }
