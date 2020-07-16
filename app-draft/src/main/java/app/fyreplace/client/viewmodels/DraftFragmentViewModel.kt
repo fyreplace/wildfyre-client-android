@@ -18,6 +18,8 @@ class DraftFragmentViewModel(
 
     lateinit var draft: Post
         private set
+    val hasDraft: Boolean
+        get() = ::draft.isInitialized
     var saved = true
         private set
     val hasMainImage: LiveData<Boolean> = mHasMainImage

@@ -48,7 +48,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        if (savedInstanceState?.getBoolean(SAVE_INIT, true) == false) {
+        if (viewModel.hasDraft) {
             return
         }
 
@@ -136,11 +136,6 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
             delay(resources.getInteger(android.R.integer.config_mediumAnimTime).toLong())
             showSoftKeyboard(bd.editor.editor)
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putBoolean(SAVE_INIT, false)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -438,7 +433,6 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
     }
 
     private companion object {
-        const val SAVE_INIT = "save.init"
         const val PREVIEW_DELAY = 1500L
     }
 
