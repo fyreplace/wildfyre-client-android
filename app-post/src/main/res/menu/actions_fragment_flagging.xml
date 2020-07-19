@@ -5,6 +5,5 @@
         android:id="@+id/action_flag"
         android:icon="@drawable/ic_flag"
         android:title="@string/post_action_flag"
-        app:iconTint="@color/onPrimaryDark"
         app:showAsAction="ifRoom" />
 </menu>

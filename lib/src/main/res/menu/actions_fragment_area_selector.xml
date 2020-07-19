@@ -8,6 +8,5 @@
         android:icon="@drawable/ic_map"
         android:title=""
         app:actionLayout="@layout/action_area_selector_selector"
-        app:iconTint="@color/onPrimaryDark"
         app:showAsAction="always" />
 </menu>

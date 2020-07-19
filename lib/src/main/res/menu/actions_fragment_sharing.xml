@@ -5,6 +5,5 @@
         android:id="@+id/action_share"
         android:icon="@drawable/ic_share"
         android:title="@string/sharing_action_share"
-        app:iconTint="@color/onPrimaryDark"
         app:showAsAction="ifRoom" />
 </menu>

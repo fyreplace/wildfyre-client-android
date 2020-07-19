@@ -16,7 +16,7 @@
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/onError</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="actionModeCloseDrawable">@drawable/ic_clear_white</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_clear</item>
     </style>
 
     <style name="AppTheme.Transparent">
