@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_action_save">Sauvegarder</string>
+    <string name="profile_action_share_title">Partager mon profil</string>
+    <string name="profile_editor_picture_dialog_title">Image de profil</string>
+    <string name="profile_editor_bio">Bio de profil</string>
+</resources>

@@ -1,0 +1,32 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion configuration.compileSdkVersion
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        dataBinding = true
+    }
+    defaultConfig {
+        minSdkVersion configuration.minSdkVersion
+        targetSdkVersion configuration.targetSdkVersion
+    }
+}
+
+dependencies {
+    implementation project(':app-user')
+    implementation project(':lib')
+    implementation libraries.androidx.constraintLayout
+    implementation libraries.androidx.coreKtx
+    implementation libraries.androidx.lifecycle.liveDataKtx
+    implementation libraries.koin.androidxViewModel
+    implementation libraries.kotlin
+    implementation libraries.kotlinx.coroutines
+}

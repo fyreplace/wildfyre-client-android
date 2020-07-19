@@ -6,6 +6,7 @@
     <string name="main_nav_fragment_archive">Archive</string>
     <string name="main_nav_fragment_own_posts">Mes posts</string>
     <string name="main_nav_fragment_drafts">Brouillons</string>
+    <string name="main_nav_fragment_profile">Profil</string>
     <string name="main_nav_settings">Paramètres</string>
     <string name="main_nav_settings_theme_selector">Thème</string>
     <string name="main_nav_settings_theme_automatic">Auto</string>
@@ -23,10 +24,6 @@
     <string name="main_nav_wildfyre_faq">FAQ</string>
     <string name="main_nav_wildfyre_terms">Conditions d\'utilisation</string>
     <string name="main_nav_wildfyre_privacy">Politique de confidentialité</string>
-    <string name="main_profile_editor_dialog_title">Image de profil</string>
-    <string name="main_profile_editor_bio">Bio de profil</string>
     <string name="main_author_anonymous">Anonyme</string>
     <string name="new_draft_dialog_title">Créer le post dans la zone…</string>
-    <string name="image_desc_profile_editor_change_image">Choisir une image</string>
-    <string name="image_desc_profile_editor_change_photo">Prendre une photo</string>
 </resources>

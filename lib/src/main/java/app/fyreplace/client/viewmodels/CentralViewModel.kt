@@ -1,9 +1,6 @@
 package app.fyreplace.client.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
+import androidx.lifecycle.*
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.ImageData
 import app.fyreplace.client.data.models.Post
@@ -26,11 +23,11 @@ class CentralViewModel(
     private val mAllowDraftCreation = MutableLiveData(true)
 
     val isLogged: LiveData<Boolean> = mIsLogged
-    val self: LiveData<Author?> = mSelf
-    val selfId: LiveData<Long> = mSelf.map { it?.user ?: -1 }
-    val selfUsername: LiveData<String> = mSelf.map { it?.name.orEmpty() }
+    val self: LiveData<Author?> = mSelf.distinctUntilChanged()
+    val selfId: LiveData<Long> = mSelf.map { it?.user ?: -1 }.distinctUntilChanged()
+    val selfUsername: LiveData<String> = mSelf.map { it?.name.orEmpty() }.distinctUntilChanged()
     val selfBio: LiveData<String> = mSelf.map { it?.bio.orEmpty() }
-    val newUserAvatar: LiveData<ImageData?> = mNewUserAvatar
+    val newUserAvatar: LiveData<ImageData?> = mNewUserAvatar.distinctUntilChanged()
     val notificationCount: LiveData<Int> = mNotificationCount
     val notificationCountText: LiveData<String> = notificationCount
         .map { if (it < 100) it.toString() else "99" }

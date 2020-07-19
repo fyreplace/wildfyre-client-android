@@ -2,8 +2,6 @@
 <resources>
     <dimen name="nav_header_user_picture_size">80dp</dimen>
     <dimen name="nav_header_user_picture_rounding">8dp</dimen>
-    <dimen name="dialog_user_picture_size">144dp</dimen>
-    <dimen name="dialog_user_picture_rounding">14dp</dimen>
     <dimen name="toolbar_logo_picture_size">40dp</dimen>
     <dimen name="toolbar_logo_picture_rounding">4dp</dimen>
 </resources>

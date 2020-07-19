@@ -29,8 +29,6 @@
     <string name="post_comment_delete_dialog_title">Supprimer ce commentaire ?</string>
     <string name="post_comment_delete_dialog_message">Cette action est irréversible</string>
     <string name="post_failure_flag">Les posts et les commentaires ne peuvent être signalés qu\'une fois</string>
-    <string name="image_desc_comment_picture">Image du commentaire</string>
-    <string name="image_desc_comments_toggle">Afficher les commentaires</string>
     <string name="image_desc_comments_send_comment">Envoyer le commentaire</string>
     <string name="image_desc_comments_attach_file">Joindre un fichier</string>
 </resources>

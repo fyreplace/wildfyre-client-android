@@ -45,6 +45,7 @@ dependencies {
     implementation project(':app-notifications')
     implementation project(':app-own-posts')
     implementation project(':app-post')
+    implementation project(':app-profile')
     implementation project(':app-user')
     implementation project(':lib')
     implementation libraries.androidx.constraintLayout

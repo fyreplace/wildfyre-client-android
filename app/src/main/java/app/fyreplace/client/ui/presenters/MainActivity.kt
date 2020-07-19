@@ -9,10 +9,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
@@ -37,14 +34,11 @@ import app.fyreplace.client.app.NavigationMainDirections.Companion.actionGlobalF
 import app.fyreplace.client.app.R
 import app.fyreplace.client.app.databinding.*
 import app.fyreplace.client.data.models.Author
-import app.fyreplace.client.data.models.ImageData
-import app.fyreplace.client.ui.ImageSelector
 import app.fyreplace.client.ui.Presenter
 import app.fyreplace.client.ui.loadAvatar
 import app.fyreplace.client.viewmodels.AreaSelectorViewModel
 import app.fyreplace.client.viewmodels.CentralViewModel
 import app.fyreplace.client.viewmodels.MainActivityViewModel
-import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -52,16 +46,14 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.ByteArrayInputStream
 
 /**
  * The central activity that hosts the different fragments.
  */
 class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
-    NavController.OnDestinationChangedListener, ImageSelector {
+    NavController.OnDestinationChangedListener {
     override val viewModel by viewModel<MainActivityViewModel>()
     override lateinit var bd: ActivityMainBinding
-    override val maxImageSize = 0.5f
     private val centralViewModel by viewModel<CentralViewModel>()
     private val areaSelectorViewModel by viewModel<AreaSelectorViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -101,8 +93,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
         ActionMainNavSettingsBadgeToggleBinding.bind(bd.navigationView.menu.findItem(R.id.settings_badge_toggle).actionView)
             .run { lifecycleOwner = this@MainActivity; model = viewModel }
-
-        navHeaderBinding.edit.setOnClickListener { editProfile() }
 
         bd.navigationView.menu.findItem(R.id.fragment_drafts).actionView
             .findViewById<View>(R.id.button)
@@ -229,11 +219,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
         else -> super.onSupportNavigateUp()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super<AppCompatActivity>.onActivityResult(requestCode, resultCode, data)
-        super<ImageSelector>.onActivityResult(requestCode, resultCode, data)
-    }
-
     override fun getContext() = this
 
     override fun onDestinationChanged(
@@ -242,11 +227,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
         arguments: Bundle?
     ) {
         updateDrawer(destination)
+        val toolbar = bd.content.toolbar
 
         when {
-            destination.id == R.id.fragment_login -> bd.content.toolbar.navigationIcon = null
-            bd.content.toolbar.navigationIcon == null -> bd.content.toolbar.navigationIcon =
+            destination.id == R.id.fragment_login -> toolbar.navigationIcon = null
+            destination.id in NO_TITLE_DESTINATIONS -> toolbar.title = ""
+            toolbar.navigationIcon == null -> toolbar.navigationIcon =
                 DrawerArrowDrawable(this).apply { isSpinEnabled = true }
+        }
+
+        if (destination.id != R.id.fragment_profile) {
+            centralViewModel.resetPendingProfileAvatar()
         }
 
         centralViewModel.setNotificationBadgeVisible(
@@ -254,13 +245,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
                 && destination.id in TOP_LEVEL_DESTINATIONS
         )
 
-        if (destination.id in NO_TITLE_DESTINATIONS
-            && bd.content.toolbar.title.toString() == getString(R.string.app_name)
-        ) {
-            bd.content.toolbar.title = ""
-        }
-
-        bd.content.toolbar.run {
+        with(toolbar) {
             subtitle = ""
             logo = null
             contentInsetStartWithNavigation = toolbarInset
@@ -280,11 +265,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
         super.onSupportActionModeFinished(mode)
         navigationController.currentDestination?.let { updateDrawer(it) }
     }
-
-    override suspend fun onImage(image: ImageData) = centralViewModel.setPendingProfileAvatar(image)
-
-
-    override suspend fun onImageRemoved() = Unit
 
     private fun handleViewIntent(intent: Intent) {
         if (intent.action != Intent.ACTION_VIEW) {
@@ -377,65 +357,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
         }
     }
 
-    private fun editProfile() {
-        lateinit var dialog: AlertDialog
-
-        dialog = MaterialAlertDialogBuilder(this)
-            .setView(R.layout.main_profile_editor)
-            .setNegativeButton(R.string.cancel) { _, _ ->
-                centralViewModel.resetPendingProfileAvatar()
-            }
-            .setPositiveButton(R.string.ok) { _, _ ->
-                launch {
-                    val bio = dialog.findViewById<TextView>(R.id.user_bio)?.text ?: ""
-                    centralViewModel.sendProfile(bio.toString())
-                }
-            }
-            .setOnDismissListener {
-                centralViewModel.newUserAvatar.removeObservers(this)
-                centralViewModel.selfBio.removeObservers(this)
-            }
-            .create()
-            .apply { show() }
-
-        val avatar = dialog.findViewById<ImageView>(R.id.user_picture)!!
-        val avatarTransform = MultiTransformation(
-            CenterCrop(),
-            RoundedCorners(resources.getDimensionPixelOffset(R.dimen.dialog_user_picture_rounding))
-        )
-        val imageTransition = DrawableTransitionOptions.withCrossFade()
-
-        AppGlide.with(this)
-            .loadAvatar(this, centralViewModel.self.value)
-            .transition(imageTransition)
-            .transform(avatarTransform)
-            .into(avatar)
-
-        dialog.findViewById<View>(R.id.edit_user_picture)?.setOnClickListener {
-            showImageChooser(R.string.main_profile_editor_dialog_title, false)
-        }
-
-        centralViewModel.newUserAvatar.observe(this) {
-            it?.run {
-                AppGlide.with(this@MainActivity)
-                    .load(Drawable.createFromStream(ByteArrayInputStream(bytes), "avatar"))
-                    .transform(avatarTransform)
-                    .transition(imageTransition)
-                    .into(avatar)
-            }
-        }
-
-        centralViewModel.selfBio.observe(this) {
-            dialog.findViewById<EditText>(R.id.user_bio)?.run {
-                setText(it)
-
-                if (it.isNotEmpty()) {
-                    minLines = 0
-                }
-            }
-        }
-    }
-
     private fun showLicenses() {
         val licenses = resources.getStringArray(R.array.dependencies_names_base)
         val links = resources.getStringArray(R.array.dependencies_links_base)
@@ -473,7 +394,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             R.id.fragment_notifications,
             R.id.fragment_archive,
             R.id.fragment_own_posts,
-            R.id.fragment_drafts
+            R.id.fragment_drafts,
+            R.id.fragment_profile
         )
         val NO_TITLE_DESTINATIONS = setOf(
             R.id.fragment_home,

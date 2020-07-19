@@ -15,6 +15,7 @@ val viewModelsModule = module {
     viewModel { ArchiveFragmentViewModel(get(), get()) }
     viewModel { DraftsFragmentViewModel(get(), get(), get()) }
     viewModel { OwnPostsFragmentViewModel(get(), get()) }
+    viewModel { ProfileFragmentViewModel() }
     viewModel { PostFragmentViewModel(get(), get(), get()) }
     viewModel { DraftFragmentViewModel(get(), get()) }
     viewModel { UserFragmentViewModel(get()) }

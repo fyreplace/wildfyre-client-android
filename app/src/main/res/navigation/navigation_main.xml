@@ -45,6 +45,11 @@
         android:label="@string/main_nav_fragment_drafts"
         tools:layout="@layout/fragment_items_list" />
     <fragment
+        android:id="@+id/fragment_profile"
+        android:name="app.fyreplace.client.ui.presenters.ProfileFragment"
+        android:label="@string/main_nav_fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
         android:id="@+id/fragment_post"
         android:name="app.fyreplace.client.ui.presenters.PostFragment"
         android:label="@string/app_name"
