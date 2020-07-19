@@ -48,7 +48,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), Presenter, ImageSel
 
         val transformations = MultiTransformation(
             CenterCrop(),
-            RoundedCorners(resources.getDimensionPixelOffset(R.dimen.user_picture_rounding))
+            RoundedCorners(resources.getDimensionPixelSize(R.dimen.user_picture_rounding))
         )
         val transition = DrawableTransitionOptions.withCrossFade()
 
@@ -74,7 +74,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), Presenter, ImageSel
         }
 
         bd.userBio.addTextChangedListener {
-            if (it?.toString() != centralViewModel.selfBio.value) {
+            if (it.toString() != centralViewModel.selfBio.value) {
                 viewModel.setIsDirty(true)
             }
         }
@@ -88,7 +88,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), Presenter, ImageSel
 
         save.setOnClickListener {
             launch {
-                centralViewModel.sendProfile(bd.userBio.text?.toString() ?: "")
+                centralViewModel.sendProfile(bd.userBio.text.toString())
                 viewModel.setIsDirty(false)
             }
         }
@@ -116,7 +116,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile), Presenter, ImageSel
             .load(image.bytes)
             .transform(
                 CenterCrop(),
-                RoundedCorners(resources.getDimensionPixelOffset(R.dimen.user_picture_rounding))
+                RoundedCorners(resources.getDimensionPixelSize(R.dimen.user_picture_rounding))
             )
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(bd.userPicture)

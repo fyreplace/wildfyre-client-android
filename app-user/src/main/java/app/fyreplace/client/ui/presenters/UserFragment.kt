@@ -76,7 +76,7 @@ class UserFragment : Fragment(R.layout.fragment_user), Presenter {
                 .loadAvatar(requireContext(), it)
                 .transform(
                     CenterCrop(),
-                    RoundedCorners(resources.getDimensionPixelOffset(R.dimen.user_picture_rounding))
+                    RoundedCorners(resources.getDimensionPixelSize(R.dimen.user_picture_rounding))
                 )
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(bd.userPicture)

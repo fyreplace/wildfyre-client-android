@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
                 .loadAvatar(this, it)
                 .transform(
                     CenterCrop(),
-                    RoundedCorners(resources.getDimensionPixelOffset(R.dimen.nav_header_user_picture_rounding))
+                    RoundedCorners(resources.getDimensionPixelSize(R.dimen.nav_header_user_picture_rounding))
                 )
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(navHeaderBinding.userPicture)
@@ -339,14 +339,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             )
         }
 
-        val size = resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_size)
+        val size = resources.getDimensionPixelSize(R.dimen.toolbar_logo_picture_size)
 
         info.author?.let {
             AppGlide.with(this)
                 .loadAvatar(this, it)
                 .transform(
                     CenterCrop(),
-                    RoundedCorners(resources.getDimensionPixelOffset(R.dimen.toolbar_logo_picture_rounding))
+                    RoundedCorners(resources.getDimensionPixelSize(R.dimen.toolbar_logo_picture_rounding))
                 )
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(ToolbarTarget(it, size))

@@ -102,7 +102,7 @@ abstract class ItemsAdapter<I>(
                     .loadAvatar(context, itemData.author)
                     .transform(
                         CenterCrop(),
-                        RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.list_item_author_picture_rounding))
+                        RoundedCorners(context.resources.getDimensionPixelSize(R.dimen.list_item_author_picture_rounding))
                     )
                     .transition(imageTransition)
                     .into(holder.authorPicture)

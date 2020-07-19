@@ -77,7 +77,7 @@ class CommentsAdapter(
                 .loadAvatar(context, author)
                 .transform(
                     CenterCrop(),
-                    RoundedCorners(context.resources.getDimensionPixelOffset(R.dimen.comment_author_picture_rounding))
+                    RoundedCorners(context.resources.getDimensionPixelSize(R.dimen.comment_author_picture_rounding))
                 )
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(holder.authorPicture)
