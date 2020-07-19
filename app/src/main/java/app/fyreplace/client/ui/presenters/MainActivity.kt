@@ -26,7 +26,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import app.fyreplace.client.AppGlide
@@ -67,6 +66,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
     private val areaSelectorViewModel by viewModel<AreaSelectorViewModel>()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private var toolbarInset = 0
+    private val navigationController: NavController
+        get() = (supportFragmentManager.findFragmentById(R.id.navigation_host) as NavHostFragment).navController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +91,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
 
         reportFullyDrawn()
 
-        val navController = findNavController(R.id.navigation_host)
         val navHeaderBinding = MainNavHeaderBinding.bind(bd.navigationView.getHeaderView(0))
             .apply { lifecycleOwner = this@MainActivity; model = centralViewModel }
         ActionMainNavFragmentNotificationsBinding.bind(bd.navigationView.menu.findItem(R.id.fragment_notifications).actionView)
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             .findViewById<View>(R.id.button)
             .setOnClickListener {
                 launch {
-                    navController.navigate(
+                    navigationController.navigate(
                         actionGlobalFragmentDraft(
                             draft = viewModel.createDraft(),
                             showHint = true
@@ -128,8 +128,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             if (it) {
                 viewModel.login()
                 launch { centralViewModel.updateProfileInfo() }
-            } else if (navController.currentDestination?.id != R.id.fragment_login) {
-                navController.navigate(
+            } else if (navigationController.currentDestination?.id != R.id.fragment_login) {
+                navigationController.navigate(
                     if (viewModel.startupLogin)
                         actionGlobalFragmentLoginStartup()
                     else
@@ -213,7 +213,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
-        item.onNavDestinationSelected(findNavController(R.id.navigation_host))
+        item.onNavDestinationSelected(navigationController)
 
     override fun onBackPressed() = when {
         bd.drawerLayout.isDrawerOpen(GravityCompat.START) -> bd.drawerLayout.closeDrawer(
@@ -225,7 +225,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
 
     override fun onSupportNavigateUp() = when {
         currentFragmentAs<BackHandlingFragment>()?.onGoBack(BackHandlingFragment.Method.UP_BUTTON) == false -> false
-        findNavController(R.id.navigation_host).navigateUp(appBarConfiguration) -> true
+        navigationController.navigateUp(appBarConfiguration) -> true
         else -> super.onSupportNavigateUp()
     }
 
@@ -278,7 +278,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
 
     override fun onSupportActionModeFinished(mode: ActionMode) {
         super.onSupportActionModeFinished(mode)
-        findNavController(R.id.navigation_host).currentDestination?.let { updateDrawer(it) }
+        navigationController.currentDestination?.let { updateDrawer(it) }
     }
 
     override suspend fun onImage(image: ImageData) = centralViewModel.setPendingProfileAvatar(image)
@@ -293,7 +293,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
 
         for (pair in REGEX_TO_DIRECTIONS) {
             pair.key.matchEntire(intent.data?.path.orEmpty())?.let {
-                findNavController(R.id.navigation_host).navigate(pair.value(it))
+                navigationController.navigate(pair.value(it))
                 return
             }
         }
@@ -304,12 +304,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
             return
         }
 
-        val navController = findNavController(R.id.navigation_host)
-
         when {
             intent.type?.startsWith("text/") == true -> launch {
                 val draft = viewModel.createDraft(intent.getStringExtra(Intent.EXTRA_TEXT))
-                navController.navigate(actionGlobalFragmentDraft(draft = draft))
+                navigationController.navigate(actionGlobalFragmentDraft(draft = draft))
             }
 
             intent.type?.startsWith("image/") == true -> launch {
@@ -318,7 +316,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
                         ?: intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM)
                         ?: intent.clipData?.run { (0..itemCount).map { getItemAt(it).uri } }
 
-                navController.navigate(
+                navigationController.navigate(
                     actionGlobalFragmentDraft(
                         draft = viewModel.createDraft(),
                         imageUris = uris.orEmpty().toTypedArray()
@@ -528,8 +526,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
                     }
 
                     setOnClickListener {
-                        findNavController(R.id.navigation_host)
-                            .navigate(actionGlobalFragmentUser(author = author))
+                        navigationController.navigate(actionGlobalFragmentUser(author = author))
                     }
                 }
         }
