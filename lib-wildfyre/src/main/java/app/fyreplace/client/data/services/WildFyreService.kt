@@ -8,6 +8,7 @@ import retrofit2.http.*
 /**
  * Retrofit interface of the WildFyre API.
  */
+@Suppress("unused")
 interface WildFyreService {
     // Authentication
 
