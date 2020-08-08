@@ -38,3 +38,9 @@
     **[] $VALUES;
     public *;
 }
+
+##############
+# Navigation #
+##############
+
+-keepnames class androidx.navigation.fragment.NavHostFragment
