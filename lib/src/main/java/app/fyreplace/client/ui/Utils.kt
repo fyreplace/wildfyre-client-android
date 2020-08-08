@@ -44,7 +44,7 @@ fun Fragment.lazyMarkdown() = lazy {
     requireActivity().let {
         Markwon.builder(it)
             .usePlugin(CorePlugin.create())
-            .usePlugin(MovementMethodPlugin.create())
+            .usePlugin(MovementMethodPlugin.link())
             .usePlugin(SoftBreakAddsNewLinePlugin.create())
             .usePlugin(PostPlugin.create())
             .usePlugin(StrikethroughPlugin.create())

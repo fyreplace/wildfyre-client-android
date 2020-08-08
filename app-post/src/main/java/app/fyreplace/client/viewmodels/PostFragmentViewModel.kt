@@ -93,7 +93,7 @@ open class PostFragmentViewModel(
     fun setIsOwnPost() = mIsOwnPost.postValue(true)
 
     suspend fun getFlagChoices() = postRepository.getFlagChoices()
-        .sortedWith(Comparator { f1, f2 ->
+        .sortedWith { f1, f2 ->
             when {
                 f1.key == null -> 1
                 f2.key == null -> -1
@@ -101,7 +101,7 @@ open class PostFragmentViewModel(
                 f1.key!! > f2.key!! -> 1
                 else -> 0
             }
-        })
+        }
 
     suspend fun changeSubscription() = mSubscribed.postValue(
         postRepository.setSubscription(
