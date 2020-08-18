@@ -120,18 +120,22 @@ interface ImageSelector : FailureHandler, ViewModelStoreOwner {
         request
     )
 
-    suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.Default) {
+    suspend fun useImageUri(uri: Uri) = withContext(Dispatchers.IO) {
         try {
-            onImageLoadingBegin()
+            withContext(Dispatchers.Main) { onImageLoadingBegin() }
             val mimeType = requiredContext.contentResolver.getType(uri)
                 ?: throw IOException(requiredContext.getString(R.string.image_failure_unknown_type))
             val transformations = requiredContext.contentResolver.openInputStream(uri)
                 ?.use { extractTransformations(it) }
                 ?: Matrix()
             requiredContext.contentResolver.openInputStream(uri)
-                ?.use { useBytes(it.readBytes(), transformations, mimeType) }
+                ?.use {
+                    withContext(Dispatchers.Default) {
+                        useBytes(it.readBytes(), transformations, mimeType)
+                    }
+                }
         } finally {
-            onImageLoadingEnd()
+            withContext(Dispatchers.Main) { onImageLoadingEnd() }
         }
     }
 
