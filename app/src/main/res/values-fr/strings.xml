@@ -27,6 +27,4 @@
     <string name="main_profile_editor_bio">Bio de profil</string>
     <string name="main_author_anonymous">Anonyme</string>
     <string name="new_draft_dialog_title">Créer le post dans la zone…</string>
-    <string name="image_desc_profile_editor_change_image">Choisir une image</string>
-    <string name="image_desc_profile_editor_change_photo">Prendre une photo</string>
 </resources>

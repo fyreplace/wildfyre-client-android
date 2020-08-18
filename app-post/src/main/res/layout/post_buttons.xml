@@ -47,7 +47,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="UnusedAttribute" />
+                tools:ignore="UnusedAttribute,UseAppTint" />
 
             <ImageView
                 android:id="@+id/ignite"
@@ -66,7 +66,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="UnusedAttribute" />
+                tools:ignore="UnusedAttribute,UseAppTint" />
 
             <Button
                 android:id="@+id/comments"

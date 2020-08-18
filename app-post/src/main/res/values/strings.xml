@@ -29,8 +29,6 @@
     <string name="post_comment_delete_dialog_title">Delete this comment?</string>
     <string name="post_comment_delete_dialog_message">This action cannot be undone</string>
     <string name="post_failure_flag">Posts and comments can be reported only once</string>
-    <string name="image_desc_comment_picture">Comment picture</string>
-    <string name="image_desc_comments_toggle">Toggle comments</string>
     <string name="image_desc_comments_send_comment">Send comment</string>
     <string name="image_desc_comments_attach_file">Attach a file</string>
 </resources>

@@ -36,8 +36,6 @@
     <string name="main_profile_editor_bio">Profile bio</string>
     <string name="main_author_anonymous">Anonymous</string>
     <string name="new_draft_dialog_title">Create post in area…</string>
-    <string name="image_desc_profile_editor_change_image">Select an image</string>
-    <string name="image_desc_profile_editor_change_photo">Take a picture</string>
     <string-array name="dependencies_names_base">
         <item>Fyreplace - AGPL 3.0</item>
         <item>JetBrains - Kotlin - Apache 2.0</item>
