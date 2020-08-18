@@ -3,10 +3,12 @@ package app.fyreplace.client.ui
 import android.content.ClipDescription
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import app.fyreplace.client.GlideRequest
 import app.fyreplace.client.GlideRequests
 import app.fyreplace.client.data.models.Author
 import app.fyreplace.client.data.models.Post
@@ -42,7 +44,7 @@ fun Fragment.lazyMarkdown() = lazy {
     requireActivity().let {
         Markwon.builder(it)
             .usePlugin(CorePlugin.create())
-            .usePlugin(MovementMethodPlugin.create())
+            .usePlugin(MovementMethodPlugin.link())
             .usePlugin(SoftBreakAddsNewLinePlugin.create())
             .usePlugin(PostPlugin.create())
             .usePlugin(StrikethroughPlugin.create())
@@ -59,10 +61,12 @@ fun Post.toMarkdown(content: String = text) =
         return@replace image?.run { "\n![${image.comment}](${image.image})\n" } ?: it.groupValues[0]
     }
 
-fun GlideRequests.loadAvatar(context: Context, author: Author?) =
-    load(if (author?.banned != true) author?.avatar ?: R.drawable.default_avatar else "")
-        .error(context.getDrawable(if (author?.banned == true) R.drawable.banned_avatar else R.drawable.ic_image))
+fun GlideRequests.loadAvatar(context: Context, author: Author?): GlideRequest<Drawable> {
+    val drawableId = if (author?.banned == true) R.drawable.banned_avatar else R.drawable.ic_image
+    return load(if (author?.banned != true) author?.avatar ?: R.drawable.default_avatar else "")
+        .error(ContextCompat.getDrawable(context, drawableId))
         .placeholder(android.R.color.transparent)
+}
 
 var FloatingActionButton.shown: Boolean
     get() = isOrWillBeShown
