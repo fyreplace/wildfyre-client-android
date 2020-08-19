@@ -19,8 +19,8 @@ android {
         applicationId "app.fyreplace.client"
         minSdkVersion configuration.minSdkVersion
         targetSdkVersion configuration.targetSdkVersion
-        versionCode 8016
-        versionName "0.8.16"
+        versionCode 8017
+        versionName "0.8.17"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
