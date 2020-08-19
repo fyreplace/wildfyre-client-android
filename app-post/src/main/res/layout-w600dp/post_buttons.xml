@@ -36,6 +36,7 @@
                 android:layout_weight="@integer/post_buttons_spread_weight"
                 android:clickable="@{model.contentLoaded &amp;&amp; model.allowSpread}"
                 android:enabled="@{model.contentLoaded}"
+                android:saveEnabled="false"
                 android:text="@string/post_extinguish"
                 android:theme="@style/AppTheme.ExtinguishButtonOverlay"
                 android:visibility="invisible" />
@@ -62,6 +63,7 @@
                 android:layout_weight="@integer/post_buttons_spread_weight"
                 android:clickable="@{model.contentLoaded &amp;&amp; model.allowSpread}"
                 android:enabled="@{model.contentLoaded}"
+                android:saveEnabled="false"
                 android:text="@string/post_ignite"
                 android:theme="@style/AppTheme.IgniteButtonOverlay"
                 android:visibility="invisible" />
