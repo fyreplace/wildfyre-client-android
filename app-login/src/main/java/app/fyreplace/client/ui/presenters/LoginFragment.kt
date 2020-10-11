@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import app.fyreplace.client.app.login.R
 import app.fyreplace.client.app.login.databinding.FragmentLoginBinding
 import app.fyreplace.client.ui.Presenter

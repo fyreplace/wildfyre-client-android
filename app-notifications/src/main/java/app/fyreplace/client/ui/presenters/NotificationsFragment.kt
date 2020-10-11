@@ -3,7 +3,6 @@ package app.fyreplace.client.ui.presenters
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import androidx.lifecycle.observe
 import app.fyreplace.client.data.models.Notification
 import app.fyreplace.client.lib.notifications.R
 import app.fyreplace.client.lib.notifications.databinding.ActionNotificationsClearBinding

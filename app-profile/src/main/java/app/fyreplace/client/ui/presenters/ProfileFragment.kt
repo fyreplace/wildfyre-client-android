@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.app.profile.R
 import app.fyreplace.client.app.profile.databinding.FragmentProfileBinding

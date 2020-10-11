@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import app.fyreplace.client.data.models.Model
 import app.fyreplace.client.lib.items_list.R
 import app.fyreplace.client.lib.items_list.databinding.FragmentItemsListBinding

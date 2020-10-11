@@ -5,7 +5,6 @@ import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import app.fyreplace.client.AppGlide
 import app.fyreplace.client.app.user.R
 import app.fyreplace.client.app.user.databinding.FragmentUserBinding

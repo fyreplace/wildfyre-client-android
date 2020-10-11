@@ -6,7 +6,6 @@ import android.view.Menu
 import androidx.core.content.ContextCompat
 import androidx.core.text.set
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.observe
 import app.fyreplace.client.data.models.Area
 import app.fyreplace.client.lib.R
 import app.fyreplace.client.lib.databinding.ActionAreaSelectorSelectorBinding
