@@ -11,7 +11,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="@dimen/margin_medium"
+            android:paddingBottom="@dimen/margin_medium">
 
             <ImageView
                 android:id="@+id/user_picture"
@@ -63,7 +65,8 @@
                     android:hint="@string/profile_editor_bio"
                     android:imeOptions="actionDone"
                     android:importantForAutofill="no"
-                    android:inputType="textMultiLine|textCapSentences" />
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:minLines="5" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

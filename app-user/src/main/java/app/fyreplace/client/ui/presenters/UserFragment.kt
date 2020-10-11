@@ -55,7 +55,7 @@ class UserFragment : Fragment(R.layout.fragment_user), Presenter {
         viewModel.name.observe(viewLifecycleOwner) { bd.userName.text = it }
 
         viewModel.bio.observe(viewLifecycleOwner) { bio ->
-            bd.userBioWrapper.isVisible = bio.isBlank()
+            bd.userBioWrapper.isVisible = bio.isNotBlank()
             markdown.setMarkdown(bd.userBio, bio)
         }
 
