@@ -4,7 +4,6 @@
     <color name="onPrimary">@android:color/white</color>
     <color name="primaryVariant">#BF360C</color>
     <color name="primaryDark">#BF360C</color>
-    <color name="onPrimaryDark">@android:color/white</color>
     <color name="secondary">#F57C00</color>
     <color name="secondaryVariant">#E65100</color>
     <color name="onSecondary">@android:color/white</color>

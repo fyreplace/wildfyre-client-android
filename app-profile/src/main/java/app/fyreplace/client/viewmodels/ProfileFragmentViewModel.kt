@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.distinctUntilChanged
 
 class ProfileFragmentViewModel : ViewModel() {
-    private val mDirty = MutableLiveData<Boolean>(false)
+    private val mDirty = MutableLiveData(false)
 
     val dirty: LiveData<Boolean> = mDirty.distinctUntilChanged()
 

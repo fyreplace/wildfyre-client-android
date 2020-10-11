@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -130,12 +129,8 @@ open class PostFragment : Fragment(R.layout.fragment_post), Presenter, BackHandl
         }
         viewModel.newCommentImage.observe(viewLifecycleOwner) { image ->
             if (image != null) {
-                cbd.commentNew.startIconDrawable?.let {
-                    DrawableCompat.setTint(
-                        it,
-                        ContextCompat.getColor(view.context, R.color.secondary)
-                    )
-                }
+                cbd.commentNew.startIconDrawable
+                    ?.setTint(ContextCompat.getColor(view.context, R.color.secondary))
             } else {
                 cbd.commentNew.setStartIconDrawable(R.drawable.ic_attach_file)
             }
