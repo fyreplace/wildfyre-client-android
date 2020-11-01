@@ -1,5 +1,6 @@
 package app.fyreplace.client.viewmodels
 
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,6 +21,8 @@ class MainActivityViewModel(
     private val mUiRefreshTick = MutableLiveData<Unit>()
 
     val uiRefreshTick: LiveData<Unit> = mUiRefreshTick
+    var lastIntent: Intent? = null
+        private set
     var startupLogin = true
         private set
     val selectedThemeIndex = MutableLiveData(THEMES.indexOfFirst { it == settingsRepository.theme })
@@ -29,6 +32,9 @@ class MainActivityViewModel(
         selectedThemeIndex.observeForever { settingsRepository.theme = getTheme(it) }
         shouldShowNotificationBadge.observeForever { settingsRepository.showBadge = it }
     }
+
+    fun getUsableIntent(intent: Intent?) =
+        if (intent != lastIntent) intent.also { lastIntent = it } else null
 
     fun login() {
         startupLogin = false
