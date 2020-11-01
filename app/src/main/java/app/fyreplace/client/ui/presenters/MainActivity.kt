@@ -186,18 +186,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), Presenter,
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-
-        if (intent != null) {
-            handleSendIntent(intent)
-        }
+        viewModel.getUsableIntent(intent)?.let { handleSendIntent(intent) }
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-
-        if (intent != null) {
-            handleViewIntent(intent)
-            handleSendIntent(intent)
+        viewModel.getUsableIntent(intent)?.let {
+            handleViewIntent(it)
+            handleSendIntent(it)
         }
     }
 

@@ -53,23 +53,7 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
         }
 
         viewModel.setDraft(fragmentArgs.draft)
-
-        launch {
-            viewModel.cleanUpDraft()
-
-            when (val imageNumber = fragmentArgs.imageUris.size) {
-                0 -> return@launch
-                1 -> viewModel.nextImageSlotIsMain = true
-                else -> {
-                    snackbarBatchCount = imageNumber
-                    bd.editor.editor.setText("")
-                }
-            }
-
-            for (uri in fragmentArgs.imageUris) {
-                useImageUri(uri)
-            }
-        }
+        launch { viewModel.cleanUpDraft() }
 
         if (fragmentArgs.showHint) launch {
             Toast.makeText(
@@ -119,6 +103,23 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
                             if (hasSelection) R.menu.bottom_actions_fragment_draft_selection
                             else R.menu.bottom_actions_fragment_draft
                         )
+                    }
+                }
+
+                if (!viewModel.isInitialized) {
+                    launch {
+                        when (val imageNumber = fragmentArgs.imageUris.size) {
+                            0 -> return@launch
+                            1 -> viewModel.nextImageSlotIsMain = true
+                            else -> {
+                                snackbarBatchCount = imageNumber
+                                setText("")
+                            }
+                        }
+
+                        for (uri in fragmentArgs.imageUris) {
+                            useImageUri(uri)
+                        }
                     }
                 }
             }
@@ -258,11 +259,8 @@ class DraftFragment : Fragment(R.layout.fragment_draft), Presenter, BackHandling
 
             if (imageSlot == -1) {
                 updatePreview()
-            } else {
-                bd.editor.editor.editableText?.insert(
-                    bd.editor.editor.selectionStart,
-                    "[img: ${imageSlot}]\n"
-                )
+            } else with(bd.editor.editor) {
+                editableText?.insert(selectionStart, "[img: ${imageSlot}]\n")
             }
         } catch (e: HttpException) {
             if (e.code() == 404) {
