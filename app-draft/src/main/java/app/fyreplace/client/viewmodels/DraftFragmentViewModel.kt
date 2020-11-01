@@ -15,11 +15,14 @@ class DraftFragmentViewModel(
 ) : ViewModel() {
     private val mHasMainImage = MutableLiveData<Boolean>()
     private val nextImageSlots = mutableListOf<Int>()
+    private var initialized = false
 
     lateinit var draft: Post
         private set
     val hasDraft: Boolean
         get() = ::draft.isInitialized
+    val isInitialized: Boolean
+        get() = initialized.also { if (!it) initialized = true }
     var saved = true
         private set
     val hasMainImage: LiveData<Boolean> = mHasMainImage
